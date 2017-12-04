@@ -1,0 +1,116 @@
+<!--
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+-->
+<?xml version='1.0'?>
+<!DOCTYPE relatorio SYSTEM "/urbem.dtd">
+<!--
+Todas as informações de tamanhos são expressas em milímetros (mm)
+Propriedades ************************************************
+formato       = "a4" pode ser: a3, a4, a5, letter, legal
+disposicao    = "L"  pode ser: L=Paisagem ou P=Retrato
+autor         = Nome do autor do relatório
+modulo        = Módulo do URBEM
+titulo        = Título do Relatório
+subtitulo     = Subtítulo do Relatório
+assunto       = Descrição do relatório
+palavrasChave = Palavras de fácil localização do relatório
+sql           = Select de pesquisa dos dados
+Margens *****************************************************
+margemSup     = Margem Superior
+margemDir     = Margem Direita
+margemEsq     = Margem Esquerda
+
+// Casos de uso: uc-01.06.98
+
+-->
+<relatorio>
+    <propriedades
+        formato       = "a4"
+        disposicao    = "P"
+        autor         = "Jorge Ribarr"
+        modulo        = "Protocolo"
+        titulo        = "Recibo de Entrega de Processos"
+        subtitulo     = "Recibo"
+        assunto       = "Recibo de Entrega de Processos"
+        palavrasChave = "recibo entrega processo manual protocolo"
+        >
+        <margens
+            margemSup = "15"
+            margemDir = "10"
+            margemEsq = "10"/>
+    </propriedades>
+    <corpo>
+        <grupo nome="principal">
+            <cabecalho>
+                <fonte altura="16" estilo="N" nome="times" >
+                    <etiqueta altura="10" alinhamento="C" titulo="Recibo de Entrega de Processos" />
+                    <quebralinha />
+                    <etiqueta  altura="10" largura="130" alinhamento="D" titulo="Recibo Número: " />
+                    <parametro altura="10" nome="num_recibo" />
+                    <quebralinha />
+                </fonte>
+                <quebralinha />
+                    <etiqueta altura="5" largura="20" borda="1" titulo="Processo" cordefundo="220,220,220" alinhamento="C"/>
+                    <etiqueta altura="5" largura="23" borda="1" titulo="Classificação" cordefundo="220,220,220" alinhamento="C"/>
+                    <etiqueta altura="5" largura="23" borda="1" titulo="Assunto" cordefundo="220,220,220" alinhamento="C"/>
+                    <etiqueta altura="5" largura="60" borda="1" titulo="Interessado" cordefundo="220,220,220" alinhamento="C"/>
+                    <etiqueta altura="5" largura="45" borda="1" titulo="Inclusão" cordefundo="220,220,220" alinhamento="C"/>
+                    <etiqueta altura="5" largura="19" borda="1" titulo="Obs" cordefundo="220,220,220" alinhamento="C"/>
+                <quebralinha />
+                <etiqueta altura="5" largura="20" titulo="" borda="L,R,B" cordefundo="220,220,220" />
+                <etiqueta altura="5" largura="23" titulo="" borda="L,R,B" cordefundo="220,220,220" />
+                <etiqueta altura="5" largura="23" titulo="" borda="L,R,B" cordefundo="220,220,220" />
+                <etiqueta altura="5" largura="60" titulo="" borda="L,R,B" cordefundo="220,220,220" />
+                <etiqueta altura="5" largura="30" titulo="Data" borda="1" cordefundo="220,220,220" alinhamento="C"/>
+                <etiqueta altura="5" largura="15" titulo="Usuário" borda="1" cordefundo="220,220,220" alinhamento="C"/>
+                <etiqueta altura="5" largura="19" titulo="" borda="L,R,B" cordefundo="220,220,220" />
+                <quebralinha />
+            </cabecalho>
+            <detalhe sql = "">
+                <fonte estilo="N">
+                    <campo altura="5" largura="20" borda="1" nome="cod_ano_processo" />
+                </fonte>
+                <campo altura="5" largura="23" borda="1" nome="nom_classificacao" />
+                <campo altura="5" largura="23" borda="1" nome="nom_assunto" />
+                <campo altura="5" largura="60" borda="1" nome="nom_cgm"/>
+                <campo altura="5" largura="30" borda="1" nome="timestamp" />
+                <campo altura="5" largura="15" borda="1" nome="username" />
+                <campo altura="5" largura="19" borda="1" nome="apensado" />
+                <quebralinha />
+            </detalhe>
+            <fonte estilo="N">
+                <etiqueta altura="10" titulo=" "/><quebralinha />
+                <parametro altura="4" alinhamento="D" largura="120" nome="cidade"/>
+                <parametro altura="4" nome="hoje" mascara="dataextenso"/><quebralinha />
+                <etiqueta altura="15" titulo=" "/><quebralinha />
+                <etiqueta altura="5" largura="70" alinhamento="D" titulo="Recebido em: "/>
+                <etiqueta altura="5" largura="70" alinhamento="C" titulo="______/______/______" borda="B" />
+                <quebralinha />
+                <etiqueta altura="20" titulo=" "/><quebralinha />
+                <etiqueta altura="5" largura="70" titulo=" "/>
+                <etiqueta altura="5" largura="70" alinhamento="C" titulo="Assinatura" borda="T"/>
+            </fonte>
+        </grupo>
+    </corpo>
+</relatorio>

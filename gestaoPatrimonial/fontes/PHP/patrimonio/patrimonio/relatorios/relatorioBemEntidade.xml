@@ -1,0 +1,81 @@
+<!--
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+-->
+<?xml version='1.0'?>
+<!DOCTYPE relatorio SYSTEM "/urbem.dtd">
+<!--
+Casos de uso: uc-03.01.20
+
+Todas as informacoes de tamanhos sao expressas em milimetros (mm)
+Propriedades ************************************************
+formato       = "a4" pode ser: a3, a4, a5, letter, legal
+disposicao    = "L"  pode ser: L=Paisagem ou P=Retrato
+autor         = Nome do autor do relatorio
+modulo        = Modulo do URBEM
+titulo        = Titulo do Relatorio
+subtitulo     = Subtitulo do Relatorio
+assunto       = Descricao do relatorio
+palavrasChave = Palavras de facil localizacao do relatorio
+sql           = Select de pesquisa dos dados
+Margens *****************************************************
+margemSup     = Margem Superior
+margemDir     = Margem Direita
+margemEsq     = Margem Esquerda
+-->
+<relatorio>
+    <propriedades
+        formato       = "a4"
+        disposicao    = "L"
+        autor         = "Vandre Miguel Ramos"
+        modulo        = "Patrimonio"
+        titulo        = "Relatorio de bens por entidade"
+        assunto       = "Relatorio de bens por entidade"
+        palavrasChave = "Bens Entidade"
+        >
+        <margens
+            margemSup = "10"
+            margemDir = "10"
+            margemEsq = "10"/>
+    </propriedades>
+
+    <corpo>
+        <grupo nome="principal">
+            <cabecalho>
+                <etiqueta altura="5" largura="25" titulo="Classificacao" borda="1" cordefundo="220,220,220" />
+                <etiqueta altura="5" largura="20" titulo="Codigo" borda="1" cordefundo="220,220,220" />
+                <etiqueta altura="5" largura="127" titulo="Descricao" borda="1" cordefundo="220,220,220" />
+		<etiqueta altura="5" largura="105" titulo="Localizacao" borda="1" cordefundo="220,220,220" />
+                <quebralinha />
+            </cabecalho>
+            <detalhe
+            sql = "">
+                <campo altura="5" largura="25" nome="classificacao" />
+                <campo altura="5" largura="20" nome="codigo"/>
+                <campo altura="5" largura="127" nome="descricao"/>
+                <campo altura="5" largura="105" nome="local"/>
+       		<quebralinha />
+            </detalhe>
+        </grupo>
+    </corpo>
+</relatorio>

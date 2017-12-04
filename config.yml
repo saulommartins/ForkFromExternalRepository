@@ -1,0 +1,13 @@
+urbem:
+  connection:
+    database: urbem
+    host:     localhost
+    port:     2345
+    username: urbem
+    password: j31t0urbem
+  env: 
+    type: prod
+  birt:
+    port: 8080
+    port_ssl: 8443
+    host: 

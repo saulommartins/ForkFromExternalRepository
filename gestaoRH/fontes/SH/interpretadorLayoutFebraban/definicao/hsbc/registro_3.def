@@ -1,0 +1,28 @@
+Cód. Banco Comp.:1:3
+Lote de Serviço:4:4
+Reg. Detalhe do Lote:8:1
+Nr. Seq. Reg. Lote:9:5
+Cód. Seg. Reg. Lote:14:1
+Tipo de Movimento:15:1
+Cód. Instrução para Movimento:16:2
+Cód. Câmara Comp.:18:3
+Cód. Bco. Favorecido:21:3
+Ag. Conta Favorecido:24:5
+Brancos:29:1
+Nr. Conta Corrente:30:12
+Dig. Verif. da Conta:42:1
+Dig. Verif. Da Ag. Conta:43:1
+Nome do Favorecido:44:30
+Nr. Docto. Atribuído:74:16
+Brancos:90:4
+Data Lcto. Crédito:94:8
+Tipo da Moeda:102:3
+Brancos:105:17
+Valor para Crédito:122:13
+Emissão Individual:135:1
+Pagador Efetivo:136:30
+Brancos:166:12
+Outras Informações:178:40
+Brancos:218:12
+Aviso ao favorecido:230:1
+Brancos:231:10

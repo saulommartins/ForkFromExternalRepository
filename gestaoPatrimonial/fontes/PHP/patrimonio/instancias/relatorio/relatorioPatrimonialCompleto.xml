@@ -1,0 +1,126 @@
+<!--
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+-->
+<?xml version='1.0'?>
+<!DOCTYPE relatorio SYSTEM "/urbem.dtd">
+<!--
+Casos de uso: uc-03.01.09
+
+Todas as informações de tamanhos são expressas em milímetros (mm)
+Propriedades ************************************************
+formato       = "a4" pode ser: a3, a4, a5, letter, legal
+disposicao    = "L"  pode ser: L=Paisagem ou P=Retrato
+autor         = Nome do autor do relatório
+modulo        = Módulo do URBEM
+titulo        = Título do Relatório
+subtitulo     = Subtítulo do Relatório
+assunto       = Descrição do relatório
+palavrasChave = Palavras de fácil localização do relatório
+sql           = Select de pesquisa dos dados
+Margens *****************************************************
+margemSup     = Margem Superior
+margemDir     = Margem Direita
+margemEsq     = Margem Esquerda
+
+-->
+<relatorio>
+    <propriedades
+        formato       = "a4"
+        disposicao    = "L"
+        autor         = "Ricardo Lopes"
+        modulo        = "Patrimônio"
+        titulo        = "Relatório Patrimonial"
+        subtitulo     = "Completo"
+        assunto       = "Relatório Patrimonial"
+        palavrasChave = "patrimonial bens"
+        >
+        <margens
+            margemSup = "10"
+            margemDir = "10"
+            margemEsq = "10"/>
+    </propriedades>
+    <bancodedados />
+    <corpo>
+        <grupo nome="principal">
+            <cabecalho>
+                <quebralinha />
+            </cabecalho>
+            <detalhe chave="cod_bem" sql = "">
+                <etiqueta altura="1" titulo="  " borda="1" cordefundo="160,160,160" />
+                <quebralinha />
+                <quebralinha />
+                <etiqueta altura="4" largura ="40" titulo="Código do Bem:" borda="1" cordefundo="220,220,220" />
+                <campo altura="4" largura ="80" nome="cod_bem" />
+                <quebralinha />
+                <etiqueta altura="4" largura ="40" titulo="Número da Placa:" borda="1" cordefundo="220,220,220" />
+                <campo altura="4" largura ="80" nome="num_placa" />
+                <quebralinha />
+                <etiqueta altura="4" largura ="40" titulo="Descrição:" borda="1" cordefundo="220,220,220" />
+                <campo altura="4" nome="descricao" />
+                <quebralinha />
+                <etiqueta altura="4" largura ="40" titulo="Fornecedor:" borda="1" cordefundo="220,220,220" />
+                <campo altura="4" largura="80" nome="nom_cgm" />
+                <quebralinha />
+                <etiqueta altura="4" largura ="40" titulo="Data Aquisição:" borda="1" cordefundo="220,220,220" />
+                <campo altura="4" largura ="80" nome="dt_aquisicao" mascara="data" />
+                <quebralinha />
+                <etiqueta altura="4" largura ="40" titulo="Última Depreciação:" borda="1" cordefundo="220,220,220" />
+                <campo altura="4" largura ="80" nome="dt_depreciacao" mascara="data" />
+                <quebralinha />
+                <etiqueta altura="4" largura ="40" titulo="Vencimento Garantia:" borda="1" cordefundo="220,220,220" />
+                <campo altura="4" largura ="80" nome="dt_garantia" mascara="data" />
+                <quebralinha />
+                <etiqueta altura="4" largura ="40" titulo="Possui placa de identificação:" borda="1" cordefundo="220,220,220" />
+                <campo altura="4" largura="80" nome="identificacao" />
+                <quebralinha />
+                <etiqueta altura="4" largura ="40" titulo="Natureza:" borda="1" cordefundo="220,220,220" />
+                <campo altura="4" largura="80" nome="nom_natureza" />
+                <quebralinha />
+                <etiqueta altura="4" largura ="40" titulo="Grupo:" borda="1" cordefundo="220,220,220" />
+                <campo altura="4" largura="80" nome="nom_grupo" />
+                <quebralinha />
+                <etiqueta altura="4" largura ="40" titulo="Espécie:" borda="1" cordefundo="220,220,220" />
+                <campo altura="4" largura="80" nome="nom_especie" />
+                <quebralinha />
+                <etiqueta altura="4" largura ="40" titulo="Centro de Custo:" borda="1" cordefundo="220,220,220" />
+                <campo altura="4" largura="80" nome="nom_local" />
+                <quebralinha />
+                <etiqueta altura="4" largura ="40" titulo="Situação Atual:" borda="1" cordefundo="220,220,220" />
+                <campo altura="4" largura="80" nome="nom_situacao" />
+                <quebralinha />
+                <quebralinha />
+                <etiqueta altura="12" largura ="40" titulo="Detalhamento:" borda="1" cordefundo="220,220,220" />
+                <campotexto altura="6" nome="detalhamento" />
+                <quebralinha />
+                <quebralinha />
+                    <detalhe nivel="1" sql="">
+                        <campo altura="4" largura="40" nome="nom_atributo" borda="1" alinhamento="D" cordefundo="220,220,220" />
+                        <campo altura="4" largura="40" nome="valor_atributo" />
+                        <quebralinha />
+                    </detalhe>
+                <quebralinha />
+            </detalhe>
+        </grupo>
+    </corpo>
+</relatorio>

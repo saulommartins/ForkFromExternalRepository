@@ -1,0 +1,227 @@
+<!--
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+-->
+<?xml version='1.0'?>
+<!DOCTYPE relatorio SYSTEM "/urbem.dtd">
+<!--
+Todas as informações de tamanhos são expressas em milímetros (mm)
+Propriedades ************************************************
+formato       = "a4" pode ser: a3, a4, a5, letter, legal
+disposicao    = "L"  pode ser: L=Paisagem ou P=Retrato
+autor         = Nome do autor do relatório
+modulo        = Módulo do URBEM
+titulo        = Título do Relatório
+subtitulo     = Subtítulo do Relatório
+assunto       = Descrição do relatório
+palavrasChave = Palavras de fácil localização do relatório
+sql           = Select de pesquisa dos dados
+Margens *****************************************************
+margemSup     = Margem Superior
+margemDir     = Margem Direita
+margemEsq     = Margem Esquerda
+// Casos de uso: uc-01.06.99
+-->
+<relatorio>
+
+    <propriedades
+        formato       = "a4"
+        disposicao    = "P"
+        autor         = "Leonardo Tremper"
+        modulo        = "Protocolo"
+        titulo        = "Relatório de Despacho de Processo"
+        subtitulo     = "Relatório"
+        assunto       = "Relatório de Despacho"
+        palavrasChave = "relatorio despacho processo protocolo"
+        >
+
+        <margens
+            margemSup = "15"
+            margemDir = "10"
+            margemEsq = "10"/>
+
+    </propriedades>
+
+
+    <corpo>
+        <grupo nome="principal">
+
+         <!--<cabecalho>
+                <fonte altura="16" estilo="N" nome="times" cor="0,0,180">
+                <etiqueta altura="9" alinhamento="C" titulo="Protocolo de Processo" />
+                </fonte>
+                <quebralinha />
+         </cabecalho>-->
+
+         <detalhe sql = "SELECT u.cod_processo, u.cod_andamento, u.ano_exercicio, u.cod_processo||'-'||u.ano_exercicio as chave, d.timestamp, d.ano_exercicio,
+                        a.cod_orgao, a.cod_unidade, a.cod_setor, a.cod_departamento, ass.nom_assunto, cl.nom_classificacao, d.cod_usuario,
+                        d.descricao, p.numcgm, c.nom_cgm, c2.nom_cgm as nom_usuario, tp.nom_situacao,
+                        org.nom_orgao, uni.nom_unidade, dep.nom_departamento, set.nom_setor
+
+
+                        FROM !@VW_ULTIMO_ANDAMENTO@! as u, !@PROCESSO@! as p, !@ANDAMENTO@! as a, !@ASSUNTO@! as ass, !@CLASSIFICACAO@! as cl,
+                        !@DESPACHO@! as d, !@CGM@! as c, !@CGM@! as c2, !@SITUACAO_PROCESSO@! as tp,
+                        !@ORGAO@! as org, !@UNIDADE@! as uni, !@DEPARTAMENTO@! as dep, !@SETOR@! as set
+
+
+                        WHERE p.cod_processo = u.cod_processo
+                        AND p.ano_exercicio = u.ano_exercicio
+
+                        AND p.cod_situacao = tp.cod_situacao
+
+                        AND d.cod_usuario = c.numcgm
+                        AND p.numcgm = c2.numcgm
+
+                        AND a.cod_processo = u.cod_processo
+                        AND a.ano_exercicio = u.ano_exercicio
+                        AND a.cod_andamento = u.cod_andamento
+
+                        AND p.cod_processo = a.cod_processo
+                        AND p.ano_exercicio = a.ano_exercicio
+
+                        AND p.cod_tipo_processo = t.cod_tipo_processo
+
+                        AND a.cod_orgao = 0
+                        AND a.cod_unidade = 0
+                        AND a.cod_departamento = 0
+                        AND a.cod_setor = 0
+
+                        AND p.cod_situacao = 2
+                        AND p.ano_exercicio = 0
+
+                        AND u.ano_exercicio = d.ano_exercicio
+                        AND u.cod_andamento = d.cod_andamento
+                        AND u.cod_processo = d.cod_processo
+
+                        AND d.cod_andamento = 0
+                        AND d.cod_processo = 0
+                        AND d.ano_exercicio = 2003
+
+                        AND a.cod_orgao = org.cod_orgao
+                        AND a.cod_unidade = uni.cod_unidade
+                        AND a.cod_departamento = dep.cod_departamento
+                        AND a.cod_setor = set.cod_setor
+
+                        AND org.cod_orgao  = uni.cod_orgao
+                        AND org.cod_orgao  = dep.cod_orgao
+                        AND org.cod_orgao  = set.cod_orgao
+
+                        AND uni.cod_unidade  = dep.cod_unidade
+                        AND uni.cod_unidade  = set.cod_unidade
+
+                        AND dep.cod_departamento  = set.cod_departamento
+
+                        AND uni.cod_orgao  = set.cod_orgao
+                        AND dep.cod_unidade = set.cod_unidade
+                        AND dep.cod_orgao = uni.cod_orgao
+
+
+                        AND d.cod_usuario = 0" >
+
+             <fonte altura="13" estilo="N" nome="times">
+             <etiqueta altura="8" titulo="Relatório de Despacho"  cordefundo="220,220,220"/>
+             </fonte>
+             <quebralinha />
+             <etiqueta altura="3" titulo=""/>
+                <quebralinha />
+
+                <fonte altura="11" estilo="N" nome="times">
+                <etiqueta altura="6" titulo="Processo"  cordefundo="220,220,220"/>
+                </fonte>
+                <quebralinha />
+
+                <etiqueta titulo="Número do Processo: " altura="5" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="5" nome="chave" novalinha="1"/>
+
+
+                <etiqueta titulo="Classificação: " altura="5" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="5" nome="nom_classificacao" novalinha="1"/>
+
+                <etiqueta titulo="Assunto: " altura="5" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="5" nome="nom_assunto" novalinha="1"/>
+
+                <etiqueta titulo="Interessado: " altura="5" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="5" nome="nom_cgm" novalinha="1"/>
+
+                <fonte altura="11" estilo="N" nome="times">
+                <etiqueta altura="6" titulo="Situação Atual do Processo"  cordefundo="220,220,220"/>
+                </fonte>
+                <quebralinha />
+
+                <etiqueta titulo="Situação Atual: " altura="5" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="5" nome="nom_situacao" novalinha="1"/>
+
+                <etiqueta titulo="Órgão Atual: " altura="5" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="5" nome="nom_orgao" novalinha="1"/>
+
+                <etiqueta titulo="Unidade Atual: " altura="5" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="5" nome="nom_unidade" novalinha="1"/>
+
+                <etiqueta titulo="Departamento Atual: " altura="5" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="5" nome="nom_departamento" novalinha="1"/>
+
+                <etiqueta titulo="Setor Atual: " altura="5" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="5" nome="nom_setor" novalinha="1"/>
+
+                <etiqueta titulo="Ano de Exercício: " altura="5" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="5" nome="ano_exercicio" novalinha="1"/>
+
+                <fonte altura="11" estilo="N" nome="times">
+                <etiqueta altura="6" titulo="Despacho"  cordefundo="220,220,220"/>
+                </fonte>
+                <quebralinha />
+
+                <etiqueta titulo="Despachado por: " altura="5" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="5" nome="nom_usuario" novalinha="1"/>
+
+                <etiqueta titulo="Data de Despacho: " altura="5" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="5" nome="timestamp" mascara="datahora"/>
+                <quebralinha />
+
+                <fonte altura="11" estilo="N" nome="times">
+                <etiqueta altura="6" titulo="Descrição"  cordefundo="220,220,220"/>
+                </fonte>
+                <quebralinha />
+
+                <campotexto altura="5" nome="descricao" novalinha="1"/>
+                <quebralinha />
+
+
+            </detalhe>
+
+            <detalhe sql = "select c.valor||',' as nom_municipio,
+                                     current_date as hoje
+                             from !@CONFIGURACAO@! c
+                             where c.parametro = 'nom_municipio'" >
+
+                <fonte estilo="N">
+                    <campo altura="4" alinhamento="D" largura="120" nome="nom_municipio"/>
+                    <campo altura="4" nome="hoje" mascara="dataextenso"/><quebralinha />
+                </fonte>
+                <etiqueta altura="20" titulo=" "/><quebralinha />
+                <etiqueta altura="5" largura="70" titulo=" "/>
+                <etiqueta altura="5" largura="70" alinhamento="C" titulo="Responsável" borda="T"/>
+            </detalhe>
+        </grupo>
+    </corpo>
+</relatorio>

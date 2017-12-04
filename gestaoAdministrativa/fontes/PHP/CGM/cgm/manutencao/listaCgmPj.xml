@@ -1,0 +1,88 @@
+<!--
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+-->
+<?xml version='1.0'?>
+<!DOCTYPE relatorio SYSTEM "/urbem.dtd">
+<!--
+Todas as informações de tamanhos são expressas em milímetros (mm)
+Propriedades ************************************************
+formato       = "a4" pode ser: a3, a4, a5, letter, legal
+disposicao    = "L"  pode ser: L=Paisagem ou P=Retrato
+autor         = Nome do autor do relatório
+modulo        = Módulo do URBEM
+titulo        = Título do Relatório
+subtitulo     = Subtítulo do Relatório
+assunto       = Descrição do relatório
+palavrasChave = Palavras de fácil localização do relatório
+sql           = Select de pesquisa dos dados
+Margens *****************************************************
+margemSup     = Margem Superior
+margemDir     = Margem Direita
+margemEsq     = Margem Esquerda
+// Casos de uso: uc-01.02.92, uc-01.02.93
+-->
+<relatorio>
+    <propriedades
+        formato       = "a4"
+        disposicao    = "P"
+        autor         = "Jorge Ribarr"
+        modulo        = "CGM"
+        titulo        = "Lista de CGM"
+        subtitulo     = "Pessoa Jurídica"
+        assunto       = "Relatório de CGM"
+        palavrasChave = "CGM"
+        >
+        <margens
+            margemSup = "15"
+            margemDir = "10"
+            margemEsq = "10"/>
+    </propriedades>
+    <bancodedados
+        sql = "select c.numcgm, pj.cnpj, c.nom_cgm, c.cod_responsavel, r.nom_cgm as nom_resp,
+                      c.dt_cadastro
+               from !@CGM@! as c, !@CGM_PESSOA_JURIDICA@! as pj, !@CGM@! as r
+               where pj.numcgm = c.numcgm and
+                     r.numcgm  = c.cod_responsavel
+               order by c.numcgm" />
+    <corpo>
+        <grupo nome="principal">
+            <cabecalho>
+                <etiqueta altura="5" largura="40" titulo="CPF" borda="1" cordefundo="220,220,220" />
+                <etiqueta altura="5" largura="20" titulo="Número" borda="1" cordefundo="220,220,220" />
+                <etiqueta altura="5" largura="60" titulo="Razão Social" borda="1" cordefundo="220,220,220" />
+                <etiqueta altura="5" largura="40" titulo="Responsável" borda="1" cordefundo="220,220,220" />
+                <etiqueta altura="5" titulo="Data" borda="1" cordefundo="220,220,220" />
+                <quebralinha />
+            </cabecalho>
+            <detalhe>
+                <campo altura="5" largura="40" nome="cnpj" mascara="cnpj"/>
+                <campo altura="5" largura="20" nome="numcgm" />
+                <campo altura="5" largura="60" nome="nom_cgm" />
+                <campo altura="5" largura="40" nome="nom_resp" />
+                <campo altura="5" largura="50" nome="dt_cadastro" mascara="data"/>
+                <quebralinha />
+            </detalhe>
+        </grupo>
+    </corpo>
+</relatorio>

@@ -1,0 +1,258 @@
+<?php
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+?>
+<?php
+/**
+    * Lista
+    * Data de Criação: 09/11/2005
+
+    * @author Analista: Vandré Miguel Ramos
+    * @author Desenvolvedor: Diego Lemos de Souza
+
+    * @ignore
+
+    $Id: LSManterRegistroEvento.php 66393 2016-08-23 18:52:42Z michel $
+
+    * Casos de uso: uc-04.05.07
+*/
+
+include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
+include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
+include_once CAM_GRH_FOL_NEGOCIO."RFolhaPagamentoPeriodoContratoServidor.class.php";
+include_once CAM_GRH_FOL_NEGOCIO."RFolhaPagamentoPeriodoMovimentacao.class.php";
+
+$stLink  = "&nomForm=".$_REQUEST["nomForm"];
+$stLink .= "&campoNom=".$_REQUEST["campoNom"];
+$stLink .= "&campoNum=".$_REQUEST["campoNum"];
+$stLink .= "&boEventoSistema=".$_REQUEST['boEventoSistema'];
+$stLink .= "&boEventoBase=".$_REQUEST['boEventoBase'];
+
+//Define o nome dos arquivos PHP
+$stPrograma = "ManterRegistroEvento";
+$pgFilt = "FL".$stPrograma.".php?".Sessao::getId().$stLink;
+$pgList = "LS".$stPrograma.".php?".Sessao::getId();
+$pgForm = "FM".$stPrograma.".php?".Sessao::getId();
+$pgProc = "PR".$stPrograma.".php?".Sessao::getId();
+$pgOcul = "OC".$stPrograma.".php?".Sessao::getId();
+$pgJS   = "JS".$stPrograma.".js";
+
+$stFncJavaScript .= " function insereEvento(cod_evento,num,nom,texto) {                     \n";
+$stFncJavaScript .= " var sNum;                                                             \n";
+$stFncJavaScript .= " var sNom;                                                             \n";
+$stFncJavaScript .= " var sTexto;                                                           \n";
+$stFncJavaScript .= " sNum = num;                                                           \n";
+$stFncJavaScript .= " sNom = nom;                                                           \n";
+$stFncJavaScript .= " sTexto = texto;                                                       \n";
+$stFncJavaScript .= " d = window.opener.parent.frames['telaPrincipal'].document ;           \n";
+$stFncJavaScript .= " d.getElementById('".$_REQUEST["campoNom"]."').innerHTML = sNom;       \n";
+$stFncJavaScript .= " d.".$_REQUEST["nomForm"].".Hdn".$_REQUEST["campoNum"].".value = sNom; \n";
+if ($_REQUEST['stNatureza'] != 'B') {
+    $stFncJavaScript .= " d.getElementById('stTextoComplementar').innerHTML = sTexto;       \n";
+}
+$stFncJavaScript .= " d.".$_REQUEST["nomForm"].".".$_REQUEST["campoNum"].".value = sNum;    \n";
+$stFncJavaScript .= " d.".$_REQUEST["nomForm"].".".$_REQUEST["campoNum"].".focus();         \n";
+if ($_REQUEST['stNatureza'] != 'B') {
+    $stFncJavaScript .= " d.".$_REQUEST["nomForm"].".hdnTextoComplementar.value = sTexto;   \n";
+}
+$inNumAba = Sessao::read('numAba');
+switch ($inNumAba) {
+    case 1:
+        $stFncJavaScript .= "d.links['id_layer_2'].href = \"javascript:buscaValor('alertaAviso');\"; \n";
+        $stFncJavaScript .= "d.links['id_layer_3'].href = \"javascript:buscaValor('alertaAviso');\"; \n";
+        $stFncJavaScript .= "d.links['id_layer_4'].href = \"javascript:buscaValor('alertaAviso');\"; \n";
+    break;
+    case 2:
+        $stFncJavaScript .= "d.links['id_layer_1'].href = \"javascript:buscaValor('alertaAviso');\"; \n";
+        $stFncJavaScript .= "d.links['id_layer_3'].href = \"javascript:buscaValor('alertaAviso');\"; \n";
+        $stFncJavaScript .= "d.links['id_layer_4'].href = \"javascript:buscaValor('alertaAviso');\"; \n";
+    break;
+    case 3:
+        $stFncJavaScript .= "d.links['id_layer_1'].href = \"javascript:buscaValor('alertaAviso');\"; \n";
+        $stFncJavaScript .= "d.links['id_layer_2'].href = \"javascript:buscaValor('alertaAviso');\"; \n";
+        $stFncJavaScript .= "d.links['id_layer_4'].href = \"javascript:buscaValor('alertaAviso');\"; \n";
+    break;
+}
+
+if( $_REQUEST['boEventoBase'] == 'true' ){
+    $arAbaNome = Sessao::read('arAbaNome');
+    $stNomeAba = $arAbaNome[Sessao::read('inAba')];
+
+    $stFncJavaScript .= "if(d.getElementById('btnIncluirEventoBase".$stNomeAba."')){                 \n";
+    $stFncJavaScript .= "   d.getElementById('btnIncluirEventoBase".$stNomeAba."').disabled = false; \n";
+    $stFncJavaScript .= "}                                                                           \n";
+}
+
+$stFncJavaScript .= " window.close(); \n";
+$stFncJavaScript .= " }               \n";
+
+include_once($pgJS);
+
+$stCaminho = CAM_GRH_FOL_INSTANCIAS."movimentacaoFinanceira/";
+$rsLista = new RecordSet;
+$obRFolhaPagamentoPeriodoContratoServidor = new RFolhaPagamentoPeriodoContratoServidor( new RFolhaPagamentoPeriodoMovimentacao );
+$obRFolhaPagamentoPeriodoContratoServidor->addRFolhaPagamentoRegistroEvento();
+$obRFolhaPagamentoPeriodoContratoServidor->roRFolhaPagamentoRegistroEvento->obRFolhaPagamentoEvento->setNatureza( $_REQUEST['stNatureza'] );
+$obRFolhaPagamentoPeriodoContratoServidor->roRFolhaPagamentoRegistroEvento->obRFolhaPagamentoEvento->setCodigo( $_REQUEST['inCodEvento'] );
+$obRFolhaPagamentoPeriodoContratoServidor->roRFolhaPagamentoRegistroEvento->obRFolhaPagamentoEvento->setDescricao( $_REQUEST['stDescricao'] );
+switch (Sessao::read('numAba')) {
+    case 1:
+        $stTipo = 'F';
+    break;
+    case 2:
+        $stTipo = '';
+    break;
+    case 3:
+        $stTipo = 'V';
+    break;
+}
+$obRFolhaPagamentoPeriodoContratoServidor->roRFolhaPagamentoRegistroEvento->obRFolhaPagamentoEvento->setTipo($stTipo);
+if ($_POST['boEventoSistema'] == "true") {
+    $stEventoSistema = "true";
+} else {
+    $stEventoSistema = "false";
+}
+$obRFolhaPagamentoPeriodoContratoServidor->roRFolhaPagamentoRegistroEvento->obRFolhaPagamentoEvento->setEventoSistema( $stEventoSistema );
+$obRFolhaPagamentoPeriodoContratoServidor->roRFolhaPagamentoRegistroEvento->obRFolhaPagamentoEvento->listarEvento( $rsLista );
+$rsLista->addFormatacao('valor_quantidade','NUMERIC_BR');
+$rsLista->addFormatacao('unidade_quantitativa','NUMERIC_BR');
+$rsLista->addFormatacao('observacao','N_TO_BR');
+$obLista = new Lista;
+$obLista->setRecordSet          ( $rsLista );
+$obLista->setTitulo             ("Eventos Cadastrados");
+
+$obLista->addCabecalho();
+$obLista->ultimoCabecalho->addConteudo("&nbsp;");
+$obLista->ultimoCabecalho->setWidth( 3 );
+$obLista->commitCabecalho();
+
+$obLista->addCabecalho();
+$obLista->ultimoCabecalho->addConteudo( "Código" );
+$obLista->ultimoCabecalho->setWidth( 10 );
+$obLista->commitCabecalho();
+
+$obLista->addCabecalho();
+$obLista->ultimoCabecalho->addConteudo( "Evento" );
+$obLista->ultimoCabecalho->setWidth( 25 );
+$obLista->commitCabecalho();
+
+$obLista->addCabecalho();
+$obLista->ultimoCabecalho->addConteudo( "Valor" );
+$obLista->ultimoCabecalho->setWidth( 15 );
+$obLista->commitCabecalho();
+
+$obLista->addCabecalho();
+$obLista->ultimoCabecalho->addConteudo( "Quantidade" );
+$obLista->ultimoCabecalho->setWidth( 15 );
+$obLista->commitCabecalho();
+
+$obLista->addCabecalho();
+$obLista->ultimoCabecalho->addConteudo( "Tipo" );
+$obLista->ultimoCabecalho->setWidth( 3 );
+$obLista->commitCabecalho();
+
+$obLista->addCabecalho();
+$obLista->ultimoCabecalho->addConteudo( "Proventos/Descontos" );
+$obLista->ultimoCabecalho->setWidth( 20 );
+$obLista->commitCabecalho();
+
+$obLista->addCabecalho();
+$obLista->ultimoCabecalho->addConteudo( "Texto Complementar" );
+$obLista->ultimoCabecalho->setWidth( 20 );
+$obLista->commitCabecalho();
+
+$obLista->addCabecalho();
+$obLista->ultimoCabecalho->addConteudo( "Ação" );
+$obLista->ultimoCabecalho->setWidth( 3 );
+$obLista->commitCabecalho();
+
+$obLista->addDado();
+$obLista->ultimoDado->setAlinhamento("CENTRO");
+$obLista->ultimoDado->setCampo( "codigo" );
+$obLista->commitDado();
+
+$obLista->addDado();
+$obLista->ultimoDado->setAlinhamento("ESQUERDA");
+$obLista->ultimoDado->setCampo( "descricao" );
+$obLista->commitDado();
+
+$obLista->addDado();
+$obLista->ultimoDado->setAlinhamento("DIREITA");
+$obLista->ultimoDado->setCampo( "valor_quantidade" );
+$obLista->commitDado();
+
+$obLista->addDado();
+$obLista->ultimoDado->setAlinhamento("DIREITA");
+$obLista->ultimoDado->setCampo( "unidade_quantitativa" );
+$obLista->commitDado();
+
+$obLista->addDado();
+$obLista->ultimoDado->setAlinhamento("ESQUERDA");
+$obLista->ultimoDado->setCampo( "tipo" );
+$obLista->commitDado();
+
+$obLista->addDado();
+$obLista->ultimoDado->setAlinhamento("ESQUERDA");
+$obLista->ultimoDado->setCampo( "proventos_descontos" );
+$obLista->commitDado();
+
+$obLista->addDado();
+$obLista->ultimoDado->setAlinhamento("ESQUERDA");
+$obLista->ultimoDado->setCampo( "observacao" );
+$obLista->commitDado();
+
+$obLista->addAcao();
+$obLista->ultimaAcao->setAcao( "selecionar" );
+$obLista->ultimaAcao->setFuncao( true );
+$obLista->ultimaAcao->setLink( "JavaScript:insereEvento();" );
+$obLista->ultimaAcao->addCampo( "1"   , "cod_evento" );
+$obLista->ultimaAcao->addCampo( "2"   , "codigo" );
+$obLista->ultimaAcao->addCampo( "3"   , "descricao");
+$obLista->ultimaAcao->addCampo( "4"   , "observacao");
+$obLista->ultimaAcao->addCampo( "5"   , "tipo");
+$obLista->ultimaAcao->addCampo( "6"   , "fixado");
+$obLista->ultimaAcao->addCampo( "7"   , "valor_quantidade");
+$obLista->ultimaAcao->addCampo( "8"   , "limite_calculo");
+$obLista->ultimaAcao->addCampo( "9"   , "proventos_descontos");
+$obLista->commitAcao();
+
+$obLista->show();
+
+$obFormulario = new Formulario;
+
+$obBtnCancelar = new Button;
+$obBtnCancelar->setName                 ( 'cancelar'                                        );
+$obBtnCancelar->setValue                ( 'Cancelar'                                        );
+$obBtnCancelar->obEvento->setOnClick    ( "window.close();"                                 );
+
+$obBtnFiltro = new Button;
+$obBtnFiltro->setName                   ( 'filtro'                                          );
+$obBtnFiltro->setValue                  ( 'Filtro'                                          );
+$obBtnFiltro->obEvento->setOnClick      ( "Cancelar('".$pgFilt."','telaPrincipal');"        );
+
+$obFormulario->defineBarra              ( array( $obBtnCancelar,$obBtnFiltro ) , '', ''     );
+$obFormulario->obJavaScript->addFuncao  ( $stFncJavaScript                                  );
+$obFormulario->show();
+
+include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/rodape.inc.php';
+?>

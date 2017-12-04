@@ -1,0 +1,360 @@
+A1801033              Prefeitura Municipal104Caixa Economica Fede2017112700279404FOLHA PAGAMENTO                                                      
+E1                        1060037000034966  2017113000000000029969503Adriana Aparecida de Azevedo Freitas                                            2
+E424                      1060037000035792  2017113000000000012930603Adriana Cristina Soares                                                         2
+E425                      1060013000500609  2017113000000000012930603Adriana da Silva Lino                                                           2
+E182                      1060037000038309  2017113000000000013279103Adriane Maria das Silva Soares                                                  2
+E3                        1060037000034982  2017113000000000019827503Alan Tales de Oliveira Silva                                                    2
+E183                      1060037000057451  2017113000000000013279103Alcimar Cristian dos Santos Santana                                             2
+E184                      1060023000005141  2017113000000000019062303Alessandra Aparecida Delfino Ferreira                                           2
+E185                      1060037000067945  2017113000000000012966803Alessandra Fernandes de Oliveira                                                2
+E186                      1060037000054843  2017113000000000012307103Alexandra dos Santos Faria                                                      2
+E438                      1060037000712964  2017113000000000010519403Alexandre Henrique Alves dos Santos Batista e Campos                            2
+E397                      3583013000011895  2017113000000000039218203Alexandrino Raimundo Calheiros                                                  2
+E410                      1060037000026556  2017113000000000011666603Alice Fernanda Alves dos Santos                                                 2
+E356                      1060037000022372  2017113000000000021072703Aline Cardoso Araujo                                                            2
+E187                      1060037000054630  2017113000000000013006703Aline Carolina Ferreira                                                         2
+E4                        1060037000017522  2017113000000000014139503Aline Gontijo da Costa                                                          2
+E188                      1060013000641458  2017113000000000012946803Aline Márcia Azevedo Fujii                                                      2
+E5                        1060037000711100  2017113000000000034872303Alisson Soares de Mendonça                                                      2
+E6                        1060037000035008  2017113000000000035382703Alminda Célia de Oliveira                                                       2
+E189                      1060037000035814  2017113000000000013216603Almiria da Consolacao Chaves                                                    2
+E7                        1060037000037817  2017113000000000068884403Alzira Braga Rates Guimaraes                                                    2
+E434                      1060037000713120  2017113000000000014124203Amanda Rodrigues Gontijo                                                        2
+E8                        1060037000037825  2017113000000000032539203Amilson Adriano Campos                                                          2
+E191                      1060037000035830  2017113000000000012347603Ana Carolina Nicolau Silva                                                      2
+E9                        1060037000035016  2017113000000000014784803Ana Celita da Costa Couto                                                       2
+E192                      1060037000073066  2017113000000000010289603Ana Flávia Silva                                                                2
+E193                      1060037000017638  2017113000000000010182003Ana Paula da Silva Joanas                                                       2
+E194                      1060037000072493  2017113000000000021214903Ana Paula de Oliveira Nunes                                                     2
+E435                      1060037000048924  2017113000000000019064103Ana Paula dos Santos                                                            2
+E196                      1060037000022445  2017113000000000008893703Ana Paula dos Santos I                                                          2
+E11                       1060037000711186  2017113000000000014283003Ana Paula Rodrigues                                                             2
+E10                       1060037000035024  2017113000000000031185003Ana Paula Santos                                                                2
+E451                      1060037000067171  2017113000000000012525503Andrea Azevedo de Araújo                                                        2
+E198                      1060001000003865  2017113000000000056909103Andrea Karinni de Oliveira Souza                                                2
+E432                      1060037000058024  2017113000000000012013803Andreia Karla Oliveira Guatelli                                                 2
+E382                      1060001000123224  2017113000000000021735403Andreia Maria de Araújo                                                         2
+E392                      1060013000440967  2017113000000000013279103Andréia Regina Bento dos Santos                                                 2
+E415                      1060013000756964  2017113000000000013279103Andressa Silva Braga                                                            2
+E13                       1060037000037914  2017113000000000020621503Angela Maria de Aguiar                                                          2
+E199                      1060013000714242  2017113000000000053190303Angélica Lemos de Souza                                                         2
+E404                      1060013000733581  2017113000000000013279103Angelita Graziele Teófilo                                                       2
+E14                       1060001000061610  2017113000000000028905703Antônio de Padua Ribeiro                                                        2
+E200                      1060013000394736  2017113000000000014227703Antônio de Padua Ribeiro                                                        2
+E202                      1060037000054533  2017113000000000013279103Aparecida Gimpel de Souza                                                       2
+E15                       1060037000007926  2017113000000000037650203Aparecida Maria da Silva Rodrigues                                              2
+E421                      1060037000007926  2017113000000000031165403Aparecida Maria da Silva Rodrigues                                              2
+E203                      1060037000017727  2017113000000000013279103Auxilaine Cristina Costa                                                        2
+E205                      1060037000054584  2017113000000000056387703Avimar de Oliveira Gontijo                                                      2
+E16                       1060013000545653  2017113000000000012314603Brenda Costa Paz Ferreira                                                       2
+E461                      1060001000258081  2017113000000000005701403Breno Lucio da Silva Ferreira                                                   2
+E207                      1060037000033935  2017113000000000011788203Bruna Tatiane Oliveira                                                          2
+E406                      1060037000711453  2017113000000000041025103Bruno Jonatas Andalécio Nunes                                                   2
+E17                       1060037000067163  2017113000000000021720403Camilla Porto Camargos Vasconcelos                                              2
+E18                       1060037000035091  2017113000000000045908603Carlos Alberto Luiz Silva                                                       2
+E209                      1060001000224233  2017113000000000035782903Carolina Gontijo da Silva                                                       2
+E378                      1060037000711119  2017113000000000013279103Carolina Raquel Gontijo da Silva                                                2
+E450                      1060013000022812  2017113000000000013279103Cássia Aparecida de Mendonça                                                    2
+E19                       1060037000035113  2017113000000000009425103Celeste Aida da Silva                                                           2
+E210                      1060001000245800  2017113000000000020947803Cintia Cardoso de Araújo                                                        2
+E21                       1060037000037922  2017113000000000020414203Cirlaine Clarete Braga Justino                                                  2
+E212                      1060013000047068  2017113000000000009244303Cláudia Aparecida da Silva                                                      2
+E22                       1060037000017956  2017113000000000040825303Cláudia Helena dos Santos                                                       2
+E23                       1060037000035121  2017113000000000047622203Cláudia Mara Pessoa                                                             2
+E24                       1060037000035130  2017113000000000024904303Cláudia Márcia Costa Silva                                                      2
+E25                       1060001000108985  2017113000000000023831903Cláudio Fábio de Oliv Santos                                                    2
+E211                      1060037000060860  2017113000000000002865003Claudirene Anizia Gonçalves Coelho                                              2
+E213                      1060037000033137  2017113000000000012277203Cristiane de Sousa Silva Gonçalves                                              2
+E214                      1060037000035938  2017113000000000008869703Cristiane Flávia Felizardo Cardoso                                              2
+E430                      1060001000114403  2017113000000000011517303Cristiane Regina da Silva Moura                                                 2
+E380                      1060001000118387  2017113000000000019220903Cristina Alves da Silva                                                         2
+E215                      1382001000057907  2017113000000000044905803Cristina Antunes de Carvalho Campos                                             2
+E216                      1060037000035946  2017113000000000013279103Cristina Dayanne Teixeira                                                       2
+E27                       1060037000038325  2017113000000000034374703Cristina Rodrigues F L Amaral                                                   2
+E217                      1060001000129834  2017113000000000019064103Daiane Cristina Resende Coelho                                                  2
+E385                      1060037000711194  2017113000000000008479603Daiane Hellen Silva                                                             2
+E28                       1060037000035148  2017113000000000022132703Dalva Maria Pinto da Silva                                                      2
+E219                      1060037000068399  2017113000000000012735503Daniela Cardoso Campos Pinto                                                    2
+E442                      1060037000712913  2017113000000000012685803Daniela Silva de Oliveira                                                       2
+E220                      1060001000078377  2017113000000000022560003Daniela Vasconcelos Cardoso de Assunção                                         2
+E218                      1060037000075166  2017113000000000013177403Daniel Pereira Valentim                                                         2
+E29                       1060037000035156  2017113000000000004326903Danne Cristina da Silva                                                         2
+E221                      1060037000045186  2017113000000000012798003Darlene Teodora de Lima                                                         2
+E30                       1060037000035164  2017113000000000133154203Davi Padua Ribeiro                                                              2
+E223                      1060013000611494  2017113000000000039218203Dayana Mesquita Costa                                                           2
+E224                      1060037000067112  2017113000000000012556503Debora Oliveira de Carvalho                                                     2
+E31                       1060037000035172  2017113000000000073467903Decio Pessoa Cançado                                                            2
+E226                      1060037000007845  2017113000000000009256103Denis Correia da Costa                                                          2
+E32                       1060037000035180  2017113000000000040146703Denise Gontijo Queiroz Araújo Costa                                             2
+E227                      1060037000054991  2017113000000000040650903Deyseane da Silva Santos                                                        2
+E33                       1060037000035199  2017113000000000021849103Dilene Maria Cardoso                                                            2
+E34                       1060037000035202  2017113000000000022907903Dirce Helena da Silva                                                           2
+E35                       1060037000035210  2017113000000000041691103Domingos Sávio de Mesquita                                                      2
+E36                       1060037000035229  2017113000000000021432303Ederval José Azevedo                                                            2
+E462                      1060037000029571  2017113000000000014267403Edilce Mesquita de O Amaral                                                     2
+E228                      1060037000063753  2017113000000000021768203Edirce Moreira Silva Azevedo                                                    2
+E38                       1060037000018154  2017113000000000017713803Edna Aparecida Alves                                                            2
+E39                       1060037000035237  2017113000000000030639603Edna Aparecida Gontijo                                                          2
+E444                      1060037000713065  2017113000000000014186603Eduarda Nathany Vieira Machado Rosa                                             2
+E40                       1060037000027129  2017113000000000023109103Eduardo Ambrósio da Silva                                                       2
+E363                      1060037000710740  2017113000000000013279103Eduardo Lucas Vieira                                                            2
+E400                      1060013000797121  2017113000000000018289203Eliane Chagas                                                                   2
+E41                       1060037000035261  2017113000000000026968903Elica Aparecida da Silva Melo                                                   2
+E229                      2257013000375042  2017113000000000004426703Elida Elvira Rodrigues Couto                                                    2
+E42                       1060037000035270  2017113000000000028349003Elisabete Lúcia Silva                                                           2
+E230                      1060001000208289  2017113000000000012072503Elisabeth da Silva Dias                                                         2
+E426                      1060013000632149  2017113000000000010644403Elisângela de Jesus Soares                                                      2
+E231                      1060037000036071  2017113000000000012963503Elma Izabel dos Santos                                                          2
+E437                      1060013000548458  2017113000000000012692603Emerson Lino da Silva                                                           2
+E233                      1060013000753531  2017113000000000013035503Erenilda Maria dos Santos Couto                                                 2
+E45                       1060037000037965  2017113000000000032702003Ermeci Aparecida Silva                                                          2
+E234                      1060037000036098  2017113000000000011741303Fabiana Maria dos Santos                                                        2
+E46                       1060037000029741  2017113000000000029882003Fabiana Paula Ferreira                                                          2
+E235                      1060037000036101  2017113000000000012965103Fabiane Aparecida Nunes de Sousa                                                2
+E47                       1060001000107830  2017113000000000033677103Fabiola Barbosa Dias Borges                                                     2
+E375                      1060013000794866  2017113000000000012587803Fabíola Cristina Araújo                                                         2
+E48                       1060037000035318  2017113000000000007505003Fabiola Fernanda da Silva                                                       2
+E459                      1060037000713537  2017113000000000011206603Fabiula Aparecida Rates da Silva                                                2
+E237                      1060023000016712  2017113000000000008640703Fernanda Aparecida Rodrigues                                                    2
+E414                      1060037000710708  2017113000000000019495303Fernanda Braga Santana de Oliveira Arruda                                       2
+E49                       1060037000018430  2017113000000000024679403Fernanda Dornas Barbosa                                                         2
+E238                      1060037000036144  2017113000000000009038203Fernanda Rodrigues Pinto                                                        2
+E50                       1060037000036152  2017113000000000030926203Fernando Clemente do Couto Júnior                                               2
+E393                      1060037000054622  2017113000000000012463103Flávia Cristina dos Santos                                                      2
+E239                      1060037000018472  2017113000000000021072703Flávia Cristina Pinto                                                           2
+E51                       1060013000515290  2017113000000000019962803Flávia Kelly Domingas Silva                                                     2
+E52                       1060037000035326  2017113000000000012737203Flávia Luciano Costa                                                            2
+E419                      1060001000224462  2017113000000000023331803Flávio Henrique de Sousa Ribeiro                                                2
+E345                      1060037000037850  2017113000000000115467303Francisco Expedito Lara                                                         2
+E240                      1060037000056021  2017113000000000008906303Gabriele dos Santos Rodrigues                                                   2
+E54                       1060037000037981  2017113000000000020859203Geisiane de Azevedo Peres Sousa Resende                                         2
+E56                       1060037000035369  2017113000000000036638203Genésio de Melo                                                                 2
+E55                       1060037000035377  2017113000000000029988003Genivalda Alves de Sousa Costa                                                  2
+E241                      1060037000033102  2017113000000000013015103Geralda Kenia Dias                                                              2
+E57                       1060037000027366  2017113000000000013172703Geraldo Eustáquio Teixeira                                                      2
+E58                       1060037000029849  2017113000000000016947003Geraldo Magela Couto                                                            2
+E59                       1060037000035385  2017113000000000073532403Gianna Alves Sato                                                               2
+E60                       1060037000027528  2017113000000000015168003Gilberto Soares                                                                 2
+E62                       1060013000666310  2017113000000000031362303Gilmara Adriana Teixeira Melo                                                   2
+E242                      1060023000017093  2017113000000000013154203Gilzania Aparecida da Silva                                                     2
+E63                       1060037000035407  2017113000000000031993403Gilzani de Oliveira Santos                                                      2
+E243                      1060037000036209  2017113000000000012299203Gisele Aparecida da Silva                                                       2
+E244                      1060037000044821  2017113000000000013091703Gisele Aparecida Soares                                                         2
+E245                      1060037000075476  2017113000000000021214903Gisele Cristina Alves M Vasconcellos                                            2
+E246                      1060037000036217  2017113000000000012912603Gisele Tavares Saldanha Rodrigues                                               2
+E64                       1060037000018618  2017113000000000030224503Graciele Pereira Santos                                                         2
+E411                      1060037000711801  2017113000000000008275203Grazielle Dias da Silva Rodrigues                                               2
+E65                       1060037000037876  2017113000000000066460603Guilherme Antônio de Queiroz                                                    2
+E247                      1060037000036233  2017113000000000013134203Hayane Gabriele da Costa                                                        2
+E436                      1060037000014205  2017113000000000012692603Helaine Cristina Lopes de Sousa                                                 2
+E248                      1060013000547737  2017113000000000017667503Herica Cristina Fraga Silva                                                     2
+E360                      1060023000039216  2017113000000000015834003Hernando Aparecido da Silva                                                     2
+E66                       1060037000027595  2017113000000000026056803Horman José Gonçalves                                                           2
+E250                      1060037000018693  2017113000000000027378303Humberto Pinto de Paula e Silva                                                 2
+E67                       1060037000035415  2017113000000000029286003Ieda Angélica Dias Tavares                                                      2
+E251                      1060037000060940  2017113000000000015322903Igor Gabriel Pinto                                                              2
+E68                       1060037000035423  2017113000000000047623103Iolanda Márcia Modesto Silva                                                    2
+E69                       1060013000475124  2017113000000000018226603Iracema Rocha Soares Gracano                                                    2
+E253                      1060037000036241  2017113000000000016712003Irene Aparecida da Silva Costa                                                  2
+E398                      1060037000711275  2017113000000000009564103Isadora Krisley Soares Santos                                                   2
+E71                       1060037000029954  2017113000000000091839303Ivair dos Anjos Borges                                                          2
+E72                       1060037000035440  2017113000000000031256903Izabel Cristina da Silva                                                        2
+E422                      1060023000020639  2017113000000000019064103Janaina Aparecida Costa Teles                                                   2
+E73                       1060037000018758  2017113000000000010946903Janaina Ferreira da Silva                                                       2
+E255                      1060001000101328  2017113000000000036736503Jandira Dias Rodrigues                                                          2
+E256                      1060037000073163  2017113000000000056371003Jeane Cinara Silva                                                              2
+E258                      1060037000036705  2017113000000000006357303Jessica Carvalho Costa                                                          2
+E74                       1060037000035458  2017113000000000017667703Joana Darc da Silva                                                             2
+E265                      1060001000227690  2017113000000000056892303João Paulo da Silva Pinto                                                       2
+E259                      1060023000047022  2017113000000000013279103Joelma Aparecida do Amaral Alves                                                2
+E260                      1060013000524524  2017113000000000056909103Joene Fabiano Campos                                                            2
+E358                      1060037000710791  2017113000000000013279103Joesse Alves Gonçalves                                                          2
+E261                      1382001000016844  2017113000000000055144203Jonas Andre Correia                                                             2
+E262                      1060001000239206  2017113000000000056371003Jorgeana Martins da Silva                                                       2
+E455                      1060037000018812  2017113000000000053189403Jorge Luis Neto                                                                 2
+E76                       1060037000035490  2017113000000000008118403José Dilceu da Silva                                                            2
+E264                      1060037000036730  2017113000000000015322903José Joaquim de Oliveira Neto                                                   2
+E75                       1060037000043213  2017113000000000046299003Joselene Aparecida Pinto                                                        2
+E77                       1060037000018847  2017113000000000014110503José Maria Gois                                                                 2
+E78                       1060037000035512  2017113000000000018796403José Renato de Sousa Araújo                                                     2
+E79                       1060037000035520  2017113000000000026724903José Roberto Domingues Araújo                                                   2
+E263                      1060037000045291  2017113000000000013279103Josiane Pinheiro de Castro                                                      2
+E80                       1060037000007128  2017113000000000009057803Joyce Aparecida Inácio Rodrigues                                                2
+E439                      1060037000713049  2017113000000000012375103Joyce Cristina da Silva                                                         2
+E267                      1060037000058008  2017113000000000012066503Juliana Batista Chaves                                                          2
+E82                       1060037000038058  2017113000000000028745703Juliana de Souza Guimaraes                                                      2
+E268                      1060037000057516  2017113000000000035689003Juliana Gontijo Braga                                                           2
+E83                       1060001000231442  2017113000000000013796703Juliana Rodrigues de Souza Silva                                                2
+E457                      1060013000807267  2017113000000000012368403Juliana Silva Lopes Cançado                                                     2
+E269                      1060037000018901  2017113000000000013279103Juliane Angélica da Silva                                                       2
+E362                      1060013000729185  2017113000000000008352003Júlia Siqueira da Silva                                                         2
+E270                      1060037000036772  2017113000000000013279103Junia Aparecida Teixeira Cardoso Gomes                                          2
+E271                      1060001000209412  2017113000000000015322903Kamilla Amaral Lacerda Silva                                                    2
+E401                      1060013000657028  2017113000000000009242803Karina Helena Gontijo                                                           2
+E445                      1060037000713073  2017113000000000012375103Karine Stefane Silva Mendonça                                                   2
+E364                      1060037000076260  2017113000000000018750003Kátia Fernanda Ferreira Souza Pereira                                           2
+E427                      1060013000793398  2017113000000000012368403Kátia Ketelyn Ferreira                                                          2
+E84                       1060037000035547  2017113000000000024494703Katia Soares da Silva                                                           2
+E85                       1060037000027919  2017113000000000047727203Keila Cristiane Costa Teixeira                                                  2
+E86                       1060037000018952  2017113000000000025584503Keila Isabel da Silva                                                           2
+E88                       1060037000036799  2017113000000000015101003Kellen Silva Araújo                                                             2
+E89                       1060037000035555  2017113000000000035115103Kenya Ferreira de Queiroz                                                       2
+E90                       1060037000067937  2017113000000000019765103Ketlyn dos Santos Xavier                                                        2
+E343                      1060037000018960  2017113000000000028470003Kimenia Carla de Lacerda Rosado                                                 2
+E272                      1060037000059233  2017113000000000040224303Lais Kelly de Azevedo Barbosa                                                   2
+E273                      1060037000036829  2017113000000000009903303Laudelaine Tiago Matias                                                         2
+E402                      1060013000712401  2017113000000000013279103Lázara Erzeni Silva                                                             2
+E274                      1060037000036845  2017113000000000011098903Leia Bernadete de Lima                                                          2
+E275                      1060037000036853  2017113000000000013279103Leide de Fátima da Silva Santos                                                 2
+E92                       1060037000035571  2017113000000000015758803Leiria Soares dos Santos                                                        2
+E367                      1060037000042772  2017113000000000008062903Lenimeire Maria Pereira                                                         2
+E277                      1060037000036870  2017113000000000013279103Lidiane de Cássia Euclides Silva                                                2
+E278                      1060037000036896  2017113000000000012233303Liliam Kely Gontijo                                                             2
+E281                      1060013000517692  2017113000000000013279103Liliana Cristina Bento                                                          2
+E279                      1060001000206529  2017113000000000056371003Lilian Arruda da Silva                                                          2
+E93                       1060037000019100  2017113000000000070130003Liliane Dias Souza Magalhães                                                    2
+E449                      2257001000255337  2017113000000000029456603Lívia Aparecida Alves Guimarães                                                 2
+E94                       1060037000019126  2017113000000000033399203Livio Lincoln Corgozinho                                                        2
+E283                      1060013000548539  2017113000000000013279103Lorena Paula da Costa Vidal                                                     2
+E416                      1060013000646174  2017113000000000056387703Lorena Tiradentes Gontijo                                                       2
+E284                      2743001000211439  2017113000000000056892303Luciana Antunes                                                                 2
+E285                      1060037000056056  2017113000000000013279103Lucicley Flávio Tavares Silva                                                   2
+E95                       1060001000267080  2017113000000000047020103Luiza Carla Silveira Cabral                                                     2
+E97                       1060037000058776  2017113000000000025883303Maina Silva Costa de Lellis                                                     2
+E286                      1060037000036977  2017113000000000010562303Marcelo César Rosa                                                              2
+E98                       1060037000038066  2017113000000000049646803Marcelo Correa Gontijo                                                          2
+E99                       1060037000019339  2017113000000000030651803Marcelo Silva de Carvalho                                                       2
+E305                      1060013000009700  2017113000000000044893603Márcia Aparecida do Couto Costa                                                 2
+E123                      1060037000062692  2017113000000000024710803Márcia Matilde do Couto Padua Ribeiro                                           2
+E100                      1060001000106702  2017113000000000034714003Marco Heleno Salgado                                                            2
+E287                      1060001000207584  2017113000000000013279103Marcos Antônio Cardoso de Araújo                                                2
+E288                      1060013000717993  2017113000000000013279103Marcus Vinícius Cunha Damasceno                                                 2
+E289                      1060037000037000  2017113000000000006046003Maria Aparecida de Souza Santos                                                 2
+E347                      1060037000064628  2017113000000000019062303Maria Aparecida Silva                                                           2
+E102                      1060037000019444  2017113000000000073585603Maria Carolina Palhares e Cordeiro                                              2
+E103                      1060037000019452  2017113000000000024067503Maria Célia da Silva                                                            2
+E104                      1060037000037027  2017113000000000019865103Maria da Conceição Nunes de Souza                                               2
+E292                      1060037000037892  2017113000000000056721703Mariadna Aparecida Rodrigues                                                    2
+E107                      1060037000037752  2017113000000000015955003Maria do Carmo de Souza                                                         2
+E348                      1060037000037060  2017113000000000012525503Maria Elaine Silva Marques                                                      2
+E108                      1060037000037760  2017113000000000060296703Maria Elizabete Araújo                                                          2
+E403                      1060001000134463  2017113000000000019064103Maria Elizabete da Silva                                                        2
+E109                      1060037000038104  2017113000000000025149403Maria Lúcia Alves P da Silva                                                    2
+E290                      1060037000037086  2017113000000000013279103Maria Marcineia de Morais                                                       2
+E417                      1060037000057389  2017113000000000044720303Mariana Tiradentes Silva                                                        2
+E110                      1060037000035679  2017113000000000044695203Maria Nazare Freitas Silva                                                      2
+E111                      1060013000523684  2017113000000000033020003Maria Pessoa                                                                    2
+E357                      1060037998722232  2017113000000000013279103Maria Raimunda dos Santos                                                       2
+E113                      1060037000035695  2017113000000000012756003Maria Rosa de Oliveira                                                          2
+E291                      1060037000019614  2017113000000000012525503Maria Vania dos Santos                                                          2
+E294                      1060013000770932  2017113000000000056387703Mariele Castro                                                                  2
+E114                      1060037000019622  2017113000000000071077103Marielli Costa de Meneses                                                       2
+E295                      1060037000060398  2017113000000000021072703Marilene Silva Santos                                                           2
+E296                      1060001000230845  2017113000000000013279103Marina Braga Silva                                                              2
+E446                      1060037000712794  2017113000000000014249103Marina Luisa dos Santos Silveira                                                2
+E116                      1060037000035717  2017113000000000063174303Marisa Elaine Couto Mendonça                                                    2
+E298                      1060001000232481  2017113000000000013279103Mary Lee Marques                                                                2
+E447                      1060001000203112  2017113000000000012375103Mateus Pires de Oliveira                                                        2
+E299                      1060037000049300  2017113000000000056371003Matheus Henrique Soares Couto                                                   2
+E300                      1060037000037116  2017113000000000012525503Matias José de Alexandre                                                        2
+E119                      1060037000035733  2017113000000000046453203Maura Ferreira Lopes Gontijo                                                    2
+E120                      1060037000019770  2017113000000000009574303Mauricia Geralda de Freitas Araújo                                              2
+E301                      1060037000007829  2017113000000000013279103Maurilene Barbosa Costa                                                         2
+E302                      1060013000635717  2017113000000000056387703Max Emiliano Mathias da Costa                                                   2
+E454                      1060013000692079  2017113000000000056387703Michele Acacio da Silva                                                         2
+E303                      1060037000057591  2017113000000000012926103Michele Cassiano Gontijo                                                        2
+E304                      1060001000118638  2017113000000000036101303Michele Silveira Cabral                                                         2
+E307                      1060013000460909  2017113000000000013279103Mônica Aparecida de Andrade Costa                                               2
+E122                      1060037000035750  2017113000000000034134703Murilo Machado Franco                                                           2
+E121                      1060037000035750  2017113000000000045446703Murilo Machado Franco                                                           2
+E448                      1060037000712905  2017113000000000010945503Mylene Melo Silva                                                               2
+E308                      1060001000205158  2017113000000000013279103Nara Janaina Borges de Oliveira                                                 2
+E309                      1060037000060380  2017113000000000040650903Nathalia Fraga Firmino                                                          2
+E124                      1060037000038139  2017113000000000072679903Neide Aparecida Braga Lopes                                                     2
+E420                      1060013000038077  2017113000000000019064103Neila Renata Oliveira Resende                                                   2
+E126                      1060037000037779  2017113000000000035146403Noemes Aparecida dos Santos                                                     2
+E312                      1060013000548520  2017113000000000013018703Osmar Correia da Costa Júnior                                                   2
+E127                      1060037000037787  2017113000000000015776103Osmar Libério Ferreira                                                          2
+E313                      1060037000037191  2017113000000000012765603Ozeni Maria de Melo                                                             2
+E366                      1060037000710724  2017113000000000019062303Patrícia Aparecida Braga Carvalho                                               2
+E314                      1060001000121205  2017113000000000009683503Patrícia Carla Freitas Souza                                                    2
+E315                      1060013000717772  2017113000000000010437903Patrícia Habib Ribeiro                                                          2
+E316                      1060037000037213  2017113000000000013279103Patrícia Lúcia Silva de Andrade                                                 2
+E371                      1060023000048266  2017113000000000012525503Patrícia Martins Torres                                                         2
+E317                      1060037000059683  2017113000000000009520703Paula Amanda de Mendonça Ferreira                                               2
+E318                      1060013000738680  2017113000000000014623503Paulo Roberto Trindade                                                          2
+E129                      1060037000036284  2017113000000000012226703Pedro Ivo Castro da Costa                                                       2
+E130                      1060037000026459  2017113000000000022590403Pedro José da Costa                                                             2
+E131                      1060037000066256  2017113000000000020064903Rafaela Pereira de Souza                                                        2
+E132                      1060037000036306  2017113000000000011317903Raquel Aparecida Pinto Soares                                                   2
+E133                      1060037000038295  2017113000000000035549603Regina Andrade Felisbino Gontijo                                                2
+E320                      1060013000531377  2017113000000000013279103Renata dos Santos Silva                                                         2
+E321                      1060037000044830  2017113000000000013279103Renata Maciel dos Santos Silva                                                  2
+E413                      1060037000043825  2017113000000000021237503Renata Paula Costa Sousa                                                        2
+E440                      1060037000713081  2017113000000000012685803Renata Soares Longuinho Assunção                                                2
+E322                      1060013000470360  2017113000000000012719003Roberta Cristina Gontijo Silva                                                  2
+E431                      1060037000713243  2017113000000000012930603Roberta Graciely da Silva Souza                                                 2
+E136                      1060037000038155  2017113000000000034204203Roberta Keila Cardoso Gontijo                                                   2
+E443                      1060037000037280  2017113000000000012685803Roberta Soares Fraga Pinto Gonçalves                                            2
+E137                      1060037000036322  2017113000000000191445803Rodrigo Rodrigues Borato                                                        2
+E142                      1060037000020019  2017113000000000011445803Rosangela Coelho de Assis Mota                                                  2
+E323                      1060023000037183  2017113000000000014570203Rosangela das Dores Ferreira L Santos                                           2
+E143                      1060037000020027  2017113000000000022092103Roselucia Rodrigues de Castro                                                   2
+E144                      1060037000038171  2017113000000000035208103Rosiane Jacinto Corgosinho                                                      2
+E145                      1060037000020060  2017113000000000012861003Rosimeire de Lima                                                               2
+E146                      1060001000107415  2017113000000000030941803Sandra Aparecida de Araújo Azevedo                                              2
+E354                      1060001000008336  2017113000000000007965403Sandra de Lacerda Branco                                                        2
+E324                      1060001000123747  2017113000000000019207303Sandra Maria de Azevedo Vargas                                                  2
+E325                      1060037000055211  2017113000000000056387703Saulo César Tavares Costa                                                       2
+E148                      1060037000038180  2017113000000000018807203Sebastiana Conceição Ap Pinto                                                   2
+E158                      1060037000031223  2017113000000000001979103Sérgio Domingues dos Santos                                                     2
+E159                      1060037000008205  2017113000000000030367403Sérgio Vitória Ferreira                                                         2
+E149                      1060037000032963  2017113000000000029564103Sheyla Rodrigues de Melo                                                        2
+E150                      1060037000020140  2017113000000000023804703Sildete Aparecida de Sousa Silva                                                2
+E365                      1060037000037370  2017113000000000019062303Silvane Aparecida de Souza Branco                                               2
+E151                      1060001000104050  2017113000000000065211803Silvania Aparecida do Couto e Silva                                             2
+E152                      1060037000020167  2017113000000000019416803Silverio Vinícius Ferreira da Costa                                             2
+E351                      1060037000074801  2017113000000000039218203Silvia Elisa Melo Lacerda                                                       2
+E153                      1060037000037396  2017113000000000040471803Simone Maria de Castro                                                          2
+E154                      1060037000036411  2017113000000000027835503Simonica Zulmira dos Santos                                                     2
+E328                      1060013000480918  2017113000000000013279103Solange Aparecida da Silva Melo                                                 2
+E155                      1060037000038198  2017113000000000031778103Solange Aparecida da Silva Sousa                                                2
+E156                      1060037000036420  2017113000000000011056603Solange Maria Bernardes dos Santos                                              2
+E160                      1060037000020256  2017113000000000024932803Sônia Maria da Cruz Noronha                                                     2
+E161                      1060037000036438  2017113000000000090692803Sônia Maria de Castro                                                           2
+E456                      1060013000711286  2017113000000000011828003Suellen Oliveira Silva                                                          2
+E157                      1060037000036446  2017113000000000023133203Suzana Maria Tavares                                                            2
+E458                      1060037000713430  2017113000000000019220903Talita Fidélis Amaral                                                           2
+E386                      1060037000056013  2017113000000000035569003Tamara Bicalho Cruz Oliveira                                                    2
+E331                      1060037000073031  2017113000000000013279103Tamara Moreira da Silva                                                         2
+E428                      1060037000712751  2017113000000000012930603Tatiane Aparecida de Paulo                                                      2
+E418                      1060013000629105  2017113000000000021072703Thaís Aracele Sousa Silva                                                       2
+E332                      1060013000664873  2017113000000000013185203Thais Cristina de Souza                                                         2
+E333                      1747013000361875  2017113000000000013279103THALITA SARAH GOMES                                                             2
+E164                      1060037000070555  2017113000000000011844603Thiago Gontijo Franco                                                           2
+E165                      1060037000031444  2017113000000000021338903Valdemir Lúcio de Oliveira                                                      2
+E166                      1060037000036454  2017113000000000024420803Valeria Conceição da Silva                                                      2
+E373                      1060001000209110  2017113000000000013279103Valeria de Lima Soares                                                          2
+E336                      1060001000228883  2017113000000000012692603Valeria Ferreira dos Santos                                                     2
+E407                      1060037000057168  2017113000000000015203203Valkiria Valdenes Xavier                                                        2
+E168                      1060037000036462  2017113000000000033188103Vanda Lúcia de Jesus                                                            2
+E169                      1060037000044740  2017113000000000024526203Vania Lúcia Costa                                                               2
+E339                      1060037000037477  2017113000000000012525503Vanilda Ana da Silva Mesquita                                                   2
+E170                      1060037000038201  2017113000000000028457903Vanilda Assunção Fernandes Soares                                               2
+E171                      1060037000036470  2017113000000000051722703Vantuil Antônio dos Santos                                                      2
+E172                      1060001000108845  2017113000000000016154403Vanuza de Freitas da Silva Cardoso                                              2
+E453                      1060037000066710  2017113000000000013550103Vinícius Pires Bernardes Teixeira                                               2
+E429                      1060013000518044  2017113000000000011206603Vivian Cláudia Marques                                                          2
+E173                      1060037000038210  2017113000000000023592003Viviane Cristina da Silva Coimbra                                               2
+E174                      1060037000036497  2017113000000000023530003Viviane Cristina de Assis                                                       2
+E175                      1060037000710309  2017113000000000000280003Viviane Teixeira Vilaça                                                         2
+E176                      1060037000009325  2017113000000000004823803Walter Xavier Cançado Júnior                                                    2
+E177                      1060037000036519  2017113000000000046271403Washington Luiz de Oliveira                                                     2
+E178                      1060037000020540  2017113000000000007454503Webert Israel das Chagas                                                        2
+E340                      1060037000056048  2017113000000000009053903Wellina Aparecida dos Santos                                                    2
+E179                      1060037000036527  2017113000000000144168703Wellington Rafael Alves                                                         2
+E394                      1060001000207576  2017113000000000019207303William Douglas Delgado Couto                                                   2
+E180                      1060037000710651  2017113000000000035114003Willian Roberto de Jesus                                                        2
+E341                      1060037000037507  2017113000000000018515703Wolney Ragi Curi                                                                2
+E342                      1060013000780563  2017113000000000039502603Zoziane Lopes Silva Paiva                                                       2
+Z0003600000000000000000000000000089467759                                                                                                             

@@ -1,0 +1,174 @@
+<style>
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+</style>
+/*
+Casos de uso: uc-01.01.00
+*/
+BODY {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   font-weight : bold;
+}
+
+TD {
+   font-family: Verdana, Arial, Helvetica, sans-serif; 
+   font-size : 11px;
+   font-weight : bold;
+   margin:0px;
+   border:0px;
+}
+
+.menutitlePenultimoNivel, a.menutitlePenultimoNivel {
+    background: -webkit-linear-gradient(#4a6491, #323c5f); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#4a6491, #323c5f); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#4a6491, #323c5f); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#4a6491, #323c5f); /* Standard syntax (must be last) */
+    /*background: url("../imagens/botao_menu_escuro.png") 0 0 no-repeat;*/
+    color: #ff9b0a;
+    /* display:block;*/
+    display: table-cell;
+    height: 31px;
+    margin:0px;
+    padding-left:10px;
+    text-decoration: none;
+    vertical-align:middle; 
+    width: 178px;  
+}
+
+.partebaixo{
+    background: url("../imagens/baixo_menu.png") 0 0 no-repeat !important;
+    display: block !important;
+    height: 30px !important;
+    width: 180px !important;
+}
+
+a,a:link, a:visited ,span, span{
+    display: table-cell;
+    margin:0px;
+    height: 31px;
+    padding-left:10px;
+    text-decoration:none;
+    vertical-align:middle; 
+    width: 178px;  
+}
+a:hover{
+    background:#85A5CC;
+    color: #FFFFFF;
+    padding-left:10px;
+}
+.bgout{
+    border: 1px outset #585858;
+    text-decoration:none;
+    background:#B4B6B4
+}
+
+.bgover{
+    text-decoration:none;
+    background:#FFDCA8;
+    border: 1px outset #FF8000
+}
+
+.bgtop{
+    border: 1px outset #585858;
+    text-decoration:none;
+    background:#6A696A;
+}
+
+.bgovervolta{
+    border: 1px outset #585858;
+    text-decoration:none;
+    background:#C4C2C4
+}
+
+.bgoutvolta{
+    background:#FFCC00;
+    border: 1px outset #FF8000;
+    text-decoration:none;
+}
+
+.menu{
+    background: #D0E4F2;
+    border-bottom: 1px solid #85A5CC;
+    color:#000000;
+    height: 30px;
+    margin-left:10px;
+    width: 178px; 
+	text-decoration: none;
+}
+
+.menutitle, a.menutitle {
+    margin:0px;
+    background: -webkit-linear-gradient(#4a6491, #323c5f); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#4a6491, #323c5f); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#4a6491, #323c5f); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#4a6491, #323c5f); /* Standard syntax (must be last) */
+
+    /*background: url("../imagens/botao_menu_escuro.png") 0 0 no-repeat;*/
+    color:#FFFFFF;
+    display: table-cell;
+    height: 31px;
+    padding-left:10px;
+    text-decoration:none;
+    vertical-align:middle;  
+    width: 178px;  
+}
+
+a:hover.menutitle{
+    background: -webkit-linear-gradient(#323c5f, #4a6491); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#323c5f, #4a6491); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#323c5f, #4a6491); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#323c5f, #4a6491); /* Standard syntax (must be last) */
+
+    /*background: url("../imagens/botao_menu_escuro.png") 0 -31px no-repeat;*/
+    color:#fff;
+    display: table-cell;
+	padding-left:10px;
+    text-decoration: none;
+    
+    vertical-align:middle; 
+
+/**** Inline STYLE-tag style sheet ****/
+
+#fundo_carregando {
+	width: 99%; /*largura da imagem */
+	height: 99%;
+	/* As tres regras a seguir posicionam
+a imagem na tela */
+	position: absolute;
+	left: 5px;
+	top: 5px;
+}
+
+#texto_carregando {
+	position: absolute;
+	Top: 50px;
+	left: 50px;
+	font: bold 16px arial, sans-serif;
+	color: #000;
+	text-align: center;
+	padding: 5px 10px;
+	/* É na regra CSS para o background que está o FILTRO! */
+	/* O filtro é a imagem alpha_branca.gif */
+	background-color: #ccc;
+}

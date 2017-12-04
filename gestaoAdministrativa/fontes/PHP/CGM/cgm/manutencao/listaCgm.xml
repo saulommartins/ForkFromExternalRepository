@@ -1,0 +1,85 @@
+<!--
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+-->
+<?xml version='1.0'?>
+<!DOCTYPE relatorio SYSTEM "/urbem.dtd">
+<!--
+Todas as informações de tamanhos são expressas em milímetros (mm)
+Propriedades ************************************************
+formato       = "a4" pode ser: a3, a4, a5, letter, legal
+disposicao    = "L"  pode ser: L=Paisagem ou P=Retrato
+autor         = Nome do autor do relatório
+modulo        = Módulo do URBEM
+titulo        = Título do Relatório
+subtitulo     = Subtítulo do Relatório
+assunto       = Descrição do relatório
+palavrasChave = Palavras de fácil localização do relatório
+sql           = Select de pesquisa dos dados
+Margens *****************************************************
+margemSup     = Margem Superior
+margemDir     = Margem Direita
+margemEsq     = Margem Esquerda
+// Casos de uso: uc-01.02.92, uc-01.02.93
+-->
+<relatorio>
+    <propriedades
+        formato       = "a4"
+        disposicao    = "P"
+        autor         = "Jorge Ribarr"
+        modulo        = "CGM"
+        titulo        = "Relatório de CGM"
+        subtitulo     = ""
+        assunto       = "Relatório de CGM"
+        palavrasChave = "CGM"
+        >
+        <margens
+            margemSup = "15"
+            margemDir = "10"
+            margemEsq = "10"/>
+    </propriedades>
+    <bancodedados
+        sql = "select c.numcgm, c.nom_cgm, c.cod_responsavel, r.nom_cgm as nom_resp,
+                      c.dt_cadastro
+               from !@CGM@! as c, !@CGM@! as r
+               where r.numcgm  = c.cod_responsavel
+               order by c.numcgm" />
+    <corpo>
+        <grupo nome="principal">
+            <cabecalho>
+                <etiqueta altura="5" largura="20" titulo="CGM" borda="1" cordefundo="220,220,220" />
+                <etiqueta altura="5" largura="80" titulo="Nome / Razão Social" borda="1" cordefundo="220,220,220" />
+                <etiqueta altura="5" titulo="Data Inclusão" largura="30" borda="1" cordefundo="220,220,220" />
+                <etiqueta altura="5" titulo="Responsável" borda="1" cordefundo="220,220,220" />
+                <quebralinha />
+            </cabecalho>
+            <detalhe>
+                <campo altura="5" largura="20" nome="cgm" />
+                <campo altura="5" largura="80" nome="nome" />
+                <campo altura="5" largura="30" nome="dtcadastro"/>
+                <campo altura="5" nome="responsavel" />
+                <quebralinha />
+            </detalhe>
+        </grupo>
+    </corpo>
+</relatorio>

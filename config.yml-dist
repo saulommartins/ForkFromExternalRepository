@@ -1,0 +1,13 @@
+urbem:
+  connection:
+    database: urbem-mariana
+    host:     postgrehost
+    port:     5432
+    username: docker
+    password: docker
+  env:
+    type: prod
+  birt:
+    port: 8080
+    port_ssl: 8443
+    host:

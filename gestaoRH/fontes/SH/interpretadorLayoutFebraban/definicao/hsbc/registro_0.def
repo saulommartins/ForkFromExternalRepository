@@ -1,0 +1,26 @@
+Cód. Banco Compensação:1:3
+Lote de Serviço:4:4
+Reg. Header de Arq.:8:1
+Brancos:9:9
+Tipo Inscr. Empresa:18:1
+Nr. Inscr. Empresa:19:14
+Número do Contrato:33:6
+Brancos:39:14
+Agência da Conta:53:5
+Brancos:58:1
+Nr. Conta Corrente:59:12
+Díg. Verif. Conta:71:1
+Dig. Verif. Ag. Conta:72:1
+Nome da Empresa:73:30
+Nome do Banco:103:30
+Brancos:133:10
+Cód. Arquivo Remessa:143:1
+Data Geração Arquivo:144:8
+Hora Geração Arquivo:152:6
+Nr. Seq. Arquivo:158:6
+Nr. Versão Layout:164:3
+Dens. Grav. Arquivo:167:5
+Sigla do Aplicativo:172:3
+Identifica Ano 2000:175:3
+Para uso Interno:178:14
+Brancos:192:49

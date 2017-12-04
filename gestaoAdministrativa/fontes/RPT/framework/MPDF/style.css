@@ -1,0 +1,270 @@
+body {
+    font-family: Sans-serif;
+    font-size: 10px;
+}
+
+body table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+body table tr {
+    padding: 1mm;
+}
+
+body table tr th img {
+    width: 65px;
+    height: 90px;
+}
+
+body table thead tr th, body table tfoot tr td {
+    background-color: #c0c0c0;
+}
+
+body table tfoot tr td {
+    font-weight: bold;
+}
+
+/* Cabeçalhos */
+h1 {
+    font-size: 20px;
+}
+
+h2 {
+    font-size: 18px;
+}
+
+h3 {
+    font-size: 16px;
+}
+
+h4 {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+h5 {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+/* Estilo do Cabeçalho*/
+#table01 {
+    width:100%;
+    border: 0px;
+    border-bottom: 1px solid black;
+    }
+#table02 {
+    width:80mm;
+    }
+
+.th0 {
+    width:65px;
+    }
+.th2 {
+    width:90mm;
+    padding-left: 22;
+    padding-bottom:-1;
+    padding-right:-1;
+    }
+.th3 {
+    width:35mm;
+    }
+.th4 {
+    width:31mm;
+    }
+.th5 {
+    width:22mm;
+    }
+.thalign {
+    text-align:left;
+    vertical-align:top;
+    }
+
+/* Estilo do corpo */
+
+/* preenche a borda em todo os lados */
+.border {
+    border: 1px solid black;
+}
+/* preenche a borda no topo */
+.border_top {
+    border-top: 1px solid black;
+}
+/* preenche a borda na parte de baixo */
+.border_bottom {
+    border-bottom: 1px solid black;
+}
+/* preenche a borda na lateral direita */
+.border_right {
+    border-right: 1px solid black;
+}
+/* preenche a borda na lateral esqueda */
+.border_left {
+    border-left: 1px solid black;
+}
+/* sem borda */
+.border_none {
+    border: none;
+}
+
+/* Alinhamento de texto à esquerda */
+.text_align_left {
+    text-align: left;
+}
+/* Alinhamento de texto ao centro */
+.text_align_center {
+    text-align: center;
+}
+/* Alinhamento de texto à direita */
+.text_align_right {
+    text-align: right;
+}
+/* Alinhamento de texto justificado */
+.text_align_justify {
+    text-align: justify;
+}
+/* Alinhamento de texto no topo */
+.vertical_align_top {
+    vertical-align: top;
+}
+/* Alinhamento de texto em baixo */
+.vertical_align_bottom {
+    vertical-align: bottom;
+}
+/* Transforma o texto em negrito */
+.font_weight_bold {
+    font-weight: bold;
+}
+/* Transforma o texto em Italic */
+.font_style_italic {
+    font-style: italic;
+}
+/* coloca sublinhado no texto */
+.text_decoration_underline {
+    text-decoration: underline;
+}
+
+/* Preenche o fundo com a cor #c0c0c0*/
+.background_color_cinza_c0c0c0{
+    background-color: #c0c0c0;
+}
+
+/* Tabulação à esqueda de 2mm. Nivel 1.*/
+.tabulacao_nivel_1 {
+    padding-left: 2mm;
+}
+
+/* Tabulação à esqueda de 4mm. Nivel 2.*/
+.tabulacao_nivel_2 {
+    padding-left: 4mm;
+}
+
+/* Tabulação à esqueda de 6mm. Nivel 3.*/
+.tabulacao_nivel_3 {
+    padding-left: 6mm;
+}
+
+/* Tabulação à esqueda de 8mm. Nivel 4.*/
+.tabulacao_nivel_4 {
+    padding-left: 8mm;
+}
+
+/* Tabulação à esqueda de 10mm. Nivel 5.*/
+.tabulacao_nivel_5 {
+    padding-left: 10mm;
+}
+
+/* Tabulação à esqueda de 12mm. Nivel 6.*/
+.tabulacao_nivel_6 {
+    padding-left: 12mm;
+}
+
+/* Espaçamento entre linhas de 1.*/
+.cabecalho_geral {
+    padding-bottom: 2;
+    padding-top: 2;
+    margin-top: 20;
+    font-weight: bold;
+}
+
+/* Espaçamento entre linhas de 1mm. Nivel 1.*/
+.tr_nivel_1 {
+    padding-bottom: 1mm;
+    padding-top: 1mm;
+}
+
+/* Espaçamento entre linhas de 2mm. Nivel 2.*/
+.tr_nivel_2 {
+    padding-bottom: 2mm;
+    padding-top: 2mm;
+}
+
+/* Espaçamento entre linhas de 3mm. Nivel 3.*/
+.tr_nivel_3 {
+    padding-bottom: 3mm;
+    padding-top: 3mm;
+}
+
+/* Espaçamento entre linhas de 4mm. Nivel 4.*/
+.tr_nivel_4 {
+    padding-bottom: 4mm;
+    padding-top: 4mm;
+}
+
+/* Espaçamento entre linhas de 5mm. Nivel 5.*/
+.tr_nivel_5 {
+    padding-bottom: 5mm;
+    padding-top: 5mm;
+}
+
+/* Altera o tamanho da fonte para 4px*/
+.font_size_4 {
+    font-size: 4px;
+}
+/* Altera o tamanho da fonte para 5px*/
+.font_size_5 {
+    font-size: 5px;
+}
+/* Altera o tamanho da fonte para 6px*/
+.font_size_6 {
+    font-size: 6px;
+}
+/* Altera o tamanho da fonte para 7px*/
+.font_size_7 {
+    font-size: 7px;
+}
+/* Altera o tamanho da fonte para 8px*/
+.font_size_8 {
+    font-size: 8px;
+}
+/* Altera o tamanho da fonte para 9px*/
+.font_size_9 {
+    font-size: 9px;
+}
+/* Altera o tamanho da fonte para 10px*/
+.font_size_10 {
+    font-size: 10px;
+}
+/* Altera o tamanho da fonte para 11px*/
+.font_size_11 {
+    font-size: 11px;
+}
+/* Altera o tamanho da fonte para 12px*/
+.font_size_12 {
+    font-size: 12px;
+}
+
+/* Estilo do Rodapé */
+body footer {
+    width: 100%;
+    border-top: 1px solid black;
+    background-color: #FFFFFF;
+    font-weight: normal;
+}
+body table tfoot tr td {
+    /*width: 100%;*/
+    border-top: 1px solid black;
+    background-color: #FFFFFF;
+    font-weight: normal;
+}

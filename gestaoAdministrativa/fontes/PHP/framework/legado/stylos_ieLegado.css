@@ -1,0 +1,624 @@
+<style>
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+</style>
+// Casos de uso: uc-01.01.00
+TEXTAREA {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   color : black;
+   background-color : #eeeeee;
+   width: 300px;
+}
+
+TEXTAREA.tela_erro {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   color : #0A5A82;
+   font-weight : bold;
+   background-color : #E4EAE4;
+}
+
+INPUT.botao_erro {
+   font-size : 12px;
+   color : #0A5A82;
+   font-weight : bold;
+   background-color : #E4EAE4;
+}
+
+TEXTAREA.lista {
+   font-family : "Courier New", Courier, monospace;
+   font-size : 12px;
+   color : black;
+}
+BODY {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   background-color : #E4EAE4;
+}
+
+TD.userTopo {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+	font-weight : bold;
+   color : White;
+}
+
+
+.itemBorder { 
+   border: 2px outset #808080;
+}
+
+.itemText { 
+   text-decoration: none; 
+   color: #000000; 
+   font: Bold 12px Tahoma, Arial, Helvetica 
+}
+
+.crazyBorder { 
+   border: 2px outset #a9a9a9;
+}
+
+.crazyText { 
+   text-decoration: none; 
+   color: #000000; 
+   font: Bold 14px Tahoma, Arial, Helvetica 
+}
+
+TD.itemMenu {
+   font: Bold 12px Tahoma, Arial, Helvetica;
+   background-color : #dcdcdc;
+   border: 1px solid black ;
+}
+
+P {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 14px;
+   background-color : White;
+}
+
+BLOCKQUOTE {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 14px;
+   background-color : White;
+}
+
+SELECT {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   background-color : #eeeeee;
+   font-stretch : condensed;
+}
+
+SELECT[disabled] {
+    background-color : #dcdcdc;
+}
+
+INPUT {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   background-color : #eeeeee;
+   font-stretch : condensed;
+}
+INPUT.aviso {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+	font-weight : bold;
+   color : White;
+   background-color : #526c9f;
+}
+
+A:link {
+	color: black;
+	font-weight : bold;
+}
+A:visited {
+   color: black;
+   font-weight : bold;
+}
+A:active {
+   color: Blue;
+   font-weight : bold;
+}
+A:hover {
+   color: Blue;
+   font-weight : bold;
+}
+
+}
+
+TD.status_cel_up {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   font-weight: bold;
+   text-align : left;
+   background-color : #ccccff;
+   border-bottom : 1 solid #000080;
+   border-right : 1 solid #000080;
+   border-left : 1 solid #f4f4ff;
+   border-top : 1 solid #f4f4ff;
+}
+TD.status_cel_up_center {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   font-weight: bold;
+   text-align : center;
+   background-color : #ccccff;
+   border-bottom : 1 solid #000080;
+   border-right : 1 solid #000080;
+   border-left : 1 solid #f4f4ff;
+   border-top : 1 solid #f4f4ff;
+}
+TD.status_cel_down{
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   font-weight: bold;
+   text-align : left;
+   background-color : #ccccff;
+   border-bottom : 1 solid #f4f4ff;
+   border-right : 1 solid #f4f4ff;
+   border-left : 1 solid #000080;
+   border-top : 1 solid #000080;
+}}
+
+TD.status_cel_up {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   font-weight: bold;
+   text-align : left;
+   background-color : #ccccff;
+   border-bottom : 1 solid #000080;
+   border-right : 1 solid #000080;
+   border-left : 1 solid #f4f4ff;
+   border-top : 1 solid #f4f4ff;
+}
+TD.status_cel_up_center {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   font-weight: bold;
+   text-align : center;
+   background-color : #ccccff;
+   border-bottom : 1 solid #000080;
+   border-right : 1 solid #000080;
+   border-left : 1 solid #f4f4ff;
+   border-top : 1 solid #f4f4ff;
+}
+TD.status_cel_down{
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   font-weight: bold;
+   text-align : left;
+   background-color : #ccccff;
+   border-bottom : 1 solid #f4f4ff;
+   border-right : 1 solid #f4f4ff;
+   border-left : 1 solid #000080;
+   border-top : 1 solid #000080;
+}
+TD.titulocabecalho {
+    text-align : left;
+    font-size : 13px;
+    font-family : Tahoma, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    font-style : normal;
+    background-color : #323232;
+    color : #FFFFFF;
+    border: 1px outset #000000;
+    border-bottom : 1 solid #000000;
+    border-right : 1 solid #000000;
+    border-left : 1 solid #FFFFFF;
+    border-top : 1 solid #FFFFFF;
+}
+
+H1{
+   font-family : Arial, Helvetica, sans-serif;
+   font-size : 16px;
+   font-weight: bold;
+   color : #174A81;
+}
+H2{
+   font-family : Arial, Helvetica, sans-serif;
+   font-size : 16px;
+   font-weight: bold;
+   color : #FF0000;
+}
+H3{
+   font-family : Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   font-weight: bold;
+   color : #174A81;
+}
+
+.erro {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 16px;
+   font-weight: bold;
+   text-align : center;
+   color : #ff0000;
+}
+TD.label{
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   font-weight: bold;
+   text-align : right;
+   vertical-align : top;
+   background-color : #B6BBB6;
+   border: 1px outset #5F625F;
+   border-bottom : 1 solid #5F625F;
+   border-right : 1 solid #5F625F;
+   border-left : 1 solid #EBF2EB;
+   border-top : 1 solid #EBF2EB;
+}
+TD.labelleft{
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   font-weight: bold;
+   text-align : left;
+   vertical-align : top;
+   background-color : #B6BBB6;
+   border: 1px outset #5F625F;
+   border-bottom : 1 solid #5F625F;
+   border-right : 1 solid #5F625F;
+   border-left : 1 solid #EBF2EB;
+   border-top : 1 solid #EBF2EB;
+}
+TD.labelcenter{
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   font-weight: bold;
+   text-align : center;
+   vertical-align : top;
+   background-color : #B6BBB6;
+   border: 1px outset #5F625F;
+   border-bottom : 1 solid #5F625F;
+   border-right : 1 solid #5F625F;
+   border-left : 1 solid #EBF2EB;
+   border-top : 1 solid #EBF2EB;
+}
+
+TD.field {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   background-color : #dcdcdc;
+   border: 1px outset #808080;
+   vertical-align : top;
+/*
+   border-bottom : 1 solid #808080;
+   border-right : 1 solid #808080;
+   border-top : 1 solid #e4e4e4;
+   border-left : 1 solid #e4e4e4;
+*/
+}
+TD.fieldright {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   text-align : right;
+   vertical-align : top;
+   background-color : #dcdcdc;
+   border: 1px outset #808080;
+   border-bottom : 1 solid #808080;
+   border-right : 1 solid #808080;
+   border-top : 1 solid #e4e4e4;
+   border-left : 1 solid #e4e4e4;
+}
+TD.fieldright_noborder {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   text-align : right;
+   vertical-align : top;
+   background-color : #dcdcdc;
+}
+TD.fieldcenter {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   text-align : center;
+   vertical-align : top;
+   background-color : #dcdcdc;
+   border: 1px outset #808080;
+   border-bottom : 1 solid #808080;
+   border-right : 1 solid #808080;
+   border-top : 1 solid #e4e4e4;
+   border-left : 1 solid #e4e4e4;
+}
+TD.fakefield {
+   border: 1px inset #000000;
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   background-color : #dcdcdc;
+}
+TD.botao {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   font-weight: bold;
+   text-align : center;
+}
+TH.contec {
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+	font-weight:	bold;
+   font-size : 12px;
+	color: #000000;
+	background: #ffcc00;
+	text-align: left;
+   border-bottom : 1 solid #808080;
+   border-right : 1 solid #808080;
+   border-left : 1 solid #f5f5f5;
+   border-top : 1 solid #f5f5f5;
+}
+
+TH.diasemana  {
+	font-size : 12px;
+	font-family : Tahoma, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	font-style : normal;
+	background-color : #000080;
+	color : #ffffff;
+   border: 1px outset #000000;
+   border-bottom : 1 solid #000000;
+   border-right : 1 solid #000000;
+   border-left : 1 solid #ccccff;
+   border-top : 1 solid #ccccff;
+}
+TD.domingo  {
+   text-align : center;
+	font-size : 12px;
+	font-family : Tahoma, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	font-style : normal;
+	color : #000080;
+   background-color : #ccccff;
+   border: 1px outset #000080;
+   border-bottom : 1 solid #000080;
+   border-right : 1 solid #000080;
+   border-left : 1 solid #f4f4ff;
+   border-top : 1 solid #f4f4ff;
+/*   background-image : url(../icones/label.jpg); */
+}
+TD.feriado  {
+   text-align : center;
+	font-size : 12px;
+	font-family : Tahoma, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	font-style : normal;
+	background-color : #ff6666;
+	color : #000080;
+   background-color : #ff6666;
+   border: 1px outset #000080;
+   border-bottom : 1 solid #000080;
+   border-right : 1 solid #000080;
+   border-left : 1 solid #ffffff;
+   border-top : 1 solid #ffffff;
+/*   background-image : url(../icones/label.jpg); */
+}
+TD.feriadoVariavel {
+   text-align : center;
+	font-size : 12px;
+	font-family : Tahoma, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	font-style : normal;
+	background-color : #00ff00;
+	color : #FFFFFF;
+   background-color : #6666ff;
+   border: 1px outset #000080;
+   border-bottom : 1 solid #000080;
+   border-right : 1 solid #000080;
+   border-left : 1 solid #ffffff;
+   border-top : 1 solid #ffffff;
+/*   background-image : url(../icones/label.jpg); */
+}
+TD.feriadoFV {
+   text-align : center;
+	font-size : 12px;
+	font-family : Tahoma, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	font-style : normal;
+	background-color : #00ff00;
+	color : #FFFFFF;
+   background-color : #11ff11;
+   border: 1px outset #000080;
+   border-bottom : 1 solid #000080;
+   border-right : 1 solid #000080;
+   border-left : 1 solid #ffffff;
+   border-top : 1 solid #ffffff;
+/*   background-image : url(../icones/label.jpg); */
+}
+
+TD.hoje  {
+   text-align : center;
+	font-size : 12px;
+	font-family : Tahoma, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	font-style : normal;
+	background-color: #ffcc00;
+	color : #000000;
+   border: 1px outset #808080;
+   border-bottom : 1 solid #808080;
+   border-right : 1 solid #808080;
+   border-left : 1 solid #f5f5f5;
+   border-top : 1 solid #f5f5f5;
+/*   background-image : url(../icones/fundocopy.jpg); */
+}
+
+TD.dia  {
+   text-align : center;
+	font-size : 12px;
+	font-family : Tahoma, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	font-style : normal;
+   background-color : #dcdcdc;
+	color : #000000;
+   border: 1px outset #808080;
+   border-bottom : 1 solid #808080;
+   border-right : 1 solid #808080;
+   border-left : 1 solid #f5f5f5;
+   border-top : 1 solid #f5f5f5;
+
+}
+TD.alt_dados  {
+   text-align : left;
+	font-size : 12px;
+	font-family : Tahoma, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	font-style : normal;
+   background-color : #525552;
+	color : #FFFFFF;
+   border: 1px outset #000000;
+   border-bottom : 1 solid #000000;
+   border-right : 1 solid #000000;
+   border-left : 1 solid #FFFFFF;
+   border-top : 1 solid #FFFFFF;
+}
+TD.show_dados  {
+   text-align : left;
+	font-size : 12px;
+	font-family : Tahoma, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	font-style : normal;
+   background-color : #FFFFFF;
+   color : #000000;
+   border: 1px outset #000000;
+   border-bottom : 1 solid #000000;
+   border-right : 1 solid #000000;
+   border-left : 1 solid #CCCCCC;
+   border-top : 1 solid #CCCCCC;
+}
+TD.show_dados_center  {
+   text-align : center;
+	font-size : 12px;
+	font-family : Tahoma, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	font-style : normal;
+   background-color : #FFFFFF;
+   color : #000000;
+   border: 1px outset #000000;
+   border-bottom : 1 solid #000000;
+   border-right : 1 solid #000000;
+   border-left : 1 solid #CCCCCC;
+   border-top : 1 solid #CCCCCC;
+}
+TD.show_dados_right  {
+   text-align : right;
+	font-size : 12px;
+	font-family : Tahoma, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	font-style : normal;
+   background-color : #FFFFFF;
+   color : #000000;
+   border: 1px outset #000000;
+   border-bottom : 1 solid #000000;
+   border-right : 1 solid #000000;
+   border-left : 1 solid #CCCCCC;
+   border-top : 1 solid #CCCCCC;
+}
+TD.status{
+   font-family : Tahoma, Arial, Helvetica, sans-serif;
+   font-size : 12px;
+   font-weight: bold;
+   text-align : left;
+   background-image : url(icones/fundo_botao.png);
+   background-color : #B6BBB6;
+   border: 1px outset #5F625F;
+   border-bottom : 1 solid #5F625F;
+   border-right : 1 solid #5F625F;
+   border-left : 1 solid #EBF2EB;
+   border-top : 1 solid #EBF2EB;
+}
+.toUpperCase{
+    text-transform: uppercase;
+}
+.toLowerCase{
+    text-transform: lowercase;
+}
+.toCapitalize{
+    text-transform: capitalize;
+}
+TD.botao{
+    text-align : center;
+    font-size : 12px;
+    font-family : Tahoma, Arial, Helvetica, sans-serif;
+    font-weight : normal;
+    font-style : normal;
+    background-color : #D5D2CD;
+    color : #000000;
+    border: 1px outset #000000;
+    border-bottom : 1 solid #000000;
+    border-right : 1 solid #000000;
+    border-left : 1 solid #CCCCCC;
+    border-top : 1 solid #CCCCCC;
+}
+TD.fonte_programa {
+    text-align : left;
+    font-size : 12px;
+    font-family : Tahoma, Arial, Helvetica, sans-serif;
+    font-weight : normal;
+    font-style : normal;
+    background-color : #FFFFFF;
+    color : #000000;
+    border: 0px outset #000000;
+}
+.t0i {
+    font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    color: #000000;
+    background-color: #ffffcc;
+    text-decoration: none;
+}
+.t0im {
+    border: 0px;
+    width: 19px;
+    height: 16px;
+}
+SPAN.TreeviewSpanArea A {
+     font-size: 10pt; 
+     font-family: verdana,helvetica; 
+     text-decoration: none;
+     color: black
+}
+SPAN.TreeviewSpanArea A:hover {
+     color: '#820082';
+}
+/*******************************/
+#fundo_carregando{
+width:100%;/*largura da imagem */
+height:100%;
+/* As tres regras a seguir posicionam
+a imagem na tela */
+position:absolute;
+margin:0px;
+padding:0px;
+left:0px;
+top:0px;
+background:transparent url(../images/alpha.gif) center repeat;
+//background-color:#E6EAE6 center repeat;
+}
+#texto_carregando {
+position:absolute;
+Top:50px;
+left:50px;
+//font: bold 16px arial, sans-serif;
+font-size: 8px;
+font-family: verdana,helvetica;
+font-weight: bold;
+color:#000;
+text-align:center;
+margin:20px 20px;
+background-color:#E6EAE6;
+}

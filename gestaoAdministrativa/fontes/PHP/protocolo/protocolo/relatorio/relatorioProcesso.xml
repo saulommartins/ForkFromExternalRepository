@@ -1,0 +1,90 @@
+<!--
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+-->
+<?xml version='1.0'?>
+<!DOCTYPE relatorio SYSTEM "/urbem.dtd">
+<!--
+Todas as informações de tamanhos são expressas em milímetros (mm)
+Propriedades ************************************************
+formato       = "a4" pode ser: a3, a4, a5, letter, legal
+disposicao    = "L"  pode ser: L=Paisagem ou P=Retrato
+autor         = Nome do autor do relatório
+modulo        = Módulo do URBEM
+titulo        = Título do Relatório
+subtitulo     = Subtítulo do Relatório
+assunto       = Descrição do relatório
+palavrasChave = Palavras de fácil localização do relatório
+sql           = Select de pesquisa dos dados
+Margens *****************************************************
+margemSup     = Margem Superior
+margemDir     = Margem Direita
+margemEsq     = Margem Esquerda
+// Casos de uso: uc-01.06.99
+-->
+<relatorio>
+    <propriedades
+        formato       = "a4"
+        disposicao    = "L"
+        autor         = "Alessandro La-Rocca Silveira"
+        modulo        = "Protocolo"
+        titulo        = "Relatório de Processos"
+        subtitulo     = ""
+        assunto       = "Relatório de Processos"
+        palavrasChave = "protocolo processos"
+        >
+        <margens
+            margemSup = "15"
+            margemDir = "6"
+            margemEsq = "10"/>
+    </propriedades>
+    <bancodedados
+        sql = "" />
+    <corpo>
+        <grupo nome="principal">
+            <cabecalho>
+                <etiqueta altura="4" largura="20" titulo="Código" borda="1" cordefundo="220,220,220" alinhamento="C"/>
+                <etiqueta altura="4" largura="45" titulo="Classificação" borda="1" cordefundo="220,220,220" alinhamento="C"/>
+                <etiqueta altura="4" largura="50" titulo="Assunto" borda="1" cordefundo="220,220,220" alinhamento="C"/>
+				<etiqueta altura="4" largura="70" titulo="Interessado" borda="1" cordefundo="220,220,220" alinhamento="C"/>
+                <etiqueta altura="4" largura="30" titulo="Setor" borda="1" cordefundo="220,220,220" alinhamento="C"/>
+                <etiqueta altura="4" largura="35" titulo="Situacao" borda="1" cordefundo="220,220,220" alinhamento="C"/>
+				<etiqueta altura="4" largura="30" titulo="Data Inclusão" borda="1" cordefundo="220,220,220" alinhamento="C"/>
+                <quebralinha />
+            </cabecalho>
+			<detalhe sql="">
+				<campo altura="4" largura="20" nome="codigoProcesso" alinhamento="D"/>
+                <campo altura="4" largura="10" nome="Classificacao"  alinhamento="D"/>
+				<campo altura="4" largura="35" nome="nom_classificacao" />
+                <campo altura="4" largura="15" nome="ClaAss" alinhamento="D"/>
+				<campo altura="4" largura="35" nome="nom_assunto" />
+                <campo altura="4" largura="10" nome="numcgm" alinhamento="D"/>
+				<campo altura="4" largura="60" nome="nom_cgm" />
+				<campo altura="4" largura="30" nome="codunidsetor" />
+				<campo altura="4" largura="35" nome="nom_situacao" />
+				<campo altura="4" largura="30" nome="timestamp" mascara="datahora" alinhamento="C"/>
+				<quebralinha />
+			</detalhe>
+        </grupo>
+    </corpo>
+</relatorio>

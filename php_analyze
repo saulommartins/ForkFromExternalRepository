@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# php_analyze
+#
+# AUTORES    	: Henrique Boaventura Fausto Ribeiro
+# DESCRIÇÃO  : Script que faz a verificação de sintax em arquivos PHP.
+# USO        	: php_analyze <diretorio> php_analyze <arquivo>
+# LICENÇA    	: GPL v2
+#
+
+contador=0;
+inContadorTotalArq=0;
+inContadorArqAnalisados=0;
+nuPercentual=0;
+
+declare -a erros
+
+if [ "$1" == "" ]
+then
+    arquivos=$(find . -name "*.php")
+elif [ "${1##*.}" == "php" ]
+then
+    arquivos=$1
+else
+    arquivos=$(find $1 -name "*.php")
+fi
+
+# Descobrindo o número total de arquivos que serão analisados.
+for file in $arquivos
+do
+    inContadorTotalArq=`expr $inContadorTotalArq + 1`
+done
+
+for file in $arquivos
+do
+    analize=`php5 -l $file`
+    
+    # Calcundo o percentual de arquivos já processados
+    inContadorArqAnalisados=`expr $inContadorArqAnalisados + 1`
+    nuPercentual=`expr $inContadorArqAnalisados \* 100`
+    nuPercentual=`echo "scale=2;$nuPercentual/$inContadorTotalArq" | bc -l`
+    
+    echo -n "Analizando o arquivo($nuPercentual%): ${file:2} "
+    if [ "$analize" == "No syntax errors detected in $file" ] 
+    then
+        echo '... OK'
+    else
+        echo -e "... \e[1;31mERRO\e[m"
+        #echo -e "     \e[1;31m"$analize"\e[m "
+        erros[$contador]='    '${file:2}' - '$analize
+        contador=`expr $contador + 1`
+    fi
+
+done
+echo 
+echo Analize concluída com $contador erros:
+zebra=0;
+for v in "${erros[@]}";
+do
+    echo -e "\e[$zebra;31m"-$v"\e[m"
+    if [ $zebra == 0 ]
+    then
+        zebra=1
+    else
+        zebra=0
+    fi
+done 
+echo Total de arquivos analisados: $inContadorTotalArq

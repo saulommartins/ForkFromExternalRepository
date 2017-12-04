@@ -1,0 +1,54 @@
+A1801033              Prefeitura Municipal104Caixa Economica Fede2017112700279504FOLHA PAGAMENTO                                                      
+E1                        1060023000015961  2017113000000000007651603Alessandra Aparecida da Silva                                                   2
+E21                       1060013000523749  2017113000000000016201503Alexandre Sávio Delfino Madeira                                                 2
+E22                       1060037000710040  2017113000000000016120603Alysson Geraldo Gomes Caldeira                                                  2
+E2                        1060013000709613  2017113000000000009565703Amanda Lis Assis Paiva de Oliveira Mota                                         2
+E23                       1060037000073899  2017113000000000022526603Ana Carolina de Souza Silva                                                     2
+E3                        1060001000229278  2017113000000000036332703Anastacia Clarete Vieira da Cunha                                               2
+E4                        1060023000034850  2017113000000000011798803Andre Luiz Martins de Azevedo                                                   2
+E5                        1060001000111277  2017113000000000031475903Anísio Geraldo da Silva                                                         2
+E63                       4855013000026729  2017113000000000022668803Barbara Azevedo                                                                 2
+E66                       1060037000713545  2017113000000000022034203Breno Júnior Porfírio                                                           2
+E6                        1060037000037698  2017113000000000000072903Clarete Aparecida Teixeira                                                      2
+E70                       1060013000683258  2017113000000000009193303Cláudia Elaine Lopes                                                            2
+E48                       1060037000711240  2017113000000000022526603Cristina Freitas Ferreira                                                       2
+E26                       1060037000073198  2017113000000000016201503Debora Amarildes Rodrigues e Silva                                              2
+E7                        1060037000038350  2017113000000000022034203Douglas Daniel Borges da Silva                                                  2
+E8                        1060037000036608  2017113000000000045743703Eduardo Rodrigo da Costa                                                        2
+E56                       1060037000027153  2017113000000000010920603Efigênia Imaculada Mendonça Souza                                               2
+E9                        1060037000036624  2017113000000000015910203Eliete da Costa Silva                                                           2
+E27                       1060013000750893  2017113000000000022668803Elisangela Geralda da Silva                                                     2
+E10                       1060037000710643  2017113000000000012894303Everson Lemos de Andrade Gomes                                                  2
+E71                       1060037000713987  2017113000000000013144303Felipe Erikson Soares Lopes                                                     2
+E47                       1060037000059578  2017113000000000022809303Fernanda Graziela Rabelo Duarte                                                 2
+E12                       1060001000203180  2017113000000000020161003Hilma Aparecida da Silva                                                        2
+E31                       1060013000679960  2017113000000000022526603Ione Mara Gomes                                                                 2
+E60                       1060037000054576  2017113000000000016201503Isabel Cristina Evagenlista                                                     2
+E57                       1060037000060738  2017113000000000014332203Isabella Silva de Azevedo                                                       2
+E13                       1060037000029946  2017113000000000007350203Itamar Custodio de Araújo                                                       2
+E72                       1060037000713960  2017113000000000012305203Jenifer Mikaelly Bernardes da Silva                                             2
+E32                       1060037000046093  2017113000000000011683803Joelma Lembi Mascarenhas                                                        2
+E67                       1060037000713480  2017113000000000013974303Katia Adriana Candido                                                           2
+E34                       1060001000237548  2017113000000000010968503Kenia Aparecida Delgado Ferreira                                                2
+E35                       1060037000058784  2017113000000000022526603Kenia de Fátima Teodoro                                                         2
+E36                       1060037000073120  2017113000000000010968503Lauane Bianca Oliveira Belo                                                     2
+E73                       1060037000058679  2017113000000000031358603Lilia Aparecida da Silva                                                        2
+E52                       1060037000070490  2017113000000000018313003Lorena Soares Silva Máximo                                                      2
+E41                       1060013000686869  2017113000000000013921203Márcia Regina da Silva                                                          2
+E59                       1060037000713138  2017113000000000011351403Márcio André Paulino de Azevedo                                                 2
+E62                       1060013000479863  2017113000000000012723203Maria da Conceição Santos Faria                                                 2
+E15                       1060037000019495  2017113000000000011102403Maria de Fátima da Silva                                                        2
+E40                       1060013000333605  2017113000000000010968503Marina Aparecida Silva Apolinario                                               2
+E69                       1060037000038112  2017113000000000007151703Marli Maria da Costa Francelino                                                 2
+E16                       1060037000028486  2017113000000000033868303Osvaldo Pinto de Oliveira                                                       2
+E18                       1060013000626408  2017113000000000030926203Paula Carolina Couto Lima                                                       2
+E45                       1060013000735045  2017113000000000022034203Priscila Santos Araújo                                                          2
+E42                       1060013000029329  2017113000000000016201503Robson Teodoro da Silva                                                         2
+E61                       1060037000036330  2017113000000000015846303Rogerio Braga Guimaraes                                                         2
+E64                       1060037000711585  2017113000000000012800203Rosa Aparecida dos Santos                                                       2
+E19                       1060037000028680  2017113000000000018223503Silvana Ubl                                                                     2
+E51                       1060037000028710  2017113000000000010339603Sonara Aparecida da Silva                                                       2
+E20                       1060037000076936  2017113000000000023400403Stella Couto Batista                                                            2
+E43                       1060001000204186  2017113000000000010968503Thais Pollyanne Bobbia Gonçalves                                                2
+E68                       1060037000713669  2017113000000000013144303Vânia Aparecida de Paula Werneck                                                2
+Z0000540000000000000000000000000008981375                                                                                                             

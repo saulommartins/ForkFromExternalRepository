@@ -1,0 +1,28 @@
+Cód. Banco Compensação:1:3
+Lote de Serviço:4:4
+Reg. Header de Lote:8:1
+Tipo da Operação:9:1
+Tipo de Serviço:10:2
+Forma de Lançamento:12:2
+Nr. Versão do Layout:14:3
+Brancos:17:1
+Tipo Inscr. Empresa:18:1
+Nr. Inscr. Empresa:19:14
+Número do Contrato:33:6
+Brancos:39:14
+Agência da Conta:53:5
+Brancos:58:1
+Nr. Conta Corrente:59:12
+Dig. Verif. da Conta:71:1
+Dig. Verif. da Ag. Conta:72:1
+Nome da Empresa:73:30
+Mensagem Marketing:103:40
+Nome Rua, Av, Pça,etc:143:30
+Nr. do Local:173:5
+Casa, Apto, Sala, etc:178:15
+Nome da Cidade:193:20
+CEP:213:5
+Complemento CEP:218:3
+Sigla do Estado:221:2
+Emissão em Lote:223:1
+Brancos:224:17

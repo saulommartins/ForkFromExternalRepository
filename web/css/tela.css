@@ -1,0 +1,150 @@
+<style>
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+</style>
+	body, ul, dl, a, form, img, dt, dd, h1, h2, h3, h4, h5, h6 {
+		margin: 0 ;
+		padding: 0;
+		border: 0 ;
+		text-decoration:none ;
+	}
+	body {
+		font:14px Verdana;
+		width:550px;
+		border:7px solid #f7f7f7;
+		padding:10px;
+		margin:auto;
+        margin-top:20px;
+		text-align:center;
+	}
+    a, a:link, a:active{ color:#3300FF;}
+    a:hover     { text-decoration:underline;     }
+    a:visited   { text-decoration:line-through; color:#33CCFF; }
+
+	h1 {
+		font:bold 25px "Trebuchet MS";
+		color:#fff;
+		background-color:#89949D;
+		border-top:3px solid #767F88;
+		border-bottom:2px solid #C7CACD;
+		padding:5px;
+		text-transform:uppercase;
+		margin-bottom:5px;
+	}
+	h1 span {
+		display:block;
+		font:bold 10px Verdana;
+		color:#B8BFC6;
+		text-transform:uppercase;
+	}
+	h2 {
+		padding:5px;
+		background-color:#f7f7f7;
+		border:1px solid #ccc;
+		font:bold 15px "Trebuchet MS";
+		color:#aaa;
+		margin:auto;
+		text-align:center;
+	}
+	p, li ,label{
+		font:14px Verdana;
+		line-height:18px;
+		color:#444;
+		text-align:left;
+	}
+	li {
+		margin-left:20px;
+	}
+	dl {
+		margin-bottom:10px;
+		text-align:left;
+	}
+	p, dt, dd, li {
+		font:14px Verdana;
+		line-height:18px;
+		color:#444;
+	}
+	dt {
+		font:bold 14px "Trebuchet MS";
+		margin-top:16px;
+	}
+	dd:hover {
+		background-color:#f7f7f7;
+	}
+	ol {
+		margin:0px;
+		background-color:#E7E8DA;
+		font:0.8em "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+		width:400px;
+		border:1px solid #ccc;
+		overflow:auto;
+		/*height:280px;*/		
+	}
+	ol li {
+		padding:2px;
+		background-color:#F5F3E7;
+		list-style-type:decimal;
+		color:#444;
+	}
+	.hr {
+		color:#636363;
+	}
+    table{
+        width:100%;
+        border: 1px solid #666; 
+    }
+
+    table.espelho * { border:0; text-align:left;vertical-align:top;}
+    table.espelho, table.espelho td  { border: 1px solid #666;}
+/*  table.espelho {border-collapse:collapse;} */ 
+
+
+    tr td, tr th {
+        border: 1px solid #bbb;     
+    }
+	thead tr th {
+		padding:5px;
+		background-color:#f7f7f7;
+		border:1px solid #ccc;
+		font:bold 15px "Trebuchet MS";
+		color:#aaa;
+		margin:auto;
+		text-align:center;	
+    }
+    thead tr td{
+		font-weight:bold;
+    }
+
+/* formulario*/
+.campo_bloco { width:100%; }
+.campo_bloco label { width:120px; float:left; text-align:right;}
+
+/**
+* Espelho
+*/
+span.legenda{ 
+    font: 30% Courier Monospace;
+} 
+span.campo  {
+    font: 7px Helvetica;
+} 

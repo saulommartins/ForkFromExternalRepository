@@ -1,0 +1,169 @@
+<!--
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+-->
+<?xml version='1.0'?>
+<!DOCTYPE relatorio SYSTEM "/urbem.dtd">
+<!--
+Todas as informações de tamanhos são expressas em milímetros (mm)
+Propriedades ************************************************
+formato       = "a4" pode ser: a3, a4, a5, letter, legal
+disposicao    = "L"  pode ser: L=Paisagem ou P=Retrato
+autor         = Nome do autor do relatório
+modulo        = Módulo do URBEM
+titulo        = Título do Relatório
+subtitulo     = Subtítulo do Relatório
+assunto       = Descrição do relatório
+palavrasChave = Palavras de fácil localização do relatório
+sql           = Select de pesquisa dos dados
+Margens *****************************************************
+margemSup     = Margem Superior
+margemDir     = Margem Direita
+margemEsq     = Margem Esquerda
+
+// Casos de uso: uc-01.06.98
+-->
+<relatorio>
+    <propriedades
+        formato       = "a4"
+        disposicao    = "P"
+        autor         = "Jorge Ribarr"
+        modulo        = "Protocolo"
+        titulo        = "Recibo Protocolo de Processo"
+        subtitulo     = "Recibo"
+        assunto       = "Recibo de Processo"
+        palavrasChave = "recibo processo protocolo"
+        >
+        <margens
+            margemSup = "15"
+            margemDir = "10"
+            margemEsq = "10"/>
+    </propriedades>
+    <corpo>
+        <grupo nome="principal">
+            <cabecalho>
+                <fonte altura="16" estilo="N" nome="times" cor="0,0,180">
+                    <etiqueta altura="10" alinhamento="C" titulo="Protocolo de Processo" />
+                </fonte>
+                <quebralinha />
+            </cabecalho>
+            <detalhe sql = "">
+                <fonte altura="12" estilo="NI" nome="helvetica" cor="0,0,180">
+                    <campo altura="5" nome="cod_ano_processo" alinhamento="C" />
+                    <quebralinha />
+<!--                    <campo altura="5" largura="90" nome="nom_classificacao" alinhamento="D"/>
+                    <etiqueta altura="5" largura="10" alinhamento="C" titulo="-" />
+                    <campo altura="5" nome="nom_assunto" />-->
+                </fonte>
+                <quebralinha />
+            </detalhe>
+            <cabecalho>
+                <fonte altura="16" estilo="NI" nome="times">
+                    <etiqueta altura="15" titulo="INTERESSADO"  cordefundo="255,255,255"/>
+                </fonte>
+                <quebralinha />
+            </cabecalho>
+            <detalhe sql = "">
+                <etiqueta titulo="Número do CGM: " altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campo altura="5" nome="numcgm" novalinha="1"/>
+                <etiqueta titulo="Nome: " altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campo altura="5" nome="nom_cgm" novalinha="1"/>
+                <etiqueta titulo="Endereço: " altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campo altura="5" nome="endereco" novalinha="1"/>
+                <etiqueta titulo="Bairro: " altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campo altura="5" nome="bairro" novalinha="1"/>
+                <etiqueta titulo="Cep: " altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campo altura="5" nome="cep" novalinha="1"/>
+                <etiqueta titulo="Cidade: " altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campo altura="5" nome="nom_municipio" novalinha="1"/>
+                <etiqueta titulo="CNPJ/CPF: " altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campo altura="5" nome="cnpjcpf" mascara="cnpjcpf" novalinha="1"/>
+                <etiqueta titulo="Inscrição Econômica: " nome="numInscricao" altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campo altura="5" nome="numinscricao" novalinha="1"/>
+                <etiqueta titulo="Inscrição Imobiliária: " nome="numMatricula" altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campo altura="5" nome="nummatricula" novalinha="1"/>
+
+            </detalhe>
+            <cabecalho>
+                <fonte altura="16" estilo="NI" nome="times">
+                    <etiqueta altura="15" titulo="DADOS DO PROCESSO"  cordefundo="255,255,255"/>
+                </fonte>
+                <quebralinha />
+            </cabecalho>
+            <detalhe sql = "">
+                <etiqueta titulo="Data de Entrada: " altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campo altura="5" nome="timestamp" mascara="datahora"/><quebralinha />
+                <etiqueta titulo="Situação do Processo: " altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campo altura="5" nome="nom_situacao"/><quebralinha />
+                <etiqueta titulo="Classificação: " altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campotexto altura="5" nome="nom_classificacao"/> <quebralinha />
+                <etiqueta titulo="Assunto: " altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campotexto altura="5" nome="nom_assunto"/><quebralinha />
+                <etiqueta titulo="Setor Inicial: " altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campotexto altura="5" nome="setorInicial"/><quebralinha />
+                <etiqueta titulo="Destino: " altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campotexto altura="5" nome="setorFinal"/><quebralinha />
+                <etiqueta titulo="Observações: " altura="5" largura="40" alinhamento="D" cordefundo="255,255,255"/>
+                <campotexto altura="5" nome="observacoes"/><quebralinha />
+            </detalhe>
+            <cabecalho>
+                <fonte altura="16" estilo="NI" nome="times">
+                    <etiqueta altura="15" titulo="ATRIBUTOS DE ASSUNTO DE PROCESSO"  cordefundo="255,255,255"/>
+                </fonte>
+                <quebralinha />
+            </cabecalho>
+            <detalhe sql = "">
+                <campo altura="5" largura="80" nome="nom_atributo" alinhamento="D" cordefundo="255,255,255" />
+                <campo altura="5" largura="40" nome="valor" alinhamento="E" cordefundo="255,255,255" />
+                <quebralinha />
+            </detalhe>
+            <cabecalho>
+                <fonte altura="16" estilo="NI" nome="times">
+                    <etiqueta altura="15" titulo="DOCUMENTAÇÃO"  cordefundo="255,255,255"/>
+                </fonte>
+                <quebralinha />
+            </cabecalho>
+            <detalhe sql = "">
+                <campo altura="5" largura="80" nome="nom_documento" alinhamento="D" cordefundo="255,255,255" />
+                <etiqueta titulo=" Recebido" altura="5" largura="40"/>
+                <quebralinha />
+            </detalhe>
+            <cabecalho>
+                <fonte altura="16" estilo="NI" nome="times">
+                    <etiqueta altura="15" titulo="REQUERIMENTO"  cordefundo="255,255,255"/>
+                </fonte>
+                <quebralinha />
+            </cabecalho>
+
+            <detalhe sql = "">
+                <fonte estilo="N">
+                    <campo altura="4" alinhamento="D" largura="120" nome="nom_municipio"/>
+                    <campo altura="4" nome="hoje" mascara="dataextenso"/><quebralinha />
+                </fonte>
+                <etiqueta altura="20" titulo=" "/><quebralinha />
+                <etiqueta altura="5" largura="70" titulo=" "/>
+                <etiqueta altura="5" largura="70" alinhamento="C" titulo="Responsável" borda="T"/>
+            </detalhe>
+        </grupo>
+    </corpo>
+</relatorio>

@@ -1,0 +1,144 @@
+<!--
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+-->
+<?xml version='1.0'?>
+<!DOCTYPE relatorio SYSTEM "/urbem.dtd">
+<!--
+Casos de uso: uc-03.01.13
+
+Todas as informacoes de tamanhos sao expressas em milimetros (mm)
+Propriedades ************************************************
+formato       = "a4" pode ser: a3, a4, a5, letter, legal
+disposicao    = "L"  pode ser: L=Paisagem ou P=Retrato
+autor         = Nome do autor do relatorio
+modulo        = Modulo do URBEM
+titulo        = Titulo do Relatorio
+subtitulo     = Subtitulo do Relatorio
+assunto       = Descricao do relatorio
+palavrasChave = Palavras de facil localizacao do relatorio
+sql           = Select de pesquisa dos dados
+Margens *****************************************************
+margemSup     = Margem Superior
+margemDir     = Margem Direita
+margemEsq     = Margem Esquerda
+-->
+<relatorio>
+    <propriedades
+        formato       = "a4"
+        disposicao    = "P"
+        autor         = "Ricardo Lopes"
+        modulo        = "Patrimonio"
+        titulo        = "Carga Patrimonial"
+        subtitulo     = ""
+        assunto       = "Administracao de Patrimonio"
+        palavrasChave = "patrimonio"
+        >
+        <margens
+            margemSup = "10"
+            margemDir = "10"
+            margemEsq = "10"/>
+    </propriedades>
+    <corpo>
+        <grupo nome="principal">
+            <detalhe sql = "" chave="cod_natureza,cod_grupo,cod_especie" >
+            <cabecalho>
+                <campo altura="5" largura="63" nome="nom_natureza" borda="1" cordefundo="220,220,220" />
+                <campo altura="5" largura="63" nome="nom_grupo" borda="1" cordefundo="220,220,220" />
+                <campo altura="5" largura="64" nome="nom_especie" borda="1" cordefundo="220,220,220" />
+                <quebralinha />
+            </cabecalho>
+                <detalhe nivel="1" chave="cod_bem" sql="" >
+                    <etiqueta altura="5" largura="15" titulo="Codigo:" borda="1" cordefundo="245,245,245" />
+                    <campo altura="5" largura="10" nome="cod_bem" />
+                    <etiqueta altura="5" largura="25" titulo="Numero da Placa :" borda="1" cordefundo="245,245,245" />
+                    <campo altura="5" largura="30" nome="num_placa" />
+                     <etiqueta altura="5" largura="15" titulo="Descricao:" borda="1" cordefundo="245,245,245" />
+                    <campo altura="5" largura="100" nome="descricao" />
+                    <quebralinha />
+                        <detalhe nivel="2" sql="" >
+                            <campo altura="5" largura="30" nome="nom_atributo" borda="1" cordefundo="245,245,245" />
+                            <campo altura="5" largura="100" nome="valor_atributo" />
+                            <quebralinha />
+                        </detalhe>
+                    <etiqueta altura="5" largura="15" titulo="Situacao:" borda="1" cordefundo="245,245,245" />
+                    <campo altura="5" largura="60" nome="nom_situacao" />
+                    <etiqueta altura="5" largura="25" titulo="Data da aquisicao:" borda="1" cordefundo="245,245,245" />
+                    <campo altura="5" largura="30" nome="dt_aquisicao" mascara="data" />
+                    <etiqueta altura="5" largura="20" titulo="Valor do bem:" borda="1" cordefundo="245,245,245" />
+                    <campo altura="5" largura="30" nome="vl_bem" mascara="" />
+                    <quebralinha />
+                        <detalhe nivel="2" sql="" >
+                            <etiqueta altura="5" largura="15" titulo="Empenho:" borda="1" cordefundo="245,245,245" />
+                            <campo altura="5" largura="30" nome="num_empenho" />
+                            <quebralinha />
+                        </detalhe>
+                    <etiqueta altura="4" largura="20" titulo="Detalhamento:" borda="1" cordefundo="245,245,245" />
+                    <campotexto altura="3" largura="170" nome="detalhamento" />
+                    <quebralinha />
+                    <etiqueta altura="3" borda="T" />
+                    <quebralinha />
+                </detalhe>
+            </detalhe>
+            <quebrapagina />
+            <cabecalho>
+                <etiqueta altura="5" largura="30" titulo="Classificacao" borda="1" cordefundo="220,220,220" />
+                <etiqueta altura="5" largura="80" titulo="Descricao" borda="1" cordefundo="220,220,220" />
+                <etiqueta altura="5" largura="30" alinhamento="D" titulo="Quantidade" borda="1" cordefundo="220,220,220" />
+                <etiqueta altura="5" largura="30" alinhamento="D" titulo="Valor" borda="1" cordefundo="220,220,220" />
+                <quebralinha />
+            </cabecalho>
+            <detalhe sql="" chave="cod_natureza" >
+                <etiqueta altura="5" largura="30" titulo="Natureza" />
+                <campo altura="5" largura="80" nome="nom_natureza" />
+                <campo altura="5" largura="30" alinhamento="D" nome="qtd_natureza" />
+                <campo altura="5" largura="30" alinhamento="D" nome="total_natureza" />
+                <quebralinha />
+                    <detalhe nivel="1" sql="" chave="cod_natureza,cod_grupo" >
+                        <etiqueta altura="5" largura="5" titulo="" />
+                        <etiqueta altura="5" largura="25" titulo="Grupo" />
+                        <campo altura="5" largura="80" nome="nom_grupo" />
+                        <campo altura="5" largura="30" alinhamento="D" nome="qtd_grupo" />
+                        <campo altura="5" largura="30" alinhamento="D" nome="total_grupo" />
+                        <quebralinha />
+                            <detalhe nivel="2" sql="" >
+                                <etiqueta altura="5" largura="10" titulo="" />
+                                <etiqueta altura="5" largura="20" titulo="Especie" />
+                                <campo altura="5" largura="80" nome="nom_especie" />
+                                <campo altura="5" largura="30" alinhamento="D" nome="qtd_especie" />
+                                <campo altura="5" largura="30" alinhamento="D" nome="total_especie" />
+                                <quebralinha />
+                            </detalhe>
+                    </detalhe>
+            </detalhe>
+            <etiqueta altura="3" largura="170" borda="T" />
+            <quebralinha />
+            <detalhe sql="" >
+                <etiqueta altura="5" largura="110" alinhamento="D" titulo="Total Geral: " />
+                <campo altura="5" largura="30" alinhamento="D" nome="qtd_total" />
+                <campo altura="5" largura="30" alinhamento="D" nome="valor_total" />
+                <quebralinha />
+            </detalhe>
+        </grupo>
+    </corpo>
+</relatorio>

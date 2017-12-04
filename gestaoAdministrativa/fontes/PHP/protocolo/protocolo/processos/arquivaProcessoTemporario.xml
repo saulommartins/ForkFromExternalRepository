@@ -1,0 +1,122 @@
+<!--
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+-->
+<?xml version='1.0'?>
+<!DOCTYPE relatorio SYSTEM "/urbem.dtd">
+<!--
+Todas as informações de tamanhos são expressas em milímetros (mm)
+Propriedades ************************************************
+formato       = "a4" pode ser: a3, a4, a5, letter, legal
+disposicao    = "L"  pode ser: L=Paisagem ou P=Retrato
+autor         = Nome do autor do relatório
+modulo        = Módulo do URBEM
+titulo        = Título do Relatório
+subtitulo     = Subtítulo do Relatório
+assunto       = Descrição do relatório
+palavrasChave = Palavras de fácil localização do relatório
+sql           = Select de pesquisa dos dados
+Margens *****************************************************
+margemSup     = Margem Superior
+margemDir     = Margem Direita
+margemEsq     = Margem Esquerda
+// Casos de uso: uc-01.06.98
+-->
+<relatorio>
+
+    <propriedades
+        formato       = "a4"
+        disposicao    = "P"
+        autor         = "Leonardo Tremper"
+        modulo        = "Protocolo"
+        titulo        = "Arquivamento de Processo"
+        subtitulo     = ""
+        assunto       = ""
+        palavrasChave = "arquivamento processo"
+        >
+
+        <margens
+            margemSup = "15"
+            margemDir = "10"
+            margemEsq = "10"/>
+
+    </propriedades>
+
+
+    <corpo>
+             <detalhe sql = "" >
+
+             <quebralinha />
+             <quebralinha />
+             <quebralinha />
+             <quebralinha />
+             <fonte altura="20" estilo="N" nome="times">
+             <etiqueta altura="8" titulo="Arquivamento de Processo" alinhamento="D" novalinha="1" />
+             </fonte>
+             <fonte altura="12" estilo="N" nome="times">
+             <campo altura="5" nome="cod_processo" alinhamento="D" novalinha="1" />
+             </fonte>
+             <fonte altura="8" nome="times">
+             <campo altura="5" nome="nom_assunto" alinhamento="D" novalinha="1" />
+             </fonte>
+
+             <etiqueta altura="3" titulo=""/>
+                <quebralinha />
+
+                <fonte altura="11" estilo="N" nome="times">
+                <etiqueta titulo="A(o): " altura="5" largura="120" novalinha="1" />
+                </fonte>
+                <fonte altura="10" nome="times">
+                <campo altura="5" nome="nom_cgm" novalinha="1" />
+                <etiqueta titulo="Endereço:" altura="5" largura="15" />
+                <campo altura="5" nome="endereco" novalinha="1" />
+                <etiqueta titulo="Bairro:" altura="5" largura="10" />
+                <campo altura="5" nome="bacep" novalinha="1" />
+                <campo altura="5" nome="nom_municipio" novalinha="1" />
+                <campo altura="5" nome="sigla_uf" novalinha="1" />
+                </fonte>
+                <quebralinha />
+                <quebralinha />
+                <quebralinha />
+
+                <campotexto altura="5" nome="valor" />
+                <quebralinha />
+                <parametrotexto altura="5" nome="complemento" />
+                <quebralinha />
+                <etiqueta altura="35" titulo=" "/><quebralinha />
+
+
+            </detalhe>
+            <detalhe sql=""></detalhe>
+            <detalhe sql="">
+                <fonte estilo="N">
+                    <campo altura="4" alinhamento="D" largura="120" nome="nom_municipio"/>
+                    <campo altura="4" nome="hoje" mascara="dataextenso"/><quebralinha />
+                </fonte>
+                <etiqueta altura="20" titulo=" "/><quebralinha />
+                <etiqueta altura="5" largura="70" alinhamento="E" titulo="Responsável" borda="T"/>
+                <etiqueta altura="5" largura="35" titulo=" "/>
+                <etiqueta altura="5" largura="70" alinhamento="E" titulo="" borda="T"/>
+            </detalhe>
+    </corpo>
+</relatorio>

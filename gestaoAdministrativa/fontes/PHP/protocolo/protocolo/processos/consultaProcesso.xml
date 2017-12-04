@@ -1,0 +1,237 @@
+<!--
+/*
+    **********************************************************************************
+    *                                                                                *
+    * @package URBEM CNM - Soluções em Gestão Pública                                *
+    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+    * @author Confederação Nacional de Municípios                                    *
+    *                                                                                *
+    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+    *                                                                                *
+    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+    * para mais detalhes.                                                            *
+    *                                                                                *
+    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+    *                                                                                *
+    **********************************************************************************
+*/
+-->
+<?xml version='1.0'?>
+<!DOCTYPE relatorio SYSTEM "/urbem.dtd">
+<!--
+Todas as informações de tamanhos são expressas em milímetros (mm)
+Propriedades ************************************************
+formato       = "a4" pode ser: a3, a4, a5, letter, legal
+disposicao    = "L"  pode ser: L=Paisagem ou P=Retrato
+autor         = Nome do autor do relatório
+modulo        = Módulo do URBEM
+titulo        = Título do Relatório
+subtitulo     = Subtítulo do Relatório
+assunto       = Descrição do relatório
+palavrasChave = Palavras de fácil localização do relatório
+sql           = Select de pesquisa dos dados
+Margens *****************************************************
+margemSup     = Margem Superior
+margemDir     = Margem Direita
+margemEsq     = Margem Esquerda
+
+// Casos de uso: uc-01.06.98
+
+-->
+<relatorio>
+    <propriedades
+        formato       = "a4"
+        disposicao    = "P"
+        autor         = "Ricardo Lopes, Alessandro La-Rocca Silveira"
+        modulo        = "Protocolo"
+        titulo        = "Relatório de Processo"
+        subtitulo     = ""
+        assunto       = "Consulta de Processo"
+        palavrasChave = "consulta processo protocolo"
+        >
+        <margens
+            margemSup = "15"
+            margemDir = "10"
+            margemEsq = "10"/>
+    </propriedades>
+    <corpo>
+        <grupo nome="principal">
+            <!--<detalhe sql="" >
+                <fonte estilo="NI" nome="helvetica" cor="0,0,180">
+                    <campo altura="5" nome="cod_ano_processo" alinhamento="C" />
+                    <quebralinha />
+                    <campo altura="5" nome="nom_assunto" alinhamento="C"/>
+                </fonte>
+                <quebralinha />
+            </detalhe>-->
+           <cabecalho>
+                <fonte estilo="N" cor="255,255,255">
+                    <etiqueta altura="5" titulo="Dados do Interessado"  cordefundo="0,0,0"/>
+                </fonte>
+                <quebralinha />
+            </cabecalho>
+            <detalhe  sql="" >
+                <etiqueta titulo="Número do CGM " altura="5" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="numcgm" mascara="digito" novalinha="1"/>
+                <etiqueta titulo="Nome " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="nom_cgm" novalinha="1"/>
+                <etiqueta titulo="Endereço " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="endereco" novalinha="1"/>
+				<etiqueta titulo="Estado " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="nom_uf" novalinha="1"/>
+				<etiqueta titulo="Cidade " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="nom_municipio" novalinha="1"/>
+                <etiqueta titulo="Bairro " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="bairro" novalinha="1"/>
+                <etiqueta titulo="Cep " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="cep" novalinha="1"/>
+				<etiqueta titulo="Endereço Correspondência " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="endereco_corresp" novalinha="1"/>
+				<etiqueta titulo="Estado Correspondência " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="estado_corresp" novalinha="1"/>
+				<etiqueta titulo="Cidade Correspondência " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="cidade_corresp" novalinha="1"/>
+				<etiqueta titulo="Bairro Correspondência " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="bairro_corresp" novalinha="1"/>
+				<etiqueta titulo="CEP Correspondència " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="cep_corresp" novalinha="1"/>
+                <etiqueta titulo="Telefone Residencial " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+				<campo altura="4" nome="fone_residencial" novalinha="1"/>
+				<etiqueta titulo="Telefone Comercial " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+				<campo altura="4" nome="fone_comercial" novalinha="1"/>
+				<etiqueta titulo="E-mail " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+				<campo altura="4" nome="e_mail" novalinha="1"/>
+				<etiqueta titulo="E-mail Adicional " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+				<campo altura="4" nome="e_mail_adcional" novalinha="1"/>
+				<etiqueta titulo="CNPJ/CPF " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="cnpjcpf" mascara="cnpjcpf" novalinha="1"/>
+            </detalhe>
+                <fonte estilo="N" cor="255,255,255">
+                    <etiqueta altura="5" titulo="Dados de processo"  cordefundo="0,0,0"/>
+                </fonte>
+                <quebralinha />
+            <detalhe  sql="" >
+				<etiqueta titulo="Código " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="cod_processo" novalinha="1"/>
+				<etiqueta titulo="Classificação/Assunto " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="classificacao_assunto" novalinha="1"/>
+				<etiqueta titulo=" " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+				<campo altura="4" nome="nom_classificacao" novalinha="1"/>
+				<etiqueta titulo=" " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="nom_assunto" novalinha="1"/>
+				<etiqueta titulo="Observações " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campotexto altura="4" nome="observacoes" novalinha="1"/>
+				<etiqueta titulo="Situação do processo " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="nom_situacao" novalinha="1"/>
+				<etiqueta titulo="Data de inclusão " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="timestamp" mascara="datahora" novalinha="1"/>
+				<etiqueta titulo="Usuário que Incluiu " altura="4" largura="40" alinhamento="D" cordefundo="220,220,220"/>
+                <campo altura="4" nome="usuario" novalinha="1"/>
+            </detalhe>
+                <fonte estilo="N" cor="255,255,255">
+                    <etiqueta altura="5" titulo="Atributos de processo"  cordefundo="0,0,0"/>
+                </fonte>
+                <quebralinha />
+				<etiqueta titulo="Nome do atributo " borda="1" altura="5" largura="95" alinhamento="E" cordefundo="220,225,225"/>
+				<etiqueta titulo="Valor do atributo " borda="1" altura="5" largura="95" alinhamento="E" cordefundo="220,225,225"/>
+				<quebralinha />
+			<detalhe sql="">
+				<campo altura="5" nome="nom_atributo" largura="95" />
+				<campotexto altura="5" nome="valor" largura="95" />
+				<quebralinha />
+			</detalhe>
+                <fonte estilo="N" cor="255,255,255">
+                    <etiqueta altura="5" titulo="Documentos de processo"  cordefundo="0,0,0"/>
+                </fonte>
+                <quebralinha />
+				<etiqueta titulo="Nome do documento " borda="1" altura="5" largura="95" alinhamento="E" cordefundo="220,225,225"/>
+				<etiqueta titulo="Situação " borda="1" altura="5" largura="95" alinhamento="E" cordefundo="220,225,225"/>
+				<quebralinha />
+            <detalhe sql="" >
+                <campo altura="4" largura="95" nome="nom_documento" alinhamento="E" />
+                <etiqueta titulo=" Recebido" altura="4" largura="95" />
+                <quebralinha />
+            </detalhe>
+            <fonte estilo="N" cor="255,255,255">
+                <etiqueta altura="5" titulo="Processos em apenso"  cordefundo="0,0,0"/>
+            </fonte>
+            <quebralinha />
+            <etiqueta titulo="Código " borda="1" altura="5" largura="10" alinhamento="C" cordefundo="220,225,225"/>
+            <etiqueta titulo="Classificação " borda="1" altura="5" largura="21" alinhamento="C" cordefundo="220,225,225"/>
+            <etiqueta titulo="Assunto " borda="1" altura="5" largura="16" alinhamento="C" cordefundo="220,225,225"/>
+            <etiqueta titulo="Interessado " borda="1" altura="5" largura="75" alinhamento="C" cordefundo="220,225,225"/>
+            <etiqueta titulo="Data apensamento " borda="1" altura="5" largura="40" alinhamento="C" cordefundo="220,225,225"/>
+            <etiqueta titulo="Data desapensamento " borda="1" altura="5" alinhamento="C" cordefundo="220,225,225"/>
+            <quebralinha />
+            <detalhe sql="">
+                 <campo altura="4" largura="10" nome="cod_processo_filho" alinhamento="D" />
+                 <campo altura="4" largura="21" nome="nom_classificacao" alinhamento="E" />
+                 <campo altura="4" largura="16" nome="nom_assunto" alinhamento="E" />
+                 <campo altura="4" largura="75" nome="nom_cgm" alinhamento="E" />
+                 <campo altura="4" largura="35" nome="timestamp_apensamento" alinhamento="C" mascara="data"/>
+                 <campo altura="4" nome="timestamp_desapensamento" alinhamento="C" mascara="data"/>
+                 <quebralinha />
+            </detalhe>
+            <fonte estilo="N" cor="255,255,255">
+                <etiqueta altura="5" titulo="Em apenso a processo"  cordefundo="0,0,0"/>
+            </fonte>
+            <quebralinha />
+            <etiqueta titulo="Código " borda="1" altura="5" largura="10" alinhamento="C" cordefundo="220,225,225"/>
+            <etiqueta titulo="Classificação " borda="1" altura="5" largura="21" alinhamento="C" cordefundo="220,225,225"/>
+            <etiqueta titulo="Assunto " borda="1" altura="5" largura="16" alinhamento="C" cordefundo="220,225,225"/>
+            <etiqueta titulo="Interessado " borda="1" altura="5" largura="75" alinhamento="C" cordefundo="220,225,225"/>
+            <etiqueta titulo="Data apensamento " borda="1" altura="5" largura="40" alinhamento="C" cordefundo="220,225,225"/>
+            <etiqueta titulo="Data desapensamento " borda="1" altura="5" alinhamento="C" cordefundo="220,225,225"/>
+            <quebralinha />
+            <detalhe sql="">
+                 <campo altura="4" largura="10" nome="cod_processo_pai" alinhamento="D" />
+                 <campo altura="4" largura="21" nome="nom_classificacao" alinhamento="E" />
+                 <campo altura="4" largura="16" nome="nom_assunto" alinhamento="E" />
+                 <campo altura="4" largura="75" nome="nom_cgm" alinhamento="E" />
+                 <campo altura="4" largura="35" nome="timestamp_apensamento" alinhamento="C" mascara="data"/>
+                 <campo altura="4" nome="timestamp_desapensamento" alinhamento="C" mascara="data"/>
+                 <quebralinha />
+            </detalhe>
+                <fonte estilo="N" cor="255,255,255">
+                    <etiqueta altura="5" titulo="Trâmites do processo" cordefundo="0,0,0"/>
+                </fonte>
+                <quebralinha />
+				<etiqueta titulo="Ordem" alinhamento="C" altura="4" largura="10" borda="L,R" cordefundo="220,220,220"/>
+				<etiqueta titulo="Setor" alinhamento="C" altura="4" largura="90" borda="1" cordefundo="220,220,220"/>
+				<etiqueta titulo="Recebimento" alinhamento="C" altura="4" largura="36" borda="1" cordefundo="220,220,220"/>
+				<etiqueta titulo="Encaminhamento" alinhamento="C" altura="4" largura="36" borda="1" cordefundo="220,220,220"/>
+				<etiqueta titulo="Código" alinhamento="C" altura="4" borda="L,R" cordefundo="220,220,220"/>
+				<quebralinha />
+				<etiqueta titulo=" " alinhamento="C" altura="4" largura="10" borda="L,R,B" cordefundo="220,220,220"/>
+				<etiqueta titulo="Código" alinhamento="C" altura="4" largura="20" borda="1" cordefundo="220,220,220"/>
+				<etiqueta titulo="Nome" alinhamento="C" altura="4" largura="70" borda="1" cordefundo="220,220,220"/>
+				<etiqueta titulo="Data" alinhamento="C" altura="4" largura="16" borda="1" cordefundo="220,220,220"/>
+				<etiqueta titulo="Usuário" alinhamento="C" altura="4" largura="20" borda="1" cordefundo="220,220,220"/>
+				<etiqueta titulo="Data" alinhamento="C" altura="4" largura="16" borda="1" cordefundo="220,220,220"/>
+				<etiqueta titulo="Usuário" alinhamento="C" altura="4" largura="20" borda="1" cordefundo="220,220,220"/>
+				<quebralinha />
+				<etiqueta titulo=" " alinhamento="C" altura="4" borda="T" largura="10" />
+				<etiqueta titulo="Despacho de processo" alinhamento="E" altura="4" borda="L,R,B,T" cordefundo="220,220,220"/>
+				<quebralinha />
+            <detalhe chave="cod_andamento,ano_exercicio" sql="" >
+				<campo altura="4" nome="cod_andamento" borda="L,R,B,T" alinhamento="D" largura="10"/>
+                <campo altura="4" nome="cod_setor" borda="1" alinhamento="D" largura="20"/>
+				<campo altura="4" nome="nom_setor" borda="1" largura="70"/>
+				<campo altura="4" nome="recebimento" borda="1" mascara="data" largura="16"/>
+				<campo altura="4" nome="userRecebe" borda="1" largura="20"/>
+				<campo altura="4" nome="encaminhamento" borda="1" mascara="data" largura="16"/>
+				<campo altura="4" nome="username" borda="1" largura="20"/>
+				<quebralinha />
+				<etiqueta titulo=" " alinhamento="C" altura="4" borda="T" largura="10" />
+				<campotexto altura="4" nome="descricao" borda="1" />
+				<quebralinha />
+			</detalhe>
+        </grupo>
+    </corpo>
+</relatorio>
