@@ -122,13 +122,16 @@ $arNomeArquivos = array(
     'MTBIARREC.csv',
     'MTFIS.csv',
     'ORGAO.csv',
-    'PERC.csv',
     'PRO.csv',
     'REC.csv',
     'RFIS.csv',
     'UOC.csv',
     'CONSID.csv',
 );
+
+if (Sessao::getExercicio() < '2017'){
+    $arNomeArquivos[] = 'PERC.csv';
+}
 
 // Preenche array
 for ($inCounter=0;$inCounter < count($arNomeArquivos);$inCounter++) {
