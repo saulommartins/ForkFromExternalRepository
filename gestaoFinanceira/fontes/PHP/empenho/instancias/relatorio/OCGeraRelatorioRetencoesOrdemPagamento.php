@@ -134,13 +134,6 @@ if ($_REQUEST['inSituacao'] != "") {
     $preview->addParametro('situacao', '');
 }
 
-// Adiciona o parametro do código de Recurso do relatorio, é feita a validação se os dados estão vazios para poder passar ou o valor real ou um valor vazio
-if ($_REQUEST['inCodRecurso'] != "") {
-    $preview->addParametro('codRecurso', $_REQUEST['inCodRecurso']);
-} else {
-    $preview->addParametro('codRecurso', '');
-}
-
 // Adiciona o parametro de ordenacao do relatorio, é feita a validação se os dados estão vazios para poder passar ou o valor real ou um valor vazio
 if ($_REQUEST['stOrdenacao'] != "") {
     $preview->addParametro('ordenacao', $_REQUEST['stOrdenacao']);

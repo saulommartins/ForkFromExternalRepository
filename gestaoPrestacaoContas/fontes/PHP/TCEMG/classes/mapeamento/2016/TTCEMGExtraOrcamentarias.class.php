@@ -228,7 +228,6 @@ class TTCEMGExtraOrcamentarias extends TOrcamentoContaReceita
 	                            WHEN vl_saldo_ant < 0.00 THEN 'D'
 	             	   			ELSE 'C'
 	                      END
-			END AS nat_saldo_anterior_fonte
                    , CASE WHEN natureza_atual != ' '
                           THEN natureza_atual
                           --ELSE CASE WHEN vl_saldo_atual < 0.00

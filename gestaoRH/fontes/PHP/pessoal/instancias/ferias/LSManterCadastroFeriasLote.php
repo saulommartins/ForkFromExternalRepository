@@ -288,13 +288,13 @@ switch ($request->get('stTipoFiltro')) {
         $obChkLote->setValue("[cod_contrato]_[dias_ferias]_[dias_abono]_[dias_faltas]_[dt_inicial_aquisitivo_formatado]_[dt_final_aquisitivo_formatado]");
         break;
     case "funcao":
-        $obChkLote->setValue("[cod_contrato]_[dias_ferias]_[dias_abono]_[dias_faltas]_[dt_inicial_aquisitivo_formatado]_[dt_final_aquisitivo_formatado]_[cod_funcao]");
+        $obChkLote->setValue("[cod_contrato]_[dias_ferias]_[dias_abono]__[dias_faltas]_[dt_inicial_aquisitivo_formatado]_[dt_final_aquisitivo_formatado]_[cod_funcao]");
         break;
     case "lotacao":
-        $obChkLote->setValue("[cod_contrato]_[dias_ferias]_[dias_abono]_[dias_faltas]_[dt_inicial_aquisitivo_formatado]_[dt_final_aquisitivo_formatado]_[cod_orgao]");
+        $obChkLote->setValue("[cod_contrato]_[dias_ferias]_[dias_abono]__[dias_faltas]_[dt_inicial_aquisitivo_formatado]_[dt_final_aquisitivo_formatado]_[cod_orgao]");
         break;
     case "local":
-        $obChkLote->setValue("[cod_contrato]_[dias_ferias]_[dias_abono]_[dias_faltas]_[dt_inicial_aquisitivo_formatado]_[dt_final_aquisitivo_formatado]_[cod_local]");
+        $obChkLote->setValue("[cod_contrato]_[dias_ferias]_[dias_abono]__[dias_faltas]_[dt_inicial_aquisitivo_formatado]_[dt_final_aquisitivo_formatado]_[cod_local]");
         break;
 }
 

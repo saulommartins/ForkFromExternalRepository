@@ -133,15 +133,6 @@
                 <property name="category">Unformatted</property>
             </structure>
         </scalar-parameter>
-        <scalar-parameter name="aliquota_fap" id="673">
-            <property name="valueType">static</property>
-            <property name="isRequired">false</property>
-            <property name="dataType">string</property>
-            <property name="controlType">text-box</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
-        </scalar-parameter>
         <scalar-parameter name="aliquota_patronal" id="672">
             <property name="valueType">static</property>
             <property name="isRequired">false</property>
@@ -609,7 +600,7 @@ if (params["stTipoFiltro"] == "sub_divisao_grupo" ) {
                 </structure>
                 <structure>
                     <property name="name">tota_aliquota_rat_grupo</property>
-                    <expression name="expression">Total.sum(row["base"],null,"agrupamento")*(params["aliquota_rat"]*params["aliquota_fap"])/100</expression>
+                    <expression name="expression">Total.sum(row["base"],null,"agrupamento")*params["aliquota_rat"]/100</expression>
                     <property name="dataType">decimal</property>
                 </structure>
                 <structure>

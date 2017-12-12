@@ -204,13 +204,13 @@
             </list-property>
             <structure name="cachedMetaData"/>
             <method name="beforeOpen"><![CDATA[if(params['cod_programa'].value != ''){
-    this.queryText = this.queryText + ' AND programa.num_programa = ' + params['cod_programa'].value; 
+	this.queryText = this.queryText + ' AND programa.num_programa = ' + params['cod_programa'].value; 
 }
 if(params['cod_acao_ini'].value != ''){
-    this.queryText = this.queryText + ' AND acao.num_acao >= ' + params['cod_acao_ini'].value; 
+	this.queryText = this.queryText + ' AND acao.num_acao >= ' + params['cod_acao_ini'].value; 
 }
 if(params['cod_acao_fim'].value != ''){
-    this.queryText = this.queryText + ' AND acao.num_acao <= ' + params['cod_acao_fim'].value; 
+	this.queryText = this.queryText + ' AND acao.num_acao <= ' + params['cod_acao_fim'].value; 
 }
 params['query'].value = this.queryText;]]></method>
             <property name="dataSource">postgres</property>
@@ -239,7 +239,7 @@ INNER JOIN ldo.acao_validada
 INNER JOIN ppa.programa
         ON acao.cod_programa = programa.cod_programa
 INNER JOIN ppa.programa_dados
-        ON programa.cod_programa = programa_dados.cod_programa
+		ON programa.cod_programa = programa_dados.cod_programa
        AND programa.ultimo_timestamp_programa_dados = programa_dados.timestamp_programa_dados
 INNER JOIN ppa.programa_setorial
         ON programa.cod_setorial = programa_setorial.cod_setorial
@@ -306,7 +306,7 @@ INNER JOIN ppa.ppa
             <property name="bottomMargin">0.21in</property>
             <property name="rightMargin">0.1in</property>
             <page-header>
-                <!-- <grid name="cabecalho_paisagem" id="1148" extends="urbem_231.cabecalho_paisagem">
+                <grid name="cabecalho_paisagem" id="1148" extends="urbem_231.cabecalho_paisagem">
                     <overridden-values>
                         <ref-entry baseId="1220" id="1220"/>
                         <ref-entry baseId="1221" id="1221"/>
@@ -394,7 +394,7 @@ INNER JOIN ppa.ppa
                         <ref-entry baseId="1303" id="1303"/>
                         <ref-entry baseId="1304" name="NewAutoText2" id="1304"/>
                     </overridden-values>
-                </grid> -->
+                </grid>
             </page-header>
             <page-footer>
                 <grid name="rodape" id="1147" extends="urbem_231.rodape">
@@ -416,7 +416,7 @@ INNER JOIN ppa.ppa
             <property name="marginTop">70mm</property>
             <property name="textAlign">center</property>
             <property name="pageBreakAfter">always</property>
-            <expression name="valueExpr">'PROGRAMAS E AÇÕES ' + params["ano_ldo"].value</expression>
+            <expression name="valueExpr">'AÇÕES ORÇAMENTÁRIAS LDO ' + params["ano_ldo"].value</expression>
             <property name="contentType">html</property>
         </text-data>
         <table id="1305">
@@ -580,7 +580,8 @@ INNER JOIN ppa.ppa
                                 <property name="fontWeight">bold</property>
                                 <property name="textAlign">center</property>
                                 <property name="contentType">html</property>
-                                <text-property name="content"><![CDATA[Plano Plurianual<br />
+                                <text-property name="content"><![CDATA[Lei de Diretrizes Orcamentárias<br />
+Anexo I - Metas e Prioridades<br />
 Exercicio <VALUE-OF>row["ano"]</VALUE-OF>]]></text-property>
                             </text>
                         </cell>
@@ -928,7 +929,8 @@ Exercicio <VALUE-OF>row["ano"]</VALUE-OF>]]></text-property>
                                 <property name="fontWeight">bold</property>
                                 <property name="textAlign">center</property>
                                 <property name="contentType">html</property>
-                                <text-property name="content"><![CDATA[Plano Plurianual<br />
+                                <text-property name="content"><![CDATA[Lei de Diretrizes Orcamentárias<br />
+Anexo I - Metas e Prioridades<br />
 Exercicio <VALUE-OF>row["ano"]</VALUE-OF>]]></text-property>
                             </text>
                         </cell>
@@ -1061,7 +1063,7 @@ Exercicio <VALUE-OF>row["ano"]</VALUE-OF>]]></text-property>
                     <expression name="valueExpr">params["exibe_nao_orcamentaria"].value == 0</expression>
                 </structure>
             </list-property>
-            <expression name="valueExpr">'PROGRAMAS E AÇÕES ' + params["ano_ldo"].value</expression>
+            <expression name="valueExpr">'AÇÕES NÃO ORÇAMENTÁRIAS LDO ' + params["ano_ldo"].value</expression>
             <property name="contentType">html</property>
         </text-data>
         <table id="1463">
@@ -1231,7 +1233,8 @@ Exercicio <VALUE-OF>row["ano"]</VALUE-OF>]]></text-property>
                                 <property name="fontWeight">bold</property>
                                 <property name="textAlign">center</property>
                                 <property name="contentType">html</property>
-                                <text-property name="content"><![CDATA[Plano Plurianual<br />
+                                <text-property name="content"><![CDATA[Lei de Diretrizes Orcamentárias<br />
+Anexo I - Metas e Prioridades<br />
 Exercicio <VALUE-OF>row["ano"]</VALUE-OF>]]></text-property>
                             </text>
                         </cell>
@@ -1585,7 +1588,8 @@ Exercicio <VALUE-OF>row["ano"]</VALUE-OF>]]></text-property>
                                 <property name="fontWeight">bold</property>
                                 <property name="textAlign">center</property>
                                 <property name="contentType">html</property>
-                                <text-property name="content"><![CDATA[Plano Plurianual<br />
+                                <text-property name="content"><![CDATA[Lei de Diretrizes Orcamentárias<br />
+Anexo I - Metas e Prioridades<br />
 Exercicio <VALUE-OF>row["ano"]</VALUE-OF>]]></text-property>
                             </text>
                         </cell>

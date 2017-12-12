@@ -189,7 +189,7 @@ function recuperaContratoAssentamentoSubDivisao(&$rsRecordSet,$stFiltro="",$stOr
 
 function montaRecuperaContratoAssentamentoSubDivisao()
 {
-    $stSQL = "     SELECT assentamento_assentamento.*                                                                               \n";
+    $stSQL .= "     SELECT assentamento_assentamento.*                                                                               \n";
     $stSQL .= "       FROM pessoal.assentamento                                                                                      \n";
     $stSQL .= " INNER JOIN pessoal.assentamento_assentamento                                                                         \n";
     $stSQL .= "         ON assentamento.cod_assentamento = assentamento_assentamento.cod_assentamento                                \n";
@@ -202,7 +202,6 @@ function montaRecuperaContratoAssentamentoSubDivisao()
     $stSQL .= " INNER JOIN pessoal.classificacao_assentamento                                                                        \n";
     $stSQL .= "         ON assentamento_assentamento.cod_classificacao = classificacao_assentamento.cod_classificacao                \n";
     $stSQL .= " INNER JOIN folhapagamento.previdencia                                                                                \n";
-    $stSQL .= "         ON previdencia.cod_regime_previdencia = assentamento_assentamento.cod_regime_previdencia                     \n";
     $stSQL .= " INNER JOIN pessoal.contrato_servidor_previdencia                                                                     \n";
     $stSQL .= "         ON previdencia.cod_previdencia = contrato_servidor_previdencia.cod_previdencia                               \n";
     $stSQL .= " INNER JOIN (  SELECT cod_contrato                                                                                    \n";

@@ -485,7 +485,7 @@ params['stQuery'] = this.queryText;]]></method>
              ELSE marca.descricao 
          END AS marca
       , ordem_item.quantidade
-      , ROUND(ordem_item.vl_total / ordem_item.quantidade,3) AS vl_unitario
+      , ROUND(ordem_item.vl_total / ordem_item.quantidade,2) AS vl_unitario
       , ordem_item.vl_total
 
   FROM compras.ordem
@@ -1358,7 +1358,7 @@ function formataNumExenteso(valor)
                             <property name="paddingRight">4pt</property>
                             <structure name="numberFormat">
                                 <property name="category">Custom</property>
-                                <property name="pattern">###,###0.000</property>
+                                <property name="pattern">###,##0.00</property>
                             </structure>
                             <property name="textAlign">right</property>
                             <property name="resultSetColumn">vl_unitario</property>

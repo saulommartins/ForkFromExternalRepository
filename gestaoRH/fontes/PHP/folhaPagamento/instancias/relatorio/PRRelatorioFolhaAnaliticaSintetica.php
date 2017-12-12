@@ -242,9 +242,9 @@ function addCabecalhoRelatorio(&$fpdf,$inLinha)
         $inLinha = incrementaLinha($fpdf,$inLinha);
 
         $fpdf->SetXY(7,$inLinha);
-        $fpdf->Cell(95,$inAlturaLinha, 'Local' ,0,0,'L',1);
+        $fpdf->Cell(95,$inAlturaLinha, 'Lotação/Local' ,0,0,'L',1);
         $fpdf->SetXY(103,$inLinha);
-        $fpdf->Cell(60,$inAlturaLinha, 'Local' ,0,0,'L',1);
+        $fpdf->Cell(60,$inAlturaLinha, 'Banco' ,0,0,'L',1);
         $fpdf->SetXY(157,$inLinha);
         $fpdf->Cell(80,$inAlturaLinha, 'Padrão' ,0,0,'L',1);
         $fpdf->SetXY(265,$inLinha);
@@ -299,7 +299,7 @@ function addInformacoesContrato(&$fpdf,$inLinha,$arDados)
     $inLinha = incrementaLinha($fpdf,$inLinha);
 
     $fpdf->SetXY(7,$inLinha);
-    $fpdf->Cell(95,$inAlturaLinha, substr($arDados['local'],0,70) ,0,0,'L',1);
+    $fpdf->Cell(95,$inAlturaLinha, substr($arDados['orgao'].'-'.$arDados['lotacao'].'/'.$arDados['local'],0,57) ,0,0,'L',1);
     $fpdf->SetXY(101,$inLinha);
     $fpdf->Cell(55,$inAlturaLinha, $arDados['num_banco'].'-'.$arDados['descricao_banco'] ,0,0,'L',1);
     $fpdf->SetXY(157,$inLinha);
@@ -1739,7 +1739,7 @@ function analiticaResumida(&$fpdf,$inLinha)
                         $fpdf->SetFillColor(245,245,245);
                         $fpdf->SetXY(7,$inLinha);
                         $fpdf->SetFont('Helvetica','B',8);
-                        $fpdf->Cell(283,$inAlturaLinha, 'SUB-TOTAL: $nuBanco - '.$stBanco ,0,0,'C',1);
+                        $fpdf->Cell(283,$inAlturaLinha, 'TOTAL POR BANCO: $nuBanco - '.$stBanco ,0,0,'C',1);
                         $fpdf->SetFont('Helvetica','',8);
 
                         $fpdf->SetFillColor(255,255,255);
@@ -2292,10 +2292,6 @@ function sintetica(&$fpdf,$inLinha)
                 $boBanco = true;
             }
 
-            if ($arFiltro['boLocal'] && $nuBanco != $rsContratosCalculados->getCampo('num_banco')) {
-                $boLocal = true;
-            }
-
             foreach ($arFiltro['arrayOrdenacao'] as $stPosicaoOrdenacao => $value) {
                 if (${ordenacaoPosicaoAnterior($stPosicaoOrdenacao)}) {
                     $$stPosicaoOrdenacao = true;
@@ -2347,7 +2343,7 @@ function sintetica(&$fpdf,$inLinha)
                     $fpdf->SetFillColor(245,245,245);
                     $fpdf->SetXY(7,$inLinha);
                     $fpdf->SetFont('Helvetica','B',8);
-                    $fpdf->Cell(283,$inAlturaLinha, 'SUB-TOTAL: '.$nuBanco.' - '.$stBanco ,0,0,'C',1);
+                    $fpdf->Cell(283,$inAlturaLinha, 'TOTAL POR BANCO: '.$nuBanco.' - '.$stBanco ,0,0,'C',1);
                     $fpdf->SetFont('Helvetica','',8);
                     $inLinha = incrementaLinha($fpdf,$inLinha);
 
@@ -2380,19 +2376,6 @@ function sintetica(&$fpdf,$inLinha)
                     $nuTotalDescontosBanco   = 0;
                     $nuTotalLiquidoBanco     = 0;
                     $inTotalContratosBanco   = 0;
-                }
-
-                if ($stPosicaoOrdenacao == 'boLocal' and $boLocal) {
-                    $fpdf->SetFillColor(245,245,245);
-                    $fpdf->SetXY(7,$inLinha);
-                    $fpdf->SetFont('Helvetica','B',8);
-                    $fpdf->Cell(283,$inAlturaLinha, 'TOTAL DO LOCAL: '.$nuBanco.' - '.$stBanco ,0,0,'C',1);
-                    $fpdf->SetFont('Helvetica','',8);
-                    $inLinha = incrementaLinha($fpdf,$inLinha);
-                    $inLinha = incrementaLinha($fpdf,$inLinha);
-
-                    $boLocal  = false;
-                    //$boQuebra = true;
                 }
 
             }//end foreach _array_reverse array_ordenacao

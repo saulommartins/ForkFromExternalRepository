@@ -99,8 +99,8 @@ $inicio = array_key_exists('inicio', $_GET) ? $_GET['inicio'] : null;
 
                 <!-- Nome Prefeitura -->
                 <td background="<?=CAM_FW_IMAGENS?>bg_topo.png" height="55" align="right">
-		   <font color="#4a6491" size="6" face="Futura Md BT, arial, courier"><strong><?=$exec_prefeitura;?></strong>&nbsp;</font>  
-		</td>
+                    <font color="#4a6491" size="6" face="Futura Md BT, arial, courier"><strong><?=$exec_prefeitura;?></strong>&nbsp;</font>
+                </td>
 
                 <!-- Brasão Prefeitura -->
                 <td width="60">

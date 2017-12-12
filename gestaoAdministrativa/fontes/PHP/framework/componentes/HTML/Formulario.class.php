@@ -652,7 +652,7 @@ function addComponenteComposto($obComponenteCod , $obComponenteSel ,$boAbreCompo
 
     $stOnChangeSel  = "preencheCampo( this, ".$stPreenchido.", '".Sessao::getId()."' );";
 
-    if (!is_null($obComponenteSel->obEvento)) {
+    if (isset($obComponenteSel->obEvento) && !is_null($obComponenteSel->obEvento)) {
         $stOnChangeSel .= $obComponenteSel->obEvento->getOnChange();
         $obComponenteSel->obEvento->setOnChange( $stOnChangeSel );
     }

@@ -43,13 +43,6 @@ include '../../../framework/legado/paginacaoLegada.class.php';
 include '../../../framework/legado/processosLegado.class.php';
 include CAM_GA_ORGAN_COMPONENTES."IMontaOrganograma.class.php";
 
-// Integração Alfresco: códigos das classificações de processo que são permitidos
-function isAlfrescoPermitido($checkCod){
-    $codPermitidos = array('alvaras' => 65200, 'iptu' => 65300);
-    return in_array($checkCod, $codPermitidos);
-}
-/* FIM modificação */
-
 setAjuda('uc-01.06.98');
 
 $ctrl             = $_REQUEST["ctrl"];
@@ -313,7 +306,7 @@ case 1:
         echo "		<td class=show_dados_center>".timestamptobr($dbConfig->pegaCampo("timestamp"))."</td>\n";
         echo "		<td class=show_dados_center>".$stDespacho."</td>\n";
         echo "		<td class=show_dados_center>".$stApenso."</td>\n";
-
+        
         echo "		<td class=botao width='2%'>\n";
         echo "		<a href='consultaProcesso.php?".Sessao::getId()."&ctrl=2";
         echo "&pagina=".$pagina."&codProcesso=".$dbConfig->pegaCampo("cod_processo");
@@ -489,30 +482,22 @@ break;
            <input type="hidden" name="ctrl" value="3">
        </tr>
         <?php
-            // Integração Alfresco: recupera o interessado do processo
             $select =   "SELECT
-                          P.cod_usuario,
-                          U.username,
-                          TO_CHAR(P.timestamp,'DD/MM/YYYY (HH24:MI)') AS data,
-                          P.cod_classificacao,
-                          P.cod_assunto,
-                         SP.nom_situacao,
-                          sw_cgm_pessoa_fisica.cpf,
-                          sw_cgm_pessoa_juridica.cnpj
+                            P.cod_usuario,
+                            U.username,
+                            TO_CHAR(P.timestamp,'DD/MM/YYYY (HH24:MI)') AS data,
+                            P.cod_classificacao,
+                            P.cod_assunto,
+                            SP.nom_situacao
                         FROM
-                          sw_processo AS P,
-                          administracao.usuario  AS U,
-                          sw_situacao_processo  AS SP,
-                          sw_processo_interessado
-                          FULL OUTER JOIN sw_cgm_pessoa_fisica ON sw_processo_interessado.numcgm = sw_cgm_pessoa_fisica.numcgm
-                          FULL OUTER JOIN sw_cgm_pessoa_juridica ON sw_processo_interessado.numcgm = sw_cgm_pessoa_juridica.numcgm
+                            sw_processo AS P,
+                            administracao.usuario  AS U,
+                            sw_situacao_processo  AS SP
                         WHERE
-                          P.cod_usuario   = U.numcgm         AND
-                          P.cod_situacao  = SP.cod_situacao  AND
-                          P.cod_processo  = ".$codProcesso." AND
-                          P.ano_exercicio = '".$anoExercicio."' AND
-                          P.ano_exercicio = sw_processo_interessado.ano_exercicio AND
-                          P.cod_processo = sw_processo_interessado.cod_processo";
+                            P.cod_usuario   = U.numcgm         AND
+                            P.cod_situacao  = SP.cod_situacao  AND
+                            P.cod_processo  = ".$codProcesso." AND
+                            P.ano_exercicio = '".$anoExercicio."' ";
 
             $dbConfig       = new databaseLegado;
             $dbConfig->abreBd();
@@ -523,45 +508,6 @@ break;
             $codClassificacao = $dbConfig->pegaCampo("cod_classificacao");
             $codAssunto = $dbConfig->pegaCampo("cod_assunto");
             $nomSituacao = $dbConfig->pegaCampo("nom_situacao");
-
-            $interessadoCPF    = $dbConfig->pegaCampo("cpf");
-            $interessadoCNPJ   = $dbConfig->pegaCampo("cnpj");
-            $interessadoPessoa = (strlen($interessadoCPF) == 11) ? $interessadoCPF : $interessadoCNPJ;
-
-            $displayHTML = "";
-            if (isAlfrescoPermitido($codClassificacao)){
-                $displayHTML = "style='display:none'";
-            }
-            /* FIM modificação */
-            // Original
-            // $select =   "SELECT
-            //                 P.cod_usuario,
-            //                 U.username,
-            //                 TO_CHAR(P.timestamp,'DD/MM/YYYY (HH24:MI)') AS data,
-            //                 P.cod_classificacao,
-            //                 P.cod_assunto,
-            //                 SP.nom_situacao
-            //             FROM
-            //                 sw_processo AS P,
-            //                 administracao.usuario  AS U,
-            //                 sw_situacao_processo  AS SP
-            //             WHERE
-            //                 P.cod_usuario   = U.numcgm         AND
-            //                 P.cod_situacao  = SP.cod_situacao  AND
-            //                 P.cod_processo  = ".$codProcesso." AND
-            //                 P.ano_exercicio = '".$anoExercicio."' ";
-            //
-            // $dbConfig       = new databaseLegado;
-            // $dbConfig->abreBd();
-            // $dbConfig->abreSelecao($select);
-            // $dataInclusao   = $dbConfig->pegaCampo("data");
-            // $numcgmInclusao = $dbConfig->pegaCampo("cod_usuario");
-            // $nomcgmInclusao = $dbConfig->pegaCampo("username");
-            // $codClassificacao = $dbConfig->pegaCampo("cod_classificacao");
-            // $codAssunto = $dbConfig->pegaCampo("cod_assunto");
-            // $nomSituacao = $dbConfig->pegaCampo("nom_situacao");
-            /* FIM original */
-
             $dbConfig->limpaSelecao();
             $dbConfig->fechaBd();
 
@@ -671,14 +617,7 @@ break;
                     echo "			".$nomDocumento[$codDocumento]."<br>\n";
                     echo "		</td>\n";
                     echo "		<input type=hidden name=cod_documentos[".$codDocumento."] value=".$codDocumento.">";
-
-                    // Integração Alfresco: cria atributo HTML para esconder as colunas da imagem
-                    echo "		<td ".$displayHTML." width='10%' class=fieldright>\n";
-                    /* FIM modificação*/
-                    // Original:
-                    //echo "		<td ".$displayHTML." width='10%' class=fieldright>\n";
-                    /* FIM original*/
-
+                    echo "		<td width='10%' class=fieldright>\n";
                     echo "			<input type=button name=copiaDigitalB value='Copia Digital' onClick='javascript: copiaDigital(".$codDocumento.",".Sessao::read('acao').",".$codProcesso.",".$anoExercicio.");'>\n";
                     echo "		</td>\n";
                     echo "	</tr>\n";
@@ -695,14 +634,7 @@ break;
                     echo "		<td class=field>\n";
                     echo "			".$nomDocumento[$codDocumento]."<br>\n";
                     echo "		</td>\n";
-
-                    // Integração Alfresco: cria atributo HTML para esconder as colunas da imagem
-                    echo "		<td ".$displayHTML." width='10%' class=fieldright>\n";
-                    /* FIM modificação*/
-                    // Original:
-                    //echo "		<td ".$displayHTML." width='10%' class=fieldright>\n";
-                    /* FIM original*/
-
+                    echo "		<td width='10%' class=fieldright>\n";
                     echo "			<input type=button name=copiaDigitalB value='Copia Digital' onClick='javascript: copiaDigital(".$codDocumento.",".Sessao::read('acao').",".$codProcesso.",".$anoExercicio.");'>\n";
                     echo "		</td>\n";
                     echo "	</tr>\n";
@@ -712,57 +644,9 @@ break;
                 }
                 $dbConfig->vaiProximo();
             }
-
-            // Integração Alfresco: cria botão para acessar o Alfresco no momento de descarregar arquivos
-            if (isAlfrescoPermitido($codClassificacao)) {
-               echo "
-                   <tr>
-                       <td class='alt_dados' colspan='8'>
-                           Integração com o Alfresco
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class='show_dados'>
-                           Acesse os documentos armazenados no Alfresco
-                       </td>
-                       <td class='show_dados' colspan='7'>
-                           <input type='button' value='Acessar Alfresco' onclick=\"descarregarAlfresco('".$codClassificacao."','".$interessadoPessoa."');\">
-                       </td>
-                   </tr>
-               ";
-            }
-            /* FIM modificação */
-
             $dbConfig->limpaSelecao();
             $dbConfig->fechaBd();
 ?>
-        <script>
-            // Integração Alfresco: acessa site no Alfresco de acordo com o interessado do processo
-            function descarregarAlfresco(classificacaoAssunto,interessado){
-                // var caminhoEncoded = encodeURIComponent(caminho).replace(/'/g,"%27").replace(/"/g,"%22");
-                if (classificacaoAssunto == '65200') {
-                    var URL = 'http://10.10.1.113:8080/share/page/site/cadastro-economico/documentlibrary#filter=path%7C%2F' ;
-                    if (interessado.length == 11) {
-                        URL = URL + 'Pessoa%2520F%25EDsica%2F';
-                    }
-                    else if (interessado.length == 14){
-                        URL = URL + 'Pessoa%2520Jur%25EDdica%2F';
-                    }
-                    URL = URL + interessado.substring(0,1) + '%2F' + interessado;
-                }
-                else{
-                    var URL = 'http://10.10.1.113:8080/share/page';
-                }
-                var params = [
-                    'height='+screen.height,
-                    'width='+screen.width,
-                    'fullscreen=yes'
-                ].join(',');
-                var popup = window.open(URL, 'popup_window', params);
-                popup.moveTo(0,0);
-            }
-            /* FIM modificação */
-        </script>
 
         <tr>
             <td class=label>*Descrição</td>

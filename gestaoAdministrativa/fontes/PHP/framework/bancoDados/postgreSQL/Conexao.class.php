@@ -242,12 +242,12 @@ class Conexao extends Objeto
             }
 
             if ($this->getUser()) {
-                $options[] = "user='".$this->getUser()."'";
+                $options[] = "user=".$this->getUser();
 
             }
 
             if ($this->getPassWord()) {
-                $options[] = "password='".$this->getPassWord()."'";
+                $options[] = "password=".$this->getPassWord();
 
             }
 
