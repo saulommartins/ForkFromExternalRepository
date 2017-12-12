@@ -203,8 +203,10 @@ function montaHTML()
 
     $obSpn = new Span;
     $obSpn->setId    ($this->getId());
+    $obSpn->setClass('');
     $obSpn->setValue (($this->getValue()!== false) ? $this->getValue() : '&nbsp;');
     $obSpn->setStyle ($this->getStyle());
+
     $obSpn->montaHTML();
     $this->setHtml   ($obSpn->getHtml());
 }
