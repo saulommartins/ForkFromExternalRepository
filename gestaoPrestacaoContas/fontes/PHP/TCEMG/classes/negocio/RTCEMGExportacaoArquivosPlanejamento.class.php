@@ -85,8 +85,8 @@ class RTCEMGExportacaoArquivosPlanejamento
     public $obTTCEMGArquivoAMP;
     public $obTTCEMGArquivoUOC;
     public $obTTCEMGORGAO;
-    
-    
+
+
     /**
     * Metodo Construtor
     * @access Private
@@ -131,12 +131,12 @@ class RTCEMGExportacaoArquivosPlanejamento
     public function geraRecordset(&$arRecordSetArquivos)
     {
         if (in_array("AMP.csv",$this->getArquivos())) {
-            
+
             //Tipo Registro 10
             $this->obTTCEMGAMP->setDado('exercicio', $this->getExercicio());
             $this->obTTCEMGAMP->setDado('mes'      , $this->getMes());
             $this->obTTCEMGAMP->recuperaDadosExportacaoTipo10($rsRecordSet10);
-            
+
             $arRecordSetArquivos["AMP10"] = $rsRecordSet10;
 
             foreach ($rsRecordSet10->arElementos AS $arAMP) {
@@ -149,7 +149,7 @@ class RTCEMGExportacaoArquivosPlanejamento
                     $this->obTTCEMGArquivoAMP->inclusao();
                 }
             }
-            
+
             //Tipo Registro 12
             $rsAdminConfiguracao = new Recordset();
             $obTAdministracaoConfiguracao = new TAdministracaoConfiguracao();
@@ -169,19 +169,19 @@ class RTCEMGExportacaoArquivosPlanejamento
                 $obTAdministracaoConfiguracao->setDado('parametro', 'nom_prefeitura');
                 $obTAdministracaoConfiguracao->setDado('cod_modulo', 2);
                 $obTAdministracaoConfiguracao->recuperaPorChave($rsAdminConfiguracao2, $boTransacao);
-                
+
                 SistemaLegado::alertaAviso("FLExportarArquivosPlanejamento.php?".Sessao::getId()."&stAcao=$stAcao", "As configuração de Orgão não está configuradas. Por favor configurar a Entidade (".$rsAdminConfiguracao2->getCampo('valor').").", "", "aviso", Sessao::getId(), "../");
                 die;
             }
-            
-            
+
+
             $this->obTTCEMGAMP->setDado('entidades', $this->getCodEntidades());
             $this->obTTCEMGAMP->setDado('cod_orgao',$rsAdminConfigEntidade->getCampo('valor'));
             $this->obTTCEMGAMP->recuperaDadosExportacaoTipo12($rsRecordSet12);
 
             $arRecordSetArquivos["AMP12"] = $rsRecordSet12;
         }
-        
+
         if (in_array("DSP.csv",$this->getArquivos())) {
             $rsRecordSet10 = new RecordSet();
             $rsRecordSet11 = new RecordSet();
@@ -189,13 +189,13 @@ class RTCEMGExportacaoArquivosPlanejamento
             $this->obTPPAAcao->setDado('entidades', $this->getCodEntidades());
             $this->obTPPAAcao->setDado('exercicio', $this->getExercicio());
             $this->obTPPAAcao->recuperaDadosExportacaoDespesa($rsRecordSet10);
-            
+
             $arRecordSetArquivos["DSP10"] = $rsRecordSet10;
 
             //Tipo Registro 11
             $this->obTPPAAcao->setDado('entidades', $this->getCodEntidades());
             $this->obTPPAAcao->recuperaDadosExportacaoDespesaFonteRecurso($rsRecordSet11);
-            
+
             $arRecordSetArquivos["DSP11"] = $rsRecordSet11;
         }
 
@@ -231,7 +231,7 @@ class RTCEMGExportacaoArquivosPlanejamento
                 $this->obTTCEMGConfiguracaoLOA->setDado('tipo', $inIndex+1);
                 $this->obTTCEMGConfiguracaoLOA->setDado('exercicio', Sessao::getExercicio());
                 $this->obTTCEMGConfiguracaoLOA->recuperaRegistro11( $rsRecordSet11 );
-                
+
                 $arRecordSet11[] = $rsRecordSet11->arElementos[0];
                 $inIndex++;
             }
@@ -277,7 +277,7 @@ class RTCEMGExportacaoArquivosPlanejamento
         if (in_array("ORGAO.csv",$this->getArquivos())) {
             $this->obTTCEMGORGAO->setDado('entidade', $this->getCodEntidades());
             $this->obTTCEMGORGAO->recuperaExportacaoOrgaoPlanejamento($rsRecordSet);
-            
+
             $arRecordSetArquivos["ORGAO.csv"] = $rsRecordSet;
         }
 
@@ -290,13 +290,13 @@ class RTCEMGExportacaoArquivosPlanejamento
            $rsVerificaProgramas = new RecordSet();
             $this->obTTCEMGRegistrosArquivoPrograma->setDado('exercicio', Sessao::getExercicio());
             $this->obTTCEMGRegistrosArquivoPrograma->recuperaPorChave($rsVerificaProgramas);
-            
+
             if($rsVerificaProgramas->getNumLinhas() > 0){
                 $this->obTTCEMGRegistrosArquivoPrograma->setDado('boReemissao','true');
             }else{
                 $this->obTTCEMGRegistrosArquivoPrograma->setDado('boReemissao','false');
             }
-            
+
             $obErro = $this->obTTCEMGRegistrosArquivoPrograma->recuperaTotalRecursos($rsRecordSet);
 
             $arRecordSetArquivos["PRO.csv"] = $rsRecordSet;
@@ -308,7 +308,7 @@ class RTCEMGExportacaoArquivosPlanejamento
             $stDataFinal   = SistemaLegado::retornaUltimoDiaMes($this->getMes(), Sessao::getExercicio());
             $this->obTOrcamentoReceita->setDado('dt_inicial', $stDataInicial );
             $this->obTOrcamentoReceita->setDado('dt_final'  , $stDataFinal   );
-            
+
             //Tipo Registro 10
             $this->obTOrcamentoReceita->recuperaReceitaExportacaoPlanejamento10($rsRecordSet, $boTransacao);
 
@@ -441,9 +441,9 @@ class RTCEMGExportacaoArquivosPlanejamento
             $this->obTTCEMGCONSID->setDado('mes'         , $this->getMes());
             $this->obTTCEMGCONSID->setDado('modulo_sicom','planejamento');
             $this->obTTCEMGCONSID->recuperaConsid($rsRecordSet10);
-            
+
             $arRecordSetArquivos["CONSID10"] = $rsRecordSet10;
-            
+
              //Tipo Registro 99
             $arCONSID99 = array(
                 '0' => array(

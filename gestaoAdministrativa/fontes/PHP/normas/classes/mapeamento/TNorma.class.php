@@ -277,52 +277,43 @@ function recuperaDadosExportacaoLPP(&$rsRecordSet,$stFiltro="",$stOrder="",$boTr
 
 function montaRecuperaDadosExportacaoLPP()
 {
-    $stSql = "
-                SELECT  ppa_alteracao.nroleialteracao AS nroleialteracao
-                      , TO_CHAR(ppa_alteracao.dataleialteracao, 'DDMMYYYY') AS dataleialteracao
-                      , TO_CHAR(ppa_alteracao.datapubleialt, 'DDMMYYYY') AS datapubleialt
-                      , ppa_anterior.nroLeiPPA
-                      , TO_CHAR(ppa_anterior.dataLeiPPA, 'DDMMYYYY') AS dataLeiPPA
-                      , TO_CHAR(ppa_anterior.dataPubLeiPPA, 'DDMMYYYY') AS dataPubLeiPPA
-                FROM tcemg.configuracao_leis_ppa
-                JOIN normas.norma
-                  ON norma.cod_norma = configuracao_leis_ppa.cod_norma
-
-                JOIN(  SELECT num_norma AS nroLeiPPA
-                             , dt_assinatura AS dataLeiPPA
-                             , dt_publicacao AS dataPubLeiPPA
-                             , configuracao_leis_ppa.exercicio
+    $stSql = "SELECT DISTINCT ppa_alteracao.nroleialteracao AS nroleialteracao,
+                     TO_CHAR(ppa_alteracao.dataleialteracao, 'DDMMYYYY') AS dataleialteracao,
+                     TO_CHAR(ppa_alteracao.datapubleialt, 'DDMMYYYY') AS datapubleialt,
+                     ppa_anterior.nroLeiPPA,
+                     TO_CHAR(ppa_anterior.dataLeiPPA, 'DDMMYYYY') AS dataLeiPPA,
+                     TO_CHAR(ppa_anterior.dataPubLeiPPA, 'DDMMYYYY') AS dataPubLeiPPA
               FROM tcemg.configuracao_leis_ppa
-              JOIN normas.norma
-                            ON norma.cod_norma = configuracao_leis_ppa.cod_norma
-                         WHERE  configuracao_leis_ppa.status <> 'f'
-                           AND configuracao_leis_ppa.tipo_configuracao = 'consulta'
-                    ) as ppa_anterior
-                   ON ppa_anterior.exercicio = configuracao_leis_ppa.exercicio
-                  AND ppa_anterior.dataLeiPPA = norma.dt_assinatura
-                  AND ppa_anterior.dataPubLeiPPA = norma.dt_publicacao
-                  AND ppa_anterior.nroLeiPPA = norma.num_norma
-
-           LEFT JOIN(   SELECT norma.num_norma AS nroleialteracao
-                             , norma.dt_assinatura AS dataleialteracao
-                             , norma.dt_publicacao AS datapubleialt
-                             , configuracao_leis_ppa.exercicio
-                          FROM tcemg.configuracao_leis_ppa
-              JOIN normas.norma
-                            ON norma.cod_norma = configuracao_leis_ppa.cod_norma
-                         WHERE configuracao_leis_ppa.tipo_configuracao = 'alteracao'
-                           AND configuracao_leis_ppa.status <> 'f'
-                           AND (SELECT MAX(norma.dt_publicacao)
-                                FROM tcemg.configuracao_leis_ppa
-                                JOIN normas.norma
-                                  ON norma.cod_norma = configuracao_leis_ppa.cod_norma
-                                WHERE configuracao_leis_ppa.tipo_configuracao = 'alteracao'
-                                  AND configuracao_leis_ppa.status <> 'f') = norma.dt_publicacao
-                    ) as ppa_alteracao
-                   ON ppa_anterior.exercicio = configuracao_leis_ppa.exercicio
+                   JOIN normas.norma ON norma.cod_norma = configuracao_leis_ppa.cod_norma
+                   JOIN (SELECT num_norma AS nroLeiPPA,
+                                dt_assinatura AS dataLeiPPA,
+                                dt_publicacao AS dataPubLeiPPA,
+                                configuracao_leis_ppa.exercicio
+                         FROM tcemg.configuracao_leis_ppa
+                              JOIN normas.norma ON norma.cod_norma = configuracao_leis_ppa.cod_norma
+                         WHERE configuracao_leis_ppa.status <> 'f'
+                               AND configuracao_leis_ppa.tipo_configuracao = 'consulta'
+                        ) as ppa_anterior ON ppa_anterior.exercicio = configuracao_leis_ppa.exercicio
+                        AND ppa_anterior.dataLeiPPA = norma.dt_assinatura
+                        AND ppa_anterior.dataPubLeiPPA = norma.dt_publicacao
+                        AND ppa_anterior.nroLeiPPA = norma.num_norma
+                   LEFT JOIN (SELECT norma.num_norma AS nroleialteracao,
+                                     norma.dt_assinatura AS dataleialteracao,
+                                     norma.dt_publicacao AS datapubleialt,
+                                     configuracao_leis_ppa.exercicio
+                              FROM tcemg.configuracao_leis_ppa
+                                    JOIN normas.norma ON norma.cod_norma = configuracao_leis_ppa.cod_norma
+                              WHERE configuracao_leis_ppa.tipo_configuracao = 'alteracao'
+                                    AND configuracao_leis_ppa.status <> 'f'
+                                    AND (SELECT MAX(norma.dt_publicacao)
+                                         FROM tcemg.configuracao_leis_ppa
+                                              JOIN normas.norma ON norma.cod_norma = configuracao_leis_ppa.cod_norma
+                                         WHERE configuracao_leis_ppa.tipo_configuracao = 'alteracao'
+                                               AND configuracao_leis_ppa.status <> 'f'
+                                        ) = norma.dt_publicacao
+                             ) as ppa_alteracao ON ppa_anterior.exercicio = configuracao_leis_ppa.exercicio
                 WHERE configuracao_leis_ppa.exercicio = '".$this->getDado('exercicio')."'
-                  AND configuracao_leis_ppa.status <> 'f'
-    ";
+                  AND configuracao_leis_ppa.status <> 'f'";
 
     return $stSql;
 }
