@@ -207,11 +207,9 @@ class RTCEMGExportacaoArquivosPlanejamento
             $arRecordSetArquivos["IDE.csv"] = $rsRecordSet;
         }
 
-
         if (in_array("LDO.csv",$this->getArquivos())) {
             $this->obTNorma->setDado('exercicio', $this->getExercicio());
             $this->obTNorma->recuperaDadosExportacaoLDO($rsRecordSet);
-
             $arRecordSetArquivos["LDO.csv"] = $rsRecordSet;
         }
 

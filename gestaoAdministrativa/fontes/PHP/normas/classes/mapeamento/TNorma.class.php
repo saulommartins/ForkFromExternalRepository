@@ -186,6 +186,7 @@ function recuperaDadosExportacao(&$rsRecordSet, $stFiltro = "", $stOrdem ="", $b
 
     return $obErro;
 }
+
 function montaRecuperaDadosExportacao()
 {
     $stSQL .= "SELECT
@@ -334,51 +335,39 @@ function recuperaDadosExportacaoLDO(&$rsRecordSet, $stFiltro = "", $stOrdem ="",
 
 function montaRecuperaDadosExportacaoLDO()
 {
-    $stSql = "
-                SELECT  ldo_alteracao.numero_ldo AS numero_lei_alteracao
-                      , TO_CHAR(ldo_alteracao.data_ldo, 'DDMMYYYY') AS data_lei_alteracao
-                      , TO_CHAR(ldo_alteracao.data_publicacao_ldo, 'DDMMYYYY') AS data_publicacao_lei_alteracao
-                      , ldo_anterior.numero_ldo
-                      , TO_CHAR(ldo_anterior.data_ldo, 'DDMMYYYY') AS data_ldo
-                      , TO_CHAR(ldo_anterior.data_publicacao_ldo, 'DDMMYYYY') AS data_publicacao_ldo
-                FROM tcemg.configuracao_leis_ldo
-
-                JOIN normas.norma
-                  ON norma.cod_norma = configuracao_leis_ldo.cod_norma
-
-           LEFT JOIN (SELECT num_norma AS numero_ldo
-                           , dt_assinatura AS data_ldo
-                           , dt_publicacao AS data_publicacao_ldo
-                           , configuracao_leis_ldo.exercicio
-                        FROM tcemg.configuracao_leis_ldo
-                        JOIN normas.norma
-                          ON norma.cod_norma = configuracao_leis_ldo.cod_norma
-                     WHERE configuracao_leis_ldo.tipo_configuracao = 'consulta'
-                       AND configuracao_leis_ldo.status <> 'f'
-                    ) as ldo_anterior
-                  ON ldo_anterior.exercicio = configuracao_leis_ldo.exercicio
-                 AND ldo_anterior.data_ldo = norma.dt_assinatura
-                 AND ldo_anterior.data_publicacao_ldo = norma.dt_publicacao
-                 AND ldo_anterior.numero_ldo = norma.num_norma
-
-           LEFT JOIN (SELECT num_norma AS numero_ldo
-                           , dt_assinatura AS data_ldo
-                           , dt_publicacao AS data_publicacao_ldo
-                           , configuracao_leis_ldo.exercicio
-                        FROM tcemg.configuracao_leis_ldo
-                        JOIN normas.norma
-                          ON norma.cod_norma = configuracao_leis_ldo.cod_norma
-                     WHERE configuracao_leis_ldo.tipo_configuracao = 'alteracao'
-                       AND configuracao_leis_ldo.status <> 'f'
-                    ) as ldo_alteracao
-                  ON ldo_anterior.exercicio = configuracao_leis_ldo.exercicio
-                 AND ldo_alteracao.data_ldo = norma.dt_assinatura
-                 AND ldo_alteracao.data_publicacao_ldo = norma.dt_publicacao
-                 AND ldo_alteracao.numero_ldo = norma.num_norma
-
-                WHERE configuracao_leis_ldo.exercicio = '".$this->getDado('exercicio')."'
-                  AND configuracao_leis_ldo.status <> 'f'
-    ";
+    $stSql = "SELECT DISTINCT ldo_anterior.numero_ldo,
+                     TO_CHAR(ldo_anterior.data_ldo, 'DDMMYYYY') AS data_ldo,
+                     TO_CHAR(ldo_anterior.data_publicacao_ldo, 'DDMMYYYY') AS data_publicacao_ldo,
+                     ldo_alteracao.numero_ldo AS numero_lei_alteracao,
+                     TO_CHAR(ldo_alteracao.data_ldo, 'DDMMYYYY') AS data_lei_alteracao,
+                     TO_CHAR(ldo_alteracao.data_publicacao_ldo, 'DDMMYYYY') AS data_publicacao_lei_alteracao
+              FROM tcemg.configuracao_leis_ldo
+                   JOIN normas.norma ON norma.cod_norma = configuracao_leis_ldo.cod_norma
+                   LEFT JOIN (SELECT num_norma AS numero_ldo,
+                                     dt_assinatura AS data_ldo,
+                                     dt_publicacao AS data_publicacao_ldo,
+                                     configuracao_leis_ldo.exercicio
+                              FROM tcemg.configuracao_leis_ldo
+                                   JOIN normas.norma ON norma.cod_norma = configuracao_leis_ldo.cod_norma
+                              WHERE configuracao_leis_ldo.tipo_configuracao = 'consulta'
+                                    AND configuracao_leis_ldo.status <> 'f'
+                             ) AS ldo_anterior ON ldo_anterior.exercicio = configuracao_leis_ldo.exercicio
+                             AND ldo_anterior.data_ldo = norma.dt_assinatura
+                             AND ldo_anterior.data_publicacao_ldo = norma.dt_publicacao
+                             AND ldo_anterior.numero_ldo = norma.num_norma
+                   LEFT JOIN (SELECT num_norma AS numero_ldo,
+                                     dt_assinatura AS data_ldo,
+                                     dt_publicacao AS data_publicacao_ldo,
+                                     configuracao_leis_ldo.exercicio
+                              FROM tcemg.configuracao_leis_ldo
+                                   JOIN normas.norma ON norma.cod_norma = configuracao_leis_ldo.cod_norma
+                              WHERE configuracao_leis_ldo.tipo_configuracao = 'alteracao'
+                                    AND configuracao_leis_ldo.status <> 'f'
+                             ) AS ldo_alteracao ON ldo_anterior.exercicio = configuracao_leis_ldo.exercicio
+              WHERE configuracao_leis_ldo.exercicio = '" . $this->getDado('exercicio') . "'
+                    AND configuracao_leis_ldo.status <> 'f'
+              ORDER BY 6
+              LIMIT 1";
 
     return $stSql;
 }
