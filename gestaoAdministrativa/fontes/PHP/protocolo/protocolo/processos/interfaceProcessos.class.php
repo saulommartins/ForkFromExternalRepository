@@ -37,6 +37,7 @@
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once CAM_GA_ORGAN_COMPONENTES."IMontaOrganograma.class.php";
+
 ?>
 <script type="text/javascript">
      function zebra(id, classe)
@@ -48,7 +49,7 @@ include_once CAM_GA_ORGAN_COMPONENTES."IMontaOrganograma.class.php";
             }
     }
 </script>
-   
+
 <?php
  class interfaceProcessos
  {
@@ -64,6 +65,12 @@ include_once CAM_GA_ORGAN_COMPONENTES."IMontaOrganograma.class.php";
             $jsOnload = 'setarFoco();';
     }
 */
+    // Integração Alfresco: códigos das classificações de processo que são permitidos
+    public function isAlfrescoPermitido($checkCod){
+        $codPermitidos = array('alvaras' => 65200, 'iptu' => 65300);
+        return in_array($checkCod, $codPermitidos);
+    }
+    /* FIM modificação */
 
     public function listaTipos()
     {
@@ -303,15 +310,40 @@ Gera os checkboxes com os documentos exigidos para um tipo de processo
                     }
 
                 $dataBase->vaiProximo();
-                $checkBox .= "
-                <tr>
-                    <td class=field>
-                        <input type='checkbox' ".$checked." name='codDocumentos[]' id='codDocumentos".$codDoc."' value='".$codDoc."'' onclick='javascript:desabilitar(".$codDoc.");'>".$nomDoc."
-                    </td>
-                    <td class=field>
-                        <input type='button' name='btnCopia".$codDoc."' value='Cópia Digital' onclick=\"copiaDigital($codDoc);\">
-                    </td>
-                </tr>";
+
+                // Integração Alfresco: remove botões de carregamento para o Urbem
+                if ($this->isAlfrescoPermitido($codClassificacao)) {
+                    $checkBox .= "
+                    <tr>
+                        <td class=field>
+                            <input type='checkbox' ".$checked." name='codDocumentos[]' id='codDocumentos".$codDoc."' value='".$codDoc."'' onclick='javascript:desabilitar(".$codDoc.");'>".$nomDoc."
+                        </td>
+                    </tr>";
+                }
+                else{
+                    $checkBox .= "
+                    <tr>
+                        <td class=field>
+                            <input type='checkbox' ".$checked." name='codDocumentos[]' id='codDocumentos".$codDoc."' value='".$codDoc."'' onclick='javascript:desabilitar(".$codDoc.");'>".$nomDoc."
+                        </td>
+                        <td class=field>
+                            <input type='button' name='btnCopia".$codDoc."' value='Cópia Digital' onclick=\"copiaDigital($codDoc);\">
+                        </td>
+                    </tr>";
+                }
+                /* FIM modificação*/
+                // Original:
+                // $checkBox .= "
+                // <tr>
+                //     <td class=field>
+                //         <input type='checkbox' ".$checked." name='codDocumentos[]' id='codDocumentos".$codDoc."' value='".$codDoc."'' onclick='javascript:desabilitar(".$codDoc.");'>".$nomDoc."
+                //     </td>
+                //     <td class=field>
+                //         <input type='button' name='btnCopia".$codDoc."' value='Cópia Digital' onclick=\"copiaDigital($codDoc);\">
+                //     </td>
+                // </tr>";
+                /* FIM original*/
+
             }
             $checkBox .= "</table>";
             $dataBase->limpaSelecao();
@@ -340,7 +372,7 @@ Gera o Combo com os códigos do Setor (usando a chave composta)
                     and A.cod_assunto = '".$codAssunto."'
                     Order by A.ordem ";
         }
-      
+
         $dataBase = new dataBaseLegado;
         $dataBase->abreBD();
         $dataBase->abreSelecao($sql);
@@ -497,7 +529,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                     $js .= 'd.getElementById("nomCgmAcesso").value = "'.$stCGMPermitido.'";';
                     $js .= 'd.getElementById("inserirCgmAcesso").disabled = false;';
                     $js .= 'd.getElementById("inserirCgmAcesso").focus();';
-                   
+
                 } else {
                     $js .= "erro = true;\n";
                     $js .= 'mensagem += "@CGM informado inválido ou inexistente! ('.$numCgmAcesso.')";';
@@ -536,7 +568,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
 
             //Verifica o tipo de numeração de processo - manual ou automática
             $tipoNumeracao = pegaConfiguracao("tipo_numeracao_processo",5);
-    
+
             if ($tipoNumeracao==2) { //Manual
                 if (strlen($anoExercicio)==0) {
                     $anoExercicio       = pegaConfiguracao("ano_exercicio");
@@ -592,6 +624,24 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                         eval ('document.frm.btnCopia'+cod+'.disabled = false');
                     }
                 }
+
+                // Integração Alfresco: acessa site no Alfresco de acordo com a classificação do processo
+                function carregarAlfresco(classificacaoAssunto)
+                {
+                    switch(classificacaoAssunto) {
+                        case '65200': var URL = 'http://10.10.1.113:8080/share/page/site/cadastro-economico/documentlibrary'; break;
+                        default: var URL = 'http://10.10.1.113:8080/share/page'
+                    }
+                    var params = [
+                        'height='+screen.height,
+                        'width='+screen.width,
+                        'fullscreen=yes'
+                    ].join(',');
+                    var popup = window.open(URL, 'popup_window', params);
+                    popup.moveTo(0,0);
+                }
+                /* FIM modificação */
+
                 function copiaDigital(cod)
                 {
                     var x = 200;
@@ -620,8 +670,8 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                             mensagem += '@O campo Inscrição Econômica é obrigatório';
                             erro = true;
                         }
-                    "; } 
-                    
+                    "; }
+
                         if ($tipoNumeracao == 2) { echo"
                         campo = trim( document.frm.codProcesso.value );
                         if (campo== '') {
@@ -629,7 +679,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                             erro = true;
                         }
                     "; } echo"
-                    
+
                     if(document.frm.centroCusto){
                          campo = document.frm.centroCusto.value;
                          if (campo=='') {
@@ -637,7 +687,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                              erro = true;
                          }
                     }
-                    
+
                     var expReg = /\\n/g;
                     campo = document.frm.observacoes.value.replace( expReg, '');
                     campo = trim(campo);
@@ -658,7 +708,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                         mensagem += '@A combo Assunto é obrigatória';
                         erro = true;
                     }
-                    
+
                     campo = jq('#inCodOrganogramaClassificacao').val();
 
                     if (campo=='0.00.00' || campo=='') {
@@ -734,7 +784,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                                     document.frm.elements[inCount].options[0].value = '';
                             }
                         }
-                    "; } echo" 
+                    "; } echo"
                     document.frm.submit();
                 }
                 function selecionarAcao(inCodigoAcao)
@@ -776,7 +826,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                         document.getElementById('nomCGM').innerHTML='&nbsp;';
                     }
                 }
-            
+
                 function setarFoco()
                 {
                     combo = document.getElementById('comboVinculo');
@@ -819,7 +869,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                     *Vínculo
                 </td>
         ";
-          
+
                 if (!empty($vinculo) && $vinculo != "xxx") {
                     echo"
                     <td class=\"field\" width=\"70%\">
@@ -857,12 +907,12 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                 echo"
                     <td class=\"field\" width=\"70%\">
                 ";
-                
-                echo $this->comboVinculo("vinculo",$vinculo,"onChange='submitVinculo();'"); 
+
+                echo $this->comboVinculo("vinculo",$vinculo,"onChange='submitVinculo();'");
                 echo"
                     </td>
                 ";
-                
+
                 }
                 echo"
                 </tr>
@@ -870,7 +920,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
 
                 <table width=\"100%\">
                 ";
-                
+
                 if (isset($vinculo) and ($vinculo!='xxx')) {
                     echo"
                     <tr>
@@ -879,7 +929,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                         </td>
                     </tr>
                     ";
-                
+
                     if ($vinculo=="imobiliaria") {
                         $ro = " readonly='' ";
                         $disable = true;
@@ -908,7 +958,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                         </td>
                         </tr>
                     ";
-                
+
                     } elseif ($vinculo=="inscricao") {
                         $ro = " readonly='' ";
                         $disable = true;
@@ -969,7 +1019,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                     ";
                     // PREENCHE O CAMPO INNER CASO EXISTA O NUMCGM
                     if ($numCgm) {
-                        echo "<script>";                        
+                        echo "<script>";
                         echo "document.getElementById('nomCGM').innerHTML = '".stripslashes($nomCgm)."';";
                         echo "</script>";
                     }
@@ -996,7 +1046,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                         $codClassificacao = $_POST["codClassificacao"];
                         $codAssunto       = $_POST["codAssunto"];
                     }
-            
+
                     $mascaraAssunto = pegaConfiguracao('mascara_assunto',5);
                     echo"
                     <script type=\"text/javascript\">
@@ -1009,12 +1059,12 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                                 document.frm.codClassificacao.value = res[0];
                                 document.frm.change_ClassifAssunto2.value = '1';
                                 preencheCA (campo_a, campo_b);
-                                document.frm.submit();            
+                                document.frm.submit();
                             } else {
                                 document.frm.action = \"".$action."?".Sessao::getId()."&controle=".$ctrl."\";
                                 document.frm.target = 'telaPrincipal';
                                 document.frm.codClassificacao.value = res[0];
-                                document.frm.change_ClassifAssunto2.value = '1';             
+                                document.frm.change_ClassifAssunto2.value = '1';
                                 verifica_valores();
                                 document.frm.submit();
                             }
@@ -1059,7 +1109,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                     ";
                     if (!empty($codClassificacao) && !empty($codAssunto)) {
                         echo $codClassifAssunto;
-                        echo "<input type=\"hidden\" name =\"codClassifAssunto\" id=\"codClassifAssunto\" size=\"25\" maxlength=\"20\" value=\"".$codClassifAssunto."\">";    
+                        echo "<input type=\"hidden\" name =\"codClassifAssunto\" id=\"codClassifAssunto\" size=\"25\" maxlength=\"20\" value=\"".$codClassifAssunto."\">";
                         if (strlen($codClassifAssunto) < 3 && strlen($codClassifAssunto) > 0) {
                             echo "
                                 <script type='text/javascript'>
@@ -1094,7 +1144,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                     <tr>
                     <td class=field>
                     ";
-                
+
                     if (!empty($codClassificacao)) {
                         $codClassificacao = ($codClassificacao==='xxx') ? '000' : $codClassificacao;
                         $sSQL = "SELECT * FROM sw_classificacao where cod_classificacao=$codClassificacao";
@@ -1154,7 +1204,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                     <tr>
                     <td class=field>
                     ";
-                
+
                     if (!empty($codAssunto)) {
                         $codAssunto = ($codAssunto==='xxx') ? '000' : $codAssunto;
                         $sSQL = "SELECT * FROM sw_assunto WHERE cod_assunto = ".$codAssunto." AND cod_classificacao = ".$codClassificacao."";
@@ -1209,9 +1259,9 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                     echo"
                     </td>
                     </tr>
-                    ";                
+                    ";
                 }
-                
+
                 $varClassifAssunto = preg_split("/[^a-zA-Z0-9]/", $codClassifAssunto);
                 //if CLASSIFICACAO ASSUNTO
                 if ( ($varClassifAssunto[0] != 0 and $varClassifAssunto[1] != 0)
@@ -1251,14 +1301,14 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                             </td>
                             <td class=\"field\">
                                 <input type='text' name='codProcesso' size=\"".$mascara_processo_size."\" maxlength=\"".$mascara_processo_size."\" value=\"".$codProcesso."\" >
-                                <b>/</b>                       
+                                <b>/</b>
                                 <input type='text' name='anoExercicioManual' value=\"".$anoExercicioManual."\" size='5' maxlength='4' readonly=\"\">
                             </td>
                         </tr>
                         ";
                         $anoExercicio=$anoExercicioManual;
                     }
-                    
+
                     $sSQL = "SELECT * FROM administracao.configuracao where cod_modulo = 5 AND parametro = 'centro_custo' AND exercicio <= '".Sessao::getExercicio()."' ORDER BY exercicio DESC LIMIT 1 ";
                     $dbCC = new dataBaseLegado;
                     $dbCC->abreBD();
@@ -1270,7 +1320,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                     }
                     $dbCC->limpaSelecao();
                     $dbCC->fechaBD();
-                        
+
                     if($centroCusto=='true'){
                          $sSQL = "SELECT * FROM almoxarifado.centro_custo ORDER BY descricao";
                          $dbCC = new dataBaseLegado;
@@ -1283,7 +1333,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                          }
                          $dbCC->limpaSelecao();
                          $dbCC->fechaBD();
-                    
+
                          echo"
                          <tr>
                              <td class=\"label\">
@@ -1291,25 +1341,25 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                              </td>
                              <td class=\"field\">
                                    <select name='centroCusto' style='width: 200px'><option value=''>Selecione</option> \n";
-                                   
+
                                    foreach ($listaCentroCusto AS $key => $value) {
                                      $selected = "";
                                      echo "<option value='".$key."' ".$selected.">".$value."</option>\n";
                                    }
-                                   
+
                             echo "
-                                   </select>                     
+                                   </select>
                              </td>
                          </tr>";
                     }
-                    
+
                     echo"
                     <tr>
                         <td class=\"label\" title=\"Informações adicionais do processo\">
                             *Observações
                         </td>
-                        <td class=\"field\">                            
-                            <textarea autofocus name='observacoes' cols='40' rows='4' >".$observacoes."</textarea>                            
+                        <td class=\"field\">
+                            <textarea autofocus name='observacoes' cols='40' rows='4' >".$observacoes."</textarea>
                         </td>
                     </tr>
                     <tr>
@@ -1336,14 +1386,14 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                         $dbConfig->limpaSelecao();
                         $dbConfig->fechaBd();
                         if ($confidencial == 't' || $conf == 't'){
-                            $boMostraTable = 'table-row'; 
+                            $boMostraTable = 'table-row';
                             echo "<td class=\"field\">
                                     <input type='radio' name='conf' value='t' onClick='jQuery(\"#tablePermissao\").css(\"display\", \"table-row\");' checked>Sim
                                     <input type='radio' name='conf' value='f' onClick='jQuery(\"#tablePermissao\").css(\"display\", \"none\");'>Não
                                 </td>
                             </tr>";
                         }else{
-                            $boMostraTable = 'none'; 
+                            $boMostraTable = 'none';
                             echo "<td class=\"field\">
                                     <input type='radio' name='conf' value='t' onClick='jQuery(\"#tablePermissao\").css(\"display\", \"table-row\");'>Sim
                                     <input type='radio' name='conf' value='f' onClick='jQuery(\"#tablePermissao\").css(\"display\", \"none\");' checked>Não
@@ -1381,7 +1431,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                                 </tr>
                             </table>
                         </td>
-                    </tr> 
+                    </tr>
 
                     <!-- Listagem de CGM que pode visualizar o processo -->
                     <tr>
@@ -1500,9 +1550,31 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                                     echo $this->checkDocumentos($codClassificacao,$codAssunto);
                                 }
                             }
-                    echo"                            
+                    echo"
                         </td>
-                    </tr>
+                    </tr>";
+
+                    // Integração Alfresco: cria botão para acessar o Alfresco no momento de carregar arquivos
+                    if ($this->isAlfrescoPermitido($codClassificacao)) {
+                        echo "
+                            <tr>
+                                <td class='alt_dados' colspan='8'>
+                                    Integração com o Alfresco
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class='show_dados'>
+                                    Acesse os documentos armazenados no Alfresco
+                                </td>
+                                <td class='show_dados' colspan='7'>
+                                    <input type='button' value='Acessar Alfresco' onclick=\"carregarAlfresco('".$codClassificacao."');\">
+                                </td>
+                            </tr>
+                        ";
+                    }
+                    /* FIM modificação */
+
+                    echo"
                     <tr>
                         <td class=alt_dados colspan=\"2\">
                             Encaminhamento de processo
@@ -1619,7 +1691,7 @@ function formIncluiProcesso($dadosForm="",$action="",$controle=0)
                     $obFormAssinaturas->addSpan($obSpnEntidade);
                     $obMontaAssinaturas->geraFormulario($obFormAssinaturas);
                     $obFormAssinaturas->montaHtml();
-    
+
                     echo $obFormAssinaturas->getHTML();
                 }
 
@@ -1787,7 +1859,7 @@ ser recebidos pelo setor do usuário
                 $codClassificacao = $conn->pegaCampo("cod_classificacao");
                 $classificacao = $conn->pegaCampo("nom_classificacao");
                 $assunto = $conn->pegaCampo("nom_assunto");
-                $timestamp = $conn->pegaCampo("timestamp");               
+                $timestamp = $conn->pegaCampo("timestamp");
                 $chave = $codProcesso."-".$anoEx."-".$codClassificacao."-".$codAssunto;
 ?>
             <tr>
@@ -1907,7 +1979,7 @@ function formEncaminhaProcesso($action, $codProcesso, $anoExercicio, $codClassif
                 </tr>
             </table>
         <?php
-          
+
             $obFormulario = new Formulario;
             $obFormulario->setForm(null);
 
@@ -1953,14 +2025,14 @@ function formEncaminhaProcesso($action, $codProcesso, $anoExercicio, $codClassif
                         varsGet ="%26"+nomParametro+"="+sCodigo+"%26codProcesso=<?=$codProcesso?>%26anoExercicio=<?=$anoExercicio?>%26codOrgao="+codigoOrgao+"%26andamento="+andamento+"%26"+nomEx+"="+exercicio+"%26pagina=<?=$pagina?>";
                         varsGet += '&stDescQuestao=<?php echo "Deseja encaminhar este processo para o setor selecionado?";?>';
                         alertaQuestao("<?=CAM_PROTOCOLO;?>protocolo/processos/encaminhaProcesso.php?<?=Sessao::getId()?>", "controle" , "3"+varsGet ,"Deseja encaminhar este processo para o setor selecionado?","sn","<?=Sessao::getId()?>");
-                       
+
                     }
                 }
             }
 
             function Cancela()
             {
-                document.frm.action = "encaminhaProcesso.php?<?=Sessao::getId()?>&controle=1";              
+                document.frm.action = "encaminhaProcesso.php?<?=Sessao::getId()?>&controle=1";
                 document.frm.submit();
             }
 
@@ -2187,15 +2259,15 @@ Exibe os dados de um processo
             <?=$assunto;?>
                 </td>
             </tr>
-            
+
             <?php
                $centroCusto = pegaConfiguracao("centro_custo", 5);
-               
+
                if($centroCusto=='true'){
                    $codCentroCusto = '';
                    $nomCentroCusto = '';
                    $stCentroCusto = '';
-                   
+
                    $sSQL = "SELECT sw_processo.*
                                  , centro_custo.descricao as descricao_centro
                               FROM sw_processo
@@ -2214,10 +2286,10 @@ Exibe os dados de um processo
                    }
                    $dbConfig->limpaSelecao();
                    $dbConfig->fechaBD();
-                   
+
                    if($codCentroCusto!=''&&$nomCentroCusto!='')
                       $stCentroCusto = $codCentroCusto." - ".$nomCentroCusto;
-                      
+
                    echo "
                    <tr>
                        <td class=label width='30%'>
@@ -2230,7 +2302,7 @@ Exibe os dados de um processo
                    ";
                }
                ?>
-            
+
             <tr>
                 <td class="label" width="30%">
                     Observações
@@ -2260,18 +2332,27 @@ Exibe os dados de um processo
                 </td>
             </tr>
     <?php
+                //Integração Alfresco: recupera quem é o interessado do processo
                 $select = 	"SELECT
                                 U.numcgm,
                                 U.username,
-                                P.timestamp
-                            FROM
+                                P.timestamp,
+                                sw_cgm_pessoa_fisica.cpf,
+                                sw_cgm_pessoa_juridica.cnpj
+                              FROM
                                 sw_processo AS P,
-                                administracao.usuario  AS U
-                            WHERE
+                                administracao.usuario  AS U,
+                                sw_processo_interessado
+                                FULL OUTER JOIN sw_cgm_pessoa_fisica ON sw_processo_interessado.numcgm = sw_cgm_pessoa_fisica.numcgm
+                                FULL OUTER JOIN sw_cgm_pessoa_juridica ON sw_processo_interessado.numcgm = sw_cgm_pessoa_juridica.numcgm
+                              WHERE
                                 P.cod_usuario   = U.numcgm AND
                                 P.ano_exercicio = '".$_GET['anoExercicio']."' AND
-                                P.cod_processo = ".$codProcesso;
-               
+                                P.cod_processo = ".$codProcesso." AND
+                                P.ano_exercicio = sw_processo_interessado.ano_exercicio AND
+                                P.cod_processo = sw_processo_interessado.cod_processo";
+
+
                 /*
                     * Adicionado no Select acima o ano_exercicio, pois não estava sendo filtrado.
                 */
@@ -2281,6 +2362,36 @@ Exibe os dados de um processo
                 $numCgmI      = $dbConfig->pegaCampo("numcgm");
                 $nomUsuario   = $dbConfig->pegaCampo("username");
                 $dataInclusao = $dbConfig->pegaCampo("timestamp");
+
+                $interessadoCPF    = $dbConfig->pegaCampo("cpf");
+                $interessadoCNPJ   = $dbConfig->pegaCampo("cnpj");
+                $interessadoPessoa = (strlen($interessadoCPF) == 11) ? $interessadoCPF : $interessadoCNPJ;
+                /* FIM modificação */
+                // // Original:
+                // $select = 	"SELECT
+                //                 U.numcgm,
+                //                 U.username,
+                //                 P.timestamp
+                //             FROM
+                //                 sw_processo AS P,
+                //                 administracao.usuario  AS U
+                //             WHERE
+                //                 P.cod_usuario   = U.numcgm AND
+                //                 P.ano_exercicio = '".$_GET['anoExercicio']."' AND
+                //                 P.cod_processo = ".$codProcesso;
+                //
+                //
+                // /*
+                //     * Adicionado no Select acima o ano_exercicio, pois não estava sendo filtrado.
+                // */
+                // $dbConfig = new databaseLegado;
+                // $dbConfig->abreBd();
+                // $dbConfig->abreSelecao($select);
+                // $numCgmI      = $dbConfig->pegaCampo("numcgm");
+                // $nomUsuario   = $dbConfig->pegaCampo("username");
+                // $dataInclusao = $dbConfig->pegaCampo("timestamp");
+                /* FIM original */
+
                 $dbConfig->limpaSelecao();
                 $dbConfig->fechaBd();
                 $arrData      = explode(" ", $dataInclusao);
@@ -2377,7 +2488,7 @@ Exibe os dados de um processo
                 $select .= "     AAV.cod_classificacao = $codClassif      AND   \n";
                 $select .= "     AAV.cod_atributo      = AP.cod_atributo        \n";
                 $select .= " ORDER BY AP.nom_atributo                           \n";
-              
+
                 $dbConfig = new databaseLegado;
                 $dbConfig->abreBd();
                 $dbConfig->abreSelecao($select);
@@ -2421,11 +2532,20 @@ Exibe os dados de um processo
                                     A.cod_classificacao  = ".$codClassif."
                                 ORDER BY D.nom_documento";
 
-                    //Order by adicionado por Cristiano Sperb               
+                    //Order by adicionado por Cristiano Sperb
                     $dbConfig = new databaseLegado;
                     $dbConfig->abreBd();
                     $dbConfig->abreSelecao($select);
+
+                    // Integração Alfresco: cria atributo HTML para esconder as colunas da imagem
+                    $displayHTML = "";
+                    if ($this->isAlfrescoPermitido($codClassif)){
+                        $displayHTML = "style='display:none'";
+                    }
+                    /* FIM modificação */
+
                     if ($dbConfig->numeroDeLinhas > 0) {
+                        // Integração Alfresco: cria atributo HTML para esconder as colunas da imagem
                         echo "<tr>
                                 <td class=alt_dados  colspan=".($colspan+1).">
                                     Documentos de processo
@@ -2435,13 +2555,32 @@ Exibe os dados de um processo
                                 <td class=labelcenter>
                                     Nome do documento
                                 </td>
-                                <td class=labelcenter width='10%'>
+                                <td class=labelcenter colspan=".$colspan.">
                                     Situação
                                 </td>
-                                <td class=labelcenter colspan=".$colspan.">
+                                <td ".$displayHTML." class=labelcenter colspan=".$colspan.">
                                     Ícones de imagem
                                 </td>
                             </tr>";
+                        /* FIM modificação */
+                        // Original:
+                        // echo "<tr>
+                        //         <td class=alt_dados  colspan=".($colspan+1).">
+                        //             Documentos de processo
+                        //         </td>
+                        //     </tr>
+                        //     <tr>
+                        //         <td class=labelcenter>
+                        //             Nome do documento
+                        //         </td>
+                        //         <td class=labelcenter width='10%'>
+                        //             Situação
+                        //         </td>
+                        //         <td class=labelcenter colspan=".$colspan.">
+                        //             Ícones de imagem
+                        //         </td>
+                        //     </tr>";
+                        /* FIM original */
                     }
                     $nomAnt = "";
                     while (!$dbConfig->eof()) {
@@ -2468,12 +2607,65 @@ Exibe os dados de um processo
                             $entregue = "Não entregue";
                         }
                         if ($nomAnt != $nomDoc) {
+                            // Integração Alfresco: cria atributo HTML para esconder as colunas da imagem
                             echo "<tr><td class=show_dados>".$nomDoc."</td>
-                                        <td class=show_dados>".$entregue."</td>
-                                        <td class=show_dados colspan=".$colspan.">
+                                        <td class=show_dados colspan=".$colspan.">".$entregue."</td>
+                                        <td ".$displayHTML." class=show_dados colspan=".$colspan.">
                                             &nbsp;\n";
+                            /* FIM modificação */
+                            // Original:
+                            // echo "<tr><td class=show_dados>".$nomDoc."</td>
+                            //             <td class=show_dados>".$entregue."</td>
+                            //             <td class=show_dados colspan=".$colspan.">
+                            //                 &nbsp;\n";
+                            /* FIM original */
                         }
 
+                        // Integração Alfresco: retorna CPF ou CNPJ do interessado
+                        // if ($this->isAlfrescoPermitido($codClassif)){
+                        //     $selectCopia = 	"SELECT
+                        //                         sw_copia_digital.imagem,
+                        //                         sw_copia_digital.cod_copia,
+                        //                         sw_copia_digital.cod_documento,
+                        //                         sw_copia_digital.anexo,
+                        //                         sw_processo_interessado.numcgm,
+                        //                         sw_cgm_pessoa_fisica.cpf,
+                        //                         sw_cgm_pessoa_juridica.cnpj
+                        //                     FROM
+                        //                         sw_copia_digital
+                        //                         INNER JOIN sw_processo_interessado ON sw_copia_digital.cod_processo = sw_processo_interessado.cod_processo
+                        //                         FULL OUTER JOIN sw_cgm_pessoa_fisica ON sw_processo_interessado.numcgm = sw_cgm_pessoa_fisica.numcgm
+                        //                         FULL OUTER JOIN sw_cgm_pessoa_juridica ON sw_processo_interessado.numcgm = sw_cgm_pessoa_juridica.numcgm
+                        //                     WHERE
+                        //                         sw_copia_digital.cod_processo = ".$codProcesso." AND
+                        //                         sw_copia_digital.exercicio = '".$anoExercicio."' AND
+                        //                         sw_processo_interessado.ano_exercicio = '".$anoExercicio."'";
+                        //
+                        //     $dbCopia = new databaseLegado;
+                        //     $dbCopia->abreBd();
+                        //     $dbCopia->abreSelecao($selectCopia);
+                        //
+                        //     $interessadoCPF    = $dbCopia->pegaCampo("cpf");
+                        //     $interessadoCNPJ   = $dbCopia->pegaCampo("cnpj");
+                        //     $interessadoPessoa = (strlen($interessadoCPF) == 11) ? $interessadoCPF : $interessadoCNPJ;
+                        // }
+                        // else{
+                        //     $selectCopia = 	"SELECT
+                        //                         imagem,
+                        //                         cod_copia,
+                        //                         anexo
+                        //                     FROM
+                        //                         sw_copia_digital
+                        //                     WHERE
+                        //                         cod_processo = ".$codProcesso." AND
+                        //                         exercicio = '".$anoExercicio."' AND
+                        //                         cod_documento = ".$codDoc;
+                        //     $dbCopia = new databaseLegado;
+                        //     $dbCopia->abreBd();
+                        //     $dbCopia->abreSelecao($selectCopia);
+                        // }
+                        /* FIM modificação */
+                        // Original:
                         $selectCopia = 	"SELECT
                                             imagem,
                                             cod_copia,
@@ -2487,48 +2679,96 @@ Exibe os dados de um processo
                         $dbCopia = new databaseLegado;
                         $dbCopia->abreBd();
                         $dbCopia->abreSelecao($selectCopia);
+                        /* FIM original */
 ?>
-  <script>
-    function winClose()
-    {
-        downloadWindow.close();
-    }
+ <script>
+       function winClose()
+       {
+           downloadWindow.close();
+       }
 
-     function abreDownload(sessao, codCopia, codProcesso, anoExercicio, codDoc)
-     {
-         var sArq = 'anexo.php?'+sessao+'&codCopia='+codCopia+'&codProcesso='+codProcesso+'&anoExercicio='+anoExercicio+'&codDoc='+codDoc;
-         downloadWindow = window.open(sArq,'width=150px,height=150px,resizable=0,scrollbars=0','left=1,top=1');
-     self.setTimeout ('winClose()', 1000);
-     }
+        function abreDownload(sessao, codCopia, codProcesso, anoExercicio, codDoc)
+        {
+            var sArq = 'anexo.php?'+sessao+'&codCopia='+codCopia+'&codProcesso='+codProcesso+'&anoExercicio='+anoExercicio+'&codDoc='+codDoc;
+            downloadWindow = window.open(sArq,'width=150px,height=150px,resizable=0,scrollbars=0','left=1,top=1');
+        self.setTimeout ('winClose()', 1000);
+        }
 
-  </script>
+        // Integração Alfresco: acessa site no Alfresco de acordo com o interessado do processo
+        function descarregarAlfresco(classificacaoAssunto,interessado){
+            // var caminhoEncoded = encodeURIComponent(caminho).replace(/'/g,"%27").replace(/"/g,"%22");
+            if (classificacaoAssunto == '65200') {
+                var URL = 'http://10.10.1.113:8080/share/page/site/cadastro-economico/documentlibrary#filter=path%7C%2F' ;
+                if (interessado.length == 11) {
+                    URL = URL + 'Pessoa%2520F%25EDsica%2F';
+                }
+                else if (interessado.length == 14){
+                    URL = URL + 'Pessoa%2520Jur%25EDdica%2F';
+                }
+                URL = URL + interessado.substring(0,1) + '%2F' + interessado;
+            }
+            else{
+                var URL = 'http://10.10.1.113:8080/share/page';
+            }
+            var params = [
+                'height='+screen.height,
+                'width='+screen.width,
+                'fullscreen=yes'
+            ].join(',');
+            var popup = window.open(URL, 'popup_window', params);
+            popup.moveTo(0,0);
+        }
+        /* FIM modificação */
+
+ </script>
 <?php
-                        while (!($dbCopia->eof())) {
-                            $tipoAnexo = $dbCopia->pegaCampo("imagem");
-                            $anexo = $dbCopia->pegaCampo("anexo");
-                            $codCopia = $dbCopia->pegaCampo("cod_copia");
-                            if ($tipoAnexo == "t") {
-                                $anexoImg = pathinfo($anexo);
+                       while (!($dbCopia->eof())) {
+                           $tipoAnexo = $dbCopia->pegaCampo("imagem");
+                           $anexo = $dbCopia->pegaCampo("anexo");
+                           $codCopia = $dbCopia->pegaCampo("cod_copia");
+                           if ($tipoAnexo == "t") {
+                               $anexoImg = pathinfo($anexo);
 ?>
-                                <a href="javascript:abrePopUpAnexo('exibeAnexo.php','<?=$anexoImg["basename"];?>','<?=Sessao::getId();?>','800','550');"><img src="<?=CAM_FW_IMAGENS."imagem.png";?>" border=0></a>&nbsp;
+                               <a href="javascript:abrePopUpAnexo('exibeAnexo.php','<?=$anexoImg["basename"];?>','<?=Sessao::getId();?>','800','550');"><img src="<?=CAM_FW_IMAGENS."imagem.png";?>" border=0></a>&nbsp;
 <?php
-                                echo "\n";
-                            } elseif ($tipoAnexo == "f") {
-                                $anexoDoc = pathinfo($anexo);
-                                echo "
+                               echo "\n";
+                           } elseif ($tipoAnexo == "f") {
+                               $anexoDoc = pathinfo($anexo);
+                               echo "
 
-                                    <a href=# onClick=' abreDownload(\"Sessao::getId()\", \"$codCopia\", \"$codProcesso\", \"$anoExercicio\", \"$codDoc\")'><img src='".CAM_FW_IMAGENS."outDoc.png' border=0></a>&nbsp;\n
-                                ";
-                            }
-                            $dbCopia->vaiProximo();
-                        }
-                        $dbConfig->vaiProximo();
-                        $nomAnt = $nomDoc;
+                                   <a href=# onClick=' abreDownload(\"Sessao::getId()\", \"$codCopia\", \"$codProcesso\", \"$anoExercicio\", \"$codDoc\")'><img src='".CAM_FW_IMAGENS."outDoc.png' border=0></a>&nbsp;\n
+                               ";
+                           }
+                           $dbCopia->vaiProximo();
+                       }
+                       $dbConfig->vaiProximo();
+                       $nomAnt = $nomDoc;
 
-                        echo "</td></tr>";
-                    }
-                    $dbConfig->limpaSelecao();
-                    $dbConfig->fechaBd();
+                       echo "</td></tr>";
+                   }
+
+                   // Integração Alfresco: cria botão para acessar o Alfresco no momento de descarregar arquivos
+                   if ($this->isAlfrescoPermitido($codClassif)) {
+                       echo "
+                           <tr>
+                               <td class='alt_dados' colspan='8'>
+                                   Integração com o Alfresco
+                               </td>
+                           </tr>
+                           <tr>
+                               <td class='show_dados'>
+                                   Acesse os documentos armazenados no Alfresco
+                               </td>
+                               <td class='show_dados' colspan='7'>
+                                   <input type='button' value='Acessar Alfresco' onclick=\"descarregarAlfresco('".$codClassif."','".$interessadoPessoa."');\">
+                               </td>
+                           </tr>
+                       ";
+                   }
+                   /* FIM modificação */
+
+                   $dbConfig->limpaSelecao();
+                   $dbConfig->fechaBd();
 
 //********************************************************************
 // busca PROCESSOS EM APENSO

@@ -108,6 +108,11 @@ $obCmbTipoReceita->addOption("orcamentaria", "Orçamentária");
 $obCmbTipoReceita->addOption("extra", "Extra-Orçamentária");
 $obCmbTipoReceita->obEvento->setOnChange("montaParametrosGET('mostraSpanReceita');");
 
+// Define Objeto Filtro para Código de recurso
+include_once(CAM_GF_ORC_COMPONENTES."IMontaRecursoDestinacao.class.php");
+$obIMontaRecursoDestinacao = new IMontaRecursoDestinacao;
+$obIMontaRecursoDestinacao->setFiltro ( true );
+
 // Define Objeto Span para Itens da ordem ou liquidacao
 $obSpnContas = new Span();
 $obSpnContas->setId('spnReceitas');
@@ -184,6 +189,7 @@ $obFormulario->addComponente        ($obPeriodicidade);
 $obFormulario->agrupaComponentes    (array($obTxtEmpenhoInicio, $obLblEmpenho ,$obTxtEmpenhoFinal));
 $obFormulario->agrupaComponentes    (array($obTxtOrdemInicio, $obLblOrdem , $obTxtOrdemFinal));
 $obFormulario->addComponente        ($obCmbTipoReceita);
+$obIMontaRecursoDestinacao->geraFormulario ( $obFormulario );
 $obFormulario->addSpan              ($obSpnContas);
 $obFormulario->addComponente        ($ObIPopUpCredor);
 $obFormulario->addComponenteComposto($obTxtSituacao, $obCmbSituacao);

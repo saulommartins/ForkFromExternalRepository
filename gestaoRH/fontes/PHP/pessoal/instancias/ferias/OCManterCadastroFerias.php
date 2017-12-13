@@ -752,13 +752,17 @@ function validarDataInicioFerias($inQuantDiasGozo="")
         //Verificar Assentamento do tipo 2 (Afastamento) antes das ferias
         include_once ( CAM_GRH_PES_MAPEAMENTO."TPessoalAssentamentoGerado.class.php" );
         $obTPessoalAssentamentoGerado = new TPessoalAssentamentoGerado;
-        $stFiltroAssentamento = " AND contrato.cod_contrato = ".$_REQUEST['inCodContrato'];
-        $obErro = $obTPessoalAssentamentoGerado->recuperaMaxAssentamentoGerado($rsAssentamentoGerado,$stFiltroAssentamento,$boTransacao);        
-        if ( !$obErro->ocorreu() && $rsAssentamentoGerado->getNumLinhas() > 0) {            
-            $stDtFinalAssentamentoAfastamento = SistemaLegado::dataToBr($rsAssentamentoGerado->getCampo('periodo_final'));            
-            //Caso a data de ferias for anterior que o periodo de retorno emite erro
-            if ( SistemaLegado::comparaDatas($stDtFinalAssentamentoAfastamento,$dtInicioFerias) ) {
-                $obErro->setDescricao("@Campo Data de Início das Férias inválido!(".$dtInicioFerias ." deve ser maior que a data de retorno do afastamento em ".$stDtFinalAssentamentoAfastamento.")");
+
+        if (isset($_REQUEST['inCodContrato']) && !empty($_REQUEST['inCodContrato'])) {
+            $stFiltroAssentamento = " AND contrato.cod_contrato = " . $_REQUEST['inCodContrato'];
+
+            $obErro = $obTPessoalAssentamentoGerado->recuperaMaxAssentamentoGerado($rsAssentamentoGerado, $stFiltroAssentamento, $boTransacao);
+            if (!$obErro->ocorreu() && $rsAssentamentoGerado->getNumLinhas() > 0) {
+                $stDtFinalAssentamentoAfastamento = SistemaLegado::dataToBr($rsAssentamentoGerado->getCampo('periodo_final'));
+                //Caso a data de ferias for anterior que o periodo de retorno emite erro
+                if (SistemaLegado::comparaDatas($stDtFinalAssentamentoAfastamento, $dtInicioFerias)) {
+                    $obErro->setDescricao("@Campo Data de Início das Férias inválido!(" . $dtInicioFerias . " deve ser maior que a data de retorno do afastamento em " . $stDtFinalAssentamentoAfastamento . ")");
+                }
             }
         }
 

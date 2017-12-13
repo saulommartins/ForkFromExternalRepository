@@ -76,9 +76,9 @@ function atualizaSpanFiltro()
         $obIFiltroCGMContrato = new IFiltroCGMContrato($boRescindido);
 
         if ($boRescindido == false) {
-            $obIFiltroCGMContrato->setTipoContrato('rescindido');
-        } else {
             $obIFiltroCGMContrato->setTipoContrato('vigente');
+        } else {
+            $obIFiltroCGMContrato->setTipoContrato('rescindido');
         }
 
         $obIFiltroCGMContrato->obBscCGM->obCampoCod->setId('inNumCGM');
@@ -274,9 +274,9 @@ function validarDataRescisao()
         $dtCompetenciaAtual = $arCompetenciaAtual[2]."-".$arCompetenciaAtual[1];
         $dtCompetenciaAnterior = $arCompetenciaAnterior[2]."-".$arCompetenciaAnterior[1];
         $dtRescisao = $arRescisao[2]."-".$arRescisao[1];
-        if ( !($dtRescisao >= $dtCompetenciaAnterior and $dtRescisao <= $dtCompetenciaAtual) ) {
-            $obErro->setDescricao("Data da rescisão inválida. A mesma deverá estar compreendida entre a competência atual ou a competência anterior.");
-        }
+        //if ( !($dtRescisao >= $dtCompetenciaAnterior and $dtRescisao <= $dtCompetenciaAtual) ) {
+        //    $obErro->setDescricao("Data da rescisão inválida. A mesma deverá estar compreendida entre a competência atual ou a competência anterior.");
+        //}
     }
     if (!$obErro->ocorreu()) {
         $obRConfiguracaoPessoal = new RConfiguracaoPessoal;

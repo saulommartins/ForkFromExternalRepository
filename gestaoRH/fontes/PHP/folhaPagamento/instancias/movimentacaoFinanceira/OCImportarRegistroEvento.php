@@ -267,7 +267,7 @@ function gerarSpanRegistroEvento($inCodEvento,$inCodContrato,$stFixado,$stTipo,$
         $obCkbExcluirLancamento->setId       ( "boExcluirLancamento"                                          );
         $obCkbExcluirLancamento->setValue    ( "sim"                                                          );
         $obCkbExcluirLancamento->setTitle    ( "Marque a opïção para excluir o evento informado do contrato." );
-        $obCkbExcluirLancamento->setDisabled ( true                                                           );
+        $obCkbExcluirLancamento->setDisabled ( false                                                          );
 
         $obHdnExcluirLancamento = new hidden();
         $obHdnExcluirLancamento->setName ( "boExcluirLancamentoDisabled" );
@@ -1176,8 +1176,11 @@ function incluirLoteEvento(Request $request)
         break;
 
         case "geral":
+            $inCodEntidade=Sessao::getEntidade();
             $stOrdem = " GROUP BY cod_contrato, registro, numcgm, nom_cgm ORDER BY registro, nom_cgm";
-
+            //$stFiltro = " WHERE (SELECT ativo FROM pessoal.contrato_servidor WHERE cod_contrato = tabela.cod_contrato)";
+            //$stFiltro = " WHERE (recuperarSituacaoDoContratoLiteral(tabela.cod_contrato,".$inCodPeriodoMovimentacao.",'".$inCodEntidade."')='Ativo')";
+            $stFiltro = " WHERE (recuperarSituacaoDoContratoPeriodo(tabela.cod_contrato,".$inCodPeriodoMovimentacao.",'".$inCodEntidade."')='TRUE')";
             $obTFolhaPagamentoRegistroEventoPeriodo = new TFolhaPagamentoRegistroEventoPeriodo;
             $obTFolhaPagamentoRegistroEventoPeriodo->recuperaContratoGeral($rsRecordSet, $stFiltro, $stOrdem);
         break;

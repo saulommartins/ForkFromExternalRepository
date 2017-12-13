@@ -394,6 +394,7 @@ function gerarSpan7($boExecuta=false)
             case "sintética":
                 $arCampos = array('Banco'               =>'Banco',
                                   'Lotacao'             =>'Lotação',
+                                  'Local'               =>'Local',
                                   'Cgm'                 =>'CGM');
             break;
         }

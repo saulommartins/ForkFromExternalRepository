@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
     <property name="comments">Copyright (c) 2007 &lt;&lt;Your Company Name here>></property>
-    <property name="createdBy">Eclipse BIRT Designer Version 4.4.0.v201405191524 Build &lt;4.4.0.v20140606-1451></property>
+    <property name="createdBy">Eclipse BIRT Designer Version 4.7.0.v201706142203</property>
     <property name="units">in</property>
     <text-property name="displayName">Template Urbem Paisagem</text-property>
     <property name="layoutPreference">auto layout</property>
@@ -187,8 +187,8 @@
         </scalar-parameter>
     </parameters>
     <data-sources>
-        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="postgres" id="1135" extends="urbem_231.postgres">
-        </oda-data-source>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="postgres" id="1135"
+ extends="urbem_231.postgres"/>
     </data-sources>
     <data-sets>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="dsPrograma" id="1197">
@@ -212,6 +212,7 @@
         ,   programa_dados.num_orgao
         ,   orgao.nom_orgao
         ,   programa_dados.objetivo
+        ,   programa_dados.justificativa
         ,   programa_dados.publico_alvo
       FROM  ppa.programa
 INNER JOIN  ppa.programa_dados
@@ -437,6 +438,7 @@ INNER JOIN ppa.ppa
             <xml-property name="queryText"><![CDATA[    SELECT acao.cod_acao
     	,  acao.num_acao
 	    ,  acao_dados.titulo
+      ,  acao_dados.finalidade
     	,  produto.descricao	       	
     	,  (CASE WHEN unidade_medida.simbolo <> '' THEN unidade_medida.simbolo
     	         ELSE unidade_medida.nom_unidade 
@@ -899,13 +901,19 @@ from]]></xml-property>
                             <row id="1157">
                                 <cell id="1158">
                                     <text id="1167">
+                                        <property name="fontSize">7pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="marginTop">0pt</property>
                                         <property name="paddingLeft">4pt</property>
                                         <property name="contentType">auto</property>
-                                        <text-property name="content"><![CDATA[Macro Objetivo]]></text-property>
+                                        <text-property name="content"><![CDATA[Área de Resultado]]></text-property>
                                     </text>
                                 </cell>
                                 <cell id="1159">
                                     <data id="1745">
+                                        <property name="fontSize">7pt</property>
+                                        <property name="marginTop">0pt</property>
+                                        <property name="paddingLeft">4pt</property>
                                         <property name="resultSetColumn">descricao_macro</property>
                                     </data>
                                 </cell>
@@ -913,13 +921,19 @@ from]]></xml-property>
                             <row id="1161">
                                 <cell id="1162">
                                     <text id="1168">
+                                        <property name="fontSize">7pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="marginTop">0pt</property>
                                         <property name="paddingLeft">4pt</property>
                                         <property name="contentType">auto</property>
-                                        <text-property name="content"><![CDATA[Programa Setorial]]></text-property>
+                                        <text-property name="content"><![CDATA[Diretriz]]></text-property>
                                     </text>
                                 </cell>
                                 <cell id="1163">
                                     <data id="1675">
+                                        <property name="fontSize">7pt</property>
+                                        <property name="marginTop">0pt</property>
+                                        <property name="paddingLeft">4pt</property>
                                         <property name="resultSetColumn">descricao_setorial</property>
                                     </data>
                                 </cell>
@@ -983,6 +997,12 @@ from]]></xml-property>
                                     <text-property name="displayName">orgao_responsavel</text-property>
                                     <expression name="expression">'Órgão Responsável  '+row["num_orgao"]+' - '+row["nom_orgao"]</expression>
                                     <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">justificativa</property>
+                                    <expression name="expression" type="javascript">dataSetRow["justificativa"]</expression>
+                                    <property name="dataType">string</property>
+                                    <property name="allowExport">true</property>
                                 </structure>
                             </list-property>
                             <property name="repeatHeader">false</property>
@@ -1054,6 +1074,29 @@ from]]></xml-property>
                                                     <property name="paddingBottom">3pt</property>
                                                     <data id="1201">
                                                         <property name="resultSetColumn">orgao_responsavel</property>
+                                                    </data>
+                                                </cell>
+                                            </row>
+                                            <row id="6670">
+                                                <cell id="6671">
+                                                    <property name="paddingTop">3pt</property>
+                                                    <property name="paddingBottom">3pt</property>
+                                                    <text id="6675">
+                                                        <property name="fontWeight">bold</property>
+                                                        <property name="marginTop">0pt</property>
+                                                        <property name="paddingLeft">4pt</property>
+                                                        <property name="contentType">auto</property>
+                                                        <text-property name="content"><![CDATA[Justificativa do Programa]]></text-property>
+                                                    </text>
+                                                </cell>
+                                                <cell id="6672">
+                                                    <property name="colSpan">3</property>
+                                                    <property name="rowSpan">1</property>
+                                                    <property name="paddingTop">3pt</property>
+                                                    <property name="paddingBottom">3pt</property>
+                                                    <data id="6676">
+                                                        <property name="fontStyle">normal</property>
+                                                        <property name="resultSetColumn">justificativa</property>
                                                     </data>
                                                 </cell>
                                             </row>
@@ -1865,6 +1908,12 @@ from]]></xml-property>
                                     <expression name="expression">dataSetRow["continuo"]</expression>
                                     <property name="dataType">string</property>
                                 </structure>
+                                <structure>
+                                    <property name="name">finalidade</property>
+                                    <expression name="expression" type="javascript">dataSetRow["finalidade"]</expression>
+                                    <property name="dataType">string</property>
+                                    <property name="allowExport">true</property>
+                                </structure>
                             </list-property>
                             <method name="onRender"><![CDATA[this.getRowData().getColumnValue('tipo_acao')]]></method>
                             <column id="1417">
@@ -1985,6 +2034,7 @@ from]]></xml-property>
                                         <cell id="1545">
                                             <text id="1570">
                                                 <property name="textAlign">center</property>
+                                                <structure name="toc"/>
                                                 <method name="onCreate"><![CDATA[if (this.getRowData().getColumnValue('tipo_acao') != 'Projeto' || this.getRowData().getColumnValue('continuo') == 1) {	
 	this.getStyle().display = 'none';
 }]]></method>
@@ -2048,6 +2098,10 @@ from]]></xml-property>
                                             <property name="borderTopStyle">solid</property>
                                             <property name="borderTopWidth">thin</property>
                                             <property name="verticalAlign">middle</property>
+                                            <text id="6677">
+                                                <property name="contentType">auto</property>
+                                                <text-property name="content"><![CDATA[Finalidade da Ação]]></text-property>
+                                            </text>
                                         </cell>
                                         <cell id="1557">
                                             <property name="borderTopColor">#E5E5E5</property>
@@ -2148,7 +2202,13 @@ from]]></xml-property>
                                     <cell id="1393">
                                         <data id="1584">
                                             <property name="fontWeight">bold</property>
+                                            <property name="paddingRight">3pt</property>
                                             <property name="resultSetColumn">descricao</property>
+                                        </data>
+                                        <data id="6678">
+                                            <property name="paddingRight">3pt</property>
+                                            <property name="textAlign">justify</property>
+                                            <property name="resultSetColumn">finalidade</property>
                                         </data>
                                     </cell>
                                     <cell id="1394">

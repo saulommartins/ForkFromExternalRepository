@@ -84,9 +84,9 @@ function incluirCaso()
     $stFiltro = " WHERE num_causa = '".$_POST['inNumCausa']."'";
     $obTPessoalCausaRescisao->recuperaTodos($rsNumeroCausaRescisao, $stFiltro);
         
-    if ( $rsNumeroCausaRescisao->getNumLinhas() >= 1 ) {
-        $obErro->setDescricao( "Código ".$_POST['inNumCausa']." já cadastrado. Informe um código diferente." );
-    }
+    //if ( $rsNumeroCausaRescisao->getNumLinhas() >= 1 ) {
+    //    $obErro->setDescricao( "Código ".$_POST['inNumCausa']." já cadastrado. Informe um código diferente." );
+    //}
 
     foreach ($arCasosCausa as $arCasoCausa) {
         if ($arCasoCausa['stDescricaoCaso'] == $_POST['stDescricaoCaso']) {

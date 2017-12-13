@@ -135,7 +135,8 @@ switch ($request->get('inFiltro')) {
         $stFiltro .= "     WHERE                                                         \n";
         $stFiltro .= "             pscs.cod_servidor = ps.cod_servidor                   \n";
         $stFiltro .= "         AND pcs.cod_contrato = pscs.cod_contrato                  \n";
-        $stFiltro .= "         AND pcscc.cod_contrato = pcs.cod_contrato )               \n";
+        $stFiltro .= "         AND pcscc.cod_contrato = pcs.cod_contrato                 \n";
+        $stFiltro .= "         AND (SELECT COUNT(1) FROM pessoal.servidor_contrato_servidor WHERE cod_servidor = ps.cod_servidor) < 2 )     \n";
     break;
 
     //CGMs de contratos rescindidos

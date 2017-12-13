@@ -836,10 +836,20 @@ function preencheInformacoesSalariais($inCodFuncao = "", $inCodEspecialidadeFunc
     $inCodProgressao          = "";
     $nuSalario                = "";
 
-    $js = limpaInformacoesSalariais();
+    // Não altera informações salariais quando for alteração
+    if ($_POST['stAcao'] == "alterar") {
+        include_once(CAM_GRH_FOL_MAPEAMENTO."TFolhaPagamentoPeriodoMovimentacao.class.php" );
+        $obTFolhaPagamentoPeriodoMovimentacao = new TFolhaPagamentoPeriodoMovimentacao();
+        $obTFolhaPagamentoPeriodoMovimentacao->recuperaUltimaMovimentacao($rsPeriodoMovimentacao);
+        $dtCompetenciaFinal = $rsPeriodoMovimentacao->getCampo("dt_final");
+        $js .= "f.dtDataAlteracaoFuncao.readOnly = false;                                 \n";
+        $js .= "f.dtDataAlteracaoFuncao.style.color = '#000000';                          \n";
+        $js .= "f.dtDataAlteracaoFuncao.value = '$dtCompetenciaFinal';  \n";
+    } elseif ($inCodFuncao) {
+	//Se posssui CodFuncao pode-se buscar pelo padrão e calcular o salário.
 
-    //Se posssui CodFuncao pode-se buscar pelo padrão e calcular o salário.
-    if ($inCodFuncao) {
+        $js = limpaInformacoesSalariais();
+
         $obRPessoalCargo = new RPessoalCargo;
 
         // Para ver se o cargo possui especialidades
@@ -882,15 +892,6 @@ function preencheInformacoesSalariais($inCodFuncao = "", $inCodEspecialidadeFunc
             $js .= "f.inCodPadrao.value = '".$inCodPadrao."'; \n";
             $js .= "f.stPadrao.value = '".$inCodPadrao."'; \n";
         }
-    }
-    if ($_POST['stAcao'] == "alterar") {
-        include_once(CAM_GRH_FOL_MAPEAMENTO."TFolhaPagamentoPeriodoMovimentacao.class.php" );
-    $obTFolhaPagamentoPeriodoMovimentacao = new TFolhaPagamentoPeriodoMovimentacao();
-    $obTFolhaPagamentoPeriodoMovimentacao->recuperaUltimaMovimentacao($rsPeriodoMovimentacao);
-        $dtCompetenciaFinal = $rsPeriodoMovimentacao->getCampo("dt_final");
-        $js .= "f.dtDataAlteracaoFuncao.readOnly = false;                                 \n";
-        $js .= "f.dtDataAlteracaoFuncao.style.color = '#000000';                          \n";
-        $js .= "f.dtDataAlteracaoFuncao.value = '$dtCompetenciaFinal';  \n";
     }
 
     return $js;
