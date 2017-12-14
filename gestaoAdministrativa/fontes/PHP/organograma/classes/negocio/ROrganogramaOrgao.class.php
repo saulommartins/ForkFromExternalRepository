@@ -129,6 +129,11 @@ var $obROrganograma;
     * @access Private
     * @var Object
 */
+var $obREntidade;
+/**
+    * @access Private
+    * @var Object
+*/
 var $obRNorma;
 /**
     * @access Private
@@ -489,12 +494,13 @@ function salvar($boTransacao = "")
         } else {
             // SETA DADOS PARA TABELA DE ORGAO
             $this->obTOrgao->setDado("cod_organograma", $this->obROrganograma->getCodOrganograma() );
+            $this->obTOrgao->setDado("cod_entidade",    $this->obREntidade->getCodigoEntidade() );
             $this->obTOrgao->setDado("sigla_orgao"    , $this->getSigla() );
             $this->obTOrgao->setDado("criacao"        , $this->getCriacao() );
             $this->obTOrgao->setDado("cod_calendar"   , $this->obRCalendario->getCodCalendar() );
             $this->obTOrgao->setDado("num_cgm_pf"     , $this->obRCgmPF->getNumCGM() );
             $this->obTOrgao->setDado("cod_norma"      , $this->obRNorma->getCodNorma() );
-
+            
             // CASO SEJA INCLUSAO DE NOVO ORGAO
             $this->obTOrgao->proximoCod( $inCodOrgao , $boTransacao );
             $this->setCodOrgao( $inCodOrgao );
@@ -582,6 +588,7 @@ function salvar($boTransacao = "")
 function alterar($boTransacao = "")
 {
     $this->obTOrgao->setDado("cod_organograma", $this->obROrganograma->getCodOrganograma() );
+    $this->obTOrgao->setDado("cod_entidade",    $this->obREntidade->getCodigoEntidade() );
     $this->obTOrgao->setDado("sigla_orgao"    , $this->getSigla()                          );
     $this->obTOrgao->setDado("criacao"        , $this->getCriacao()                        );
     $this->obTOrgao->setDado("cod_calendar"   , $this->obRCalendario->getCodCalendar()     );
@@ -1090,6 +1097,10 @@ function consultar($boTransacao = "")
 
         $inCodCalendar = $rsRecordSet->getCampo("cod_calendar");
 
+
+        $this->obREntidade->setCodigoEntidade($rsRecordSet->getCampo('cod_entidade'));
+        $this->obREntidade->consultarNomes($boTransacao);
+        
         $obErro = $this->obRNorma->consultar( $boTransacao );
 
         if (  !$obErro->ocorreu()  ) {
@@ -1492,6 +1503,7 @@ function listaVisualizacaoOrganograma(&$arNiveisOrganograma)
         while (!$rsNiveis->eof ()) {
             if ($rsNiveis->getCampo ("nivel") != 0) {
                 $arNiveisOrganograma[$inCount][$inCount2]["cod_orgao"]       = $rsNiveis->getCampo ("cod_orgao");
+                $arNiveisOrganograma[$inCount][$inCount2]["cod_entidade"]    = $rsNiveis->getCampo ("inCodigoEntidade");
                 $arNiveisOrganograma[$inCount][$inCount2]["cod_organograma"] = $rsNiveis->getCampo ("cod_organograma");
                 $arNiveisOrganograma[$inCount][$inCount2]["num_cgm_pf"]      = $rsNiveis->getCampo ("num_cgm_pf");
                 $arNiveisOrganograma[$inCount][$inCount2]["cod_calendar"]    = $rsNiveis->getCampo ("cod_calendar");

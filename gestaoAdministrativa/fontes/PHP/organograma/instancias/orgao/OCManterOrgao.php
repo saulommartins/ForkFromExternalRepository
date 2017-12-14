@@ -117,7 +117,8 @@ function MontaOrgaoSuperior($stSelecionado = "")
             } else {
                 $stJs .= "f.".$stCombo."Txt.value='';\n";
             }
-        $stJs .= "jQuery('#".$stCombo."').attr('disabled', false);     \n";
+
+            $stJs .= "jQuery('#".$stCombo."').attr('disabled', false);     \n";
             $stJs .= "jQuery('#".$stCombo."Txt').attr('disabled', false);  \n";
             $stJs .= "jQuery('#stOrgaoSuperior').html(''); 		\n";
 
@@ -136,11 +137,13 @@ function MontaOrgaoSuperior($stSelecionado = "")
 
                     if ($stSelecionado == $inId && ($inCodNivelAux == $inCodNivel)) {
                         $stSelected = 'selected';
-            $stCodNivelSelecionado = $inCodNivel;
+                        $stCodNivelSelecionado = $inCodNivel;
                     }
+
                     $stJs .= "f.$stCombo.options[$inCount] = new Option('".addslashes($stDesc)."','".$inId."'); \n";
                     $rsCombo->proximo();
                 }
+
                 $stJs .= "f.$stCombo.value = '$stCodNivelSelecionado';";
             } else {
                 $stJs .= "jQuery('#stOrgaoSuperior').val(''); \n";

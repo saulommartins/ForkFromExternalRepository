@@ -226,6 +226,47 @@ class TExportacaoTCEMGUniOrcam extends Persistente
 
     public function montaRecuperaDadosExportacaoUOC()
     {
+        return "
+            SELECT  DISTINCT
+                    LPAD(oe.cod_entidade::VARCHAR, 2, '0') AS cod_orgao,
+                    LPAD(oo.num_orgao::VARCHAR, 5, '0') AS cod_unidade,
+                    LPAD(oo.num_orgao::VARCHAR, 5, '0') || LPAD(ou.num_unidade::VARCHAR, 3, '0') AS cod_sub_unidade,
+                    (CASE WHEN tu.identificador IN (1, 2, 3, 4, 99) 
+                          THEN lpad(tu.identificador::VARCHAR, 2,'0')
+                          ELSE ''
+                    END) AS id_fundo, 
+                    oo.nom_orgao AS descunidade,
+                    ou.nom_unidade AS descunidadesub
+                
+              FROM  orcamento.entidade oe
+
+              JOIN  orcamento.orgao oo
+                ON  oo.cod_entidade = oe.cod_entidade
+               AND  oo.exercicio = oe.exercicio
+
+              JOIN  orcamento.unidade ou
+                ON  ou.num_orgao = oo.num_orgao
+               AND  ou.exercicio = oo.exercicio
+
+              JOIN  tcemg.uniorcam tu
+                ON  oo.num_orgao = tu.num_orgao
+               AND  oo.exercicio = tu.exercicio
+
+             WHERE  tu.exercicio = '".$this->getDado('exercicio')."'
+               AND  NOT EXISTS (
+                     SELECT 1
+                       FROM tcemg.arquivo_uoc
+                      WHERE arquivo_uoc.num_orgao   = tu.num_orgao
+                        AND arquivo_uoc.num_unidade = tu.num_unidade
+                        AND arquivo_uoc.exercicio   = '".$this->getDado('exercicio')."'
+                        AND arquivo_uoc.mes < ".$this->getDado('mes')." 
+                    )
+        ";
+    }
+
+    /*
+    public function montaRecuperaDadosExportacaoUOC()
+    {
         $stSql = " SELECT  lpad(".$this->getDado('cod_orgao')."::VARCHAR,2,'0') AS codorgao
                         , lpad(lpad(uniorcam.num_orgao::VARCHAR, 2, '0')||lpad(uniorcam.num_unidade::VARCHAR, 2, '0'),5,'0') AS codunidadesub
                         , CASE WHEN uniorcam.identificador = 1 OR uniorcam.identificador = 2 OR uniorcam.identificador = 3 OR
@@ -264,6 +305,7 @@ class TExportacaoTCEMGUniOrcam extends Persistente
 
         return $stSql;
     }
+    */
 
     public function recuperaDadosExportacaoIUOC(&$rsRecordSet,$stFiltro="",$stOrder="",$boTransacao="")
     {

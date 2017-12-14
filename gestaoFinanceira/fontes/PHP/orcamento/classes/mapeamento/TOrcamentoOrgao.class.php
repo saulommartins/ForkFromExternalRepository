@@ -66,6 +66,7 @@ function TOrcamentoOrgao()
     $this->setCampoCod('');
     $this->setComplementoChave('exercicio,num_orgao');
 
+    $this->AddCampo('cod_entidade'        ,'integer',true,'',true,false);
     $this->AddCampo('exercicio'          ,'char'    ,true ,'04',true ,false);
     $this->AddCampo('num_orgao'          ,'integer' ,true ,''  ,true ,false);
     $this->AddCampo('nom_orgao'          ,'varchar' ,true ,'60',false,false);

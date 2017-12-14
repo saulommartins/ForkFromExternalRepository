@@ -68,6 +68,7 @@ switch ($stAcao) {
         $obROrgaoOrcamentario->setNumeroOrgao   ($_REQUEST['inNumeroOrgao']);
         $obROrgaoOrcamentario->setNomeOrgao     ($_REQUEST['stNomeOrgao']);
         $obROrgaoOrcamentario->setCodResponsavel($_REQUEST['inCGM']);
+        $obROrgaoOrcamentario->setCodigoEntidade($_REQUEST['inCodigoEntidade']);
 
         //faz o insert para cada ano até o ano_final do ppa
         do {

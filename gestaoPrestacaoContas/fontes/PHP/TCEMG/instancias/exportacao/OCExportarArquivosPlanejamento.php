@@ -1052,27 +1052,27 @@ if (in_array("UOC.csv",$arFiltro["arArquivosSelecionados"])) {
     $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
     $obExportador->roUltimoArquivo->addBloco($arRecordSetArquivos["UOC.csv"]);
 
-    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("codorgao");
+    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_orgao");
     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
 
-    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("codunidadesub");
+    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_unidade");
     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
-    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
-    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(5);
+    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ZEROS_ESQ");
+    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(8);
 
-    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("idfundo");
+    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("id_fundo");
     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_ESQ");
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
 
-    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("descunidadesub");
+    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("desc_unidade");
     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(50);
 
-    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("esubunidade");
+    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("e_sub_unidade");
     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(1);

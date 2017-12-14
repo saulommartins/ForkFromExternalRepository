@@ -485,9 +485,9 @@ function excluir($obTransacao = "")
 */
 function listar(&$rsLista, $stOrder = "", $obTransacao = "")
 {
+
     include_once ( CAM_GF_ORC_MAPEAMENTO."TOrcamentoEntidade.class.php"         );
     $obTEntidade             = new TOrcamentoEntidade;
-
     $stFiltro = "";
     if ( $this->getExercicio() ) {
         $stFiltro .= " AND exercicio = '".$this->getExercicio()."'";
@@ -501,12 +501,14 @@ function listar(&$rsLista, $stOrder = "", $obTransacao = "")
     if ( $this->getNumCGM() ) {
         $stFiltro .= " AND E.numcgm = ".$this->getNumCGM();
     }
-    if ( $this->obRCGM->getNumCGM() ) {
+    if ( $this->obRCGM != null && $this->obRCGM->getNumCGM() ) {
         $stFiltro .= " AND E.numcgm = ".$this->obRCGM->getNumCGM();
     }
-    if ( $this->obRCGMPessoaFisica->getNumCGM()) {
+
+    if ( $this->obRCGMPessoaFisica != null && $this->obRCGMPessoaFisica->getNumCGM()) {
         $stFiltro .= " AND E.cod_responsavel = ".$this->obRCGMPessoaFisica->getNumCGM();
     }
+
     $obErro = $obTEntidade->recuperaRelacionamento( $rsLista, $stFiltro, $stOrder, $obTransacao );
 
     return $obErro;
@@ -528,6 +530,7 @@ function consultar(&$rsLista, $boTransacao = "")
     $obTEntidade->setDado( "exercicio"    , $this->getExercicio()      );
     $obTEntidade->setDado( "cod_entidade" , $this->getCodigoEntidade() );
     $obErro = $obTEntidade->recuperaPorChave( $rsLista, $boTransacao );
+
     if ( !$obErro->ocorreu() ) {
         $this->setExercicio                 ( $rsLista->getCampo( "exercicio" )        );
         $this->setCodigoEntidade            ( $rsLista->getCampo( "cod_entidade" )     );

@@ -124,7 +124,7 @@ function TAdministracaoAtributoDinamico()
 
     public function montaRecuperaRelacionamento()
     {
-        $stSql  = " SELECT                                       \n";
+        $stSql  = " SELECT DISTINCT                              \n";
         $stSql .= "     ad.cod_modulo,                           \n";
         $stSql .= "     ad.cod_cadastro,                         \n";
         $stSql .= "     ad.cod_atributo,                         \n";

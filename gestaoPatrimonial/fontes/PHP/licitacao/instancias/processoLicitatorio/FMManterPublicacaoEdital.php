@@ -24,7 +24,7 @@
 ?>
 <?php
 //ini_set("display_errors",1);
-//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL);
 /**
     * Página de Formulário para informar os veiculos de publicacao que serao publicados no edital
     * Data de Criação   : 06/10/2006

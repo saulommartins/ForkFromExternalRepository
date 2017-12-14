@@ -83,6 +83,7 @@ $obRegra->setCodOrgao( $_REQUEST['inCodOrgao'] );
 $obRegra->consultar();
 
 $stDescricao          = $obRegra->getDescricao();
+$stEntidade           = $obRegra->obREntidade->getNomeEntidade();
 $stDataCriacao        = $obRegra->getCriacao();
 $inNumCGMResponsavel  = $obRegra->obRCgmPF->getNumCGM();
 $inNumCGMOrgao        = $obRegra->obRCgmPJ->getNumCGM();
@@ -148,6 +149,10 @@ $obHdnValidaData->setValue( "if (document.frm.stDataInativacao.value<'$stDataCri
 $obLblCodOrgao = new Label;
 $obLblCodOrgao->setRotulo ( "Código" );
 $obLblCodOrgao->setValue  ( $_REQUEST['inCodOrgao'] );
+
+$obLblEntidadeOrgao = new Label;
+$obLblEntidadeOrgao->setRotulo ( "Entidade" );
+$obLblEntidadeOrgao->setValue  ( $stEntidade );
 
 $obLblDescricao = new Label;
 $obLblDescricao->setRotulo        ( "Descrição" );
@@ -292,6 +297,7 @@ $obFormulario->addHidden            ( $obHdnCodOrganograma );
 
 $obFormulario->addTitulo            ( "Dados do órgão" );
 $obFormulario->addComponente        ( $obLblCodOrgao );
+$obFormulario->addComponente        ( $obLblEntidadeOrgao );
 $obFormulario->addComponente        ( $obLblDescricao );
 $obFormulario->addComponente        ( $obLblOrganograma );
 $obFormulario->addComponente        ( $obLblNivel );

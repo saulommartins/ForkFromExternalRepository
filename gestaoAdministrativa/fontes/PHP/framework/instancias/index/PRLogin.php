@@ -44,7 +44,6 @@ Sessao::open();
 Sessao::setUsername($paramUsuario);
 Sessao::setPassword($paramSenha);
 Sessao::setExercicio($paramExercicio);
-
 $obConexao = new Conexao();
 $obConexao->setUser($urbem_config['urbem']['connection']['username']);
 $obConexao->setPassWord($urbem_config['urbem']['connection']['password']);

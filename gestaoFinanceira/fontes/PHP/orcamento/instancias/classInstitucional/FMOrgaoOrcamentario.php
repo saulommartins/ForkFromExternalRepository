@@ -108,7 +108,7 @@ $obTxtNomOrgao->setNull     ( false );
 $obTxtNomOrgao->setTitle    ( "Informe o nome do órgão." );
 $obTxtNomOrgao->setSize     ( 60 );
 $obTxtNomOrgao->setMaxLength( 60 );
-
+    
 //Campo Responsável
 $obPopUpResponsavel = new IPopUpCGM( $obForm );
 $obPopUpResponsavel->setNull     ( false              );
@@ -117,6 +117,21 @@ $obPopUpResponsavel->setTitle    ( "Informe o responsável" );
 $obPopUpResponsavel->setTipo     ( "usuario"           );
 $obPopUpResponsavel->setValue    ( $stNomeResponsavel );
 $obPopUpResponsavel->obCampoCod->setValue    ( $inCodResponsavel );
+
+//Campo Entidade
+$rsEntidade = new RecordSet;
+$obROrgaoOrcamentario->obREntidade->listar($rsEntidade);
+
+$obCmbEntidade = new Select;
+$obCmbEntidade->setRotulo        ( "Entidade" );
+$obCmbEntidade->setName          ( "inCodigoEntidade" );
+$obCmbEntidade->setStyle         ( "width: 500px");
+$obCmbEntidade->setCampoID       ( "cod_entidade" );
+$obCmbEntidade->setCampoDesc     ( "nom_cgm" );
+$obCmbEntidade->addOption        ( "", "Selecione" );
+$obCmbEntidade->setValue         ( $inCodigoEntidade );
+$obCmbEntidade->setNull          ( false );
+$obCmbEntidade->preencheCombo    ( $rsEntidade );
 
 //****************************************//
 //Monta FORMULARIO
@@ -130,6 +145,7 @@ $obFormulario->addTitulo    ( "Dados para Órgão Orçamentário" );
 $obFormulario->addComponente( $obTxtNumOrgao                  );
 $obFormulario->addComponente( $obTxtNomOrgao                  );
 $obFormulario->addComponente( $obPopUpResponsavel             );
+$obFormulario->addComponente( $obCmbEntidade                );
 
 $obFormulario->OK();
 $obFormulario->show();

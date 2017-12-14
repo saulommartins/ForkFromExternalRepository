@@ -41,6 +41,7 @@ include_once CAM_GA_ORGAN_MAPEAMENTO."TOrganogramaOrganograma.class.php";
 include_once CAM_GA_ORGAN_MAPEAMENTO."TOrganogramaOrgaoNivel.class.php";
 include_once CAM_GA_ORGAN_NEGOCIO."ROrganogramaNivel.class.php";
 include_once CAM_GA_NORMAS_NEGOCIO."RNorma.class.php";
+include_once ( CAM_GF_ORC_NEGOCIO."ROrcamentoEntidade.class.php" );
 
 class ROrganogramaOrganograma
 {

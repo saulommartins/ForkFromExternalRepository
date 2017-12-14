@@ -127,7 +127,7 @@ if (empty($stAcao) || $stAcao == "incluir") {
     }
 
     $stGet  = Sessao::getId()."&inNumCGMResponsavel=".$inNumCGMResponsavel."&inNumCGMOrgao=".$inNumCGMOrgao;
-    $stGet .= "&inCodOrgaoSuperiorTxt=".$inCodOrgaoSuperior."&inCodNormaTxt=".$inCodNorma;
+    $stGet .= "&inCodOrgao=".$inCodOrgao."&inCodOrgaoSuperiorTxt=".$inCodOrgaoSuperior."&inCodNormaTxt=".$inCodNorma;
     $stGet .= "&inCodTipoNorma=".$inCodTipoNorma."&inCodOrganograma=".$inCodOrganograma;
     $stGet .= "&inCodNivelTxt=".$inCodNivel."&inCodTipoNormaAux=".$inCodTipoNorma;
 
@@ -506,7 +506,6 @@ if ($stAcao != 'incluir') {
 }
 
 $obFormulario->addComponente ( $obTxtSigla );
-
 $obFormulario->addComponente ( $obTxtDescricao );
 $obFormulario->addHidden     ( $obHdnDescricao );
 

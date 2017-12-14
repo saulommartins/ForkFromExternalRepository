@@ -44,6 +44,7 @@
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 include_once CAM_FW_BANCO_DADOS . 'Transacao.class.php';
 include_once CAM_GF_ORC_NEGOCIO . 'ROrcamentoConfiguracao.class.php';
+include_once CAM_GF_ORC_NEGOCIO . "ROrcamentoEntidade.class.php";
 
 /**
     * Classe de Regra de Negócio Itens
@@ -125,6 +126,11 @@ function setExercicio($valor) { $this->stExercicio          = $valor; }
 function setNumeroOrgao($valor) { $this->inNumeroOrgao    = $valor;     }
 /**
      * @access Public
+     * @param Integer $valor
+*/
+function setCodigoEntidade($valor) { $this->inCodigoEntidade    = $valor;     }
+/**
+     * @access Public
      * @param String $valor
 */
 function setNomeOrgao($valor) { $this->stNomeOrgao    = $valor;     }
@@ -133,6 +139,12 @@ function setNomeOrgao($valor) { $this->stNomeOrgao    = $valor;     }
      * @param Integer $valor
 */
 function setCodResponsavel($valor) { $this->inCodResponsavel = $valor;     }
+
+/**
+    * @access Public
+    * @param Object $valor
+*/
+function setREntidade($valor) { $this->obREntidade      = $valor; }
 
 /**
     * @access Public
@@ -173,12 +185,23 @@ function getNumeroOrgao() { return $this->inNumeroOrgao;        }
      * @access Public
      * @return String
 */
+function getCodigoEntidade() { return $this->inCodigoEntidade;        }
+/**
+     * @access Public
+     * @return String
+*/
 function getNomeOrgao() { return $this->stNomeOrgao;          }
 /**
      * @access Public
      * @return Integer
 */
 function getCodResponsavel() { return $this->inCodResponsavel;     }
+
+/**
+    * @access Public
+    * @return Object
+*/
+function getREntidade() { return $this->obREntidade      ; }
 
 /**
     * Método Construtor
@@ -189,6 +212,7 @@ function ROrcamentoOrgaoOrcamentario()
     $this->setRConfiguracaoOrcamento( new ROrcamentoConfiguracao);
     $this->setTransacao             ( new Transacao             );
     $this->setExercicio             ( Sessao::getExercicio()    );
+    $this->setREntidade             ( new ROrcamentoEntidade );
 }
 
 /**
@@ -205,10 +229,13 @@ function salvar($boTransacao = "")
     $boFlagTransacao = false;
     $obErro = $this->obTransacao->abreTransacao( $boFlagTransacao, $boTransacao );
     if ( !$obErro->ocorreu() ) {
-        $obTOrcamentoOrgao->setDado( "num_orgao"     , $this->getNumeroOrgao()     );
+        
+        $obTOrcamentoOrgao->setDado( "cod_entidade"  , $this->getCodigoEntidade()      );
+        $obTOrcamentoOrgao->setDado( "num_orgao"     , $this->getNumeroOrgao()         );
         $obTOrcamentoOrgao->setDado( "exercicio"     , $this->getExercicio()           );
         $obTOrcamentoOrgao->setDado( "nom_orgao"     , $this->getNomeOrgao()           );
         $obTOrcamentoOrgao->setDado( "usuario_responsavel" , $this->getCodResponsavel() );
+
         $obErro = $obTOrcamentoOrgao->inclusao( $boTransacao );
         if ($obErro->ocorreu()) {
             $obErro->setDescricao('Já existe Orgão Orçamentário cadastrado com o código informado!');

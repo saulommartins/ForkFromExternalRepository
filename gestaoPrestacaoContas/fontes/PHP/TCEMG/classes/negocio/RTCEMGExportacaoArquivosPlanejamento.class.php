@@ -296,9 +296,6 @@ class RTCEMGExportacaoArquivosPlanejamento
 
             $obErro = $this->obTTCEMGRegistrosArquivoPrograma->recuperaTotalRecursos($rsRecordSet);
 
-            echo '<pre>'; print_r($rsRecordSet); echo '</pre>';
-            exit();
-
             $arRecordSetArquivos["PRO.csv"] = $rsRecordSet;
         }
 
@@ -406,26 +403,75 @@ class RTCEMGExportacaoArquivosPlanejamento
             $this->obTExportacaoTCEMGUniOrcam->setDado('entidades', $this->getCodEntidades());
             $this->obTExportacaoTCEMGUniOrcam->recuperaDadosEntidade($rsRecordSet);
 
+
             foreach ($rsRecordSet->arElementos as $elemento) {
                 $this->obTExportacaoTCEMGUniOrcam->setDado('exercicio',$this->getExercicio());
                 $this->obTExportacaoTCEMGUniOrcam->setDado('entidades', $elemento['cod_entidade']);
                 $this->obTExportacaoTCEMGUniOrcam->setDado('cod_orgao', $elemento['valor']);
                 $this->obTExportacaoTCEMGUniOrcam->setDado('mes'      , $this->getMes());
-                $this->obTExportacaoTCEMGUniOrcam->recuperaDadosExportacaoUOC($rsRecordSetUOC);
+
+                $stFiltro = "AND oe.cod_entidade = " . $elemento['cod_entidade'];
+                $stFiltro .= " ORDER BY cod_orgao, cod_unidade, cod_sub_unidade";
+                
+                $this->obTExportacaoTCEMGUniOrcam->recuperaDadosExportacaoUOC($rsRecordSetUOC, $stFiltro);
+                $ultimaUnidade = 0;
 
                 foreach ($rsRecordSetUOC->arElementos as $elementoUOC) {
-                    $arRegistros[] = $elementoUOC;
+                    $novoItem = array(
+                        'cod_orgao' => $elementoUOC['cod_orgao'],
+                        'id_fundo' => $elementoUOC['id_fundo'],
+                    );
 
-                    $this->obTTCEMGArquivoUOC->setDado('num_orgao'  , $elementoUOC['num_orgao']);
-                    $this->obTTCEMGArquivoUOC->setDado('num_unidade', $elementoUOC['num_unidade']);
-                    $this->obTTCEMGArquivoUOC->setDado('exercicio'  , $this->getExercicio());
-                    $this->obTTCEMGArquivoUOC->setDado('mes'        , $this->getMes());
+                    if ($elementoUOC['cod_unidade'] != $ultimaUnidade) {
+                        $this->obTTCEMGArquivoUOC->setDado('cod_orgao'  , $elementoUOC['cod_orgao']);
+                        $this->obTTCEMGArquivoUOC->setDado('cod_unidade', $elementoUOC['cod_unidade']);
+                        $this->obTTCEMGArquivoUOC->setDado('id_fundo', $elementoUOC['id_fundo']);
+                        $this->obTTCEMGArquivoUOC->setDado('desc_unidade', $elementoUOC['descunidade']);
+                        $this->obTTCEMGArquivoUOC->setDado('e_sub_unidade', '2');
+
+                        $novoItem['cod_unidade'] = $elementoUOC['cod_unidade'];
+                        $novoItem['desc_unidade'] = $elementoUOC['descunidade'];
+                        $novoItem['e_sub_unidade'] = 2;
+
+                    } else {
+                        $this->obTTCEMGArquivoUOC->setDado('cod_orgao'  , $elementoUOC['cod_orgao']);
+                        $this->obTTCEMGArquivoUOC->setDado('cod_unidade', $elementoUOC['cod_sub_unidade']);
+                        $this->obTTCEMGArquivoUOC->setDado('id_fundo', $elementoUOC['id_fundo']);
+                        $this->obTTCEMGArquivoUOC->setDado('desc_unidade', $elementoUOC['descunidadesub']);
+                        $this->obTTCEMGArquivoUOC->setDado('e_sub_unidade', '1');
+
+                        $novoItem['cod_unidade'] = $elementoUOC['cod_sub_unidade'];
+                        $novoItem['desc_unidade'] = $elementoUOC['descunidadesub'];
+                        $novoItem['e_sub_unidade'] = 1;
+                    }
+
+                    $ultimaUnidade = $elementoUOC['cod_unidade'];
+                    $arRegistros[] = $novoItem;
+
+                    // $this->obTTCEMGArquivoUOC->setDado('exercicio'  , $this->getExercicio());
+                    // $this->obTTCEMGArquivoUOC->setDado('mes'        , $this->getMes());
                     $this->obTTCEMGArquivoUOC->recuperaPorChave($rsArquivoUOC);
 
                     if ($rsArquivoUOC->getNumLinhas() < 1) {
                         $this->obTTCEMGArquivoUOC->inclusao();
                     }
                 }
+                /*
+                foreach ($rsRecordSetUOC->arElementos as $elementoUOC) {
+
+                    $this->obTTCEMGArquivoUOC->setDado('num_orgao'  , $elementoUOC['num_orgao']);
+                    $this->obTTCEMGArquivoUOC->setDado('num_unidade', $elementoUOC['num_unidade']);
+                    $this->obTTCEMGArquivoUOC->setDado('exercicio'  , $this->getExercicio());
+                    $this->obTTCEMGArquivoUOC->setDado('mes'        , $this->getMes());
+                    $retorno = $this->obTTCEMGArquivoUOC->recuperaPorChave($rsArquivoUOC);
+                    echo "<pre>";
+                    var_dump($retorno);
+                    die;
+
+                    if ($rsArquivoUOC->getNumLinhas() < 1) {
+                        $this->obTTCEMGArquivoUOC->inclusao();
+                    }
+                }*/
             }
 
             $rsRecordSet->arElementos = $arRegistros;
