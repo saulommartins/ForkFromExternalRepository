@@ -26,20 +26,20 @@
 /**
  * Classe de mapeamento da tabela tcemg.registros_arquivo_programa
  * Data de Criação: 11/03/2014
- * 
+ *
  * @author Analista      : Eduardo Schitz
  * @author Desenvolvedor : Franver Sarmento de Moraes
- * 
+ *
  * @package URBEM
  * @subpackage Mapeamento
- * 
+ *
  * Casos de uso: uc-02.09.04
  *
  * $Id: TTCEMGRegistrosArquivoPrograma.class.php 63540 2015-09-09 20:30:56Z franver $
  * $Revision: 63540 $
  * $Author: franver $
  * $Date: 2015-09-09 17:30:56 -0300 (Qua, 09 Set 2015) $
- * 
+ *
  */
 
 class TTCEMGRegistrosArquivoPrograma extends Persistente
@@ -61,7 +61,7 @@ class TTCEMGRegistrosArquivoPrograma extends Persistente
         $this->addCampo('timestamp'   ,'timestamp',true, '',false,false);
         $this->addCampo('exercicio'   ,'varchar'  ,true,'4', true,false);
     }
-    
+
     public function recuperaTotalRecursos(&$rsRecordSet, $stFiltro = '', $stOrdem = '', $boTransacao = '')
     {
         $rsRecordSet = new RecordSet();
@@ -76,23 +76,20 @@ class TTCEMGRegistrosArquivoPrograma extends Persistente
 
     private function montaRecuperaTotalRecursos($stFiltro = '', $stOrdem = '')
     {
-        $stSql = "  SELECT  *                            
-                    FROM tcemg.recupera_ppa_programa('".$this->getDado('exercicio')."', ".$this->getDado('boReemissao').")
-                        AS retorno (
-                                     cod_programa         INTEGER
-                                    ,num_programa         INTEGER
-                                    ,nome_programa        VARCHAR
-                                    ,objetivo             VARCHAR
-                                    ,total_recursos_ano_1 VARCHAR
-                                    ,total_recursos_ano_2 VARCHAR
-                                    ,total_recursos_ano_3 VARCHAR
-                                    ,total_recursos_ano_4 VARCHAR
-                                    )                    
-                    ORDER BY num_programa
-        ";
+        $stSql = "SELECT *
+                  FROM tcemg.recupera_ppa_programa('" . $this->getDado('exercicio') . "', " . $this->getDado('boReemissao') . ")
+                       AS retorno (cod_programa INTEGER,
+                                   num_programa INTEGER,
+                                   nome_programa VARCHAR,
+                                   objetivo VARCHAR,
+                                   total_recursos_ano_1 VARCHAR,
+                                   total_recursos_ano_2 VARCHAR,
+                                   total_recursos_ano_3 VARCHAR,
+                                   total_recursos_ano_4 VARCHAR)
+                  ORDER BY num_programa";
         return $stSql;
     }
-    
+
     public function recuperaRecursosIncluisaoPrograma(&$rsRecordSet, $stFiltro = '', $stOrdem = '', $boTransacao = '')
     {
         $rsRecordSet = new RecordSet();
@@ -107,27 +104,23 @@ class TTCEMGRegistrosArquivoPrograma extends Persistente
 
     private function montaRecursosIncluisaoPrograma($stFiltro = '', $stOrdem = '')
     {
-        $stSql = "
-            SELECT *
-              FROM tcemg.recupera_ppa_inclusao_programa('".$this->getDado('exercicio')."', '".$this->getDado('dt_final')."')
-                AS retorno ( cod_programa        INTEGER
-                           , ppa_cod_programa    INTEGER
-                           , nom_programa        VARCHAR
-                           , objetivo            VARCHAR
-                           , total_recurso_1_ano VARCHAR
-                           , total_recurso_2_ano VARCHAR
-                           , total_recurso_3_ano VARCHAR
-                           , total_recurso_4_ano VARCHAR
-                           , numero_lei          INTEGER
-                           , data_lei            VARCHAR
-                           , data_publicacao_lei VARCHAR
-                           );
-        ";
+        $stSql = "SELECT *
+                  FROM tcemg.recupera_ppa_inclusao_programa('" . $this->getDado('exercicio') . "', '" . $this->getDado('dt_final') . "')
+                       AS retorno (cod_programa INTEGER,
+                                   ppa_cod_programa INTEGER,
+                                   nom_programa VARCHAR,
+                                   objetivo VARCHAR,
+                                   total_recurso_1_ano VARCHAR,
+                                   total_recurso_2_ano VARCHAR,
+                                   total_recurso_3_ano VARCHAR,
+                                   total_recurso_4_ano VARCHAR,
+                                   numero_lei INTEGER,
+                                   data_lei VARCHAR,
+                                   data_publicacao_lei VARCHAR)";
         return $stSql;
     }
-    
-    public function __destruct(){}
 
+    public function __destruct(){}
 
 }
 ?>

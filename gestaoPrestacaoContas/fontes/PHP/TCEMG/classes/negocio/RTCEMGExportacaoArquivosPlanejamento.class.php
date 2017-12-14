@@ -284,7 +284,7 @@ class RTCEMGExportacaoArquivosPlanejamento
         }
 
         if (in_array("PRO.csv",$this->getArquivos())) {
-           $rsVerificaProgramas = new RecordSet();
+            $rsVerificaProgramas = new RecordSet();
             $this->obTTCEMGRegistrosArquivoPrograma->setDado('exercicio', Sessao::getExercicio());
             $this->obTTCEMGRegistrosArquivoPrograma->recuperaPorChave($rsVerificaProgramas);
 
@@ -295,6 +295,9 @@ class RTCEMGExportacaoArquivosPlanejamento
             }
 
             $obErro = $this->obTTCEMGRegistrosArquivoPrograma->recuperaTotalRecursos($rsRecordSet);
+
+            echo '<pre>'; print_r($rsRecordSet); echo '</pre>';
+            exit();
 
             $arRecordSetArquivos["PRO.csv"] = $rsRecordSet;
         }
