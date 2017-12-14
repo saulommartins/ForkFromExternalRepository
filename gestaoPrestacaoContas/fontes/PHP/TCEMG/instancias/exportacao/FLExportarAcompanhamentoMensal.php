@@ -155,7 +155,7 @@ $arNomeArquivos = array(
     'RSP.csv',
 );
 
-if (Sessao::getExercicio() >= '2015'){
+if (Sessao::getExercicio() >= '2015' && Sessao::getExercicio() <= '2017'){
     $arNomeArquivos[] = 'SUPDEF.csv';
 }
 
