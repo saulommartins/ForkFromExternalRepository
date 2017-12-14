@@ -26,14 +26,14 @@
 /**
  * Classe de mapeamento da tabela ppa.acao
  * Data de Criação: 23/09/2008
-    
-    
+
+
  * @author Analista      : Heleno Menezes dos Santos
  * @author Desenvolvedor : Pedro Vaz de Mello de Medeiros
-    
+
  * @package URBEM
  * @subpackage Mapeamento
-    
+
  $Id: TPPAAcao.class.php 39830 2009-04-20 20:16:26Z pedro.medeiros $
 
  * Casos de uso: uc-02.09.04
@@ -182,7 +182,7 @@ class TPPAAcao extends TPPAUtils //Persistente
 
         $stSQL  = "     SELECT COALESCE(MAX(acao.cod_acao::INTEGER) + 1, 1) AS max                  \n";
         $stSQL .= "       FROM ppa.acao                                                             \n";
-        $stSQL .= " INNER JOIN ppa.acao_dados                                                       \n"; 
+        $stSQL .= " INNER JOIN ppa.acao_dados                                                       \n";
         $stSQL .= "         ON acao_dados.cod_acao = acao.cod_acao                                  \n";
         $stSQL .= "        AND acao_dados.timestamp_acao_dados = acao.ultimo_timestamp_acao_dados   \n";
         $stSQL .= " INNER JOIN ppa.programa                                                         \n";
@@ -263,150 +263,150 @@ class TPPAAcao extends TPPAUtils //Persistente
         }
 
         $stSQL = "
-        SELECT LPAD(acao.num_acao::VARCHAR,4,'0') AS num_acao
-             , LPAD(acao.cod_acao::VARCHAR,4,'0') AS cod_acao
-             , ppa.cod_ppa
-             , acao.ultimo_timestamp_acao_dados
-             , LPAD(programa.num_programa::VARCHAR,4,'0') AS num_programa
-             , LPAD(programa.cod_programa::VARCHAR,4,'0') AS cod_programa
-             , programa_dados.identificacao AS nom_programa
-             , programa_dados.cod_tipo_programa
-             , programa_setorial.cod_setorial
-             , macro_objetivo.cod_macro
-             , acao_dados.titulo
-             , acao_dados.descricao
-             , acao_dados.finalidade
-             , acao_dados.detalhamento
-             , acao_dados.cod_forma
-             , acao_dados.cod_tipo
-             , acao_dados.cod_natureza
-             , regiao.cod_regiao
-             , regiao.nome AS nom_regiao
-             , produto.cod_produto
-             , produto.descricao AS nom_produto
-             , acao_norma.cod_norma
-             , norma.nom_norma
-             , acao_dados.cod_tipo_orcamento
-             , funcao.cod_funcao
-             , funcao.descricao AS nom_funcao
-             , subfuncao.cod_subfuncao
-             , subfuncao.descricao AS nom_subfuncao
-             , acao_dados.cod_unidade_medida
-             , acao_dados.cod_grandeza
-             , acao_dados.valor_estimado
-             , acao_dados.meta_estimada
-             , LPAD(
-                    acao_unidade_executora.num_orgao::VARCHAR,
-                    length(
-                            orcamento.fn_masc_orgao(
-                                                    split_part(acao.ultimo_timestamp_acao_dados::VARCHAR, '-', 1)
-                                                    )
-                        ),'0'
-                    ) AS num_orgao
-             , LPAD(
-                    acao_unidade_executora.num_unidade::VARCHAR,
-                    length(
-                            orcamento.fn_masc_unidade(
-                                                    split_part(acao.ultimo_timestamp_acao_dados::VARCHAR, '-', 1)
-                                                    )
-                        ),'0'
-                    ) AS num_unidade
-             , tipo_acao.descricao AS nom_tipo_acao
-             , SUM(acao_quantidade.valor) AS valor_acao
-             , TO_CHAR(programa_temporario_vigencia.dt_inicial, 'dd/mm/yyyy') AS dt_inicial
-             , TO_CHAR(programa_temporario_vigencia.dt_final, 'dd/mm/yyyy') AS dt_final
-             , TO_CHAR(acao_periodo.data_inicio, 'dd/mm/yyyy') AS dt_inicial_acao
-             , TO_CHAR(acao_periodo.data_termino, 'dd/mm/yyyy') AS dt_final_acao
-             , programa_dados.continuo
-          FROM ppa.acao
-    INNER JOIN ppa.programa
-            ON acao.cod_programa = programa.cod_programa
-    INNER JOIN ppa.programa_dados
-            ON programa.cod_programa = programa_dados.cod_programa
-           AND programa.ultimo_timestamp_programa_dados = programa_dados.timestamp_programa_dados
-    INNER JOIN ppa.programa_setorial
-            ON programa.cod_setorial = programa_setorial.cod_setorial
-    INNER JOIN ppa.macro_objetivo
-            ON programa_setorial.cod_macro = macro_objetivo.cod_macro
-    INNER JOIN ppa.ppa
-            ON macro_objetivo.cod_ppa = ppa.cod_ppa
-    INNER JOIN ppa.acao_dados
-            ON acao.cod_acao                    = acao_dados.cod_acao
-           AND acao.ultimo_timestamp_acao_dados = acao_dados.timestamp_acao_dados
-    INNER JOIN ppa.regiao
-            ON acao_dados.cod_regiao = regiao.cod_regiao
-     LEFT JOIN ppa.produto
-            ON acao_dados.cod_produto = produto.cod_produto
-    INNER JOIN ppa.tipo_acao
-            ON tipo_acao.cod_tipo = acao_dados.cod_tipo
-     LEFT JOIN ppa.acao_norma
-            ON acao.cod_acao = acao_norma.cod_acao
-           AND acao.ultimo_timestamp_acao_dados = acao_norma.timestamp_acao_dados
-     LEFT JOIN normas.norma
-            ON acao_norma.cod_norma = norma.cod_norma
-     LEFT JOIN orcamento.funcao
-            ON acao_dados.exercicio  = funcao.exercicio
-           AND acao_dados.cod_funcao = funcao.cod_funcao
-     LEFT JOIN orcamento.subfuncao
-            ON acao_dados.exercicio     = subfuncao.exercicio
-           AND acao_dados.cod_subfuncao = subfuncao.cod_subfuncao
-    INNER JOIN ppa.acao_unidade_executora
-            ON acao_dados.cod_acao             = acao_unidade_executora.cod_acao
-           AND acao_dados.timestamp_acao_dados = acao_unidade_executora.timestamp_acao_dados
-     LEFT JOIN ppa.acao_quantidade
-            ON acao_quantidade.cod_acao             = acao_dados.cod_acao
-           AND acao_quantidade.timestamp_acao_dados = acao_dados.timestamp_acao_dados
-     LEFT JOIN ppa.acao_periodo
-            ON acao_periodo.cod_acao = acao_dados.cod_acao
-           AND acao_periodo.timestamp_acao_dados = acao_dados.timestamp_acao_dados
-     LEFT JOIN ppa.programa_temporario_vigencia
-            ON programa_temporario_vigencia.cod_programa             = programa_dados.cod_programa
-           AND programa_temporario_vigencia.timestamp_programa_dados = programa_dados.timestamp_programa_dados
-            ";
+          SELECT LPAD(acao.num_acao::VARCHAR,4,'0') AS num_acao
+               , LPAD(acao.cod_acao::VARCHAR,4,'0') AS cod_acao
+               , ppa.cod_ppa
+               , acao.ultimo_timestamp_acao_dados
+               , LPAD(programa.num_programa::VARCHAR,4,'0') AS num_programa
+               , LPAD(programa.cod_programa::VARCHAR,4,'0') AS cod_programa
+               , programa_dados.identificacao AS nom_programa
+               , programa_dados.cod_tipo_programa
+               , programa_setorial.cod_setorial
+               , macro_objetivo.cod_macro
+               , acao_dados.titulo
+               , acao_dados.descricao
+               , acao_dados.finalidade
+               , acao_dados.detalhamento
+               , acao_dados.cod_forma
+               , acao_dados.cod_tipo
+               , acao_dados.cod_natureza
+               , regiao.cod_regiao
+               , regiao.nome AS nom_regiao
+               , produto.cod_produto
+               , produto.descricao AS nom_produto
+               , acao_norma.cod_norma
+               , norma.nom_norma
+               , acao_dados.cod_tipo_orcamento
+               , funcao.cod_funcao
+               , funcao.descricao AS nom_funcao
+               , subfuncao.cod_subfuncao
+               , subfuncao.descricao AS nom_subfuncao
+               , acao_dados.cod_unidade_medida
+               , acao_dados.cod_grandeza
+               , acao_dados.valor_estimado
+               , acao_dados.meta_estimada
+               , LPAD(
+                      acao_unidade_executora.num_orgao::VARCHAR,
+                      length(
+                              orcamento.fn_masc_orgao(
+                                                      split_part(acao.ultimo_timestamp_acao_dados::VARCHAR, '-', 1)
+                                                      )
+                          ),'0'
+                      ) AS num_orgao
+               , LPAD(
+                      acao_unidade_executora.num_unidade::VARCHAR,
+                      length(
+                              orcamento.fn_masc_unidade(
+                                                      split_part(acao.ultimo_timestamp_acao_dados::VARCHAR, '-', 1)
+                                                      )
+                          ),'0'
+                      ) AS num_unidade
+               , tipo_acao.descricao AS nom_tipo_acao
+               , SUM(acao_quantidade.valor) AS valor_acao
+               , TO_CHAR(programa_temporario_vigencia.dt_inicial, 'dd/mm/yyyy') AS dt_inicial
+               , TO_CHAR(programa_temporario_vigencia.dt_final, 'dd/mm/yyyy') AS dt_final
+               , TO_CHAR(acao_periodo.data_inicio, 'dd/mm/yyyy') AS dt_inicial_acao
+               , TO_CHAR(acao_periodo.data_termino, 'dd/mm/yyyy') AS dt_final_acao
+               , programa_dados.continuo
+            FROM ppa.acao
+      INNER JOIN ppa.programa
+              ON acao.cod_programa = programa.cod_programa
+      INNER JOIN ppa.programa_dados
+              ON programa.cod_programa = programa_dados.cod_programa
+             AND programa.ultimo_timestamp_programa_dados = programa_dados.timestamp_programa_dados
+      INNER JOIN ppa.programa_setorial
+              ON programa.cod_setorial = programa_setorial.cod_setorial
+      INNER JOIN ppa.macro_objetivo
+              ON programa_setorial.cod_macro = macro_objetivo.cod_macro
+      INNER JOIN ppa.ppa
+              ON macro_objetivo.cod_ppa = ppa.cod_ppa
+      INNER JOIN ppa.acao_dados
+              ON acao.cod_acao                    = acao_dados.cod_acao
+             AND acao.ultimo_timestamp_acao_dados = acao_dados.timestamp_acao_dados
+      INNER JOIN ppa.regiao
+              ON acao_dados.cod_regiao = regiao.cod_regiao
+       LEFT JOIN ppa.produto
+              ON acao_dados.cod_produto = produto.cod_produto
+      INNER JOIN ppa.tipo_acao
+              ON tipo_acao.cod_tipo = acao_dados.cod_tipo
+       LEFT JOIN ppa.acao_norma
+              ON acao.cod_acao = acao_norma.cod_acao
+             AND acao.ultimo_timestamp_acao_dados = acao_norma.timestamp_acao_dados
+       LEFT JOIN normas.norma
+              ON acao_norma.cod_norma = norma.cod_norma
+       LEFT JOIN orcamento.funcao
+              ON acao_dados.exercicio  = funcao.exercicio
+             AND acao_dados.cod_funcao = funcao.cod_funcao
+       LEFT JOIN orcamento.subfuncao
+              ON acao_dados.exercicio     = subfuncao.exercicio
+             AND acao_dados.cod_subfuncao = subfuncao.cod_subfuncao
+      INNER JOIN ppa.acao_unidade_executora
+              ON acao_dados.cod_acao             = acao_unidade_executora.cod_acao
+             AND acao_dados.timestamp_acao_dados = acao_unidade_executora.timestamp_acao_dados
+       LEFT JOIN ppa.acao_quantidade
+              ON acao_quantidade.cod_acao             = acao_dados.cod_acao
+             AND acao_quantidade.timestamp_acao_dados = acao_dados.timestamp_acao_dados
+       LEFT JOIN ppa.acao_periodo
+              ON acao_periodo.cod_acao = acao_dados.cod_acao
+             AND acao_periodo.timestamp_acao_dados = acao_dados.timestamp_acao_dados
+       LEFT JOIN ppa.programa_temporario_vigencia
+              ON programa_temporario_vigencia.cod_programa             = programa_dados.cod_programa
+             AND programa_temporario_vigencia.timestamp_programa_dados = programa_dados.timestamp_programa_dados
+              ";
 
-        $stSQL .= $stFiltro;
+          $stSQL .= $stFiltro;
 
-        $stSQL .= " 
-      GROUP BY acao.num_acao
-             , acao.cod_acao
-             , ppa.cod_ppa
-             , acao.ultimo_timestamp_acao_dados
-             , programa.num_programa
-             , programa.cod_programa
-             , programa_dados.identificacao
-             , programa_dados.cod_tipo_programa
-             , programa_setorial.cod_setorial
-             , macro_objetivo.cod_macro
-             , acao_dados.titulo
-             , acao_dados.descricao
-             , acao_dados.finalidade
-             , acao_dados.detalhamento
-             , acao_dados.cod_forma
-             , acao_dados.cod_tipo
-             , acao_dados.cod_natureza
-             , regiao.cod_regiao
-             , regiao.nome
-             , produto.cod_produto
-             , produto.descricao 
-             , acao_norma.cod_norma
-             , norma.nom_norma
-             , acao_dados.cod_tipo_orcamento
-             , funcao.cod_funcao
-             , funcao.descricao 
-             , subfuncao.cod_subfuncao
-             , subfuncao.descricao
-             , acao_dados.cod_unidade_medida
-             , acao_dados.cod_grandeza
-             , acao_dados.valor_estimado
-             , acao_dados.meta_estimada
-             , acao_unidade_executora.num_orgao
-             , acao_unidade_executora.num_unidade
-             , programa_temporario_vigencia.dt_inicial
-             , programa_temporario_vigencia.dt_final
-             , programa_dados.continuo
-             , acao_periodo.data_inicio
-             , acao_periodo.data_termino
-             , tipo_acao.descricao ";
+          $stSQL .= "
+        GROUP BY acao.num_acao
+               , acao.cod_acao
+               , ppa.cod_ppa
+               , acao.ultimo_timestamp_acao_dados
+               , programa.num_programa
+               , programa.cod_programa
+               , programa_dados.identificacao
+               , programa_dados.cod_tipo_programa
+               , programa_setorial.cod_setorial
+               , macro_objetivo.cod_macro
+               , acao_dados.titulo
+               , acao_dados.descricao
+               , acao_dados.finalidade
+               , acao_dados.detalhamento
+               , acao_dados.cod_forma
+               , acao_dados.cod_tipo
+               , acao_dados.cod_natureza
+               , regiao.cod_regiao
+               , regiao.nome
+               , produto.cod_produto
+               , produto.descricao
+               , acao_norma.cod_norma
+               , norma.nom_norma
+               , acao_dados.cod_tipo_orcamento
+               , funcao.cod_funcao
+               , funcao.descricao
+               , subfuncao.cod_subfuncao
+               , subfuncao.descricao
+               , acao_dados.cod_unidade_medida
+               , acao_dados.cod_grandeza
+               , acao_dados.valor_estimado
+               , acao_dados.meta_estimada
+               , acao_unidade_executora.num_orgao
+               , acao_unidade_executora.num_unidade
+               , programa_temporario_vigencia.dt_inicial
+               , programa_temporario_vigencia.dt_final
+               , programa_dados.continuo
+               , acao_periodo.data_inicio
+               , acao_periodo.data_termino
+               , tipo_acao.descricao ";
 
         $stSQL .= $stOrdem;
 
@@ -437,165 +437,163 @@ class TPPAAcao extends TPPAUtils //Persistente
         }
 
         $stSQL = "
-        SELECT LPAD(acao.num_acao::VARCHAR,4,'0') AS num_acao
-             , LPAD(acao.cod_acao::VARCHAR,4,'0') AS cod_acao
-             , ppa.cod_ppa
-             , acao.ultimo_timestamp_acao_dados
-             , LPAD(programa.cod_programa::VARCHAR,4,'0') AS cod_programa
-             , LPAD(programa.num_programa::VARCHAR,4,'0') AS num_programa
-             , programa_dados.identificacao AS nom_programa
-             , programa_dados.cod_tipo_programa
-             , programa_setorial.cod_setorial
-             , macro_objetivo.cod_macro
-             , acao_dados.titulo
-             , acao_dados.descricao
-             , acao_dados.finalidade
-             , acao_dados.detalhamento
-             , acao_dados.cod_forma
-             , acao_dados.cod_tipo
-             , acao_dados.cod_natureza
-             , regiao.cod_regiao
-             , regiao.descricao AS nom_regiao
-             , produto.cod_produto
-             , produto.descricao AS nom_produto
-             , acao_norma.cod_norma
-             , norma.nom_norma
-             , acao_dados.cod_tipo_orcamento
-             , funcao.cod_funcao
-             , funcao.descricao AS nom_funcao
-             , subfuncao.cod_subfuncao
-             , subfuncao.descricao AS nom_subfuncao
-             , acao_dados.cod_unidade_medida
-             , acao_dados.cod_grandeza
-             , acao_dados.valor_estimado
-             , acao_dados.meta_estimada
-/*             , LPAD(acao_unidade_executora.num_orgao,2,0) AS num_orgao
-             , LPAD(acao_unidade_executora.num_unidade,2,0) AS num_unidade */
-             , LPAD(
-                    acao_unidade_executora.num_orgao::VARCHAR,
-                    length(
-                            orcamento.fn_masc_orgao(
-                                                    split_part(acao.ultimo_timestamp_acao_dados::VARCHAR, '-', 1)
-                                                    )
-                        ),'0'
-                    ) AS num_orgao
-             , LPAD(
-                    acao_unidade_executora.num_unidade::VARCHAR,
-                    length(
-                            orcamento.fn_masc_unidade(
-                                                    split_part(acao.ultimo_timestamp_acao_dados::VARCHAR, '-', 1)
-                                                    )
-                        ),'0'
-                    ) AS num_unidade
-             , tipo_acao.descricao AS nom_tipo_acao
-             , SUM(acao_recurso.valor) AS valor_acao
-             , TO_CHAR(programa_temporario_vigencia.dt_inicial, 'dd/mm/yyyy') AS dt_inicial
-             , TO_CHAR(programa_temporario_vigencia.dt_final, 'dd/mm/yyyy') AS dt_final
-             , TO_CHAR(acao_periodo.data_inicio, 'dd/mm/yyyy') AS dt_inicial_acao
-             , TO_CHAR(acao_periodo.data_termino, 'dd/mm/yyyy') AS dt_final_acao
-             , programa_dados.continuo
-             , pao_ppa_acao.num_pao
-             , acao_quantidade.ano
-          FROM ppa.acao
-    INNER JOIN ppa.programa
-            ON acao.cod_programa = programa.cod_programa
-    INNER JOIN ppa.programa_dados
-            ON programa.cod_programa = programa_dados.cod_programa
-           AND programa.ultimo_timestamp_programa_dados = programa_dados.timestamp_programa_dados
-    INNER JOIN ppa.programa_setorial
-            ON programa.cod_setorial = programa_setorial.cod_setorial
-    INNER JOIN ppa.macro_objetivo
-            ON programa_setorial.cod_macro = macro_objetivo.cod_macro
-    INNER JOIN ppa.ppa
-            ON macro_objetivo.cod_ppa = ppa.cod_ppa
-    INNER JOIN ppa.acao_dados
-            ON acao.cod_acao                    = acao_dados.cod_acao
-           AND acao.ultimo_timestamp_acao_dados = acao_dados.timestamp_acao_dados
-    INNER JOIN ppa.regiao
-            ON acao_dados.cod_regiao = regiao.cod_regiao
-     LEFT JOIN ppa.produto
-            ON acao_dados.cod_produto = produto.cod_produto
-    INNER JOIN ppa.tipo_acao
-            ON tipo_acao.cod_tipo = acao_dados.cod_tipo
-     LEFT JOIN ppa.acao_norma
-            ON acao.cod_acao = acao_norma.cod_acao
-           AND acao.ultimo_timestamp_acao_dados = acao_norma.timestamp_acao_dados
-     LEFT JOIN normas.norma
-            ON acao_norma.cod_norma = norma.cod_norma
-     LEFT JOIN orcamento.funcao
-            ON acao_dados.exercicio  = funcao.exercicio
-           AND acao_dados.cod_funcao = funcao.cod_funcao
-     LEFT JOIN orcamento.subfuncao
-            ON acao_dados.exercicio     = subfuncao.exercicio
-           AND acao_dados.cod_subfuncao = subfuncao.cod_subfuncao
-    INNER JOIN ppa.acao_unidade_executora
-            ON acao_dados.cod_acao             = acao_unidade_executora.cod_acao
-           AND acao_dados.timestamp_acao_dados = acao_unidade_executora.timestamp_acao_dados
-    INNER JOIN ppa.acao_recurso
-            ON acao_recurso.cod_acao             = acao_dados.cod_acao
-           AND acao_recurso.timestamp_acao_dados = acao_dados.timestamp_acao_dados
-    INNER JOIN ppa.acao_quantidade
-            ON acao_quantidade.cod_acao             = acao_recurso.cod_acao
-           AND acao_quantidade.timestamp_acao_dados = acao_recurso.timestamp_acao_dados
-           AND acao_quantidade.cod_recurso          = acao_recurso.cod_recurso
-           AND acao_quantidade.exercicio_recurso    = acao_recurso.exercicio_recurso
-           AND acao_quantidade.ano                  = acao_recurso.ano
-     LEFT JOIN ppa.acao_periodo
-            ON acao_periodo.cod_acao = acao_dados.cod_acao
-           AND acao_periodo.timestamp_acao_dados = acao_dados.timestamp_acao_dados
-     LEFT JOIN ppa.programa_temporario_vigencia
-            ON programa_temporario_vigencia.cod_programa             = programa_dados.cod_programa
-           AND programa_temporario_vigencia.timestamp_programa_dados = programa_dados.timestamp_programa_dados
-     LEFT JOIN orcamento.pao_ppa_acao
-            ON pao_ppa_acao.cod_acao  = acao.cod_acao
-           AND pao_ppa_acao.exercicio = '".Sessao::getExercicio()."'
+          SELECT LPAD(acao.num_acao::VARCHAR,4,'0') AS num_acao
+               , LPAD(acao.cod_acao::VARCHAR,4,'0') AS cod_acao
+               , ppa.cod_ppa
+               , acao.ultimo_timestamp_acao_dados
+               , LPAD(programa.cod_programa::VARCHAR,4,'0') AS cod_programa
+               , LPAD(programa.num_programa::VARCHAR,4,'0') AS num_programa
+               , programa_dados.identificacao AS nom_programa
+               , programa_dados.cod_tipo_programa
+               , programa_setorial.cod_setorial
+               , macro_objetivo.cod_macro
+               , acao_dados.titulo
+               , acao_dados.descricao
+               , acao_dados.finalidade
+               , acao_dados.detalhamento
+               , acao_dados.cod_forma
+               , acao_dados.cod_tipo
+               , acao_dados.cod_natureza
+               , regiao.cod_regiao
+               , regiao.descricao AS nom_regiao
+               , produto.cod_produto
+               , produto.descricao AS nom_produto
+               , acao_norma.cod_norma
+               , norma.nom_norma
+               , acao_dados.cod_tipo_orcamento
+               , funcao.cod_funcao
+               , funcao.descricao AS nom_funcao
+               , subfuncao.cod_subfuncao
+               , subfuncao.descricao AS nom_subfuncao
+               , acao_dados.cod_unidade_medida
+               , acao_dados.cod_grandeza
+               , acao_dados.valor_estimado
+               , acao_dados.meta_estimada
+               , LPAD(
+                      acao_unidade_executora.num_orgao::VARCHAR,
+                      length(
+                              orcamento.fn_masc_orgao(
+                                                      split_part(acao.ultimo_timestamp_acao_dados::VARCHAR, '-', 1)
+                                                      )
+                          ),'0'
+                      ) AS num_orgao
+               , LPAD(
+                      acao_unidade_executora.num_unidade::VARCHAR,
+                      length(
+                              orcamento.fn_masc_unidade(
+                                                      split_part(acao.ultimo_timestamp_acao_dados::VARCHAR, '-', 1)
+                                                      )
+                          ),'0'
+                      ) AS num_unidade
+               , tipo_acao.descricao AS nom_tipo_acao
+               , SUM(acao_recurso.valor) AS valor_acao
+               , TO_CHAR(programa_temporario_vigencia.dt_inicial, 'dd/mm/yyyy') AS dt_inicial
+               , TO_CHAR(programa_temporario_vigencia.dt_final, 'dd/mm/yyyy') AS dt_final
+               , TO_CHAR(acao_periodo.data_inicio, 'dd/mm/yyyy') AS dt_inicial_acao
+               , TO_CHAR(acao_periodo.data_termino, 'dd/mm/yyyy') AS dt_final_acao
+               , programa_dados.continuo
+               , pao_ppa_acao.num_pao
+               , acao_quantidade.ano
+            FROM ppa.acao
+      INNER JOIN ppa.programa
+              ON acao.cod_programa = programa.cod_programa
+      INNER JOIN ppa.programa_dados
+              ON programa.cod_programa = programa_dados.cod_programa
+             AND programa.ultimo_timestamp_programa_dados = programa_dados.timestamp_programa_dados
+      INNER JOIN ppa.programa_setorial
+              ON programa.cod_setorial = programa_setorial.cod_setorial
+      INNER JOIN ppa.macro_objetivo
+              ON programa_setorial.cod_macro = macro_objetivo.cod_macro
+      INNER JOIN ppa.ppa
+              ON macro_objetivo.cod_ppa = ppa.cod_ppa
+      INNER JOIN ppa.acao_dados
+              ON acao.cod_acao                    = acao_dados.cod_acao
+             AND acao.ultimo_timestamp_acao_dados = acao_dados.timestamp_acao_dados
+      INNER JOIN ppa.regiao
+              ON acao_dados.cod_regiao = regiao.cod_regiao
+       LEFT JOIN ppa.produto
+              ON acao_dados.cod_produto = produto.cod_produto
+      INNER JOIN ppa.tipo_acao
+              ON tipo_acao.cod_tipo = acao_dados.cod_tipo
+       LEFT JOIN ppa.acao_norma
+              ON acao.cod_acao = acao_norma.cod_acao
+             AND acao.ultimo_timestamp_acao_dados = acao_norma.timestamp_acao_dados
+       LEFT JOIN normas.norma
+              ON acao_norma.cod_norma = norma.cod_norma
+       LEFT JOIN orcamento.funcao
+              ON acao_dados.exercicio  = funcao.exercicio
+             AND acao_dados.cod_funcao = funcao.cod_funcao
+       LEFT JOIN orcamento.subfuncao
+              ON acao_dados.exercicio     = subfuncao.exercicio
+             AND acao_dados.cod_subfuncao = subfuncao.cod_subfuncao
+      INNER JOIN ppa.acao_unidade_executora
+              ON acao_dados.cod_acao             = acao_unidade_executora.cod_acao
+             AND acao_dados.timestamp_acao_dados = acao_unidade_executora.timestamp_acao_dados
+      INNER JOIN ppa.acao_recurso
+              ON acao_recurso.cod_acao             = acao_dados.cod_acao
+             AND acao_recurso.timestamp_acao_dados = acao_dados.timestamp_acao_dados
+      INNER JOIN ppa.acao_quantidade
+              ON acao_quantidade.cod_acao             = acao_recurso.cod_acao
+             AND acao_quantidade.timestamp_acao_dados = acao_recurso.timestamp_acao_dados
+             AND acao_quantidade.cod_recurso          = acao_recurso.cod_recurso
+             AND acao_quantidade.exercicio_recurso    = acao_recurso.exercicio_recurso
+             AND acao_quantidade.ano                  = acao_recurso.ano
+       LEFT JOIN ppa.acao_periodo
+              ON acao_periodo.cod_acao = acao_dados.cod_acao
+             AND acao_periodo.timestamp_acao_dados = acao_dados.timestamp_acao_dados
+       LEFT JOIN ppa.programa_temporario_vigencia
+              ON programa_temporario_vigencia.cod_programa             = programa_dados.cod_programa
+             AND programa_temporario_vigencia.timestamp_programa_dados = programa_dados.timestamp_programa_dados
+       LEFT JOIN orcamento.pao_ppa_acao
+              ON pao_ppa_acao.cod_acao  = acao.cod_acao
+             AND pao_ppa_acao.exercicio = '".Sessao::getExercicio()."'
 
-            ";
+              ";
 
-        $stSQL .= $stFiltro;
+          $stSQL .= $stFiltro;
 
-        $stSQL .= " GROUP BY acao.num_acao
-                           , acao.cod_acao
-                           , ppa.cod_ppa
-                           , acao.ultimo_timestamp_acao_dados
-                           , programa.num_programa
-                           , programa.cod_programa
-                           , programa_dados.identificacao
-                           , programa_dados.cod_tipo_programa
-                           , programa_setorial.cod_setorial
-                           , macro_objetivo.cod_macro
-                           , acao_dados.titulo
-                           , acao_dados.descricao
-                           , acao_dados.finalidade
-                           , acao_dados.detalhamento
-                           , acao_dados.cod_forma
-                           , acao_dados.cod_tipo
-                           , acao_dados.cod_natureza
-                           , regiao.cod_regiao
-                           , regiao.descricao
-                           , produto.cod_produto
-                           , produto.descricao 
-                           , acao_norma.cod_norma
-                           , norma.nom_norma
-                           , acao_dados.cod_tipo_orcamento
-                           , funcao.cod_funcao
-                           , funcao.descricao 
-                           , subfuncao.cod_subfuncao
-                           , subfuncao.descricao
-                           , acao_dados.cod_unidade_medida
-                           , acao_dados.cod_grandeza
-                           , acao_dados.valor_estimado
-                           , acao_dados.meta_estimada
-                           , acao_unidade_executora.num_orgao
-                           , acao_unidade_executora.num_unidade
-                           , programa_temporario_vigencia.dt_inicial
-                           , programa_temporario_vigencia.dt_final
-                           , programa_dados.continuo
-                           , acao_periodo.data_inicio
-                           , acao_periodo.data_termino
-                           , tipo_acao.descricao
-                           , pao_ppa_acao.num_pao
-                           , acao_quantidade.ano ";
+          $stSQL .= " GROUP BY acao.num_acao
+                             , acao.cod_acao
+                             , ppa.cod_ppa
+                             , acao.ultimo_timestamp_acao_dados
+                             , programa.num_programa
+                             , programa.cod_programa
+                             , programa_dados.identificacao
+                             , programa_dados.cod_tipo_programa
+                             , programa_setorial.cod_setorial
+                             , macro_objetivo.cod_macro
+                             , acao_dados.titulo
+                             , acao_dados.descricao
+                             , acao_dados.finalidade
+                             , acao_dados.detalhamento
+                             , acao_dados.cod_forma
+                             , acao_dados.cod_tipo
+                             , acao_dados.cod_natureza
+                             , regiao.cod_regiao
+                             , regiao.descricao
+                             , produto.cod_produto
+                             , produto.descricao
+                             , acao_norma.cod_norma
+                             , norma.nom_norma
+                             , acao_dados.cod_tipo_orcamento
+                             , funcao.cod_funcao
+                             , funcao.descricao
+                             , subfuncao.cod_subfuncao
+                             , subfuncao.descricao
+                             , acao_dados.cod_unidade_medida
+                             , acao_dados.cod_grandeza
+                             , acao_dados.valor_estimado
+                             , acao_dados.meta_estimada
+                             , acao_unidade_executora.num_orgao
+                             , acao_unidade_executora.num_unidade
+                             , programa_temporario_vigencia.dt_inicial
+                             , programa_temporario_vigencia.dt_final
+                             , programa_dados.continuo
+                             , acao_periodo.data_inicio
+                             , acao_periodo.data_termino
+                             , tipo_acao.descricao
+                             , pao_ppa_acao.num_pao
+                             , acao_quantidade.ano ";
 
         $stSQL .= $stOrdem;
 
@@ -783,7 +781,7 @@ class TPPAAcao extends TPPAUtils //Persistente
         }elseif ( $this->getDado('cod_uf') == 27 ) {
             $stTCE = "tceto";
         }
-        
+
         $stSQL = "
             SELECT num_acao
                  , tabela.cod_acao
@@ -963,43 +961,43 @@ class TPPAAcao extends TPPAUtils //Persistente
                      , tipo_acao.descricao as desc_tipo
                      , acao_dados.titulo
                   FROM ppa.acao
-            
+
             INNER JOIN ppa.acao_recurso
                     ON acao.cod_acao                    = acao_recurso.cod_acao
                    AND acao.ultimo_timestamp_acao_dados = acao_recurso.timestamp_acao_dados
-            
+
             INNER JOIN ppa.acao_dados
                     ON acao.cod_acao                    = acao_dados.cod_acao
                    AND acao.ultimo_timestamp_acao_dados = acao_dados.timestamp_acao_dados
-            
+
             INNER JOIN ppa.tipo_acao
                     ON acao_dados.cod_tipo = tipo_acao.cod_tipo
-            
+
              LEFT JOIN orcamento.funcao
                     ON acao_dados.exercicio  = funcao.exercicio
                    AND acao_dados.cod_funcao = funcao.cod_funcao
-            
+
              LEFT JOIN orcamento.subfuncao
                     ON acao_dados.exercicio     = subfuncao.exercicio
                    AND acao_dados.cod_subfuncao = subfuncao.cod_subfuncao
-            
+
             INNER JOIN ppa.programa
                     ON acao.cod_programa = programa.cod_programa
-            
+
             INNER JOIN ppa.programa_dados
                     ON programa.cod_programa                    = programa_dados.cod_programa
                    AND programa.ultimo_timestamp_programa_dados = programa_dados.timestamp_programa_dados
-            
+
             INNER JOIN ppa.programa_setorial
                     ON programa.cod_setorial = programa_setorial.cod_setorial
-            
+
             INNER JOIN ppa.macro_objetivo
                     ON macro_objetivo.cod_macro = programa_setorial.cod_macro
-            
+
             INNER JOIN ppa.ppa
                     ON macro_objetivo.cod_ppa = ppa.cod_ppa
         ";
-       
+
         $stSQL .= "GROUP BY acao.num_acao
                           , acao.cod_acao
                           , acao_dados.descricao
@@ -1032,11 +1030,11 @@ class TPPAAcao extends TPPAUtils //Persistente
 
     function montaRecuperaCodigosAcao()
     {
-        $stSql = "    
+        $stSql = "
                 SELECT DISTINCT cod_acao
                   FROM ( SELECT cod_acao
                            FROM ppa.acao
-                      UNION ALL 
+                      UNION ALL
                          SELECT num_pao AS cod_acao
                            FROM orcamento.pao
                        ) AS codigos
@@ -1058,19 +1056,18 @@ class TPPAAcao extends TPPAUtils //Persistente
 
     private function montaRecuperaDadosExportacaoDespesa()
     {
-        $stSql = "
-            SELECT tipo_registro
-                 , cod_despesa
-                 , cod_orgao
-                 , cod_unidade_sub
-                 , cod_funcao
-                 , cod_subfuncao
-                 , cod_programa
-                 , id_acao
-                 , '' AS id_sub_acao
-                 , natureza_despesa
-                 , REPLACE(sum(vl_total_recurso)::VARCHAR, '.',',') AS vl_total_recurso
-              FROM (
+        $stSql = "SELECT tipo_registro,
+                         cod_despesa,
+                         cod_orgao,
+                         cod_unidade_sub,
+                         cod_funcao,
+                         cod_subfuncao,
+                         cod_programa,
+                         id_acao,
+                         '' AS id_sub_acao,
+                         natureza_despesa,
+                         REPLACE(sum(vl_total_recurso)::VARCHAR, '.',',') AS vl_total_recurso
+                  FROM (
                    SELECT 10::INTEGER AS tipo_registro
                         , CASE WHEN SUBSTR(REPLACE(conta_despesa.cod_estrutural, '.', ''), 1, 6) = '339009' OR SUBSTR(REPLACE(conta_despesa.cod_estrutural, '.', ''), 1, 6) = '339005'
                           THEN
@@ -1130,8 +1127,8 @@ class TPPAAcao extends TPPAUtils //Persistente
                       AND pao_ppa_acao.exercicio = despesa.exercicio
                      JOIN ppa.acao
                        ON ppa.acao.cod_acao = pao_ppa_acao.cod_acao
-                    WHERE despesa.exercicio = '".Sessao::getExercicio()."'
-                      AND despesa.cod_entidade IN (".$this->getDado('entidades').")
+                    WHERE despesa.exercicio = '" . Sessao::getExercicio() . "'
+                      AND despesa.cod_entidade IN (" . $this->getDado('entidades') . ")
                       AND configuracao_entidade.cod_modulo = 55
                       AND configuracao_entidade.parametro = 'tcemg_codigo_orgao_entidade_sicom'
                       AND despesa.vl_original > 0.00
@@ -1148,17 +1145,16 @@ class TPPAAcao extends TPPAUtils //Persistente
                         , acao.num_acao
                     ORDER BY tipo_registro, cod_despesa, cod_orgao, natureza_despesa
                     ) AS tabela
-              GROUP BY tipo_registro
-                  , cod_orgao
-                  , cod_despesa
-                  , cod_unidade_sub
-                  , cod_funcao
-                  , cod_subfuncao
-                  , cod_programa
-                  , id_acao
-                  , natureza_despesa
-              ORDER BY cod_despesa
-            ";
+                  GROUP BY tipo_registro,
+                           cod_orgao,
+                           cod_despesa,
+                           cod_unidade_sub,
+                           cod_funcao,
+                           cod_subfuncao,
+                           cod_programa, 
+                           id_acao,
+                           natureza_despesa
+                  ORDER BY cod_despesa";
         return $stSql;
     }
 
@@ -1194,13 +1190,13 @@ class TPPAAcao extends TPPAUtils //Persistente
          JOIN orcamento.conta_despesa
            ON conta_despesa.cod_conta = despesa.cod_conta
           AND conta_despesa.exercicio = despesa.exercicio
-          
+
          JOIN administracao.configuracao_entidade
            ON configuracao_entidade.cod_entidade = despesa.cod_entidade
           AND configuracao_entidade.exercicio = despesa.exercicio
           AND configuracao_entidade.cod_modulo = 55
           AND configuracao_entidade.parametro = 'tcemg_codigo_orgao_entidade_sicom'
-          
+
          JOIN orcamento.programa_ppa_programa
            ON programa_ppa_programa.cod_programa = despesa.cod_programa
           AND programa_ppa_programa.exercicio   = despesa.exercicio
