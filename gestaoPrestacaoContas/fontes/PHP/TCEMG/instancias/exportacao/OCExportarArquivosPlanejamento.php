@@ -1042,7 +1042,7 @@ if (in_array("RFIS.csv",$arFiltro["arArquivosSelecionados"])) {
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
     }
 }
-
+ 
 /**
 * UOC.csv | Autor : Eduardo Schitz
 */
