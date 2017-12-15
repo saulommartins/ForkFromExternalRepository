@@ -182,26 +182,26 @@ function ArquivoExportadorBlocoColuna(&$roArquivoExportadorBloco)
 
 function FormataTipoDado($stCampo)
 {
-    switch ( strtoupper(trim($this->stTipoDado)) ) {
+    switch (strtoupper(trim($this->stTipoDado))) {
         case "CARACTER_ESPACOS_ESQ":
             $this->stAlinhamento    = 'D';
             $this->stPreenchimento  = ' ';
             $stCampo = str_replace("\r\n"," ",$stCampo);
-            $stCampo = str_replace("\n"," ",$stCampo);            
+            $stCampo = str_replace("\n"," ",$stCampo);
             $stCampo = str_replace(chr(13).chr(10)," ",$stCampo);
             $stCampo = str_replace(chr(10)," ",$stCampo);
-            
+
             switch ( trim($this->roBloco->roArquivo->getTipoDocumento()) ) {
                 case "TCE_MG":
-                    $stCampo = preg_replace ("[;]", "", $stCampo);        
+                    $stCampo = preg_replace ("[;]", "", $stCampo);
                     $this->stPreenchimento  = ' ';
-                    
+
                     if ( $stCampo == '' ) {
                         $stCampo = ' ';
                     } else if ( $stCampo == null ) {
                         $stCampo = ' ';
                     }
-                    
+
                 break;
             }
         break;
@@ -220,13 +220,13 @@ function FormataTipoDado($stCampo)
                 case "TCE_MG":
                     $stCampo = preg_replace ("[;]", "", $stCampo);
                     $this->stPreenchimento  = ' ';
-                    
+
                     if ( $stCampo == '' ) {
                         $stCampo = ' ';
                     } else if ( $stCampo == null ) {
                         $stCampo = ' ';
                     }
-                    
+
                 break;
                 case "TCE_PE":
                     $stCampo = str_replace( chr(34) ,"",$stCampo); // retira aspas duplas
@@ -256,7 +256,6 @@ function FormataTipoDado($stCampo)
                     $stCampo = str_replace('  ', ' ', $stCampo);
                 break;
             }
-
         break;
         case "CARACTER_ZEROS_ESQ":
             $this->stAlinhamento    = 'D';
@@ -264,7 +263,7 @@ function FormataTipoDado($stCampo)
             $stCampo = str_replace("\r\n"," ",$stCampo);
             $stCampo = str_replace("\n"," ",$stCampo);
             $stCampo = str_replace(chr(10)," ",$stCampo);
-            
+
             switch ( trim($this->roBloco->roArquivo->getTipoDocumento()) ) {
                 case "TCE_MG":
                     $stCampo = preg_replace ("[;]", "", $stCampo);
@@ -287,7 +286,7 @@ function FormataTipoDado($stCampo)
                         $this->stPreenchimento  = '-' . str_pad($this->stPreenchimento,$this->inTamanhoFixo,'0',STR_PAD_LEFT);
                     }
                 break;
-            
+
                 default:
                     $stCampo = number_format((float) $stCampo,0,'.','');
                     $stCampo = str_replace(" ","",preg_replace ("^[![:alpha:]|.|,|/]^", "", $stCampo));
@@ -335,8 +334,8 @@ function FormataTipoDado($stCampo)
             switch ( trim($this->roBloco->roArquivo->getTipoDocumento()) ) {
                 case "transparencia":
                     $stCampo = str_replace (".", "", $stCampo);
-                break;  
-                
+                break;
+
                 case "TCM_BA":
                     $stCampo = str_replace (".", "", $stCampo);
                     if ($stCampo<0) {
@@ -382,14 +381,14 @@ function FormataTipoDado($stCampo)
                 case 'TCE_AM':
                     $stCampo = number_format((float) $stCampo,2,',','');
                 break;
-                
+
                 case 'TCM_GO':
                     $stCampo = str_replace(" ","",str_replace (".", ",", $stCampo));
                     if ($stCampo<0) {
                         $stCampo = str_replace('-','',$stCampo);
                     }
                 break;
-                
+
                 default:
                     $stCampo = str_replace(" ","",str_replace (".", ",", $stCampo));
                     if ($stCampo<0) {
@@ -443,20 +442,19 @@ function FormataTipoDado($stCampo)
             $this->inTamanhoMaximo  = null;
             $arCampo = explode("/",trim($stCampo));
             $stCampo = $arCampo[2].$arCampo[1].$arCampo[0];
-            
+
             switch ( trim($this->roBloco->roArquivo->getTipoDocumento()) ) {
                 case "TCM_GO":
                     $this->stPreenchimento  = ' ';
-                    
+
                     if ( $stCampo == '' ) {
                         $stCampo = ' ';
                     } else if ( $stCampo == null ) {
                         $stCampo = ' ';
                     }
-                    
+
                 break;
             }
-            
         break;
     }
 
@@ -496,7 +494,7 @@ function Formatar()
                         $stCampo = mb_substr($stCampo,0,$this->inTamanhoFixo );
                     }
                 break;
-                
+
                 default:
                     if ( strlen($stCampo) > $this->inTamanhoFixo ) {
                         $stCampo = substr($stCampo,0,$this->inTamanhoFixo );
@@ -505,7 +503,7 @@ function Formatar()
             }
 
             $stCampo = str_pad($stCampo,$this->inTamanhoFixo,$this->stPreenchimento,$this->stAlinhamento);
-            
+
         } elseif (!$this->inTamanhoFixo && $this->inTamanhoMaximo) {
             if ( strlen($stCampo) > $this->inTamanhoMaximo ) {
                 $stCampo = substr($stCampo,0,$this->inTamanhoMaximo);

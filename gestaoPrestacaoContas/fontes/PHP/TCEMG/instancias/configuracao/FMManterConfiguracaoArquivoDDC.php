@@ -52,62 +52,64 @@ include_once($pgJs);
 $stAcao = $request->get('stAcao');
 
 if ($stAcao == "alterar") {
-    
+
     $obTTCEMGConfiguracaoDDC = new TTCEMGConfiguracaoDDC();
     $obTTCEMGConfiguracaoDDC->setDado('exercicio',$request->get('inExercicio'));
     $obTTCEMGConfiguracaoDDC->setDado('mes_referencia',$request->get('inMes'));
     $obTTCEMGConfiguracaoDDC->setDado('cod_entidade',$request->get('inCodEntidade'));
     $stFiltro = " AND configuracao_ddc.nro_contrato_divida = '".$request->get('inNroContrato')."' AND configuracao_ddc.cod_norma = ".$request->get('inNroLeiAutorizacao');
     $obTTCEMGConfiguracaoDDC->recuperaDadosDDC($rsTTCEMGConfiguracaoDDC, $stFiltro );
-    
+
     include_once( CAM_GA_NORMAS_NEGOCIO."RNorma.class.php" );
     $obNorma = new RNorma;
     $obNorma->setCodNorma( $rsTTCEMGConfiguracaoDDC->getCampo('nro_lei_autorizacao') );
     $obNorma->listarDecreto( $rsNorma );
-    
-    $inExercicio         = $rsTTCEMGConfiguracaoDDC->getCampo('exercicio');
-    $inMes               = $rsTTCEMGConfiguracaoDDC->getCampo('mes_referencia');
-    $inCodEntidade       = $rsTTCEMGConfiguracaoDDC->getCampo('cod_entidade');
-    $inOrgao             = $rsTTCEMGConfiguracaoDDC->getCampo('cod_orgao');
-    $inLeiAutorizacao    = $rsTTCEMGConfiguracaoDDC->getCampo('nro_lei_autorizacao');
-    $stNomNorma          = $rsNorma->getCampo('nom_tipo_norma')." ".$rsNorma->getCampo('num_norma_exercicio')." - ".$rsNorma->getCampo('nom_norma');
-    $inNroContrato       = $rsTTCEMGConfiguracaoDDC->getCampo('nro_contrato_divida');
-    $dtDataAssinatura    = $rsTTCEMGConfiguracaoDDC->getCampo('dt_assinatura');
-    $inContratoDecLei    = $rsTTCEMGConfiguracaoDDC->getCampo('contrato_dec_lei');
-    $stObjetoContrato    = $rsTTCEMGConfiguracaoDDC->getCampo('objeto_contrato_divida');
-    $stEspecificacaoContrato  = $rsTTCEMGConfiguracaoDDC->getCampo('especificacao_contrato_divida');
-    $inTipoLancamento    = $rsTTCEMGConfiguracaoDDC->getCampo('tipo_lancamento');
-    $inCGMCredor         = $rsTTCEMGConfiguracaoDDC->getCampo('numcgm');
-    $stNomeCGMCredor     = $rsTTCEMGConfiguracaoDDC->getCampo('nom_cgm');
-    $stJustificativa     = $rsTTCEMGConfiguracaoDDC->getCampo('justificativa_cancelamento');
-    $flValorSaldoAnt     = $rsTTCEMGConfiguracaoDDC->getCampo('valor_saldo_anterior');
-    $flValorContratacao  = $rsTTCEMGConfiguracaoDDC->getCampo('valor_contratacao');
-    $flValorAmortizacao  = $rsTTCEMGConfiguracaoDDC->getCampo('valor_amortizacao');
-    $flValorCancelamento = $rsTTCEMGConfiguracaoDDC->getCampo('valor_cancelamento');
-    $flValorEncampacao   = $rsTTCEMGConfiguracaoDDC->getCampo('valor_encampacao');
-    $flValorAtualizacao  = $rsTTCEMGConfiguracaoDDC->getCampo('valor_atualizacao');
-    $flValorSaldoAtual   = $rsTTCEMGConfiguracaoDDC->getCampo('valor_saldo_atual');
+
+    $inExercicio             = $rsTTCEMGConfiguracaoDDC->getCampo('exercicio');
+    $inMes                   = $rsTTCEMGConfiguracaoDDC->getCampo('mes_referencia');
+    $inCodEntidade           = $rsTTCEMGConfiguracaoDDC->getCampo('cod_entidade');
+    $inOrgao                 = $rsTTCEMGConfiguracaoDDC->getCampo('cod_orgao');
+    $inLeiAutorizacao        = $rsTTCEMGConfiguracaoDDC->getCampo('nro_lei_autorizacao');
+    $stNomNorma              = $rsNorma->getCampo('nom_tipo_norma')." ".$rsNorma->getCampo('num_norma_exercicio')." - ".$rsNorma->getCampo('nom_norma');
+    $inNroContrato           = $rsTTCEMGConfiguracaoDDC->getCampo('nro_contrato_divida');
+    $dtDataAssinatura        = $rsTTCEMGConfiguracaoDDC->getCampo('dt_assinatura');
+    $inContratoDecLei        = $rsTTCEMGConfiguracaoDDC->getCampo('contrato_dec_lei');
+    $stObjetoContrato        = $rsTTCEMGConfiguracaoDDC->getCampo('objeto_contrato_divida');
+    $stEspecificacaoContrato = $rsTTCEMGConfiguracaoDDC->getCampo('especificacao_contrato_divida');
+    $inTipoLancamento        = $rsTTCEMGConfiguracaoDDC->getCampo('tipo_lancamento');
+    $inSubTipo               = $rsTTCEMGConfiguracaoDDC->getCampo('sub_tipo');
+    $inCGMCredor             = $rsTTCEMGConfiguracaoDDC->getCampo('numcgm');
+    $stNomeCGMCredor         = $rsTTCEMGConfiguracaoDDC->getCampo('nom_cgm');
+    $stJustificativa         = $rsTTCEMGConfiguracaoDDC->getCampo('justificativa_cancelamento');
+    $flValorSaldoAnt         = $rsTTCEMGConfiguracaoDDC->getCampo('valor_saldo_anterior');
+    $flValorContratacao      = $rsTTCEMGConfiguracaoDDC->getCampo('valor_contratacao');
+    $flValorAmortizacao      = $rsTTCEMGConfiguracaoDDC->getCampo('valor_amortizacao');
+    $flValorCancelamento     = $rsTTCEMGConfiguracaoDDC->getCampo('valor_cancelamento');
+    $flValorEncampacao       = $rsTTCEMGConfiguracaoDDC->getCampo('valor_encampacao');
+    $flValorAtualizacao      = $rsTTCEMGConfiguracaoDDC->getCampo('valor_atualizacao');
+    $flValorSaldoAtual       = $rsTTCEMGConfiguracaoDDC->getCampo('valor_saldo_atual');
 }else{
-    $inExercicio         = "";
-    $inMes               = "";
-    $inCodEntidade       = $request->get('inCodEntidade');
-    $inOrgao             = "";
-    $inLeiAutorizacao    = "";
-    $dtDataAssinatura    = "";
-    $inContratoDecLei    = "";
-    $stObjetoContrato    = "";
+    $inExercicio              = "";
+    $inMes                    = "";
+    $inCodEntidade            = $request->get('inCodEntidade');
+    $inOrgao                  = "";
+    $inLeiAutorizacao         = "";
+    $dtDataAssinatura         = "";
+    $inContratoDecLei         = "";
+    $stObjetoContrato         = "";
     $stEspecificacaoContrato  = "";
-    $inTipoLancamento    = "";
-    $inCGMCredor         = "";
-    $stNomeCGMCredor      = "";
-    $stJustificativa     = "";
-    $flValorSaldoAnt     = "";
-    $flValorContratacao  = "";
-    $flValorAmortizacao  = "";
-    $flValorCancelamento = "";
-    $flValorEncampacao   = "";
-    $flValorAtualizacao  = "";
-    $flValorSaldoAtual   = "";
+    $inTipoLancamento         = "";
+    $inSubTipo                = "";
+    $inCGMCredor              = "";
+    $stNomeCGMCredor          = "";
+    $stJustificativa          = "";
+    $flValorSaldoAnt          = "";
+    $flValorContratacao       = "";
+    $flValorAmortizacao       = "";
+    $flValorCancelamento      = "";
+    $flValorEncampacao        = "";
+    $flValorAtualizacao       = "";
+    $flValorSaldoAtual        = "";
 }
 
 if ($request->get('stAcao') == '') {
@@ -178,7 +180,7 @@ $obTxtNumContratoDivida->setInteiro    ( true                                   
 
 if($stAcao == "alterar"){
     $obTxtNumContratoDivida->setDisabled(true);
-    
+
     $obHdnNroContrato = new Hidden;
     $obHdnNroContrato->setName ( "hdnNroContrato"  );
     $obHdnNroContrato->setId   ( "hdnNroContrato"  );
@@ -219,7 +221,7 @@ $obTextObjetoContrato->setName   ( "stObjetoContrato" );
 $obTextObjetoContrato->setId     ( "stObjetoContrato" );
 $obTextObjetoContrato->setNull   ( false );
 $obTextObjetoContrato->setValue  ( $stObjetoContrato );
-$obTextObjetoContrato->setMaxCaracteres (1000); 
+$obTextObjetoContrato->setMaxCaracteres (1000);
 
 $obTextDescDivida = new TextArea;
 $obTextDescDivida->setRotulo ( "Descrição da dívida consolidada" );
@@ -237,18 +239,42 @@ $obCmbTipoLancamento->setRotulo ( "Tipo de Lançamento"  );
 $obCmbTipoLancamento->setTitle  ( "Informe o Tipo de Lançamento." );
 $obCmbTipoLancamento->setNull   ( false );
 $obCmbTipoLancamento->setValue  ( $inTipoLancamento );
+$obCmbTipoLancamento->setChange (true);
 $obCmbTipoLancamento->addOption ( "","Selecione");
-$obCmbTipoLancamento->addOption ( "1","Dívida Mobiliária" );
-$obCmbTipoLancamento->addOption ( "2","Dívida Contratual de PPP" );
-$obCmbTipoLancamento->addOption ( "3","Demais Dívidas Contratuais Internas" );
-$obCmbTipoLancamento->addOption ( "4","Dívidas Contratuais Externas" );
-$obCmbTipoLancamento->addOption ( "5","Precatórios Posteriores a 05/05/2000 (inclusive) - Vencidos e não Pagos" );
-$obCmbTipoLancamento->addOption ( "6","Parcelamento de Dívidas de Tributos" );
-$obCmbTipoLancamento->addOption ( "7","Parcelamento de Dívidas Previdenciárias" );
-$obCmbTipoLancamento->addOption ( "8","Parcelamento de Dívidas das Demais Contribuições Sociais" );
-$obCmbTipoLancamento->addOption ( "9","Parcelamento de Dívidas do FGTS" );
-$obCmbTipoLancamento->addOption ( "10","Outras Dívidas" );
-$obCmbTipoLancamento->addOption ( "11","Passivos Reconhecidos" );
+$obCmbTipoLancamento->addOption ( "1","01 - Dívida Mobiliária");
+$obCmbTipoLancamento->addOption ( "2","02 - Aquisição Financiada de bens");
+$obCmbTipoLancamento->addOption ( "3","03 - Dívida Contratual de Demais Aquisições Financiadas");
+$obCmbTipoLancamento->addOption ( "4","04 - Dívida Contratual de Empréstimos");
+$obCmbTipoLancamento->addOption ( "5","05 - Dívida Contratual de Financiamentos");
+$obCmbTipoLancamento->addOption ( "6","06 - Dívida Contratual de Antecipação de Receita pela Venda a Termo de Bens e Serviços");
+$obCmbTipoLancamento->addOption ( "7","07 - Dívida Contratual de Assunção, Reconhecimento e Confissão de Dívidas (LRF, art. 29, § 1º)");
+$obCmbTipoLancamento->addOption ( "8","08 - Dívida Contratual de Operações de crédito previstas no art. 7º § 3º da RSF nº 43/2001");
+$obCmbTipoLancamento->addOption ( "9","09 - Dívida Contratual de Parcelamento e Renegociação de Dívidas de Tributos");
+$obCmbTipoLancamento->addOption ( "10","10 - Dívida Contratual de Parcelamento e Renegociação de Dívidas de Contribuições Sociais Previdenciárias");
+$obCmbTipoLancamento->addOption ( "11","11 - Dívida Contratual de Parcelamento e Renegociação de Dívidas de Outras Contribuições Sociais");
+$obCmbTipoLancamento->addOption ( "12","12 - Dívida Contratual de Parcelamento e Renegociação de Dívidas do FGTS");
+$obCmbTipoLancamento->addOption ( "13","13 - Dívida Contratual de Parcelamento e Renegociação de Dívida com Instituição não Financeira; (Vide Manual de Demonstrativos Fiscais. Ex.: Cemig, Copasa, etc);");
+$obCmbTipoLancamento->addOption ( "14","14 - Dívida Contratual com Instituição Financeira");
+$obCmbTipoLancamento->addOption ( "15","15 - Demais Dívidas Contratuais");
+$obCmbTipoLancamento->addOption ( "16","16 - Outras Operações de Crédito sujeitas ao limite");
+$obCmbTipoLancamento->addOption ( "17","17 - Precatórios Posteriores a 05/05/2000 (inclusive) - Vencidos e não Pagos");
+$obCmbTipoLancamento->addOption ( "18","18 - Precatórios Posteriores a 05/05/2000 (Não incluídos na DC)");
+$obCmbTipoLancamento->addOption ( "19","19 - Reestruturação Fiscal dos Municípios");
+$obCmbTipoLancamento->addOption ( "20","20 - Outras Dívidas");
+$obCmbTipoLancamento->addOption ( "21","21 - Outras Operações de Crédito não Sujeitas ao Limite (Exemplo: Programa de Iluminação Pública – RELUZ. Conforme MDF.)");
+$obCmbTipoLancamento->addOption ( "22","22 - Operações de Crédito Vedadas");
+$obCmbTipoLancamento->addOption ( "23","23 - Precatórios Anteriores a 05/05/2000");
+
+$obCmbSubTipo = new Select();
+$obCmbSubTipo->setName("inSubTipo");
+$obCmbSubTipo->setId("inSubTipo");
+$obCmbSubTipo->setRotulo("Subtipo");
+$obCmbSubTipo->setTitle("Informe o Subtipo.");
+$obCmbSubTipo->setNull(true);
+$obCmbSubTipo->setValue($inSubTipo);
+$obCmbSubTipo->addOption("", "");
+$obCmbSubTipo->addOption("1", "Interna");
+$obCmbSubTipo->addOption("2", "Externa");
 
 $obBscCGMCredor = new IPopUpCGM($obForm);
 $obBscCGMCredor->setId                    ('stNomeCGMCredor');
@@ -269,7 +295,7 @@ $obTextJustificativaCancelamento->setName     ( "stJustificativaCancelamento" );
 $obTextJustificativaCancelamento->setId       ( "stJustificativaCancelamento" );
 $obTextJustificativaCancelamento->setValue    ( $stJustificativa              );
 $obTextJustificativaCancelamento->setMaxCaracteres (500);
-    
+
 $obFlValorSaldoAnterior = new Numerico();
 $obFlValorSaldoAnterior->setId    ( "flValorSaldoAnterior"    );
 $obFlValorSaldoAnterior->setName  ( "flValorSaldoAnterior"    );
@@ -290,7 +316,7 @@ $obFlValorContratacaoMes->setNull  ( false );
 $obFlValorContratacaoMes->setValue ( $flValorContratacao        );
 $obFlValorContratacaoMes->setDecimais(2);
 $obFlValorContratacaoMes->setMaxLength(16);
-$obFlValorContratacaoMes->setSize(17); 
+$obFlValorContratacaoMes->setSize(17);
 
 $obFlValorAmortizacaoMes = new Numerico();
 $obFlValorAmortizacaoMes->setId    ( "flValorAmortizacaoMes"    );
@@ -301,8 +327,8 @@ $obFlValorAmortizacaoMes->setValue ( $flValorAmortizacao        );
 $obFlValorAmortizacaoMes->setNull  ( false );
 $obFlValorAmortizacaoMes->setDecimais(2);
 $obFlValorAmortizacaoMes->setMaxLength(16);
-$obFlValorAmortizacaoMes->setSize(17);  
-    
+$obFlValorAmortizacaoMes->setSize(17);
+
 $obFlValorCancelamentoMes = new Numerico();
 $obFlValorCancelamentoMes->setId    ( "flValorCancelamentoMes" );
 $obFlValorCancelamentoMes->setName  ( "flValorCancelamentoMes" );
@@ -350,14 +376,14 @@ $obFlValorSaldoAtual->setSize(17);
 if($stAcao == "configurar"){
     $obSpnListaDividas = new Span();
     $obSpnListaDividas->setId("spnListaDividas");
- 
+
     $obBtnIncluirDivida = new Button();
     $obBtnIncluirDivida->setName             ( "btIncluirDivida"                       );
     $obBtnIncluirDivida->setId               ( "btIncluirDivida"                       );
     $obBtnIncluirDivida->setValue            ( "Incluir"                               );
     $obBtnIncluirDivida->obEvento->setOnClick( "montaParametrosGET('incluirDividaLista', 'inExercicio,inMes,inCodEntidade,inCodLeiAutorizacao,stNomeLeiAutorizacao,inNumContratoDivida,dtAssinaturaDivida,stContratoDecLei,stObjetoContrato,stDescDivida,inTipoLancamento,inCGMCredor,stNomeCGMCredor,stJustificativaCancelamento,flValorSaldoAnterior,flValorContratacaoMes,flValorAmortizacaoMes,flValorCancelamentoMes,flValorEncampacaoMes,flValorAtualizacaoMes,flValorSaldoAtual');"  );
     $obBtnIncluirDivida->setTitle            ( "Clique para incluir a dívida a lista"  );
-    
+
     $obBtnAlterarDivida = new Button();
     $obBtnAlterarDivida->setName             ( "btAlterarDivida"                       );
     $obBtnAlterarDivida->setId               ( "btAlterarDivida"                       );
@@ -365,7 +391,7 @@ if($stAcao == "configurar"){
     $obBtnAlterarDivida->obEvento->setOnClick( "montaParametrosGET('alterarListaDivida', 'inHdnId,inExercicio,inMes,inCodEntidade,inCodLeiAutorizacao,stNomeLeiAutorizacao,inNumContratoDivida,dtAssinaturaDivida,stContratoDecLei,stObjetoContrato,stDescDivida,inTipoLancamento,inCGMCredor,stNomeCGMCredor,stJustificativaCancelamento,flValorSaldoAnterior,flValorContratacaoMes,flValorAmortizacaoMes,flValorCancelamentoMes,flValorEncampacaoMes,flValorAtualizacaoMes,flValorSaldoAtual');"  );
     $obBtnAlterarDivida->setTitle            ( "Clique para alterar a dívida a lista"  );
     $obBtnAlterarDivida->setDisabled         ( true                                    );
-    
+
     $obBtEnviar = new Button();
     $obBtEnviar->setValue('Ok');
     $obBtEnviar->setName ( "btnEnviar"                 );
@@ -404,6 +430,7 @@ $obFormulario->agrupaComponentes    (array($obLabelContratoDecLei,$obRadioContra
 $obFormulario->addComponente        ( $obTextObjetoContrato                );
 $obFormulario->addComponente        ( $obTextDescDivida                    );
 $obFormulario->addComponente        ( $obCmbTipoLancamento                 );
+$obFormulario->addComponente        ( $obCmbSubTipo                        );
 $obFormulario->addComponente        ( $obBscCGMCredor                      );
 $obFormulario->addComponente        ( $obTextJustificativaCancelamento     );
 $obFormulario->addComponente        ( $obFlValorSaldoAnterior              );
@@ -421,7 +448,7 @@ if($stAcao == "configurar"){
     $obFormulario->addSpan($obSpnListaDividas);
     $obFormulario->defineBarra(array($obBtEnviar));
 }else{
-   $obFormulario->defineBarra(array($obOk,$obBtLimpar)); 
+   $obFormulario->defineBarra(array($obOk,$obBtLimpar));
 }
 
 $obFormulario->show();

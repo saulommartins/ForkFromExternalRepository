@@ -128,20 +128,8 @@ function Show()
         }
     }
 
-    /*
-    foreach ($arFiles as $stFile) {
-        $inPos = strpos($stFile,'_');
-        $flFileTimestamp = substr($stFile,0,$inPos);
-        if ($flFileTimestamp<$flMicroTimeDel) {
-            $stComando = 'rm -rf ' . $stCaminho . $stFile;
-            echo $stComando;
-            //exec($stComando);
-        }
-    }
-    */
     foreach ($this->arArquivos as $obArquivo) {
         // Monta Localização
-
         $stNomeArquivo      = $flMicroTime.'_'.$obArquivo->stNome;
         $stLabelZip         = $obArquivo->stNome;
         $obArquivo->stNome  = $stCaminho.$stNomeArquivo;

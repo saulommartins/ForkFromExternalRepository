@@ -101,6 +101,12 @@ var $boDependente;
 */
 var $boLabel;
 
+/**
+    * @access Private
+    * @var Boolean
+*/
+var $change;
+
 //SETTERS
 /**
     * @access Public
@@ -156,6 +162,12 @@ function setDependente($valor) { $this->boDependente        = $valor; }
 */
 function setLabel($valor) { $this->boLabel           = $valor; }
 
+/**
+    * @access Public
+    * @param Boolean $Valor
+*/
+function setChange($valor) { $this->change = $valor; }
+
 //GETTERS
 /**
     * @access Public
@@ -210,6 +222,12 @@ function getDependente() { return $this->boDependente;      }
     * @return Boolean
 */
 function getLabel() { return $this->boLabel;      }
+
+/**
+    * @access Public
+    * @return Boolean
+*/
+function getChange() { return $this->change; }
 
 /**
     * Método construtor
@@ -324,6 +342,9 @@ function preencheCombo($rsElementosCombo)
 */
 function montaHtml()
 {
+    if ($this->getChange()) {
+      $this->obEvento->setOnChange($this->obEvento->getOnChange()."return liberaSubTipo(this);");
+    }
     //seta o display none para o setLabel(true)
     if ( $this->getLabel() ) {
         $this->setStyle( 'display:none;' );

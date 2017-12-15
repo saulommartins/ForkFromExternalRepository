@@ -50,21 +50,21 @@ $stAcao = $request->get('stAcao');
 
 switch ($stAcao) {
     case 'configurar' :
-        
+
         $boFlagTransacao = false;
         $obTransacao = new Transacao;
         $obTTCEMGConfiguracaoOrgao   = new TTCEMGConfiguracaoOrgao();
         $obTTCEMGConfiguracaoDDC     = new TTCEMGConfiguracaoDDC();
-        
+
         $obErro = $obTransacao->abreTransacao($boFlagTransacao, $boTransacao);
-        
+
         if(!$obErro->ocorreu()){
-            
+
             $obTTCEMGConfiguracaoOrgao->setDado("cod_modulo", 55);
             $obTTCEMGConfiguracaoOrgao->setDado("parametro","tcemg_codigo_orgao_entidade_sicom");
             $obTTCEMGConfiguracaoOrgao->setDado("exercicio",Sessao::getExercicio());
             $obTTCEMGConfiguracaoOrgao->recuperaCodigos($rsOrgao," AND ent.cod_entidade  = ".$request->get('inCodEntidade')," ORDER BY ent.cod_entidade");
-            
+
             $arDividas  = Sessao::read('arDividas');
             if(is_array($arDividas)){
                 foreach ($arDividas as $key => $value) {
@@ -73,7 +73,7 @@ switch ($stAcao) {
                     $obTTCEMGConfiguracaoDDC->setDado('cod_entidade', $arDividas[$key]['inCodEntidade']);
                     $obTTCEMGConfiguracaoDDC->setDado('nro_contrato_divida', $arDividas[$key]['inNumContratoDivida'] );
                     $obErro = $obTTCEMGConfiguracaoDDC->recuperaPorChave( $rsRecordSet, $boTransacao );
-                       
+
                     if ( $rsRecordSet->eof() ) {
                         $obTTCEMGConfiguracaoDDC->setDado("exercicio",$arDividas[$key]['inExercicio']);
                         $obTTCEMGConfiguracaoDDC->setDado("mes_referencia",$arDividas[$key]['inMes']);
@@ -84,8 +84,9 @@ switch ($stAcao) {
                         $obTTCEMGConfiguracaoDDC->setDado("dt_assinatura",$arDividas[$key]['dtAssinaturaDivida']);
                         $obTTCEMGConfiguracaoDDC->setDado("contrato_dec_lei",$arDividas[$key]['stContratoDecLei']);
                         $obTTCEMGConfiguracaoDDC->setDado("objeto_contrato_divida",$arDividas[$key]['stObjetoContrato']);
-                        $obTTCEMGConfiguracaoDDC->setDado("especificacao_contrato_divida",$arDividas[$key]['stDescDivida']);      
+                        $obTTCEMGConfiguracaoDDC->setDado("especificacao_contrato_divida",$arDividas[$key]['stDescDivida']);
                         $obTTCEMGConfiguracaoDDC->setDado("tipo_lancamento",$arDividas[$key]['inTipoLancamento']);
+                        $obTTCEMGConfiguracaoDDC->setDado("sub_tipo",$arDividas[$key]['inSubTipo']);
                         $obTTCEMGConfiguracaoDDC->setDado("numcgm",$arDividas[$key]['inCGMCredor']);
                         $obTTCEMGConfiguracaoDDC->setDado("justificativa_cancelamento",$arDividas[$key]['stJustificativaCancelamento']);
                         $obTTCEMGConfiguracaoDDC->setDado("valor_saldo_anterior",$arDividas[$key]['flValorSaldoAnterior']);
@@ -96,7 +97,7 @@ switch ($stAcao) {
                         $obTTCEMGConfiguracaoDDC->setDado("valor_atualizacao",$arDividas[$key]['flValorAtualizacaoMes']);
                         $obTTCEMGConfiguracaoDDC->setDado("valor_saldo_atual",$arDividas[$key]['flValorSaldoAtual']);
                         $obErro = $obTTCEMGConfiguracaoDDC->inclusao($boTransacao);
-                    }  else{ 
+                    }  else{
                             SistemaLegado::exibeAviso("Arquivo DDC já foi incluído para o nro de contrato ".$arDividas[$key]['inNumContratoDivida']. " no mês ".$request->get('inMes') ." do exercício de ".$request->get('inExercicio'),"n_incluir","erro");
                       }
                 }
@@ -110,8 +111,9 @@ switch ($stAcao) {
                     $obTTCEMGConfiguracaoDDC->setDado("dt_assinatura",$request->get('dtAssinaturaDivida'));
                     $obTTCEMGConfiguracaoDDC->setDado("contrato_dec_lei",$request->get('stContratoDecLei'));
                     $obTTCEMGConfiguracaoDDC->setDado("objeto_contrato_divida",$request->get('stObjetoContrato'));
-                    $obTTCEMGConfiguracaoDDC->setDado("especificacao_contrato_divida",$request->get('stDescDivida'));      
+                    $obTTCEMGConfiguracaoDDC->setDado("especificacao_contrato_divida",$request->get('stDescDivida'));
                     $obTTCEMGConfiguracaoDDC->setDado("tipo_lancamento",$request->get('inTipoLancamento'));
+                    $obTTCEMGConfiguracaoDDC->setDado("sub_tipo",$request->get('inSubTipo'));
                     $obTTCEMGConfiguracaoDDC->setDado("numcgm",$request->get('inCGMCredor'));
                     $obTTCEMGConfiguracaoDDC->setDado("justificativa_cancelamento",$request->get('stJustificativaCancelamento'));
                     $obTTCEMGConfiguracaoDDC->setDado("valor_saldo_anterior",$request->get('flValorSaldoAnterior'));
@@ -121,10 +123,10 @@ switch ($stAcao) {
                     $obTTCEMGConfiguracaoDDC->setDado("valor_encampacao",$request->get('flValorEncampacaoMes'));
                     $obTTCEMGConfiguracaoDDC->setDado("valor_atualizacao",$request->get('flValorAtualizacaoMes'));
                     $obTTCEMGConfiguracaoDDC->setDado("valor_saldo_atual",$request->get('flValorSaldoAtual'));
-                    $obErro = $obTTCEMGConfiguracaoDDC->inclusao($boTransacao);    
+                    $obErro = $obTTCEMGConfiguracaoDDC->inclusao($boTransacao);
                 }
-           
-           
+
+
             if(!$obErro->ocorreu() && $rsRecordSet->eof() ){
                 Sessao::remove('arDividas');
                 $obTransacao->fechaTransacao($boFlagTransacao,$boTransacao,$obErro,$obTTCEMGConfiguracaoDDC);
@@ -133,25 +135,24 @@ switch ($stAcao) {
             }
         }
     break;
-    
+
     case 'alterar' :
-                
         $boFlagTransacao = false;
-        
+
         $obTransacao = new Transacao;
         $obTransacao->begin();
         $boTransacao = $obTransacao->getTransacao();
-        
+
         $obTTCEMGConfiguracaoOrgao   = new TTCEMGConfiguracaoOrgao();
         $obTTCEMGConfiguracaoDDC     = new TTCEMGConfiguracaoDDC();
-        
+
         $obErro = $obTransacao->abreTransacao($boFlagTransacao, $boTransacao);
-        
+
         if(!$obErro->ocorreu()){
             $obTTCEMGConfiguracaoOrgao->setDado("cod_modulo", 55);
             $obTTCEMGConfiguracaoOrgao->setDado("parametro","tcemg_codigo_orgao_entidade_sicom");
             $obTTCEMGConfiguracaoOrgao->recuperaCodigos($rsOrgao," AND ent.cod_entidade  = ".$request->get('hdnEntidade')," ORDER BY ent.cod_entidade");
-           
+
             $obTTCEMGConfiguracaoDDC->setDado("exercicio",$request->get('inExercicio'));
             $obTTCEMGConfiguracaoDDC->setDado("mes_referencia",$request->get('inMes'));
             $obTTCEMGConfiguracaoDDC->setDado("cod_entidade",$request->get('hdnEntidade'));
@@ -161,8 +162,9 @@ switch ($stAcao) {
             $obTTCEMGConfiguracaoDDC->setDado("dt_assinatura",$request->get('dtAssinaturaDivida'));
             $obTTCEMGConfiguracaoDDC->setDado("contrato_dec_lei",$request->get('stContratoDecLei'));
             $obTTCEMGConfiguracaoDDC->setDado("objeto_contrato_divida",$request->get('stObjetoContrato'));
-            $obTTCEMGConfiguracaoDDC->setDado("especificacao_contrato_divida",$request->get('stDescDivida'));      
+            $obTTCEMGConfiguracaoDDC->setDado("especificacao_contrato_divida",$request->get('stDescDivida'));
             $obTTCEMGConfiguracaoDDC->setDado("tipo_lancamento",$request->get('inTipoLancamento'));
+            $obTTCEMGConfiguracaoDDC->setDado("sub_tipo",$request->get('inSubTipo'));
             $obTTCEMGConfiguracaoDDC->setDado("numcgm",$request->get('inCGMCredor'));
             $obTTCEMGConfiguracaoDDC->setDado("justificativa_cancelamento",$request->get('stJustificativaCancelamento'));
             $obTTCEMGConfiguracaoDDC->setDado("valor_saldo_anterior",$request->get('flValorSaldoAnterior'));
@@ -173,7 +175,7 @@ switch ($stAcao) {
             $obTTCEMGConfiguracaoDDC->setDado("valor_atualizacao",$request->get('flValorAtualizacaoMes'));
             $obTTCEMGConfiguracaoDDC->setDado("valor_saldo_atual",$request->get('flValorSaldoAtual'));
             $obErro = $obTTCEMGConfiguracaoDDC->alteracao($boTransacao);
-                                                
+
             if(!$obErro->ocorreu()){
                 $obTransacao->fechaTransacao($boFlagTransacao,$boTransacao,$obErro,$obTTCEMGConfiguracaoDDC);
                 $stLink = "&pg=".$link["pg"]."&pos=".$link["pos"].'&inExercicio='.$request->get('inExercicio').'&inMes='.$request->get('inMes')."&inCodEntidade=".$request->get('hdnEntidade');
@@ -186,24 +188,24 @@ switch ($stAcao) {
 
     case 'excluir':
         $boFlagTransacao = false;
-        
+
         $obTransacao = new Transacao;
         $obTransacao->begin();
         $boTransacao = $obTransacao->getTransacao();
-        
+
         $obTTCEMGConfiguracaoOrgao   = new TTCEMGConfiguracaoOrgao();
         $obTTCEMGConfiguracaoDDC     = new TTCEMGConfiguracaoDDC();
-        
+
         $obErro = $obTransacao->abreTransacao($boFlagTransacao, $boTransacao);
-        
+
         if(!$obErro->ocorreu()){
-            
+
             $obTTCEMGConfiguracaoDDC->setDado("exercicio",$request->get('inExercicio'));
             $obTTCEMGConfiguracaoDDC->setDado("mes_referencia",$request->get('inMes'));
             $obTTCEMGConfiguracaoDDC->setDado("cod_entidade",$request->get('inCodEntidade'));
             $obTTCEMGConfiguracaoDDC->setDado("nro_contrato_divida",$request->get('inNroContrato'));
             $obErro = $obTTCEMGConfiguracaoDDC->exclusao($boTransacao);
-                        
+
             if( !$obErro->ocorreu() ){
                 $obTransacao->fechaTransacao($boFlagTransacao,$boTransacao,$obErro,$obTTCEMGConfiguracaoDDC);
                 $stLink = "&pg=".$link["pg"]."&pos=".$link["pos"].'&inExercicio='.$request->get('inExercicio').'&inMes='.$request->get('inMes')."&inCodEntidade=".$request->get('inCodEntidade');
@@ -212,9 +214,9 @@ switch ($stAcao) {
 		SistemaLegado::exibeAviso(urlencode($obErro->getDescricao()),"n_incluir","erro");
 	    }
         }
-        
+
     break;
-    
+
 }
 
 ?>
