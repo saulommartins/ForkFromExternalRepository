@@ -88,13 +88,18 @@ function ValidaNF(){
 	}
      }
      
-     if (document.getElementById('inChave')) {
-	stCampo = document.getElementById('inChave');
-	if( trim( stCampo.value ) == "" ){
-	    erro = true;
-	    mensagem += "@Campo Chave de Acesso inválido!().";
-	}
-     }
+    if (document.getElementById('inChave')) {
+        stCampo = document.getElementById('inChave');
+    	if( trim( stCampo.value ) == "" ){
+    	    erro = true;
+    	    mensagem += "O @Campo Chave de Acesso é obrigatório!().";
+    	}
+
+        if (!ValidaChaveNF(stCampo.value)) {
+            erro = true;
+            mensagem += "Chave de Acesso inválida!().";   
+        }
+    }
      
      if (document.getElementById('inChaveMunicipal')) {
 	stCampo = document.getElementById('inChaveMunicipal');
@@ -127,6 +132,22 @@ function ValidaNF(){
     } else {
 	   Salvar();
     }
+}
+
+function ValidaChaveNF(chave) {
+    var multiplicadores = [2, 3, 4, 5, 6, 7, 8, 9];
+    var i = 42;
+    var soma_ponderada = 0;
+
+    while (i >= 0) {
+        for (var m = 0; m < multiplicadores.length && i >= 0; m++) {
+            soma_ponderada += chave[i] * multiplicadores[m];
+            i--;
+        }
+    }
+
+    var resto = soma_ponderada % 11;
+    return (resto == chave[chave.length - 1]);
 }
 
 </script>
