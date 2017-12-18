@@ -45,6 +45,7 @@ include_once CAM_GPC_TCEMG_MAPEAMENTO.Sessao::getExercicio()."/TTCEMGJulgamentoL
 $rsRecordSetJULGLIC10 = new RecordSet();
 $rsRecordSetJULGLIC20 = new RecordSet();
 $rsRecordSetJULGLIC30 = new RecordSet();
+$rsRecordSetJULGLIC40 = new RecordSet();
 
 $obTTCEMGJulgamentoLicitacao = new TTCEMGJulgamentoLicitacao();
 $obTTCEMGJulgamentoLicitacao->setDado('exercicio',Sessao::getExercicio());
@@ -60,7 +61,10 @@ $obTTCEMGJulgamentoLicitacao->recuperaExportacao10($rsRecordSetJULGLIC10);
 //$obTTCEMGJulgamentoLicitacao->recuperaExportacao20($rsRecordSetJULGLIC20);
 
 ////Tipo Registro 30
-$obTTCEMGJulgamentoLicitacao->recuperaExportacao30($rsRecordSetJULGLIC30);
+//$obTTCEMGJulgamentoLicitacao->recuperaExportacao30($rsRecordSetJULGLIC30);
+
+////Tipo Registro 40
+$obTTCEMGJulgamentoLicitacao->recuperaExportacao40($rsRecordSetJULGLIC40);
 
 //Tipo Registro 99
 $arRecordSetJULGLIC99 = array(
@@ -218,19 +222,19 @@ if (count($arRecordSetJULGLIC10) > 0) {
                 }
             }
             
-            //30
+            //40
             //Verifica se  o proximo num_processo_licitatorio do array é diferente
             if($arRecordSetJULGLIC10[$inContador]['num_processo_licitatorio'] != $stNumProcLic){
-                if (count($rsRecordSetJULGLIC30->getElementos()) > 0) {
+                if (count($rsRecordSetJULGLIC40->getElementos()) > 0) {
                     $boChave = true;
-                    foreach ($rsRecordSetJULGLIC30->getElementos() as $arJULGLIC30) {
+                    foreach ($rsRecordSetJULGLIC40->getElementos() as $arJULGLIC40) {
                         $inCount++;
-                        $stChave= $arJULGLIC30['num_processo_licitatorio'];
+                        $stChave= $arJULGLIC40['num_processo_licitatorio'];
                         if( $stChave == $stNumProcLic ){
                             $rsBloco = 'rsBloco_'.$inCount;
                             unset($$rsBloco);
                             $$rsBloco = new RecordSet();
-                            $$rsBloco->preenche(array($arJULGLIC30));
+                            $$rsBloco->preenche(array($arJULGLIC40));
                             
                             $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
                             $obExportador->roUltimoArquivo->addBloco($$rsBloco);
@@ -289,7 +293,7 @@ if (count($arRecordSetJULGLIC10) > 0) {
 }
 $rsRecordSetJULGLIC10 = null;
 $rsRecordSetJULGLIC20 = null;
-$rsRecordSetJULGLIC30 = null;
+$rsRecordSetJULGLIC40 = null;
 $obTTCEMGJulgamentoLicitacao = null;
 $rsRecordSetJULGLIC99 = null;
 $arRecordSetJULGLIC10 = null;
