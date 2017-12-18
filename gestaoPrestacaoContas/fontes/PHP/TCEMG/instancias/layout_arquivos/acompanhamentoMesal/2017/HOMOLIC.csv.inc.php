@@ -45,19 +45,22 @@ include_once CAM_GPC_TCEMG_MAPEAMENTO.Sessao::getExercicio()."/TTCEMGHOMOLIC.cla
 $rsRecordSetHOMOLIC10 = new RecordSet();
 $rsRecordSetHOMOLIC20 = new RecordSet();
 $rsRecordSetHOMOLIC30 = new RecordSet();
+$rsRecordSetHOMOLIC40 = new RecordSet();
 
 $obTTCEMGHOMOLIC = new TTCEMGHOMOLIC();
-$obTTCEMGHOMOLIC->setDado('exercicio'     , Sessao::getExercicio());
-$obTTCEMGHOMOLIC->setDado('cod_entidade'  , $stEntidades);
-$obTTCEMGHOMOLIC->setDado('dt_inicial'    , $stDataInicial);
-$obTTCEMGHOMOLIC->setDado('dt_final'      , $stDataFinal);
+$obTTCEMGHOMOLIC->setDado('exercicio' ,Sessao::getExercicio());
+$obTTCEMGHOMOLIC->setDado('cod_entidade' ,$stEntidades);
+$obTTCEMGHOMOLIC->setDado('dt_inicial' ,$stDataInicial);
+$obTTCEMGHOMOLIC->setDado('dt_final' ,$stDataFinal);
 
 $obTTCEMGHOMOLIC->recuperaDadosHOMOLIC10($rsRecordSetHOMOLIC10,$boTransacao);
-    
+
 // $this->obTTCEMGHOMOLIC->recuperaDadosHOMOLIC20($rsRecordSetHOMOLIC20,$boTransacao);
-    
-$obTTCEMGHOMOLIC->recuperaDadosHOMOLIC30($rsRecordSetHOMOLIC30,$boTransacao);
-    
+
+// $obTTCEMGHOMOLIC->recuperaDadosHOMOLIC30($rsRecordSetHOMOLIC30,$boTransacao);
+
+$obTTCEMGHOMOLIC->recuperaDadosHOMOLIC40($rsRecordSetHOMOLIC40,$boTransacao);
+
 //Tipo Registro 99 - Declaro que no mês desta remessa não há informações inerentes ao arquivo “Homologação da Licitação.
 $arRecordSetHOMOLIC99 = array(
     '0' => array(
@@ -68,7 +71,7 @@ $arRecordSetHOMOLIC99 = array(
 $rsRecordSetHOMOLIC99 = new RecordSet();
 $rsRecordSetHOMOLIC99->preenche($arRecordSetHOMOLIC99);
 
-$inContador =0; 
+$inContador = 0;
 $inCount = 0;
 $stChave30 = '';
 
@@ -103,35 +106,35 @@ if (count($arRecordSetHOMOLIC10) > 0) {
 
             $stChaveCodReduzido = $arHOMOLIC10['cod_reduzido'];
             $stNumProcLic = $arHOMOLIC10['nro_processolicitatorio'];
-            
+
             $rsBloco10 = 'rsBloco10_'.$inCount;
             unset($$rsBloco10);
             $$rsBloco10 = new RecordSet();
             $$rsBloco10->preenche(array($arHOMOLIC10));
-            
+
             $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
             $obExportador->roUltimoArquivo->addBloco( $$rsBloco10 );
-                
+
             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tiporegistro");
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
-    
+
             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_orgao");
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
-    
+
             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_unidadesub");
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(5);
-    
+
             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("exercicio_licitacao");
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(4);
-    
+
             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_processolicitatorio");
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
@@ -148,7 +151,7 @@ if (count($arRecordSetHOMOLIC10) > 0) {
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(14);
-            
+
             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_lote");
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
@@ -169,14 +172,15 @@ if (count($arRecordSetHOMOLIC10) > 0) {
             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(14);
 
-            /////APENAS  QUANDO: o valor do campo descontoTabela do registro 10 – Detalhamento dos Convites / Editais de Licitação do arquivo 5.12 ABERLIC for 1 – Sim    
+            //APENAS  QUANDO: o valor do campo descontoTabela do registro 10 – Detalhamento dos Convites / Editais de Licitação
+            //do arquivo 5.12 ABERLIC for 1 – Sim
             //Se houver registros no array
             if (count($rsRecordSetHOMOLIC20->getElementos()) > 0) {
                $stChave20 = '';
 
                 //Percorre array de registros
                 foreach ($rsRecordSetHOMOLIC20->getElementos() as $arHOMOLIC20) {
-                        
+
                     $stChave20Aux  = $arHOMOLIC20['cod_orgao'].$arHOMOLIC20['cod_unidadesub'].$arHOMOLIC20['exercicio_licitacao'];
                     $stChave20Aux .= $arHOMOLIC20['nro_processolicitatorio'].$arHOMOLIC20['tipo_documento'].$arHOMOLIC20['nro_documento'];
                     $stChave20Aux .= $arHOMOLIC20['nro_lote'].$arHOMOLIC20['cod_item'].$arHOMOLIC20['quantidade'];
@@ -192,7 +196,7 @@ if (count($arRecordSetHOMOLIC10) > 0) {
                             unset($$rsBloco20);
                             $$rsBloco20 = new RecordSet();
                             $$rsBloco20->preenche(array($arHOMOLIC20));
-                        
+
                             $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
                             $obExportador->roUltimoArquivo->addBloco( $$rsBloco20 );
 
@@ -200,44 +204,44 @@ if (count($arRecordSetHOMOLIC10) > 0) {
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
                             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
-        
+
                             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_orgao");
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
                             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
-        
+
                             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_unidadesub");
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
                             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(5);
-        
+
                             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("exercicio_licitacao");
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
                             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(4);
-        
+
                             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_processolicitatorio");
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
                             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(12);
-    
+
                             //**OBS: Falta a validacao na consulta para o tipo de documento, está buscando pelo tcemg.uniorcam
                             // mas deve buscar pela configuracao do urbem que ainda não foi criada
                             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_documento");
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
                             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(1);
-    
+
                             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_documento");
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
                             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(14);
-            
+
                             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_lote");
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
                             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(4);
-    
+
                             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_item");
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
                             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
@@ -247,30 +251,99 @@ if (count($arRecordSetHOMOLIC10) > 0) {
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
                             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(6);
-          
+
                         }//Fim foreach HOMOLIC20
                     }
                 }
             }
+
+            //Se houver registros no array
+            if ( count($rsRecordSetHOMOLIC30->getElementos()) > 0 ) {
+                //Percorre array de registros
+                foreach ($rsRecordSetHOMOLIC30->getElementos() as $arHOMOLIC30) {
+                    $stChave30Aux = $arHOMOLIC30['nro_processolicitatorio'];
+                    //Verifica se registro 10 bate com chave do registro 30
+                    if ( $stNumProcLic === $stChave30Aux ) {
+                        $stChave30 = $stChave30Aux;
+                        $rsBloco30 = 'rsBloco30_'.$inCount;
+                        unset($$rsBloco30);
+                        $$rsBloco30 = new RecordSet();
+                        $$rsBloco30->preenche(array($arHOMOLIC30));
+
+                        $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
+                        $obExportador->roUltimoArquivo->addBloco( $$rsBloco30 );
+
+                        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tiporegistro");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
+
+                        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_orgao");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
+
+                        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_unidadesub");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(5);
+
+                        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("exercicio_licitacao");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(4);
+
+                        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_processolicitatorio");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(12);
+
+                        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_documento");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(1);
+
+                        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_documento");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(14);
+
+                        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_lote");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(4);
+
+                        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_item");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(15);
+
+                        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("perc_taxa_adm");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(6);
+                    }//Fim if HOMOLIC30
+                }//Fim if HOMOLIC30
+            }//Fim foreach HOMOLIC30
+
             //Verifica se  o proximo num_processo_licitatorio do array é diferente
             if($arRecordSetHOMOLIC10[$inContador]['nro_processolicitatorio'] != $stNumProcLic){
                 //Se houver registros no array
-                if ( count($rsRecordSetHOMOLIC30->getElementos()) > 0 ) {
+                if ( count($rsRecordSetHOMOLIC40->getElementos()) > 0 ) {
                     //Percorre array de registros
-                    foreach ($rsRecordSetHOMOLIC30->getElementos() as $arHOMOLIC30) {
-                        $stChave30Aux = $arHOMOLIC30['nro_processolicitatorio'];
-                        //Verifica se registro 10 bate com chave do registro 30
-                        if ( $stNumProcLic === $stChave30Aux ) {
-                
-                            $stChave30 = $stChave30Aux;
-                            $rsBloco30 = 'rsBloco30_'.$inCount;
-                            unset($$rsBloco30);
-                            $$rsBloco30 = new RecordSet();
-                            $$rsBloco30->preenche(array($arHOMOLIC30));
-                        
+                    foreach ($rsRecordSetHOMOLIC40->getElementos() as $arHOMOLIC40) {
+                        $stChave40Aux = $arHOMOLIC40['nro_processolicitatorio'];
+                        //Verifica se registro 10 bate com chave do registro 40
+                        if ( $stNumProcLic === $stChave40Aux ) {
+                            $stChave40 = $stChave40Aux;
+                            $rsBloco40 = 'rsBloco40_'.$inCount;
+                            unset($$rsBloco40);
+                            $$rsBloco40 = new RecordSet();
+                            $$rsBloco40->preenche(array($arHOMOLIC40));
+
                             $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
-                            $obExportador->roUltimoArquivo->addBloco( $$rsBloco30 );
-                   
+                            $obExportador->roUltimoArquivo->addBloco( $$rsBloco40 );
+
                             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tiporegistro");
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
                             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
@@ -295,20 +368,20 @@ if (count($arRecordSetHOMOLIC10) > 0) {
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
                             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(12);
-                        
+
                             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("dt_homologacao");
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("DATA_DDMMYYYY");
                             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(8);
-                   
+
                             $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("dt_adjudicacao");
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("DATA_DDMMYYYY");
                             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(8);
-                        }//Fim if HOMOLIC30
-                    }//Fim if HOMOLIC30
-                }//Fim foreach HOMOLIC30
-            }//Fim if HOMOLIC30
+                        }//Fim if HOMOLIC40
+                    }//Fim if HOMOLIC40
+                }//Fim foreach HOMOLIC40
+            }//Fim if HOMOLIC40
         }
     }// Fim do foreach principal HOMOLIC10
 } else {
