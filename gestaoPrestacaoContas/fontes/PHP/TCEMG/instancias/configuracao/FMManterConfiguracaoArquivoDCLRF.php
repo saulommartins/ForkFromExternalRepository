@@ -32,7 +32,7 @@
 
   * @ignore
   * $Id: FMManterConfiguracaoArquivoDCLRF.php 64886 2016-04-11 17:22:14Z evandro $
-  *   
+  *
   * $Rev: 64886 $
   * $Author: evandro $
   * $Date: 2016-04-11 14:22:14 -0300 (Mon, 11 Apr 2016) $
@@ -42,12 +42,12 @@ include_once("../../../../../../gestaoAdministrativa/fontes/PHP/framework/includ
 include_once(CAM_GPC_TCEMG_MAPEAMENTO."TTCEMGConfiguracaoArquivoDCLRF.class.php");
 //Define o nome dos arquivos PHP
 $stPrograma = "ManterConfiguracaoArquivoDCLRF";
-$pgFilt     = "FL".$stPrograma.".php";
-$pgList     = "LS".$stPrograma.".php";
-$pgForm     = "FM".$stPrograma.".php";
-$pgProc     = "PR".$stPrograma.".php";
-$pgOcul     = "OC".$stPrograma.".php";
-$pgJs       = "JS".$stPrograma.".js";
+$pgFilt = "FL" . $stPrograma . ".php";
+$pgList = "LS" . $stPrograma . ".php";
+$pgForm = "FM" . $stPrograma . ".php";
+$pgProc = "PR" . $stPrograma . ".php";
+$pgOcul = "OC" . $stPrograma . ".php";
+$pgJs = "JS" . $stPrograma . ".js";
 
 $rsTTCEMGConfiguracaoArquivoDCLRF = new RecordSet();
 $obTTCEMGConfiguracaoArquivoDCLRF = new TTCEMGConfiguracaoArquivoDCLRF();
@@ -56,38 +56,50 @@ $obTTCEMGConfiguracaoArquivoDCLRF->setDado('mes_referencia',$request->get('inMes
 $obTTCEMGConfiguracaoArquivoDCLRF->recuperaValoresArquivoDCLRF($rsTTCEMGConfiguracaoArquivoDCLRF);
 
 if($rsTTCEMGConfiguracaoArquivoDCLRF->getNumLinhas() > 0) {
-    $vlSaldoAtualConcessoesGarantia               = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_saldo_atual_concessoes_garantia'), '2', ',', '.');
-    $vlSaldoAtualConcessoesGarantiaInterna        = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_saldo_atual_concessoes_garantia_interna'), '2', ',', '.');
-    $vlSaldoAtualConcessoesGarantiaExterna        = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_saldo_atual_concessoes_garantia'), '2', ',', '.');
-    $vlSaldoAtualContraConcessoesGarantiaInterna  = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_saldo_atual_contra_concessoes_garantia_interna'), '2', ',', '.');
-    $vlSaldoAtualContraConcessoesGarantiaExterna  = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_saldo_atual_contra_concessoes_garantia_externa'), '2', ',', '.');
-    $stMedidasCorretivas                          = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('medidas_corretivas');
-    $vlReceitaPrivatizacao                        = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('receita_privatizacao'), '2', ',', '.');
-    $vlLiquidadoIncentivoContribuinte             = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_liquidado_incentivo_contribuinte'), '2', ',', '.');
-    $vlLiquidadoIncentivoInstituicaoFinanceiro    = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_liquidado_incentivo_instituicao_financeira'), '2', ',', '.');
-    $vlInscritoRPNPIncentivoContribuinte          = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_inscrito_rpnp_incentivo_contribuinte'), '2', ',', '.');
+    $vlPassivosReconhecidos = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_passivos_reconhecidos'), '2', ',', '.');
+    $vlTransObrigUniaoRelativEmenIndiv = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_trans_obrig_uniao_relativ_emen_indiv'), '2', ',', '.');
+    $vlDotacaoIncentivoContribuinte = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_dotacao_incentivo_contribuinte'), '2', ',', '.');
+    $vlEmpenhadoIncentivoContribuinte = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_empenhado_incentivo_contribuinte'), '2', ',', '.');
+    $vlDotacaoIncentivoInstFinanceira = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_dotacao_incentivo_inst_financeira'), '2', ',', '.');
+    $vlEmpenhadoIncentivoInstFinanceira = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_empenhado_incentivo_inst_financeira'), '2', ',', '.');
+    $vlSaldoAtualConcessoesGarantia = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_saldo_atual_concessoes_garantia'), '2', ',', '.');
+    $vlSaldoAtualConcessoesGarantiaInterna = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_saldo_atual_concessoes_garantia_interna'), '2', ',', '.');
+    $vlSaldoAtualConcessoesGarantiaExterna = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_saldo_atual_concessoes_garantia'), '2', ',', '.');
+    $vlSaldoAtualContraConcessoesGarantiaInterna = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_saldo_atual_contra_concessoes_garantia_interna'), '2', ',', '.');
+    $vlSaldoAtualContraConcessoesGarantiaExterna = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_saldo_atual_contra_concessoes_garantia_externa'), '2', ',', '.');
+    $stMedidasCorretivas = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('medidas_corretivas');
+    $vlReceitaPrivatizacao = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('receita_privatizacao'), '2', ',', '.');
+    $vlLiquidadoIncentivoContribuinte = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_liquidado_incentivo_contribuinte'), '2', ',', '.');
+    $vlLiquidadoIncentivoInstituicaoFinanceiro = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_liquidado_incentivo_instituicao_financeira'), '2', ',', '.');
+    $vlInscritoRPNPIncentivoContribuinte = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_inscrito_rpnp_incentivo_contribuinte'), '2', ',', '.');
     $vlInscritoRPNPIncentivoInstituicaoFinanceiro = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_inscrito_rpnp_incentivo_instituicao_financeira'), '2', ',', '.');
-    $vlCompromissado                              = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_compromissado'), '2', ',', '.');
-    $vlRecursosNaoAplicados                       = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_recursos_nao_aplicados'), '2', ',', '.');
-    $inPublicacaoRelatorioLRF                     = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('publicacao_relatorio_lrf');
-    $dtPublicacaoRelatorioLRF                     = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('dt_publicacao_relatorio_lrf');
-    $inBimestre                                   = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('bimestre');
-    $inMetaBimestral                              = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('meta_bimestral');
-    $stMedidasAdotadas                            = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('medida_adotada');
-    $inContOpCredito                              = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('cont_op_credito');
-    $stDescricaoOPCredito                         = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('desc_cont_op_credito');
-    $inRealizOpCredito                            = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('realiz_op_credito');
-    $inTipoRealizOpCreditoCapta                   = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('tipo_realiz_op_credito_capta');
-    $inTipoRealizOpCreditoReceb                   = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('tipo_realiz_op_credito_receb');
-    $inTipoRealizOpCreditoAssunDir                = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('tipo_realiz_op_credito_assun_dir');
-    $inTipoRealizOpCreditoAssunObg                = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('tipo_realiz_op_credito_assun_obg');
-
+    $vlCompromissado = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_compromissado'), '2', ',', '.');
+    $vlRecursosNaoAplicados = number_format($rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('valor_recursos_nao_aplicados'), '2', ',', '.');
+    $inPublicacaoRelatorioLRF = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('publicacao_relatorio_lrf');
+    $dtPublicacaoRelatorioLRF = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('dt_publicacao_relatorio_lrf');
+    $stLocalPublicacaoLRF = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('local_publicacao_lrf');
+    $inBimestre = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('bimestre');
+    $inMetaBimestral = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('meta_bimestral');
+    $stMedidasAdotadas = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('medida_adotada');
+    $inContOpCredito = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('cont_op_credito');
+    $stDescricaoOPCredito = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('desc_cont_op_credito');
+    $inRealizOpCredito = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('realiz_op_credito');
+    $inTipoRealizOpCreditoCapta = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('tipo_realiz_op_credito_capta');
+    $inTipoRealizOpCreditoReceb = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('tipo_realiz_op_credito_receb');
+    $inTipoRealizOpCreditoAssunDir = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('tipo_realiz_op_credito_assun_dir');
+    $inTipoRealizOpCreditoAssunObg = $rsTTCEMGConfiguracaoArquivoDCLRF->getCampo('tipo_realiz_op_credito_assun_obg');
 } else {
+    $vlPassivosReconhecidos = "0,00";
+    $vlTransObrigUniaoRelativEmenIndiv = "0,00";
+    $vlDotacaoIncentivoContribuinte = "0,00";
+    $vlDotacaoIncentivoContribuinte = "0,00";
+    $vlDotacaoIncentivoInstFinanceira = "0,00";
+    $vlEmpenhadoIncentivoInstFinanceira = "0,00";
     $vlSaldoAtualConcessoesGarantia = "0,00";
     $vlSaldoAtualConcessoesGarantiaExterna = "0,00";
     $vlSaldoAtualConcessoesGarantiaInterna = "0,00";
     $vlSaldoAtualContraConcessoesGarantiaExterna = "0,00";
-    $vlSaldoAtualContraConcessoesGarantiaInterna = "0,00"; 
+    $vlSaldoAtualContraConcessoesGarantiaInterna = "0,00";
     $vlReceitaPrivatizacao = "0,00";
     $vlLiquidadoIncentivoContribuinte = "0,00";
     $vlLiquidadoIncentivoInstituicaoFinanceiro = "0,00";
@@ -95,7 +107,6 @@ if($rsTTCEMGConfiguracaoArquivoDCLRF->getNumLinhas() > 0) {
     $vlInscritoRPNPIncentivoInstituicaoFinanceiro = "0,00";
     $vlCompromissado = "0,00";
     $vlRecursosNaoAplicados = "0,00";
-
 }
 
 //****************************************//
@@ -135,6 +146,26 @@ $obFlValorSaldoAtualConcessoesGarantia->setDecimais(2);
 $obFlValorSaldoAtualConcessoesGarantia->setMaxLength(15);
 $obFlValorSaldoAtualConcessoesGarantia->setSize(17);
 $obFlValorSaldoAtualConcessoesGarantia->setValue($vlSaldoAtualConcessoesGarantia);
+
+$obFlPassivosReconhecidos = new Numerico();
+$obFlPassivosReconhecidos->setId('flPassivosReconhecidos');
+$obFlPassivosReconhecidos->setName('flPassivosReconhecidos');
+$obFlPassivosReconhecidos->setRotulo('Valores dos passivos reconhecidos');
+$obFlPassivosReconhecidos->setTitle('O PREENCHIMENTO DESSA LINHA SERÁ FEITO SE TAIS PASSIVOS FORAM COMPUTADOS no arquivo "4.37 - DDC - Dívida Consolidada". As dívidas incorporadas, os chamados “esqueletos”, correspondem às dívidas juridicamente devidas, de valor certo, reconhecidas e representativas de déficits passados que não mais ocorrem no presente, tais como: parcelamentos de dívida junto ao INSS, FGTS e RPPS. Também poderão ser reconhecidas como dívidas de responsabilidade, as decorrentes do não pagamento para fundos de previdência, fornecedores, empreiteiras, sentenças judiciais (principalmente as trabalhistas) e dívidas com companhias estaduais e federais de energia, água e saneamento. Analogamente às receitas de privatizações, para efeito de cálculo do resultado nominal, devem ser deduzidos da Dívida Consolidada Líquida os passivos reconhecidos. Tais passivos estão contabilizados no cálculo da Dívida Consolidada Líquida e, portanto, visando expurgar os efeitos que não representam esforço fiscal, estes devem ser deduzidos para a apuração da Dívida Fiscal Líquida.');
+$obFlPassivosReconhecidos->setDecimais(2);
+$obFlPassivosReconhecidos->setMaxLength(14);
+$obFlPassivosReconhecidos->setSize(17);
+$obFlPassivosReconhecidos->setValue($vlPassivosReconhecidos);
+
+$obFlTransObrigUniaoRelativEmenIndiv = new Numerico();
+$obFlTransObrigUniaoRelativEmenIndiv->setId('flTransObrigUniaoRelativEmenIndiv');
+$obFlTransObrigUniaoRelativEmenIndiv->setName('flTransObrigUniaoRelativEmenIndiv');
+$obFlTransObrigUniaoRelativEmenIndiv->setRotulo('Valor das Transferências obrigatórias da União relativas às emendas individuais (V)  (§ 13, art. 166 da CF)');
+$obFlTransObrigUniaoRelativEmenIndiv->setTitle('Registra o valor da transferência obrigatória da União aos Estados, Distrito Federal e Municípios  em virtude das emendas individuais ao projeto de lei orçamentária, conforme disciplina os parágrafos 9º, 10, 11, 12 e 13 do art. 166 da CF. A emenda constitucional nº 86, de 2015, determinou a exclusão na base de cálculo da receita corrente líquida, apenas para fins de aplicação dos limites de despesa com pessoal, dos valores transferidos pela União referentes às emenda individuais ao projeto de lei orçamentária. Essas emendas individuais serão aprovadas no limite de 1,2% (um inteiro e dois décimos por cento) da receita corrente líquida prevista no projeto encaminhado pelo Poder Executivo e metade do valor será destinado a ações e serviços públicos de saúde.');
+$obFlTransObrigUniaoRelativEmenIndiv->setDecimais(2);
+$obFlTransObrigUniaoRelativEmenIndiv->setMaxLength(14);
+$obFlTransObrigUniaoRelativEmenIndiv->setSize(17);
+$obFlTransObrigUniaoRelativEmenIndiv->setValue($vlTransObrigUniaoRelativEmenIndiv);
 
 $obFlValorSaldoAtualConcessoesGarantiaInterna = new Numerico();
 $obFlValorSaldoAtualConcessoesGarantiaInterna->setId('flValorSaldoAtualConcessoesGarantiaInterna');
@@ -195,6 +226,46 @@ $obFlValorReceitaPrivatizacao->setDecimais(2);
 $obFlValorReceitaPrivatizacao->setMaxLength(15);
 $obFlValorReceitaPrivatizacao->setSize(17);
 $obFlValorReceitaPrivatizacao->setValue($vlReceitaPrivatizacao);
+
+$obFlDotacaoIncentivoContribuinte = new Numerico();
+$obFlDotacaoIncentivoContribuinte->setId('flDotacaoIncentivoContribuinte');
+$obFlDotacaoIncentivoContribuinte->setName('flDotacaoIncentivoContribuinte');
+$obFlDotacaoIncentivoContribuinte->setRotulo('Valor da dotação atualizada de Incentivo a Contribuinte');
+$obFlDotacaoIncentivoContribuinte->setTitle('Registrar a dotação atualizada das despesas de capital sob a forma de empréstimo ou financiamento a contribuinte, com o intuito de promover incentivo fiscal, tendo por base tributo de competência do ente da Federação, se resultar na diminuição, direta ou indireta, do ônus do ente (art. 32, § 3º, inciso I da LRF).');
+$obFlDotacaoIncentivoContribuinte->setDecimais(2);
+$obFlDotacaoIncentivoContribuinte->setMaxLength(14);
+$obFlDotacaoIncentivoContribuinte->setSize(17);
+$obFlDotacaoIncentivoContribuinte->setValue($vlDotacaoIncentivoContribuinte);
+
+$obFlEmpenhadoIncentivoContribuinte = new Numerico();
+$obFlEmpenhadoIncentivoContribuinte->setId('flEmpenhadoIncentivoContribuinte');
+$obFlEmpenhadoIncentivoContribuinte->setName('flEmpenhadoIncentivoContribuinte');
+$obFlEmpenhadoIncentivoContribuinte->setRotulo('Valor empenhado de Incentivo a Contribuinte');
+$obFlEmpenhadoIncentivoContribuinte->setTitle('Registrar as despesas de capital empenhadas sob a forma de empréstimo ou financiamento a contribuinte, com o intuito de promover incentivo fiscal, tendo por base tributo de competência do ente da Federação, se resultar na diminuição, direta ou indireta, do ônus do ente (art. 32, § 3º, inciso I da LRF).');
+$obFlEmpenhadoIncentivoContribuinte->setDecimais(2);
+$obFlEmpenhadoIncentivoContribuinte->setMaxLength(14);
+$obFlEmpenhadoIncentivoContribuinte->setSize(17);
+$obFlEmpenhadoIncentivoContribuinte->setValue($vlEmpenhadoIncentivoContribuinte);
+
+$obFlDotacaoIncentivoInstFinanceira = new Numerico();
+$obFlDotacaoIncentivoInstFinanceira->setId('flDotacaoIncentivoInstFinanceira');
+$obFlDotacaoIncentivoInstFinanceira->setName('flDotacaoIncentivoInstFinanceira');
+$obFlDotacaoIncentivoInstFinanceira->setRotulo('Valor da dotação atualizada de Incentivo concedido por Instituição Financeira');
+$obFlDotacaoIncentivoInstFinanceira->setTitle('Registrar a dotação atualizada das despesas de capital sob a forma de empréstimo ou financiamento a contribuinte, com o intuito de promover incentivo fiscal, concedido por instituição financeira controlada pelo ente da Federação (art. 32, § 3º, inciso II da LRF).');
+$obFlDotacaoIncentivoInstFinanceira->setDecimais(2);
+$obFlDotacaoIncentivoInstFinanceira->setMaxLength(14);
+$obFlDotacaoIncentivoInstFinanceira->setSize(17);
+$obFlDotacaoIncentivoInstFinanceira->setValue($vlDotacaoIncentivoInstFinanceira);
+
+$obFlEmpenhadoIncentivoInstFinanceira = new Numerico();
+$obFlEmpenhadoIncentivoInstFinanceira->setId('flEmpenhadoIncentivoInstFinanceira');
+$obFlEmpenhadoIncentivoInstFinanceira->setName('flEmpenhadoIncentivoInstFinanceira');
+$obFlEmpenhadoIncentivoInstFinanceira->setRotulo('Valor empenhado de Incentivo concedido por Instituição Financeira');
+$obFlEmpenhadoIncentivoInstFinanceira->setTitle('Registrar as despesas de capital empenhadas sob a forma de empréstimo ou financiamento a contribuinte, com o intuito de promover incentivo fiscal, concedido por instituição financeira controlada pelo ente da Federação (art. 32, § 3º, inciso II da LRF).');
+$obFlEmpenhadoIncentivoInstFinanceira->setDecimais(2);
+$obFlEmpenhadoIncentivoInstFinanceira->setMaxLength(14);
+$obFlEmpenhadoIncentivoInstFinanceira->setSize(17);
+$obFlEmpenhadoIncentivoInstFinanceira->setValue($vlEmpenhadoIncentivoInstFinanceira);
 
 $obFlValorLiquidadoIncentivoContribuinte = new Numerico();
 $obFlValorLiquidadoIncentivoContribuinte->setId('flValorLiquidadoIncentivoContribuinte');
@@ -299,6 +370,16 @@ $obCmbBimestre->setNull( true );
 $obCmbBimestre->setValue( $inBimestre);
 $obCmbBimestre->setStyle( "width: 220px" );
 
+$obTxtLocalPublicacaoLRF = new TextArea();
+$obTxtLocalPublicacaoLRF->setName('stLocalPublicacaoLRF');
+$obTxtLocalPublicacaoLRF->setId('stLocalPublicacaoLRF');
+$obTxtLocalPublicacaoLRF->setRotulo('Onde foi dada a publicidade do RGF e RREO');
+$obTxtLocalPublicacaoLRF->setTitle('Neste campo deve ser informada onde foi dada publicidade aos relatórios de gestão fiscal (RGF) e resumido da execução orçamentária RREO). Esse campo torna-se de preenchimento obrigatório caso o campo “publicLRF” for igual a “1 – Sim”.');
+$obTxtLocalPublicacaoLRF->setMaxCaracteres(1000);
+$obTxtLocalPublicacaoLRF->setRows(3);
+$obTxtLocalPublicacaoLRF->setValue($stLocalPublicacaoLRF);
+$obTxtLocalPublicacaoLRF->setNull(true);
+
 $obRdMetaBimestral_S = new Radio;
 $obRdMetaBimestral_S->setId('inMetaBimestral');
 $obRdMetaBimestral_S->setName('inMetaBimestral');
@@ -307,7 +388,7 @@ $obRdMetaBimestral_S->setLabel("Sim");
 $obRdMetaBimestral_S->setValue(1);
 $obRdMetaBimestral_S->setChecked($inMetaBimestral==1);
 $obRdMetaBimestral_S->setNull(true);
-                  
+
 $obRdMetaBimestral_N = new Radio;
 $obRdMetaBimestral_N->setId('inMetaBimestral');
 $obRdMetaBimestral_N->setName('inMetaBimestral');
@@ -335,7 +416,7 @@ if($_REQUEST['inMes'] == 12) {
     $obRdContOpCredito_S->setValue(1);
     $obRdContOpCredito_S->setChecked($inContOpCredito==1);
     $obRdContOpCredito_S->setNull(false);
-                      
+
     $obRdContOpCredito_N = new Radio;
     $obRdContOpCredito_N->setId('inContOpCredito');
     $obRdContOpCredito_N->setName('inContOpCredito');
@@ -344,7 +425,7 @@ if($_REQUEST['inMes'] == 12) {
     $obRdContOpCredito_N->setValue(2);
     $obRdContOpCredito_N->setChecked($inContOpCredito==2 or !$inContOpCredito);
     $obRdContOpCredito_N->setNull(false);
-    
+
     $obTxtDescContOpCredito = new TextArea();
     $obTxtDescContOpCredito->setName('stDescContOpCredito');
     $obTxtDescContOpCredito->setId('stDescContOpCredito');
@@ -353,7 +434,7 @@ if($_REQUEST['inMes'] == 12) {
     $obTxtDescContOpCredito->setRows(3);
     $obTxtDescContOpCredito->setValue($stDescricaoOPCredito);
     $obTxtDescContOpCredito->setNull(true);
-    
+
     $obRdRealizOpCredito_S = new Radio;
     $obRdRealizOpCredito_S->setId('inRealizOpCredito');
     $obRdRealizOpCredito_S->setName('inRealizOpCredito');
@@ -362,7 +443,7 @@ if($_REQUEST['inMes'] == 12) {
     $obRdRealizOpCredito_S->setValue(1);
     $obRdRealizOpCredito_S->setChecked($inRealizOpCredito==1);
     $obRdRealizOpCredito_S->setNull(false);
-                      
+
     $obRdRealizOpCredito_N = new Radio;
     $obRdRealizOpCredito_N->setId('inRealizOpCredito');
     $obRdRealizOpCredito_N->setName('inRealizOpCredito');
@@ -371,7 +452,7 @@ if($_REQUEST['inMes'] == 12) {
     $obRdRealizOpCredito_N->setValue(2);
     $obRdRealizOpCredito_N->setChecked($inRealizOpCredito==2 or !$inRealizOpCredito);
     $obRdRealizOpCredito_N->setNull(false);
-    
+
     $obRdTipoRealizOpCreditoCapta_S = new Radio;
     $obRdTipoRealizOpCreditoCapta_S->setId('inTipoRealizOpCreditoCapta');
     $obRdTipoRealizOpCreditoCapta_S->setName('inTipoRealizOpCreditoCapta');
@@ -380,7 +461,7 @@ if($_REQUEST['inMes'] == 12) {
     $obRdTipoRealizOpCreditoCapta_S->setValue(1);
     $obRdTipoRealizOpCreditoCapta_S->setChecked($inTipoRealizOpCreditoCapta==1);
     $obRdTipoRealizOpCreditoCapta_S->setNull(true);
-                      
+
     $obRdTipoRealizOpCreditoCapta_N = new Radio;
     $obRdTipoRealizOpCreditoCapta_N->setId('inTipoRealizOpCreditoCapta');
     $obRdTipoRealizOpCreditoCapta_N->setName('inTipoRealizOpCreditoCapta');
@@ -389,7 +470,7 @@ if($_REQUEST['inMes'] == 12) {
     $obRdTipoRealizOpCreditoCapta_N->setValue(2);
     $obRdTipoRealizOpCreditoCapta_N->setChecked($inTipoRealizOpCreditoCapta==2 or !$inTipoRealizOpCreditoCapta);
     $obRdTipoRealizOpCreditoCapta_N->setNull(true);
-    
+
     $obRdTipoRealizOpCreditoReceb_S = new Radio;
     $obRdTipoRealizOpCreditoReceb_S->setId('inTipoRealizOpCreditoReceb');
     $obRdTipoRealizOpCreditoReceb_S->setName('inTipoRealizOpCreditoReceb');
@@ -398,7 +479,7 @@ if($_REQUEST['inMes'] == 12) {
     $obRdTipoRealizOpCreditoReceb_S->setValue(1);
     $obRdTipoRealizOpCreditoReceb_S->setChecked($inTipoRealizOpCreditoReceb==1);
     $obRdTipoRealizOpCreditoReceb_S->setNull(true);
-                      
+
     $obRdTipoRealizOpCreditoReceb_N = new Radio;
     $obRdTipoRealizOpCreditoReceb_N->setId('inTipoRealizOpCreditoReceb');
     $obRdTipoRealizOpCreditoReceb_N->setName('inTipoRealizOpCreditoReceb');
@@ -407,27 +488,25 @@ if($_REQUEST['inMes'] == 12) {
     $obRdTipoRealizOpCreditoReceb_N->setValue(2);
     $obRdTipoRealizOpCreditoReceb_N->setChecked($inTipoRealizOpCreditoReceb==2 or !$inTipoRealizOpCreditoReceb);
     $obRdTipoRealizOpCreditoReceb_N->setNull(true);
-    
+
     $obRdTipoRealizOpCreditoAssunDir_S = new Radio;
     $obRdTipoRealizOpCreditoAssunDir_S->setId('inTipoRealizOpCreditoAssunDir');
     $obRdTipoRealizOpCreditoAssunDir_S->setName('inTipoRealizOpCreditoAssunDir');
-    $obRdTipoRealizOpCreditoAssunDir_S->setRotulo('Houve assunção direta de compromisso, confissão de dívida ou operação assemelhada, com fornecedor de bens, mercadorias ou serviços, mediante emissão, aceite ou aval de título de crédito, não se aplicando a
-empresas estatais dependentes?');
+    $obRdTipoRealizOpCreditoAssunDir_S->setRotulo('Houve assunção direta de compromisso, confissão de dívida ou operação assemelhada, com fornecedor de bens, mercadorias ou serviços, mediante emissão, aceite ou aval de título de crédito, não se aplicando a empresas estatais dependentes?');
     $obRdTipoRealizOpCreditoAssunDir_S->setLabel("Sim");
     $obRdTipoRealizOpCreditoAssunDir_S->setValue(1);
     $obRdTipoRealizOpCreditoAssunDir_S->setChecked($inTipoRealizOpCreditoAssunDir==1);
     $obRdTipoRealizOpCreditoAssunDir_S->setNull(true);
-                      
+
     $obRdTipoRealizOpCreditoAssunDir_N = new Radio;
     $obRdTipoRealizOpCreditoAssunDir_N->setId('inTipoRealizOpCreditoAssunDir');
     $obRdTipoRealizOpCreditoAssunDir_N->setName('inTipoRealizOpCreditoAssunDir');
-    $obRdTipoRealizOpCreditoAssunDir_N->setRotulo('Houve assunção direta de compromisso, confissão de dívida ou operação assemelhada, com fornecedor de bens, mercadorias ou serviços, mediante emissão, aceite ou aval de título de crédito, não se aplicando a
-empresas estatais dependentes?');
+    $obRdTipoRealizOpCreditoAssunDir_N->setRotulo('Houve assunção direta de compromisso, confissão de dívida ou operação assemelhada, com fornecedor de bens, mercadorias ou serviços, mediante emissão, aceite ou aval de título de crédito, não se aplicando a empresas estatais dependentes?');
     $obRdTipoRealizOpCreditoAssunDir_N->setLabel("Não");
     $obRdTipoRealizOpCreditoAssunDir_N->setValue(2);
     $obRdTipoRealizOpCreditoAssunDir_N->setChecked($inTipoRealizOpCreditoAssunDir==2 or !$inTipoRealizOpCreditoAssunDir);
     $obRdTipoRealizOpCreditoAssunDir_N->setNull(true);
-    
+
     $obRdTipoRealizOpCreditoAssunObg_S = new Radio;
     $obRdTipoRealizOpCreditoAssunObg_S->setId('inTipoRealizOpCreditoAssunObg');
     $obRdTipoRealizOpCreditoAssunObg_S->setName('inTipoRealizOpCreditoAssunObg');
@@ -436,7 +515,7 @@ empresas estatais dependentes?');
     $obRdTipoRealizOpCreditoAssunObg_S->setValue(1);
     $obRdTipoRealizOpCreditoAssunObg_S->setChecked($inTipoRealizOpCreditoAssunObg==1);
     $obRdTipoRealizOpCreditoAssunObg_S->setNull(true);
-                      
+
     $obRdTipoRealizOpCreditoAssunObg_N = new Radio;
     $obRdTipoRealizOpCreditoAssunObg_N->setId('inTipoRealizOpCreditoAssunObg');
     $obRdTipoRealizOpCreditoAssunObg_N->setName('inTipoRealizOpCreditoAssunObg');
@@ -459,17 +538,23 @@ $obFormulario->addHidden       ( $obHdnMes );
 $obFormulario->setLarguraRotulo( 40 );
 $obFormulario->setLarguraCampo ( 60 );
 $obFormulario->addTitulo       ( "Configuração do Arquivo Dados Complementares à LRF" );
+
+$obFormulario->addComponente     ( $obFlPassivosReconhecidos );
+$obFormulario->addComponente     ( $obFlTransObrigUniaoRelativEmenIndiv );
 if(Sessao::getExercicio() >= 2016) {
     $obFormulario->addComponente     ( $obFlValorSaldoAtualConcessoesGarantiaInterna );
     $obFormulario->addComponente     ( $obFlValorSaldoAtualConcessoesGarantiaExterna );
     $obFormulario->addComponente     ( $obFlValorSaldoAtualContraConcessoesGarantiaInterna );
-    $obFormulario->addComponente     ( $obFlValorSaldoAtualContraConcessoesGarantiaExterna );    
+    $obFormulario->addComponente     ( $obFlValorSaldoAtualContraConcessoesGarantiaExterna );
     $obFormulario->addComponente     ( $obTxtMedidasCorretivas );
 }else{
     $obFormulariomulario->addComponente   ( $obFlValorSaldoAtualConcessoesGarantia );
 }
-
 $obFormulario->addComponente   ( $obFlValorReceitaPrivatizacao );
+$obFormulario->addComponente   ( $obFlDotacaoIncentivoContribuinte );
+$obFormulario->addComponente   ( $obFlEmpenhadoIncentivoContribuinte );
+$obFormulario->addComponente   ( $obFlDotacaoIncentivoInstFinanceira );
+$obFormulario->addComponente   ( $obFlEmpenhadoIncentivoInstFinanceira );
 $obFormulario->addComponente   ( $obFlValorLiquidadoIncentivoContribuinte );
 $obFormulario->addComponente   ( $obFlValorLiquidadoIncentivoInstituicaoFinanceiro );
 $obFormulario->addComponente   ( $obFlValorInscritoRPNPIncentivoContribuinte );
@@ -481,7 +566,8 @@ if(Sessao::getExercicio() >= 2016) {
     $obFormulario->agrupaComponentes ( array($obRdPublicacaoRelatorioLRF_S, $obRdPublicacaoRelatorioLRF_N ));
     $obFormulario->addComponente     ( $obDtPublicacaoRelatorioLRF );
     $obFormulario->addComponente     ( $obCmbBimestre );
-    $obFormulario->agrupaComponentes ( array($obRdMetaBimestral_S, $obRdMetaBimestral_N ));    
+    $obFormulario->addComponente     ( $obTxtLocalPublicacaoLRF );
+    $obFormulario->agrupaComponentes ( array($obRdMetaBimestral_S, $obRdMetaBimestral_N ));
     $obFormulario->addComponente     ( $obTxtMedidasAdotadas );
 
     if($_REQUEST['inMes'] == 12) {
