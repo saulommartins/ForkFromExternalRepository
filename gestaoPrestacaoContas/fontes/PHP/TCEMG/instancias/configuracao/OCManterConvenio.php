@@ -117,7 +117,7 @@ function montaListaParticipantes($rsLista , $stJs = null)
         $obLista->addDado ();
         $obLista->ultimoDado->setCampo ( "descricao_participacao" );
         $obLista->commitDado ();
-        
+
         $obLista->addDado ();
         $obLista->ultimoDado->setAlinhamento( "CENTRO" );
         $obLista->ultimoDado->setCampo		( "nuValorParticipacao" );
@@ -195,7 +195,7 @@ switch ($request->get('stCtrl')) {
 		$nuValorConvenio            = str_replace ( ',' , '.' , $nuValorConvenio );
 
 		$nuSomaParticipantes        = $arParticipante ? somaValorParticipantes( $arParticipante ) : 0.00 ;
-                
+
 		$stEsfera                   = $request->get('stEsfera');
 
 		$boAlteracao  = Sessao::read('boAlteracao');
@@ -440,7 +440,7 @@ switch ($request->get('stCtrl')) {
                 $nuPercentualParticipacao = $rsParticipantes->getCampo( 'nuPercentualParticipacao' );
 
                 $inCodTipoParticipante = $rsParticipantes->getCampo( 'inCodTipoParticipante' );
-                
+
                 $stEsfera = $rsParticipantes->getCampo( 'stEsfera' );
                 break;
             }
@@ -472,18 +472,18 @@ switch ($request->get('stCtrl')) {
         $inCodConvenio	= $_REQUEST[ 'inCodConvenio' ];
         $stExercicio 	= $_REQUEST[ 'stExercicio'	 ];
         $stJs="";
-        
+
         if($inNumConvenio!='' && $inCodConvenio!='' && $stExercicio!='' ){
             include_once ( CAM_GPC_TCEMG_MAPEAMENTO.'TTCEMGConvenio.class.php' );
             $obTTCEMGConvenio = new TTCEMGConvenio();
-            
+
             $stFiltro  = " WHERE nro_convenio   = ".$inNumConvenio;
             $stFiltro .= " AND exercicio        = '".$stExercicio."'";
             $stFiltro .= " AND cod_convenio     = ".$inCodConvenio;
             $obTTCEMGConvenio->recuperaTodos ( $rsConvenio, $stFiltro );
             if($rsConvenio->inNumLinhas==1){
                 $stJs .= "f.cod_convenio.value = '".$rsConvenio->arElementos[0]['cod_convenio']."';";
-                
+
                 $stJs .= "f.cod_entidade.value = '".$rsConvenio->arElementos[0]['cod_entidade']."';";
                 $stJs .= "f.inCodEntidade.value = '".$rsConvenio->arElementos[0]['cod_entidade']."';";
                 $stJs .= "jQuery('#stNomEntidade option[value=".$rsConvenio->arElementos[0]['cod_entidade']."]').attr('selected', 'selected');\n";
@@ -501,7 +501,7 @@ switch ($request->get('stCtrl')) {
                 $where = " WHERE cod_objeto=".$rsConvenio->arElementos[0]['cod_objeto'];
                 $desc_objeto = SistemaLegado::pegaDado('descricao', 'compras.objeto', $where);
                 $stJs .= "d.getElementById('txtObjeto').innerHTML   = '".$desc_objeto."';\n";
-                
+
                 limpaParticipante();
                 include_once ( CAM_GPC_TCEMG_MAPEAMENTO.'TTCEMGConvenioParticipante.class.php' );
                 $obTTCEMGConvenioParticipante = new TTCEMGConvenioParticipante();
@@ -509,7 +509,7 @@ switch ($request->get('stCtrl')) {
                 $stFiltro .= " AND CP.exercicio        = '".$stExercicio."'";
                 $stFiltro .= " AND CP.cod_entidade     = ".$rsConvenio->arElementos[0]['cod_entidade'];
                 $obTTCEMGConvenioParticipante->recuperaParticipante( $rsListaParticipante, $stFiltro );
-                
+
                 if($rsListaParticipante->inNumLinhas>0){
                     $rsParticipantes = new Recordset;
                     for($i=0;$i<$rsListaParticipante->inNumLinhas;$i++){
@@ -529,23 +529,23 @@ switch ($request->get('stCtrl')) {
                     Sessao::write('participantes',$rsParticipantes);
                     $stJs .= montaListaParticipantes ( $rsParticipantes );
                 }
-                
+
                 include_once ( CAM_GPC_TCEMG_MAPEAMENTO.'TTCEMGConvenioEmpenho.class.php' );
                 $obTTTCEMGConvenioEmpenho = new TTCEMGConvenioEmpenho();
                 $stFiltro  = " WHERE CE.cod_convenio   = ".$inCodConvenio;
                 $stFiltro .= " AND CE.exercicio        = '".$stExercicio."'";
                 $stFiltro .= " AND CE.cod_entidade     = ".$rsConvenio->arElementos[0]['cod_entidade'];
                 $obTTTCEMGConvenioEmpenho->recuperaConvenioEmpenho( $rsListaEmpenho, $stFiltro );
-                
+
                 if($rsListaEmpenho->inNumLinhas>0){
                     $arRegistro = array();
-                    
+
                     for($i=0;$i<$rsListaEmpenho->inNumLinhas;$i++){
                         $arRegistro['cod_entidade'] = $rsListaEmpenho->arElementos[$i][ 'cod_entidade'      ];
                         $arRegistro['cod_empenho' ] = $rsListaEmpenho->arElementos[$i][ 'cod_empenho'       ];
                         $arRegistro['nom_cgm'     ] = $rsListaEmpenho->arElementos[$i][ 'nom_cgm'           ];
                         $arRegistro['exercicio'   ] = $rsListaEmpenho->arElementos[$i][ 'exercicio_empenho' ];
-                        
+
                         $arEmpenhos[] = $arRegistro ;
                     }
                     Sessao::remove('arEmpenhos');
@@ -554,17 +554,17 @@ switch ($request->get('stCtrl')) {
                     $stJs .= "f.inCodEntidade.disabled = true;";
                     $stJs .= "f.stNomEntidade.disabled = true;";
                 }
-                
+
                 include_once ( CAM_GPC_TCEMG_MAPEAMENTO.'TTCEMGConvenioAditivo.class.php' );
                 $obTTCEMGConvenioAditivo = new TTCEMGConvenioAditivo();
-                
+
                 $stFiltro  = " WHERE cod_convenio   = ".$inCodConvenio;
                 $stFiltro .= " AND exercicio        = '".$stExercicio."'";
                 $stFiltro .= " AND cod_entidade     = ".$rsConvenio->arElementos[0]['cod_entidade'];
                 $obTTCEMGConvenioAditivo->recuperaTodos ( $rsAditivo, $stFiltro );
-                
+
                 $arAditivoAux = array();
-                
+
                 while( !$rsAditivo->eof() ){
                     $arAditivoAux['inCodAditivo']           = $rsAditivo->getCampo('cod_aditivo');
                     $arAditivoAux['stDescAditivo']          = $rsAditivo->getCampo('descricao');
@@ -572,11 +572,11 @@ switch ($request->get('stCtrl')) {
                     $arAditivoAux['dtFinalAditivo']         = $rsAditivo->getCampo('data_final');
                     $arAditivoAux['nuValorAditivo']         = number_format( $rsAditivo->getCampo('vl_convenio') , 2 , ',' , '.');
                     $arAditivoAux['nuValorContraAditivo']   = number_format( $rsAditivo->getCampo('vl_contra') , 2 , ',' , '.');
-                    
+
                     $arAditivo[] = $arAditivoAux;
                     $rsAditivo->proximo();
                 }
-                
+
                 Sessao::remove('arAditivo');
                 Sessao::write('arAditivo', $arAditivo);
                 $stJs .= MontaListaAditivos();
@@ -584,7 +584,7 @@ switch ($request->get('stCtrl')) {
         }
         echo $stJs;
     break;
-    
+
     case "limpaCampoEmpenho":
         $stJs  = 'd.getElementById("stEmpenho").innerHTML = "&nbsp;";';
         $stJs .= "f.numEmpenho.value = '';";
@@ -601,7 +601,7 @@ switch ($request->get('stCtrl')) {
             $stFiltro .= "   AND e.cod_empenho  =  ".$_REQUEST[ 'numEmpenho' 	];
             $obTEmpenhoEmpenho->recuperaEmpenhoPreEmpenhoCgm($rsRecordSet, $stFiltro);
 
-            if($rsRecordSet->getNumLinhas() > 0){    
+            if($rsRecordSet->getNumLinhas() > 0){
                 $stJs  = 'd.getElementById("stEmpenho").innerHTML = "'.$rsRecordSet->getCampo('credor').'";';
             }else{
                 $stJs  = "alertaAviso('Empenho inexistente.','form','erro','".Sessao::getId()."');\n";
@@ -624,7 +624,7 @@ switch ($request->get('stCtrl')) {
                 $stJs  = "alertaAviso('Informe o número do empenho.','form','erro','".Sessao::getId()."');\n";
                 $stJs .= "f.numEmpenho.focus();\n";
                 $stJs .= "d.getElementById('stEmpenho').innerHTML = '&nbsp;';";
-            }  
+            }
         }
         echo $stJs;
     break;
@@ -634,8 +634,9 @@ switch ($request->get('stCtrl')) {
         $arEmpenhos = array();
         $arRequest  = array();
         $arRequest  = explode('/', $_REQUEST['numEmpenho']);
-        $boIncluir  = true; 
-    
+        $boIncluir  = true;
+        $stJs = "";
+
         $arEmpenhos = Sessao::read('arEmpenhos');
 
         if( $_REQUEST['stExercicioEmpenho'] and $arRequest[0] != "" and isset($_REQUEST['inCodEntidade']) and $_REQUEST['inCodEntidade']>0 ){
@@ -645,7 +646,7 @@ switch ($request->get('stCtrl')) {
             $stFiltro .= " AND cod_entidade		=  ".$_REQUEST['inCodEntidade'];
             $stFiltro .= " AND exercicio_empenho= '".$_REQUEST['stExercicioEmpenho']."'";
             $obTTCEMGConvenioEmpenho->recuperaTodos($rsEmpenhoConvenio, $stFiltro);
- 
+
             if($rsEmpenhoConvenio->getNumLinhas() == -1){
                 include_once( CAM_GF_EMP_MAPEAMENTO.'TEmpenhoEmpenho.class.php' );
                 $obTEmpenhoEmpenho = new TEmpenhoEmpenho;
@@ -653,14 +654,14 @@ switch ($request->get('stCtrl')) {
                 $stFiltro .= " AND e.cod_entidade =  ".$_REQUEST['inCodEntidade'];
                 $stFiltro .= " AND e.cod_empenho  =  ".$arRequest[0];
                 $obTEmpenhoEmpenho->recuperaEmpenhoPreEmpenhoCgm($rsRecordSet, $stFiltro);
- 
+
                 if( $rsRecordSet->getNumLinhas() > 0 ){
                     if( !SistemaLegado::comparaDatas($_REQUEST['dtInicioExecucao'],$rsRecordSet->getCampo('dt_empenho') )){
                         if( count( $arEmpenhos ) > 0 ){
                             foreach( $arEmpenhos as $key => $array ){
                                 $stCod = $array['cod_empenho'];
                                 $stEnt = $array['cod_entidade'];
-        
+
                                 if( $arRequest[0] == $stCod and $_REQUEST['inCodEntidade'] == $stEnt ){
                                     $boIncluir = false;
                                     $stJs .= "alertaAviso('Empenho já incluso na lista.','form','erro','".Sessao::getId()."');";
@@ -668,14 +669,14 @@ switch ($request->get('stCtrl')) {
                                 }
                             }
                         }
-                        if( $boIncluir ){     
+                        if( $boIncluir ){
                             $arRegistro['cod_entidade'] = $rsRecordSet->getCampo('cod_entidade'	);
                             $arRegistro['cod_empenho' ] = $rsRecordSet->getCampo('cod_empenho'	);
                             $arRegistro['data_empenho'] = $rsRecordSet->getCampo('dt_empenho'	);
                             $arRegistro['nom_cgm'     ] = $rsRecordSet->getCampo('credor'		);
                             $arRegistro['exercicio'   ] = $rsRecordSet->getCampo('exercicio'	);
                             $arEmpenhos[] = $arRegistro ;
-                                     
+
                             Sessao::write('arEmpenhos', $arEmpenhos);
                             $stJs .= "f.inCodEntidade.disabled = true; ";
                             $stJs .= "f.stNomEntidade.disabled = true; ";
@@ -705,7 +706,7 @@ switch ($request->get('stCtrl')) {
         }else{
             $stJs .= "alertaAviso('Informe a Entidade, o Número do Empenho e o Exercício.','form','erro','".Sessao::getId()."');";
         }
-        echo $stJs;        
+        echo $stJs;
     break;
 
     case "limpar":
@@ -715,7 +716,7 @@ switch ($request->get('stCtrl')) {
         echo $stJs;
     break;
 
-    case "excluirEmpenhoLista": 
+    case "excluirEmpenhoLista":
         $arTempEmp = array();
         $arEmpenhos = Sessao::read('arEmpenhos');
 
@@ -747,14 +748,14 @@ switch ($request->get('stCtrl')) {
         $arAditivo = Sessao::read('arAditivo');
         $Ok = true;
         $mensagem = "";
-        
+
         $arItem['inCodAditivo']         = $_REQUEST['inCodAditivo'];
         $arItem['stDescAditivo']        = $_REQUEST['stDescAditivo'];
         $arItem['dtAssinaturaAditivo']  = $_REQUEST['dtAssinaturaAditivo'];
         $arItem['dtFinalAditivo']       = $_REQUEST['dtFinalAditivo'];
         $arItem['nuValorAditivo']       = ($_REQUEST['nuValorAditivo']!='') ? $_REQUEST['nuValorAditivo'] : '0,00';
         $arItem['nuValorContraAditivo'] = ($_REQUEST['nuValorContraAditivo']!='') ? $_REQUEST['nuValorContraAditivo'] : '0,00';
-        
+
         if($arItem['dtAssinaturaAditivo']!=''){
             $dtAssinaturaAditivo = explode('/',$arItem['dtAssinaturaAditivo']);
             $dtAssinaturaAditivo = strtotime($dtAssinaturaAditivo[2]."-".$dtAssinaturaAditivo[1]."-".$dtAssinaturaAditivo[0]);
@@ -770,7 +771,7 @@ switch ($request->get('stCtrl')) {
                 $Ok=false;
             }
         }
-        
+
 
         if($arItem['dtFinalAditivo']!=''){
             $dtTerminoAditivo = explode('/',$arItem['dtFinalAditivo']);
@@ -784,25 +785,25 @@ switch ($request->get('stCtrl')) {
                 }
             }else{
                 $mensagem .= "@Informe a Data do Final da Vigência do Convênio.";
-                $Ok=false;  
+                $Ok=false;
             }
-        }        
-        
+        }
+
         for($i=0;$i<(count($arAditivo));$i++){
             if($arAditivo[$i]['inCodAditivo']==$arItem['inCodAditivo']){
                 $Ok=false;
                 $mensagem .= "@Aditivo(".$arItem['inCodAditivo'].") já incluso na lista.";
             }
         }
-        
+
         if($Ok==false){
-            $stJs .= "alertaAviso('".$mensagem."','form','erro','".Sessao::getId()."');";    
+            $stJs .= "alertaAviso('".$mensagem."','form','erro','".Sessao::getId()."');";
         }
-        elseif($arItem['inCodAditivo']!=''&&$arItem['stDescAditivo']!=''&&$arItem['dtAssinaturaAditivo']!=''){         
+        elseif($arItem['inCodAditivo']!=''&&$arItem['stDescAditivo']!=''&&$arItem['dtAssinaturaAditivo']!=''){
                 $arAditivo[]=$arItem;
-                
+
                 Sessao::write('arAditivo', $arAditivo);
-                
+
                 $stJs .= "f.inCodAditivo.value = '';";
                 $stJs .= "f.stDescAditivo.value = '';";
                 $stJs .= 'd.getElementById("stDescAditivo").innerHTML = "";';
@@ -810,9 +811,9 @@ switch ($request->get('stCtrl')) {
                 $stJs .= "f.dtFinalAditivo.value = '';";
                 $stJs .= "f.nuValorAditivo.value = '';";
                 $stJs .= "f.nuValorContraAditivo.value = '';";
-                
+
                 $stJs .= MontaListaAditivos();
-        }else{            
+        }else{
             if($arItem['inCodAditivo']==''){
                 $mensagem .= "@Informe o Número do Aditivo.";
             }
@@ -822,13 +823,13 @@ switch ($request->get('stCtrl')) {
             if($arItem['dtAssinaturaAditivo']==''){
                 $mensagem .= "@Informe a Data da Assinatura do Aditivo.";
             }
-            
+
             $stJs .= "alertaAviso('".$mensagem."','form','erro','".Sessao::getId()."');";
         }
-        echo $stJs; 
+        echo $stJs;
     break;
 
-    case "excluirAditivoLista": 
+    case "excluirAditivoLista":
         $stJs = "";
         $arTempAdit = array();
         $arAditivo = Sessao::read('arAditivo');
@@ -840,15 +841,16 @@ switch ($request->get('stCtrl')) {
         }
 
         Sessao::write('arAditivo', $arTempAdit);
-        
+
         $stJs .= MontaListaAditivos();
 
         echo $stJs;
     break;
 }
-    
+
 function montaListaEmpenhos()
 {
+    $stJs = "";
     $obLista = new Lista;
     $rsLista = new RecordSet;
     $rsLista->preenche ( Sessao::read('arEmpenhos') );
@@ -932,84 +934,84 @@ function limpaParticipante(){
 }
 function MontaListaAditivos(){
     $stJs = "d.getElementById('spnListaAditivos').innerHTML = '';\n";
-    $arAditivo=Sessao::read('arAditivo');    
-    
+    $arAditivo=Sessao::read('arAditivo');
+
     if(count($arAditivo)>0){
         Sessao::write('arAditivo', $arAditivo);
-    
+
         $obLista = new Lista;
         $rsLista = new RecordSet;
         $rsLista->preenche ( $arAditivo );
-            
+
         $obLista->setRecordset( $rsLista );
         $obLista->setMostraPaginacao( false );
         $obLista->setTitulo ( 'Lista de Aditivos' );
-    
+
         $obLista->addCabecalho();
         $obLista->ultimoCabecalho->addConteudo("&nbsp;");
         $obLista->ultimoCabecalho->setWidth( 2 );
         $obLista->commitCabecalho();
-    
+
         $obLista->addCabecalho();
         $obLista->ultimoCabecalho->addConteudo("Número");
         $obLista->ultimoCabecalho->setWidth( 8 );
         $obLista->commitCabecalho();
-        
+
         $obLista->addCabecalho();
         $obLista->ultimoCabecalho->addConteudo("Descrição");
         $obLista->ultimoCabecalho->setWidth( 40 );
         $obLista->commitCabecalho();
-        
+
         $obLista->addCabecalho();
         $obLista->ultimoCabecalho->addConteudo("Valor");
         $obLista->ultimoCabecalho->setWidth( 20 );
         $obLista->commitCabecalho();
-        
+
         $obLista->addCabecalho();
         $obLista->ultimoCabecalho->addConteudo("Valor Contra-Partida");
         $obLista->ultimoCabecalho->setWidth( 10 );
         $obLista->commitCabecalho();
-    
+
         $obLista->addDado();
         $obLista->ultimoDado->setCampo( "inCodAditivo" );
         $obLista->ultimoDado->setAlinhamento( 'DIREITA' );
         $obLista->commitDado();
-        
+
         $obLista->addDado();
         $obLista->ultimoDado->setCampo( "stDescAditivo" );
         $obLista->ultimoDado->setAlinhamento( 'ESQUERDA' );
         $obLista->commitDado();
-  
+
         $obLista->addDado();
         $obLista->ultimoDado->setCampo( "nuValorAditivo" );
         $obLista->ultimoDado->setAlinhamento( 'ESQUERDA' );
         $obLista->commitDado();
-        
+
         $obLista->addDado();
         $obLista->ultimoDado->setCampo( "nuValorContraAditivo" );
         $obLista->ultimoDado->setAlinhamento( 'DIREITA' );
         $obLista->commitDado();
-    
+
         $obLista->addCabecalho();
         $obLista->ultimoCabecalho->addConteudo("&nbsp;");
         $obLista->ultimoCabecalho->setWidth( 1 );
         $obLista->commitCabecalho();
-        
+
         $obLista->addAcao();
         $obLista->ultimaAcao->setAcao( "EXCLUIR" );
         $obLista->ultimaAcao->setFuncao( true );
         $obLista->ultimaAcao->setLink( "javascript: executaFuncaoAjax('excluirAditivoLista');" );
         $obLista->ultimaAcao->addCampo("","&codAditivo=[inCodAditivo]");
         $obLista->commitAcao();
-    
+
         $obLista->montaHTML();
-    
+
         $html = $obLista->getHTML();
         $html = str_replace("\n","",$html);
         $html = str_replace("  ","",$html);
         $html = str_replace("'","\\'",$html);
-    
-        
+
+
         if(count(Sessao::read('arAditivo'))>0){
             $stJs .= "d.getElementById('spnListaAditivos').innerHTML = '".$html."';\n";
         }

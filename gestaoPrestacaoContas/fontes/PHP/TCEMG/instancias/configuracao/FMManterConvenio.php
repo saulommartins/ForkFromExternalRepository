@@ -56,12 +56,12 @@ Sessao::remove('arAditivo');
 
 //Define o nome dos arquivos PHP
 $stPrograma = "ManterConvenio";
-$pgFilt     = "FL".$stPrograma.".php";
-$pgList     = "LS".$stPrograma.".php";
-$pgForm     = "FM".$stPrograma.".php";
-$pgProc     = "PR".$stPrograma.".php";
-$pgOcul     = "OC".$stPrograma.".php";
-$pgJs       = "JS".$stPrograma.".js";
+$pgFilt = "FL" . $stPrograma . ".php";
+$pgList = "LS" . $stPrograma . ".php";
+$pgForm = "FM" . $stPrograma . ".php";
+$pgProc = "PR" . $stPrograma . ".php";
+$pgOcul = "OC" . $stPrograma . ".php";
+$pgJs = "JS" . $stPrograma . ".js";
 
 include_once $pgJs;
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/URBEM/ajax.php';
@@ -120,7 +120,7 @@ $obIntNumConvenio->setNull  ( false );
 
 if ($_REQUEST['stAcao'] == 'alterar') {
     $obIntNumConvenio->setDisabled( true );
-    
+
     $obHdnNumConvenio =  new Hidden;
     $obHdnNumConvenio->setName  ( "hdnNumConvenio" );
     $obHdnNumConvenio->setValue ( $_REQUEST['inNumConvenio'] );
@@ -206,7 +206,7 @@ for($i=0;$i<(count($rsTiposParticipante->arElementos));$i++){
     if($rsTiposParticipante->arElementos[$i]['descricao']=="Concedente"){
         $idParticipante     = $rsTiposParticipante->arElementos[$i][ 'cod_tipo_participante'];
         $descParticipante   = $rsTiposParticipante->arElementos[$i][ 'descricao'            ];
-    } 
+    }
 }
 
 $obCmbTiposParticipante = new Select;
@@ -295,7 +295,7 @@ $obBscEmpenho = new BuscaInner;
 $obBscEmpenho->setTitle               ( "Informe o número do empenho.");
 $obBscEmpenho->setRotulo              ( "**Número do Empenho"         );
 $obBscEmpenho->setId                  ( "stEmpenho"                   );
-$obBscEmpenho->setValue               ( $stEmpenho                    ); 
+$obBscEmpenho->setValue               ( $stEmpenho                    );
 $obBscEmpenho->setMostrarDescricao    ( true                          );
 $obBscEmpenho->obCampoCod->setName    ( "numEmpenho"                  );
 $obBscEmpenho->obCampoCod->setValue   (  $numEmpenho                  );
@@ -443,7 +443,7 @@ if ($stAcao == 'alterar') {
     $stFiltro  = "&pg=".Sessao::read('pg');
     $stFiltro .= "&pos=".Sessao::read('pos');
     $stLocation = $pgList.'?'.Sessao::getId().'&stAcao='.$stAcao.$stFiltro;
-    
+
     $obFormulario->Cancelar($stLocation);
 }else{
     $obFormulario->Ok();

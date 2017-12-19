@@ -83,254 +83,254 @@ function TEmpenhoEmpenho()
 */
 function montaRecuperaRelacionamento()
 {
-    $stSql = "  SELECT                                                                        
-                    tabela.*                                                                
-                FROM (                                                                        
-                        SELECT                                                                   
-                                AE.cod_autorizacao,                                              
-                                EE.cod_empenho,                                                  
-                                EE.vl_saldo_anterior,                                            
-                                TO_CHAR(EE.dt_vencimento,'dd/mm/yyyy') AS dt_vencimento,         
-                                TO_CHAR(EE.dt_empenho,'dd/mm/yyyy') AS dt_empenho,               
-                                PD.cod_despesa,                                                  
-                                PE.descricao,                                                    
-                                EE.exercicio as exercicio_empenho,                               
-                                PE.exercicio,                                                    
-                                PE.cod_pre_empenho,                                              
-                                PE.cgm_beneficiario as credor,                                   
-                                EE.cod_entidade,                                                 
-                                AR.cod_reserva,                                                  
-                                PD.cod_conta,                                                    
-                                C.nom_cgm AS nom_fornecedor,                                     
-                                R.vl_reserva,                                                    
-                                OD.num_orgao,                                                    
-                                OD.num_unidade,                                                  
-                                OCD.cod_estrutural,                                              
-                                OD.cod_recurso,                                                  
-                                PE.cod_historico,                                                
-                                empenho.fn_consultar_valor_empenhado(                          
-                                                                     PE.exercicio               
-                                                                    ,EE.cod_empenho             
-                                                                    ,EE.cod_entidade            
-                                ) AS vl_empenhado,                                               
-                                empenho.fn_consultar_valor_empenhado_anulado(                  
-                                                                             PE.exercicio       
-                                                                            ,EE.cod_empenho     
-                                                                            ,EE.cod_entidade    
-                                ) AS vl_empenhado_anulado,                                       
-                                empenho.fn_consultar_valor_liquidado(                          
-                                                       PE.exercicio               
-                                                      ,EE.cod_empenho             
-                                                      ,EE.cod_entidade            
-                                ) AS vl_liquidado,                                               
-                                empenho.fn_consultar_valor_liquidado_anulado(                  
-                                                                             PE.exercicio       
-                                                                            ,EE.cod_empenho     
-                                                                            ,EE.cod_entidade    
-                                ) AS vl_liquidado_anulado,                                       
-                                empenho.fn_consultar_valor_empenhado_pago(                     
-                                                                         PE.exercicio       
-                                                                        ,EE.cod_empenho     
-                                                                        ,EE.cod_entidade    
-                                ) AS vl_pago,                                                    
-                                empenho.fn_consultar_valor_empenhado_pago_anulado(             
-                                                                                PE.exercicio       
-                                                                               ,EE.cod_empenho     
-                                                                               ,EE.cod_entidade    
-                                ) AS vl_pago_anulado                                             
-                        FROM                                                                     
-                                empenho.empenho             AS EE                            
-                        LEFT JOIN empenho.empenho_autorizacao AS EA 
-                             ON EA.exercicio       = EE.exercicio                             
-                            AND EA.cod_entidade    = EE.cod_entidade                          
-                            AND EA.cod_empenho     = EE.cod_empenho 
-                        LEFT JOIN empenho.autorizacao_empenho AS AE 
-                             ON AE.exercicio       = EA.exercicio                             
-                            AND AE.cod_autorizacao = EA.cod_autorizacao                       
-                            AND AE.cod_entidade    = EA.cod_entidade  
-                        LEFT JOIN empenho.autorizacao_reserva AS AR 
-                             ON AR.exercicio       = AE.exercicio                             
-                            AND AR.cod_entidade    = AE.cod_entidade                          
-                            AND AR.cod_autorizacao = AE.cod_autorizacao 
-                        LEFT JOIN orcamento.reserva AS  R 
-                             ON R.cod_reserva = AR.cod_reserva                           
-                            AND R.exercicio   = AR.exercicio 
-                        JOIN empenho.pre_empenho AS PE                           
-                             ON EE.cod_pre_empenho = PE.cod_pre_empenho                       
-                            AND EE.exercicio       = PE.exercicio                             
+    $stSql = "  SELECT
+                    tabela.*
+                FROM (
+                        SELECT
+                                AE.cod_autorizacao,
+                                EE.cod_empenho,
+                                EE.vl_saldo_anterior,
+                                TO_CHAR(EE.dt_vencimento,'dd/mm/yyyy') AS dt_vencimento,
+                                TO_CHAR(EE.dt_empenho,'dd/mm/yyyy') AS dt_empenho,
+                                PD.cod_despesa,
+                                PE.descricao,
+                                EE.exercicio as exercicio_empenho,
+                                PE.exercicio,
+                                PE.cod_pre_empenho,
+                                PE.cgm_beneficiario as credor,
+                                EE.cod_entidade,
+                                AR.cod_reserva,
+                                PD.cod_conta,
+                                C.nom_cgm AS nom_fornecedor,
+                                R.vl_reserva,
+                                OD.num_orgao,
+                                OD.num_unidade,
+                                OCD.cod_estrutural,
+                                OD.cod_recurso,
+                                PE.cod_historico,
+                                empenho.fn_consultar_valor_empenhado(
+                                                                     PE.exercicio
+                                                                    ,EE.cod_empenho
+                                                                    ,EE.cod_entidade
+                                ) AS vl_empenhado,
+                                empenho.fn_consultar_valor_empenhado_anulado(
+                                                                             PE.exercicio
+                                                                            ,EE.cod_empenho
+                                                                            ,EE.cod_entidade
+                                ) AS vl_empenhado_anulado,
+                                empenho.fn_consultar_valor_liquidado(
+                                                       PE.exercicio
+                                                      ,EE.cod_empenho
+                                                      ,EE.cod_entidade
+                                ) AS vl_liquidado,
+                                empenho.fn_consultar_valor_liquidado_anulado(
+                                                                             PE.exercicio
+                                                                            ,EE.cod_empenho
+                                                                            ,EE.cod_entidade
+                                ) AS vl_liquidado_anulado,
+                                empenho.fn_consultar_valor_empenhado_pago(
+                                                                         PE.exercicio
+                                                                        ,EE.cod_empenho
+                                                                        ,EE.cod_entidade
+                                ) AS vl_pago,
+                                empenho.fn_consultar_valor_empenhado_pago_anulado(
+                                                                                PE.exercicio
+                                                                               ,EE.cod_empenho
+                                                                               ,EE.cod_entidade
+                                ) AS vl_pago_anulado
+                        FROM
+                                empenho.empenho             AS EE
+                        LEFT JOIN empenho.empenho_autorizacao AS EA
+                             ON EA.exercicio       = EE.exercicio
+                            AND EA.cod_entidade    = EE.cod_entidade
+                            AND EA.cod_empenho     = EE.cod_empenho
+                        LEFT JOIN empenho.autorizacao_empenho AS AE
+                             ON AE.exercicio       = EA.exercicio
+                            AND AE.cod_autorizacao = EA.cod_autorizacao
+                            AND AE.cod_entidade    = EA.cod_entidade
+                        LEFT JOIN empenho.autorizacao_reserva AS AR
+                             ON AR.exercicio       = AE.exercicio
+                            AND AR.cod_entidade    = AE.cod_entidade
+                            AND AR.cod_autorizacao = AE.cod_autorizacao
+                        LEFT JOIN orcamento.reserva AS  R
+                             ON R.cod_reserva = AR.cod_reserva
+                            AND R.exercicio   = AR.exercicio
+                        JOIN empenho.pre_empenho AS PE
+                             ON EE.cod_pre_empenho = PE.cod_pre_empenho
+                            AND EE.exercicio       = PE.exercicio
                         JOIN sw_cgm AS  C
-                            ON C.numcgm = PE.cgm_beneficiario                           
+                            ON C.numcgm = PE.cgm_beneficiario
                         JOIN empenho.pre_empenho_despesa AS PD
-                             ON PD.cod_pre_empenho = PE.cod_pre_empenho                       
-                            AND PD.exercicio       = PE.exercicio                                                       
-                        JOIN orcamento.despesa AS OD  
-                             ON OD.exercicio       = PD.exercicio                             
-                            AND OD.cod_despesa     = PD.cod_despesa                                                     
-                        LEFT OUTER JOIN orcamento.conta_despesa AS OCD 
-                             ON OD.cod_conta = OCD.cod_conta 
-                            AND OD.exercicio = OCD.exercicio                              
-                        
-                        WHERE                                                                    
-                            CAST(OD.num_unidade as varchar)||CAST(OD.num_orgao as varchar) IN (                              
-                                                                                                SELECT                                            
-                                                                                                      CAST(num_unidade as varchar)||CAST(num_orgao as varchar)                       
-                                                                                                FROM                                              
-                                                                                                    empenho.permissao_autorizacao             
-                                                                                                WHERE numcgm    = ".$this->getDado("numcgm")."    
+                             ON PD.cod_pre_empenho = PE.cod_pre_empenho
+                            AND PD.exercicio       = PE.exercicio
+                        JOIN orcamento.despesa AS OD
+                             ON OD.exercicio       = PD.exercicio
+                            AND OD.cod_despesa     = PD.cod_despesa
+                        LEFT OUTER JOIN orcamento.conta_despesa AS OCD
+                             ON OD.cod_conta = OCD.cod_conta
+                            AND OD.exercicio = OCD.exercicio
+
+                        WHERE
+                            CAST(OD.num_unidade as varchar)||CAST(OD.num_orgao as varchar) IN (
+                                                                                                SELECT
+                                                                                                      CAST(num_unidade as varchar)||CAST(num_orgao as varchar)
+                                                                                                FROM
+                                                                                                    empenho.permissao_autorizacao
+                                                                                                WHERE numcgm    = ".$this->getDado("numcgm")."
                                                                                                 AND   exercicio = '".$this->getDado("exercicio")."'
-                            )                            
-    ) AS tabela 
-    ";                                                                  
+                            )
+    ) AS tabela
+    ";
 
     return $stSql;
 }
 
 function MontaRecuperaEmpenhoCompraLicitacaoAnulado()
 {
-    $stSql = " SELECT DISTINCT tabela.*                                                                
-                FROM (                                                                        
-                     SELECT  AE.cod_autorizacao,                                              
-                             EE.cod_empenho,                                                  
-                             EE.vl_saldo_anterior,                                            
-                             TO_CHAR(EE.dt_vencimento,'dd/mm/yyyy') AS dt_vencimento,         
-                             TO_CHAR(EE.dt_empenho,'dd/mm/yyyy') AS dt_empenho,               
-                             PD.cod_despesa,                                                  
-                             PE.descricao,                                                    
-                             EE.exercicio as exercicio_empenho,                               
-                             PE.exercicio,                                                    
-                             PE.cod_pre_empenho,                                              
-                             PE.cgm_beneficiario as credor,                                   
-                             EE.cod_entidade,                                                 
-                             AR.cod_reserva,                                                  
-                             PD.cod_conta,                                                    
-                             C.nom_cgm AS nom_fornecedor,                                     
-                             R.vl_reserva,                                                    
-                             OD.num_orgao,                                                    
-                             OD.num_unidade,                                                  
-                             OCD.cod_estrutural,                                              
-                             OD.cod_recurso,                                                  
-                             PE.cod_historico,                                                
-                             empenho.fn_consultar_valor_empenhado(  PE.exercicio               
-                                                                   ,EE.cod_empenho             
-                                                                   ,EE.cod_entidade            
-                             ) AS vl_empenhado,                                               
-                             empenho.fn_consultar_valor_empenhado_anulado(  PE.exercicio       
-                                                                            ,EE.cod_empenho     
-                                                                            ,EE.cod_entidade    
-                             ) AS vl_empenhado_anulado,                                       
-                             empenho.fn_consultar_valor_liquidado(  PE.exercicio               
-                                                                    ,EE.cod_empenho             
-                                                                    ,EE.cod_entidade            
-                                ) AS vl_liquidado,                                               
-                             empenho.fn_consultar_valor_liquidado_anulado(  PE.exercicio       
-                                                                            ,EE.cod_empenho     
-                                                                            ,EE.cod_entidade    
-                                ) AS vl_liquidado_anulado,                                       
-                             empenho.fn_consultar_valor_empenhado_pago( PE.exercicio       
-                                                                        ,EE.cod_empenho     
-                                                                        ,EE.cod_entidade    
-                                ) AS vl_pago,                                                    
-                             empenho.fn_consultar_valor_empenhado_pago_anulado( PE.exercicio       
-                                                                                ,EE.cod_empenho     
-                                                                                ,EE.cod_entidade    
+    $stSql = " SELECT DISTINCT tabela.*
+                FROM (
+                     SELECT  AE.cod_autorizacao,
+                             EE.cod_empenho,
+                             EE.vl_saldo_anterior,
+                             TO_CHAR(EE.dt_vencimento,'dd/mm/yyyy') AS dt_vencimento,
+                             TO_CHAR(EE.dt_empenho,'dd/mm/yyyy') AS dt_empenho,
+                             PD.cod_despesa,
+                             PE.descricao,
+                             EE.exercicio as exercicio_empenho,
+                             PE.exercicio,
+                             PE.cod_pre_empenho,
+                             PE.cgm_beneficiario as credor,
+                             EE.cod_entidade,
+                             AR.cod_reserva,
+                             PD.cod_conta,
+                             C.nom_cgm AS nom_fornecedor,
+                             R.vl_reserva,
+                             OD.num_orgao,
+                             OD.num_unidade,
+                             OCD.cod_estrutural,
+                             OD.cod_recurso,
+                             PE.cod_historico,
+                             empenho.fn_consultar_valor_empenhado(  PE.exercicio
+                                                                   ,EE.cod_empenho
+                                                                   ,EE.cod_entidade
+                             ) AS vl_empenhado,
+                             empenho.fn_consultar_valor_empenhado_anulado(  PE.exercicio
+                                                                            ,EE.cod_empenho
+                                                                            ,EE.cod_entidade
+                             ) AS vl_empenhado_anulado,
+                             empenho.fn_consultar_valor_liquidado(  PE.exercicio
+                                                                    ,EE.cod_empenho
+                                                                    ,EE.cod_entidade
+                                ) AS vl_liquidado,
+                             empenho.fn_consultar_valor_liquidado_anulado(  PE.exercicio
+                                                                            ,EE.cod_empenho
+                                                                            ,EE.cod_entidade
+                                ) AS vl_liquidado_anulado,
+                             empenho.fn_consultar_valor_empenhado_pago( PE.exercicio
+                                                                        ,EE.cod_empenho
+                                                                        ,EE.cod_entidade
+                                ) AS vl_pago,
+                             empenho.fn_consultar_valor_empenhado_pago_anulado( PE.exercicio
+                                                                                ,EE.cod_empenho
+                                                                                ,EE.cod_entidade
                              ) AS vl_pago_anulado,
                              compra_direta.cod_modalidade AS compra_cod_modalidade,
                              compra_direta.cod_compra_direta,
                              adjudicacao.cod_modalidade AS licitacao_cod_modalidade,
                              adjudicacao.cod_licitacao
-                
-                                                                          
-                        FROM empenho.empenho AS EE                            
-                
+
+
+                        FROM empenho.empenho AS EE
+
                     LEFT JOIN empenho.empenho_autorizacao AS EA
-                           ON EA.exercicio       = EE.exercicio                             
-                          AND EA.cod_entidade    = EE.cod_entidade                          
+                           ON EA.exercicio       = EE.exercicio
+                          AND EA.cod_entidade    = EE.cod_entidade
                           AND EA.cod_empenho     = EE.cod_empenho
-                          
+
                     LEFT JOIN empenho.autorizacao_empenho AS AE
-                           ON  AE.exercicio       = EA.exercicio                             
-                          AND  AE.cod_autorizacao = EA.cod_autorizacao                       
-                          AND  AE.cod_entidade    = EA.cod_entidade                        
-                    
+                           ON  AE.exercicio       = EA.exercicio
+                          AND  AE.cod_autorizacao = EA.cod_autorizacao
+                          AND  AE.cod_entidade    = EA.cod_entidade
+
                     LEFT JOIN empenho.autorizacao_reserva AS AR
-                           ON AR.exercicio       = AE.exercicio                             
-                          AND AR.cod_entidade    = AE.cod_entidade                          
+                           ON AR.exercicio       = AE.exercicio
+                          AND AR.cod_entidade    = AE.cod_entidade
                           AND AR.cod_autorizacao = AE.cod_autorizacao
-                    
+
                     LEFT JOIN orcamento.reserva AS  R
-                           ON R.cod_reserva     = AR.cod_reserva                           
+                           ON R.cod_reserva     = AR.cod_reserva
                           AND R.exercicio       = AR.exercicio
-                           
+
                     INNER JOIN empenho.pre_empenho  AS PE
-                            ON EE.cod_pre_empenho = PE.cod_pre_empenho                       
-                           AND EE.exercicio       = PE.exercicio                                
-                      
+                            ON EE.cod_pre_empenho = PE.cod_pre_empenho
+                           AND EE.exercicio       = PE.exercicio
+
                     INNER JOIN sw_cgm AS  C
                             ON C.numcgm  = PE.cgm_beneficiario
-                    
-                    INNER JOIN empenho.pre_empenho_despesa AS PD    
-                            ON PD.cod_pre_empenho = PE.cod_pre_empenho                       
-                           AND PD.exercicio       = PE.exercicio                             
-                     
+
+                    INNER JOIN empenho.pre_empenho_despesa AS PD
+                            ON PD.cod_pre_empenho = PE.cod_pre_empenho
+                           AND PD.exercicio       = PE.exercicio
+
                     INNER JOIN orcamento.despesa AS OD
-                            ON OD.exercicio       = PD.exercicio                             
+                            ON OD.exercicio       = PD.exercicio
                            AND OD.cod_despesa     = PD.cod_despesa
-                    
+
                     LEFT OUTER JOIN orcamento.conta_despesa AS OCD
                                  ON OD.cod_conta = OCD.cod_conta
                                 AND OD.exercicio = OCD.exercicio
-                    
+
                     LEFT JOIN empenho.item_pre_empenho
                            ON item_pre_empenho.cod_pre_empenho = pe.cod_pre_empenho
                           AND item_pre_empenho.exercicio       = pe.exercicio
-                          
+
                     LEFT JOIN empenho.item_pre_empenho_julgamento
-                           ON item_pre_empenho_julgamento.cod_pre_empenho  = item_pre_empenho.cod_pre_empenho   
+                           ON item_pre_empenho_julgamento.cod_pre_empenho  = item_pre_empenho.cod_pre_empenho
                           AND item_pre_empenho_julgamento.exercicio        = item_pre_empenho.exercicio
                           AND item_pre_empenho_julgamento.num_item         = item_pre_empenho.num_item
-                    
+
                     LEFT JOIN compras.julgamento_item
                            ON julgamento_item.exercicio      = item_pre_empenho_julgamento.exercicio_julgamento
-                          AND julgamento_item.cod_cotacao    = item_pre_empenho_julgamento.cod_cotacao 
+                          AND julgamento_item.cod_cotacao    = item_pre_empenho_julgamento.cod_cotacao
                           AND julgamento_item.cod_item       = item_pre_empenho_julgamento.cod_item
                           AND julgamento_item.lote           = item_pre_empenho_julgamento.lote
                           AND julgamento_item.cgm_fornecedor = item_pre_empenho_julgamento.cgm_fornecedor
-                    
+
                     LEFT JOIN compras.cotacao_item
                            ON cotacao_item.exercicio   = julgamento_item.exercicio
                           AND cotacao_item.cod_cotacao = julgamento_item.cod_cotacao
                           AND cotacao_item.lote        = julgamento_item.lote
                           AND cotacao_item.cod_item    = julgamento_item.cod_item
-                    
+
                     LEFT JOIN compras.cotacao
                            ON cotacao.cod_cotacao = cotacao_item.cod_cotacao
                           AND cotacao.exercicio   = cotacao_item.exercicio
-                    
+
                     LEFT JOIN compras.mapa_cotacao
                            ON mapa_cotacao.cod_cotacao       = cotacao.cod_cotacao
                           AND mapa_cotacao.exercicio_cotacao = cotacao.exercicio
-                    
+
                     LEFT JOIN compras.mapa
                            ON mapa.cod_mapa  = mapa_cotacao.cod_mapa
                           AND mapa.exercicio = mapa_cotacao.exercicio_mapa
-                    
+
                     LEFT JOIN compras.compra_direta
                            ON compra_direta.cod_mapa       = mapa.cod_mapa
                           AND compra_direta.exercicio_mapa = mapa.exercicio
-                    
+
                     LEFT JOIN licitacao.adjudicacao
-                           ON adjudicacao.exercicio_cotacao = cotacao_item.exercicio 
+                           ON adjudicacao.exercicio_cotacao = cotacao_item.exercicio
                           AND adjudicacao.cod_cotacao       = cotacao_item.cod_cotacao
                           AND adjudicacao.lote              = cotacao_item.lote
-                          AND adjudicacao.cod_item          = cotacao_item.cod_item 
-                       
+                          AND adjudicacao.cod_item          = cotacao_item.cod_item
+
                        WHERE CAST(OD.num_unidade as varchar)||CAST(OD.num_orgao as varchar)
-                          IN ( SELECT CAST(num_unidade as varchar)||CAST(num_orgao as varchar)                       
-                                FROM empenho.permissao_autorizacao             
-                               WHERE numcgm      = ".$this->getDado("numcgm")."    
+                          IN ( SELECT CAST(num_unidade as varchar)||CAST(num_orgao as varchar)
+                                FROM empenho.permissao_autorizacao
+                               WHERE numcgm      = ".$this->getDado("numcgm")."
                                  AND   exercicio = '".$this->getDado("exercicio")."'
-                             )                            
-            ) AS tabela                                                                       
+                             )
+            ) AS tabela
     ";
     return $stSql;
 }
@@ -343,7 +343,7 @@ public function recuperaEmpenhoCompraLicitacaoAnulado(&$rsRecordSet, $stCondicao
 
     if(trim($stOrdem))
         $stOrdem = (strpos($stOrdem,"ORDER BY") === false)?" ORDER BY $stOrdem":$stOrdem;
-        
+
     $stSql = $this->MontaRecuperaEmpenhoCompraLicitacaoAnulado().$stCondicao.$stOrdem;
     $this->setDebug( $stSql );
     $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
@@ -692,88 +692,88 @@ function recuperaRelacionamentoAnulados(&$rsRecordSet, $stCondicao = "", $stOrde
 
 function montaRecuperaRelacionamentoReemitirAnulados()
 {
-    $stSql  = "SELECT                                                  
-        e.cod_empenho,                                      
-        e.exercicio,                                        
-        e.cod_entidade,                                     
-        e.cod_pre_empenho,                                  
-        c.nom_cgm AS nom_fornecedor,                        
-        pe.implantado ,                                     
-        to_char(eai.timestamp,'dd/mm/yyyy') as dt_anulado,  
-        eai.timestamp,                                      
-        sum(eai.vl_anulado) as vl_anulado                   
-    FROM                                                    
+    $stSql  = "SELECT
+        e.cod_empenho,
+        e.exercicio,
+        e.cod_entidade,
+        e.cod_pre_empenho,
+        c.nom_cgm AS nom_fornecedor,
+        pe.implantado ,
+        to_char(eai.timestamp,'dd/mm/yyyy') as dt_anulado,
+        eai.timestamp,
+        sum(eai.vl_anulado) as vl_anulado
+    FROM
         empenho.empenho              as e
         JOIN empenho.empenho_anulado as ea
-             ON e.exercicio         = ea.exercicio               
-            AND e.cod_entidade      = ea.cod_entidade            
-            AND e.cod_empenho       = ea.cod_empenho              
+             ON e.exercicio         = ea.exercicio
+            AND e.cod_entidade      = ea.cod_entidade
+            AND e.cod_empenho       = ea.cod_empenho
         JOIN empenho.empenho_anulado_item as eai
-             ON ea.exercicio        = eai.exercicio              
-            AND ea.timestamp        = eai.timestamp              
-            AND ea.cod_entidade     = eai.cod_entidade           
-            AND ea.cod_empenho      = eai.cod_empenho              
+             ON ea.exercicio        = eai.exercicio
+            AND ea.timestamp        = eai.timestamp
+            AND ea.cod_entidade     = eai.cod_entidade
+            AND ea.cod_empenho      = eai.cod_empenho
         JOIN empenho.pre_empenho as pe
-             ON e.exercicio         = pe.exercicio               
-            AND e.cod_pre_empenho   = pe.cod_pre_empenho         
+             ON e.exercicio         = pe.exercicio
+            AND e.cod_pre_empenho   = pe.cod_pre_empenho
         JOIN sw_cgm as  c
-            ON pe.cgm_beneficiario = c.numcgm           
-        
+            ON pe.cgm_beneficiario = c.numcgm
+
         LEFT OUTER JOIN empenho.autorizacao_empenho  as ae
-                     ON pe.exercicio        = ae.exercicio              
+                     ON pe.exercicio        = ae.exercicio
                     AND pe.cod_pre_empenho  = ae.cod_pre_empenho
-                    
-              LEFT JOIN empenho.pre_empenho_despesa  as ped       
-                     ON( pe.exercicio        = ped.exercicio             
+
+              LEFT JOIN empenho.pre_empenho_despesa  as ped
+                     ON( pe.exercicio        = ped.exercicio
                     AND  pe.cod_pre_empenho  = ped.cod_pre_empenho )
-                    
+
               LEFT JOIN empenho.item_pre_empenho
                      ON item_pre_empenho.exercicio        = eai.exercicio
                     AND item_pre_empenho.cod_pre_empenho  = eai.cod_pre_empenho
                     AND item_pre_empenho.num_item        = eai.num_item
-                    
+
               LEFT JOIN empenho.item_pre_empenho_julgamento
-                     ON item_pre_empenho_julgamento.cod_pre_empenho  = item_pre_empenho.cod_pre_empenho   
+                     ON item_pre_empenho_julgamento.cod_pre_empenho  = item_pre_empenho.cod_pre_empenho
                     AND item_pre_empenho_julgamento.exercicio        = item_pre_empenho.exercicio
                     AND item_pre_empenho_julgamento.num_item         = item_pre_empenho.num_item
-              
+
               LEFT JOIN compras.julgamento_item
                      ON julgamento_item.exercicio      = item_pre_empenho_julgamento.exercicio_julgamento
-                    AND julgamento_item.cod_cotacao    = item_pre_empenho_julgamento.cod_cotacao 
+                    AND julgamento_item.cod_cotacao    = item_pre_empenho_julgamento.cod_cotacao
                     AND julgamento_item.cod_item       = item_pre_empenho_julgamento.cod_item
                     AND julgamento_item.lote           = item_pre_empenho_julgamento.lote
                     AND julgamento_item.cgm_fornecedor = item_pre_empenho_julgamento.cgm_fornecedor
-              
+
               LEFT JOIN compras.cotacao_item
                      ON cotacao_item.exercicio   = julgamento_item.exercicio
                     AND cotacao_item.cod_cotacao = julgamento_item.cod_cotacao
                     AND cotacao_item.lote        = julgamento_item.lote
                     AND cotacao_item.cod_item    = julgamento_item.cod_item
-                    
+
               LEFT JOIN compras.cotacao
                      ON cotacao.cod_cotacao = cotacao_item.cod_cotacao
                     AND cotacao.exercicio   = cotacao_item.exercicio
-                    
+
               LEFT JOIN compras.mapa_cotacao
                      ON mapa_cotacao.cod_cotacao       = cotacao.cod_cotacao
                     AND mapa_cotacao.exercicio_cotacao = cotacao.exercicio
-                    
+
               LEFT JOIN compras.mapa
                      ON mapa.cod_mapa  = mapa_cotacao.cod_mapa
                     AND mapa.exercicio = mapa_cotacao.exercicio_mapa
-                    
+
               LEFT JOIN compras.compra_direta
                      ON compra_direta.cod_mapa       = mapa.cod_mapa
                     AND compra_direta.exercicio_mapa = mapa.exercicio
-                    
+
               LEFT JOIN licitacao.adjudicacao
-                     ON adjudicacao.exercicio_cotacao = cotacao_item.exercicio 
+                     ON adjudicacao.exercicio_cotacao = cotacao_item.exercicio
                     AND adjudicacao.cod_cotacao       = cotacao_item.cod_cotacao
                     AND adjudicacao.lote              = cotacao_item.lote
                     AND adjudicacao.cod_item          = cotacao_item.cod_item
-                    
-    WHERE 1=1                                                    
-        
+
+    WHERE 1=1
+
          ";
 
     return $stSql;
@@ -1328,7 +1328,7 @@ function recuperaConsultaEmpenhoCompraLicitacao(&$rsRecordSet, $stCondicao = "",
 
     if(trim($stOrdem))
         $stOrdem = (strpos($stOrdem,"ORDER BY") === false)?" ORDER BY $stOrdem":$stOrdem;
-    
+
     $stGroup = " GROUP BY tabela.cod_entidade,
                           tabela.cod_empenho,
                           tabela.cod_pre_empenho,
@@ -1339,7 +1339,7 @@ function recuperaConsultaEmpenhoCompraLicitacao(&$rsRecordSet, $stCondicao = "",
                           tabela.nom_fornecedor,
                           tabela.vl_empenhado,
                           tabela.mascara_classificacao
-                          
+
                     , tabela.compra_cod_modalidade
                     , tabela.compra_modalidade
                     , tabela.cod_compra_direta
@@ -1347,10 +1347,10 @@ function recuperaConsultaEmpenhoCompraLicitacao(&$rsRecordSet, $stCondicao = "",
                     , tabela.cod_licitacao
                     , tabela.licitacao_modalidade
                     , tabela.compra_modalidade
-                          
-                          
+
+
                           ";
-                          
+
     $stSql = $this->montaRecuperaConsultaEmpenhoCompraLicitacao().$stCondicao.$stGroup.$stOrdem;
     $this->setDebug( $stSql );
     $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
@@ -1367,14 +1367,14 @@ function recuperaConsultaEmpenhoCompraLicitacao(&$rsRecordSet, $stCondicao = "",
 function montaRecuperaConsultaEmpenhoCompraLicitacao()
 {
    $stSql = "  SELECT tabela.cod_entidade
-                    , tabela.cod_empenho                                                     
+                    , tabela.cod_empenho
                     , tabela.cod_pre_empenho
                     , tabela.cod_autorizacao
                     , tabela.cod_reserva
                     , tabela.exercicio
                     , tabela.dt_empenho
                     , tabela.nom_fornecedor
-                    , tabela.vl_empenhado                                                     
+                    , tabela.vl_empenhado
                     , tabela.mascara_classificacao
                     , tabela.compra_cod_modalidade
                     , tabela.compra_modalidade
@@ -1383,55 +1383,55 @@ function montaRecuperaConsultaEmpenhoCompraLicitacao()
                     , tabela.cod_licitacao
                     , tabela.licitacao_modalidade
                     , tabela.compra_modalidade
-                    
-               FROM (                                                                        
-                    SELECT  AE.cod_autorizacao,                                              
-                            EE.cod_empenho,                                                  
-                            EE.cod_categoria,                                                
-                            EE.vl_saldo_anterior,                                            
-                            TO_CHAR(EE.dt_vencimento,'dd/mm/yyyy') AS dt_vencimento,         
-                            TO_CHAR(EE.dt_empenho,'dd/mm/yyyy') AS dt_empenho,               
-                            PD.cod_despesa,                                                  
-                            PE.descricao,                                                    
-                            PE.exercicio,                                                    
-                            PE.cod_pre_empenho,                                              
-                            PE.cgm_beneficiario as credor,                                   
-                            EE.cod_entidade,                                                 
-                            AR.cod_reserva,                                                  
-                            PD.cod_conta,                                                    
-                            C.nom_cgm AS nom_fornecedor,                                     
-                            R.vl_reserva,                                                    
-                            OD.num_orgao,                                                    
-                            OD.num_unidade,                                                  
-                            OCD.cod_estrutural,                                              
-                            OD.cod_recurso,                                                  
-                            rec.cod_detalhamento,                                            
-                            rec.cod_fonte,                                            
-                            PE.cod_historico,                                                
-                            empenho.fn_consultar_valor_empenhado(  PE.exercicio               
-                                                                  ,EE.cod_empenho             
-                                                                  ,EE.cod_entidade            
-                            ) AS vl_empenhado,                                               
-                            empenho.fn_consultar_valor_empenhado_anulado( PE.exercicio       
-                                                                         ,EE.cod_empenho     
-                                                                         ,EE.cod_entidade    
-                            ) AS vl_empenhado_anulado,                                       
-                            empenho.fn_consultar_valor_liquidado( PE.exercicio               
-                                                                 ,EE.cod_empenho             
-                                                                 ,EE.cod_entidade            
-                            ) AS vl_liquidado,                                               
-                            empenho.fn_consultar_valor_liquidado_anulado( PE.exercicio       
-                                                                         ,EE.cod_empenho     
-                                                                         ,EE.cod_entidade    
-                            ) AS vl_liquidado_anulado,                                       
-                            empenho.fn_consultar_valor_empenhado_pago(  PE.exercicio       
-                                                                       ,EE.cod_empenho     
-                                                                       ,EE.cod_entidade    
-                            ) AS vl_pago,                                                    
-                            empenho.fn_consultar_valor_empenhado_pago_anulado( PE.exercicio       
-                                                                              ,EE.cod_empenho     
-                                                                              ,EE.cod_entidade    
-                            ) AS vl_pago_anulado                                             
+
+               FROM (
+                    SELECT  AE.cod_autorizacao,
+                            EE.cod_empenho,
+                            EE.cod_categoria,
+                            EE.vl_saldo_anterior,
+                            TO_CHAR(EE.dt_vencimento,'dd/mm/yyyy') AS dt_vencimento,
+                            TO_CHAR(EE.dt_empenho,'dd/mm/yyyy') AS dt_empenho,
+                            PD.cod_despesa,
+                            PE.descricao,
+                            PE.exercicio,
+                            PE.cod_pre_empenho,
+                            PE.cgm_beneficiario as credor,
+                            EE.cod_entidade,
+                            AR.cod_reserva,
+                            PD.cod_conta,
+                            C.nom_cgm AS nom_fornecedor,
+                            R.vl_reserva,
+                            OD.num_orgao,
+                            OD.num_unidade,
+                            OCD.cod_estrutural,
+                            OD.cod_recurso,
+                            rec.cod_detalhamento,
+                            rec.cod_fonte,
+                            PE.cod_historico,
+                            empenho.fn_consultar_valor_empenhado(  PE.exercicio
+                                                                  ,EE.cod_empenho
+                                                                  ,EE.cod_entidade
+                            ) AS vl_empenhado,
+                            empenho.fn_consultar_valor_empenhado_anulado( PE.exercicio
+                                                                         ,EE.cod_empenho
+                                                                         ,EE.cod_entidade
+                            ) AS vl_empenhado_anulado,
+                            empenho.fn_consultar_valor_liquidado( PE.exercicio
+                                                                 ,EE.cod_empenho
+                                                                 ,EE.cod_entidade
+                            ) AS vl_liquidado,
+                            empenho.fn_consultar_valor_liquidado_anulado( PE.exercicio
+                                                                         ,EE.cod_empenho
+                                                                         ,EE.cod_entidade
+                            ) AS vl_liquidado_anulado,
+                            empenho.fn_consultar_valor_empenhado_pago(  PE.exercicio
+                                                                       ,EE.cod_empenho
+                                                                       ,EE.cod_entidade
+                            ) AS vl_pago,
+                            empenho.fn_consultar_valor_empenhado_pago_anulado( PE.exercicio
+                                                                              ,EE.cod_empenho
+                                                                              ,EE.cod_entidade
+                            ) AS vl_pago_anulado
                            , ovwd.mascara_classificacao
                            , compra_direta.cod_modalidade AS compra_cod_modalidade
                            , compra_direta.cod_compra_direta
@@ -1439,116 +1439,116 @@ function montaRecuperaConsultaEmpenhoCompraLicitacao()
                            , licitacao_modalidade.descricao AS licitacao_modalidade
                            , adjudicacao.cod_modalidade AS licitacao_cod_modalidade
                            , adjudicacao.cod_licitacao
-               
+
                      FROM empenho.empenho AS EE
-                
+
                 LEFT JOIN empenho.empenho_autorizacao AS EA
-                       ON EA.exercicio       = EE.exercicio                             
-                      AND EA.cod_entidade    = EE.cod_entidade                          
+                       ON EA.exercicio       = EE.exercicio
+                      AND EA.cod_entidade    = EE.cod_entidade
                       AND EA.cod_empenho     = EE.cod_empenho
-                      
+
                 LEFT JOIN empenho.autorizacao_empenho AS AE
-                       ON AE.exercicio       = EA.exercicio                             
-                      AND AE.cod_autorizacao = EA.cod_autorizacao                       
+                       ON AE.exercicio       = EA.exercicio
+                      AND AE.cod_autorizacao = EA.cod_autorizacao
                       AND AE.cod_entidade    = EA.cod_entidade
-                      
+
                LEFT JOIN empenho.autorizacao_reserva AS AR
-                      ON AR.exercicio       = AE.exercicio                             
-                     AND AR.cod_entidade    = AE.cod_entidade                          
-                     AND AR.cod_autorizacao = AE.cod_autorizacao                    
-               
+                      ON AR.exercicio       = AE.exercicio
+                     AND AR.cod_entidade    = AE.cod_entidade
+                     AND AR.cod_autorizacao = AE.cod_autorizacao
+
                LEFT JOIN orcamento.reserva AS  R
-                      ON R.cod_reserva     = AR.cod_reserva                           
+                      ON R.cod_reserva     = AR.cod_reserva
                      AND R.exercicio    = AR.exercicio
-                     
+
               INNER JOIN empenho.pre_empenho AS PE
-                      ON EE.cod_pre_empenho = PE.cod_pre_empenho                       
-                     AND EE.exercicio       = PE.exercicio                             
-            
+                      ON EE.cod_pre_empenho = PE.cod_pre_empenho
+                     AND EE.exercicio       = PE.exercicio
+
               INNER JOIN sw_cgm AS  C
                       ON C.numcgm = PE.cgm_beneficiario
-                      
+
               INNER JOIN empenho.pre_empenho_despesa AS PD
-                      ON PD.cod_pre_empenho = PE.cod_pre_empenho                       
-                     AND PD.exercicio       = PE.exercicio       
-                      
+                      ON PD.cod_pre_empenho = PE.cod_pre_empenho
+                     AND PD.exercicio       = PE.exercicio
+
               INNER JOIN orcamento.despesa AS OD
-                      ON OD.exercicio       = PD.exercicio                             
-                     AND OD.cod_despesa     = PD.cod_despesa                           
-                           
+                      ON OD.exercicio       = PD.exercicio
+                     AND OD.cod_despesa     = PD.cod_despesa
+
               INNER JOIN orcamento.vw_classificacao_despesa as ovwd
-                      ON ovwd.exercicio = PE.exercicio                                   
+                      ON ovwd.exercicio = PE.exercicio
                      AND ovwd.cod_conta = PD.cod_conta
-                           
+
               LEFT OUTER JOIN orcamento.conta_despesa AS OCD
                            ON OD.cod_conta = OCD.cod_conta
-                          AND OD.exercicio = OCD.exercicio                              
-              
-              INNER JOIN orcamento.recurso('".$this->getDado("exercicio")."') as rec 
-                      ON rec.cod_recurso  = od.cod_recurso                        
+                          AND OD.exercicio = OCD.exercicio
+
+              INNER JOIN orcamento.recurso('".$this->getDado("exercicio")."') as rec
+                      ON rec.cod_recurso  = od.cod_recurso
                      AND rec.exercicio    = od.exercicio
 
                LEFT JOIN empenho.item_pre_empenho
                       ON item_pre_empenho.cod_pre_empenho = pe.cod_pre_empenho
                      AND item_pre_empenho.exercicio       = pe.exercicio
-                          
+
                LEFT JOIN empenho.item_pre_empenho_julgamento
-                      ON item_pre_empenho_julgamento.cod_pre_empenho  = item_pre_empenho.cod_pre_empenho   
+                      ON item_pre_empenho_julgamento.cod_pre_empenho  = item_pre_empenho.cod_pre_empenho
                      AND item_pre_empenho_julgamento.exercicio        = item_pre_empenho.exercicio
                      AND item_pre_empenho_julgamento.num_item         = item_pre_empenho.num_item
-                
+
                 LEFT JOIN compras.julgamento_item
                        ON julgamento_item.exercicio      = item_pre_empenho_julgamento.exercicio_julgamento
-                      AND julgamento_item.cod_cotacao    = item_pre_empenho_julgamento.cod_cotacao 
+                      AND julgamento_item.cod_cotacao    = item_pre_empenho_julgamento.cod_cotacao
                       AND julgamento_item.cod_item       = item_pre_empenho_julgamento.cod_item
                       AND julgamento_item.lote           = item_pre_empenho_julgamento.lote
                       AND julgamento_item.cgm_fornecedor = item_pre_empenho_julgamento.cgm_fornecedor
-                
+
                 LEFT JOIN compras.cotacao_item
                        ON cotacao_item.exercicio   = julgamento_item.exercicio
                       AND cotacao_item.cod_cotacao = julgamento_item.cod_cotacao
                       AND cotacao_item.lote        = julgamento_item.lote
                       AND cotacao_item.cod_item    = julgamento_item.cod_item
-                
+
                 LEFT JOIN compras.cotacao
                        ON cotacao.cod_cotacao = cotacao_item.cod_cotacao
                       AND cotacao.exercicio   = cotacao_item.exercicio
-                
+
                 LEFT JOIN compras.mapa_cotacao
                        ON mapa_cotacao.cod_cotacao       = cotacao.cod_cotacao
                       AND mapa_cotacao.exercicio_cotacao = cotacao.exercicio
-                
+
                 LEFT JOIN compras.mapa
                        ON mapa.cod_mapa  = mapa_cotacao.cod_mapa
                       AND mapa.exercicio = mapa_cotacao.exercicio_mapa
-                
+
                 LEFT JOIN compras.compra_direta
                        ON compra_direta.cod_mapa       = mapa.cod_mapa
                       AND compra_direta.exercicio_mapa = mapa.exercicio
-                      
+
                 LEFT JOIN compras.modalidade AS compra_modalidade
                        ON compra_modalidade.cod_modalidade = compra_direta.cod_modalidade
-                
+
                 LEFT JOIN licitacao.adjudicacao
-                       ON adjudicacao.exercicio_cotacao = cotacao_item.exercicio 
+                       ON adjudicacao.exercicio_cotacao = cotacao_item.exercicio
                       AND adjudicacao.cod_cotacao       = cotacao_item.cod_cotacao
                       AND adjudicacao.lote              = cotacao_item.lote
-                      AND adjudicacao.cod_item          = cotacao_item.cod_item 
-                      
+                      AND adjudicacao.cod_item          = cotacao_item.cod_item
+
                 LEFT JOIN compras.modalidade AS licitacao_modalidade
                        ON licitacao_modalidade.cod_modalidade = adjudicacao.cod_modalidade \n";
-        
+
     if ( $this->getDado("tribunal") != "TCEMG" ) {
         $stSql .= " WHERE OD.num_unidade::varchar || OD.num_orgao::varchar
-                       IN ( SELECT num_unidade::varchar || num_orgao::varchar  
-                              FROM empenho.permissao_autorizacao                 
-                              WHERE numcgm    = ".$this->getDado("numcgm")."    
+                       IN ( SELECT num_unidade::varchar || num_orgao::varchar
+                              FROM empenho.permissao_autorizacao
+                              WHERE numcgm    = ".$this->getDado("numcgm")."
                                 AND exercicio = '".$this->getDado("exercicio")."'
                         ) \n";
     }
-    
+
     $stSql .= ") AS tabela \n";
-    return $stSql; 
+    return $stSql;
 }
 
 /**
@@ -1624,32 +1624,32 @@ function recuperaRestosAPagarAjustesCompraLicitacao(&$rsRecordSet, $stCondicao =
     $obConexao   = new Conexao;
     $rsRecordSet = new RecordSet;
 
-    $stGroup  = "   GROUP BY tabela.cod_autorizacao,                      
-                             tabela.cod_empenho,                          
-                             tabela.vl_saldo_anterior,                    
-                             tabela.dt_vencimento,                        
-                             tabela.dt_empenho,                           
-                             tabela.cod_despesa,                          
-                             tabela.descricao,                            
-                             tabela.exercicio,                            
-                             tabela.cod_pre_empenho,                      
-                             tabela.credor,                               
-                             tabela.cod_entidade,                         
-                             tabela.cod_reserva,                          
-                             tabela.cod_conta,                            
-                             tabela.nom_fornecedor,                       
-                             tabela.vl_reserva,                           
-                             tabela.implantado,                           
-                             tabela.num_orgao,                            
-                             tabela.num_unidade,                          
-                             tabela.cod_estrutural,                       
-                             tabela.cod_recurso,                          
-                             tabela.cod_historico,                        
-                             tabela.vl_empenhado,                         
-                             tabela.vl_empenhado_anulado,                 
-                             tabela.vl_liquidado,                         
-                             tabela.vl_liquidado_anulado,                 
-                             tabela.vl_pago,                              
+    $stGroup  = "   GROUP BY tabela.cod_autorizacao,
+                             tabela.cod_empenho,
+                             tabela.vl_saldo_anterior,
+                             tabela.dt_vencimento,
+                             tabela.dt_empenho,
+                             tabela.cod_despesa,
+                             tabela.descricao,
+                             tabela.exercicio,
+                             tabela.cod_pre_empenho,
+                             tabela.credor,
+                             tabela.cod_entidade,
+                             tabela.cod_reserva,
+                             tabela.cod_conta,
+                             tabela.nom_fornecedor,
+                             tabela.vl_reserva,
+                             tabela.implantado,
+                             tabela.num_orgao,
+                             tabela.num_unidade,
+                             tabela.cod_estrutural,
+                             tabela.cod_recurso,
+                             tabela.cod_historico,
+                             tabela.vl_empenhado,
+                             tabela.vl_empenhado_anulado,
+                             tabela.vl_liquidado,
+                             tabela.vl_liquidado_anulado,
+                             tabela.vl_pago,
                              tabela.vl_pago_anulado,
                              tabela.compra_cod_modalidade,
                              tabela.cod_compra_direta,
@@ -1935,145 +1935,145 @@ function montaRestosAPagarAjustes()
 */
 function montaRestosAPagarAjustesCompraLicitacao()
 {
-    $stSql = " SELECT tabela.*                                                                
-                FROM (                                                                        
-                   SELECT AE.cod_autorizacao,                                              
-                          EE.cod_empenho,                                                  
-                          EE.vl_saldo_anterior,                                            
-                          TO_CHAR(EE.dt_vencimento,'dd/mm/yyyy') AS dt_vencimento,         
-                          TO_CHAR(EE.dt_empenho,'dd/mm/yyyy') AS dt_empenho,               
-                          PED_D_CD.cod_despesa,                                            
-                          PE.descricao,                                                    
-                          PE.exercicio,                                                    
-                          PE.cod_pre_empenho,                                              
-                          PE.cgm_beneficiario as credor,                                   
-                          EE.cod_entidade,                                                 
-                          AR.cod_reserva,                                                  
-                          PED_D_CD.cod_conta,                                              
-                          C.nom_cgm AS nom_fornecedor,                                     
-                          R.vl_reserva,                                                    
-                          PE.implantado,                                                   
+    $stSql = " SELECT tabela.*
+                FROM (
+                   SELECT AE.cod_autorizacao,
+                          EE.cod_empenho,
+                          EE.vl_saldo_anterior,
+                          TO_CHAR(EE.dt_vencimento,'dd/mm/yyyy') AS dt_vencimento,
+                          TO_CHAR(EE.dt_empenho,'dd/mm/yyyy') AS dt_empenho,
+                          PED_D_CD.cod_despesa,
+                          PE.descricao,
+                          PE.exercicio,
+                          PE.cod_pre_empenho,
+                          PE.cgm_beneficiario as credor,
+                          EE.cod_entidade,
+                          AR.cod_reserva,
+                          PED_D_CD.cod_conta,
+                          C.nom_cgm AS nom_fornecedor,
+                          R.vl_reserva,
+                          PE.implantado,
                           CASE WHEN PE.implantado = true
-                               THEN RE.num_orgao                                                 
-                               ELSE PED_D_CD.num_orgao                                           
-                          END as num_orgao,                                                
+                               THEN RE.num_orgao
+                               ELSE PED_D_CD.num_orgao
+                          END as num_orgao,
                           CASE WHEN PE.implantado = true
-                               THEN RE.num_unidade                                               
-                               ELSE PED_D_CD.num_unidade                                         
-                          END as num_unidade,                                              
+                               THEN RE.num_unidade
+                               ELSE PED_D_CD.num_unidade
+                          END as num_unidade,
                           CASE WHEN PE.implantado = true
-                               THEN RE.cod_estrutural                                            
-                               ELSE PED_D_CD.cod_estrutural                                      
-                          END as cod_estrutural,                                           
+                               THEN RE.cod_estrutural
+                               ELSE PED_D_CD.cod_estrutural
+                          END as cod_estrutural,
                           CASE WHEN PE.implantado = true
-                               THEN RE.recurso                                                   
-                               ELSE PED_D_CD.cod_recurso                                         
-                          END as cod_recurso,                                              
-                          PE.cod_historico,                                                
-                          empenho.fn_consultar_valor_empenhado( PE.exercicio               
-                                                               ,EE.cod_empenho             
-                                                               ,EE.cod_entidade            
-                           ) AS vl_empenhado,                                               
-                          empenho.fn_consultar_valor_empenhado_anulado( PE.exercicio       
-                                                                       ,EE.cod_empenho     
-                                                                       ,EE.cod_entidade    
-                           ) AS vl_empenhado_anulado,                                       
-                          empenho.fn_consultar_valor_liquidado( PE.exercicio               
-                                                               ,EE.cod_empenho             
-                                                               ,EE.cod_entidade            
-                           ) AS vl_liquidado,                                               
-                          empenho.fn_consultar_valor_liquidado_anulado( PE.exercicio       
-                                                                       ,EE.cod_empenho     
-                                                                       ,EE.cod_entidade    
-                           ) AS vl_liquidado_anulado,                                       
-                          empenho.fn_consultar_valor_empenhado_pago( PE.exercicio       
-                                                                    ,EE.cod_empenho     
-                                                                    ,EE.cod_entidade    
-                           ) AS vl_pago,                                                    
-                          empenho.fn_consultar_valor_empenhado_pago_anulado( PE.exercicio       
-                                                                            ,EE.cod_empenho     
-                                                                            ,EE.cod_entidade    
+                               THEN RE.recurso
+                               ELSE PED_D_CD.cod_recurso
+                          END as cod_recurso,
+                          PE.cod_historico,
+                          empenho.fn_consultar_valor_empenhado( PE.exercicio
+                                                               ,EE.cod_empenho
+                                                               ,EE.cod_entidade
+                           ) AS vl_empenhado,
+                          empenho.fn_consultar_valor_empenhado_anulado( PE.exercicio
+                                                                       ,EE.cod_empenho
+                                                                       ,EE.cod_entidade
+                           ) AS vl_empenhado_anulado,
+                          empenho.fn_consultar_valor_liquidado( PE.exercicio
+                                                               ,EE.cod_empenho
+                                                               ,EE.cod_entidade
+                           ) AS vl_liquidado,
+                          empenho.fn_consultar_valor_liquidado_anulado( PE.exercicio
+                                                                       ,EE.cod_empenho
+                                                                       ,EE.cod_entidade
+                           ) AS vl_liquidado_anulado,
+                          empenho.fn_consultar_valor_empenhado_pago( PE.exercicio
+                                                                    ,EE.cod_empenho
+                                                                    ,EE.cod_entidade
+                           ) AS vl_pago,
+                          empenho.fn_consultar_valor_empenhado_pago_anulado( PE.exercicio
+                                                                            ,EE.cod_empenho
+                                                                            ,EE.cod_entidade
                            ) AS vl_pago_anulado,
                           compra_direta.cod_modalidade AS compra_cod_modalidade,
                           compra_direta.cod_compra_direta,
                           adjudicacao.cod_modalidade AS licitacao_cod_modalidade,
                           adjudicacao.cod_licitacao
-                   
-                   FROM  empenho.empenho  AS EE                            
-                   
+
+                   FROM  empenho.empenho  AS EE
+
                    LEFT JOIN empenho.empenho_autorizacao AS EA
-                          ON EA.exercicio       = EE.exercicio                             
-                         AND EA.cod_entidade    = EE.cod_entidade                          
-                         AND EA.cod_empenho     = EE.cod_empenho 
-                  
+                          ON EA.exercicio       = EE.exercicio
+                         AND EA.cod_entidade    = EE.cod_entidade
+                         AND EA.cod_empenho     = EE.cod_empenho
+
                   LEFT JOIN empenho.autorizacao_empenho AS AE
-                         ON AE.exercicio       = EA.exercicio                             
-                        AND AE.cod_autorizacao = EA.cod_autorizacao                       
+                         ON AE.exercicio       = EA.exercicio
+                        AND AE.cod_autorizacao = EA.cod_autorizacao
                         AND AE.cod_entidade    = EA.cod_entidade
-                        
+
                   LEFT JOIN empenho.autorizacao_reserva AS AR
-                         ON AR.exercicio       = AE.exercicio                             
-                        AND AR.cod_entidade    = AE.cod_entidade                          
+                         ON AR.exercicio       = AE.exercicio
+                        AND AR.cod_entidade    = AE.cod_entidade
                         AND AR.cod_autorizacao = AE.cod_autorizacao
-                        
+
                   LEFT JOIN orcamento.reserva AS  R
-                         ON R.cod_reserva     = AR.cod_reserva                           
-                        AND R.exercicio       = AR.exercicio 
-                        
+                         ON R.cod_reserva     = AR.cod_reserva
+                        AND R.exercicio       = AR.exercicio
+
                   INNER JOIN empenho.pre_empenho AS PE
-                          ON EE.cod_pre_empenho = PE.cod_pre_empenho                       
-                         AND EE.exercicio       = PE.exercicio                             
-                        
+                          ON EE.cod_pre_empenho = PE.cod_pre_empenho
+                         AND EE.exercicio       = PE.exercicio
+
                   INNER JOIN sw_cgm AS  C
                           ON C.numcgm = PE.cgm_beneficiario
-              
+
                   LEFT OUTER JOIN empenho.restos_pre_empenho as RE
                                ON PE.exercicio = RE.exercicio
                               AND PE.cod_pre_empenho = RE.cod_pre_empenho
-              
+
               LEFT JOIN empenho.item_pre_empenho
                      ON item_pre_empenho.cod_pre_empenho = pe.cod_pre_empenho
                     AND item_pre_empenho.exercicio       = pe.exercicio
-                    
+
               LEFT JOIN empenho.item_pre_empenho_julgamento
-                     ON item_pre_empenho_julgamento.cod_pre_empenho  = item_pre_empenho.cod_pre_empenho   
+                     ON item_pre_empenho_julgamento.cod_pre_empenho  = item_pre_empenho.cod_pre_empenho
                     AND item_pre_empenho_julgamento.exercicio        = item_pre_empenho.exercicio
                     AND item_pre_empenho_julgamento.num_item         = item_pre_empenho.num_item
-              
+
               LEFT JOIN compras.julgamento_item
                     ON julgamento_item.exercicio      = item_pre_empenho_julgamento.exercicio_julgamento
-                   AND julgamento_item.cod_cotacao    = item_pre_empenho_julgamento.cod_cotacao 
+                   AND julgamento_item.cod_cotacao    = item_pre_empenho_julgamento.cod_cotacao
                    AND julgamento_item.cod_item       = item_pre_empenho_julgamento.cod_item
                    AND julgamento_item.lote           = item_pre_empenho_julgamento.lote
                    AND julgamento_item.cgm_fornecedor = item_pre_empenho_julgamento.cgm_fornecedor
-              
+
               LEFT JOIN compras.cotacao_item
                     ON cotacao_item.exercicio   = julgamento_item.exercicio
                    AND cotacao_item.cod_cotacao = julgamento_item.cod_cotacao
                    AND cotacao_item.lote        = julgamento_item.lote
                    AND cotacao_item.cod_item    = julgamento_item.cod_item
-              
+
               LEFT JOIN compras.cotacao
                     ON cotacao.cod_cotacao = cotacao_item.cod_cotacao
                    AND cotacao.exercicio   = cotacao_item.exercicio
-              
+
               LEFT JOIN compras.mapa_cotacao
                     ON mapa_cotacao.cod_cotacao       = cotacao.cod_cotacao
                    AND mapa_cotacao.exercicio_cotacao = cotacao.exercicio
-              
+
               LEFT JOIN compras.mapa
                     ON mapa.cod_mapa  = mapa_cotacao.cod_mapa
                    AND mapa.exercicio = mapa_cotacao.exercicio_mapa
-              
+
               LEFT JOIN compras.compra_direta
                     ON compra_direta.cod_mapa       = mapa.cod_mapa
                    AND compra_direta.exercicio_mapa = mapa.exercicio
-              
+
               LEFT JOIN licitacao.adjudicacao
-                    ON adjudicacao.exercicio_cotacao = cotacao_item.exercicio 
+                    ON adjudicacao.exercicio_cotacao = cotacao_item.exercicio
                    AND adjudicacao.cod_cotacao       = cotacao_item.cod_cotacao
                    AND adjudicacao.lote              = cotacao_item.lote
-                   AND adjudicacao.cod_item          = cotacao_item.cod_item 
+                   AND adjudicacao.cod_item          = cotacao_item.cod_item
 
              LEFT OUTER JOIN (   SELECT PED.exercicio
                                       , PED.cod_pre_empenho
@@ -2083,20 +2083,20 @@ function montaRestosAPagarAjustesCompraLicitacao()
                                       , D.num_unidade
                                       , D.cod_recurso
                                       , CD.cod_conta
-                                      , CD.cod_estrutural 
+                                      , CD.cod_estrutural
                                    FROM empenho.pre_empenho_despesa as PED
                                       , orcamento.despesa as D
-                                      , orcamento.conta_despesa as CD 
+                                      , orcamento.conta_despesa as CD
                                   WHERE PED.cod_despesa = D.cod_despesa
                                     AND PED.exercicio   = D.exercicio
                                     AND PED.cod_conta   = CD.cod_conta
-                                    AND D.exercicio     = CD.exercicio 
+                                    AND D.exercicio     = CD.exercicio
                 ) as PED_D_CD
-                  ON PE.exercicio       = PED_D_CD.exercicio AND                    
+                  ON PE.exercicio       = PED_D_CD.exercicio AND
                      PE.cod_pre_empenho = PED_D_CD.cod_pre_empenho
-                     
+
             ) AS tabela ";
-    
+
     return $stSql;
 }
 
@@ -2338,119 +2338,119 @@ function recuperaRestosConsultaEmpenhoCompraLicitacao(&$rsRecordSet, $stCondicao
 */
 function montaRestosConsultaEmpenhoCompraLicitacao()
 {
-  $stSql = " SELECT tabela.cod_entidade,                                                    
-                    tabela.cod_empenho,                                                     
-                    tabela.cod_pre_empenho,                                                 
-                    tabela.cod_autorizacao,                                                 
-                    tabela.cod_reserva,                                                 
-                    tabela.implantado,                                                 
-                    tabela.exercicio,                                                       
-                    tabela.dt_empenho,                                                      
-                    tabela.nom_fornecedor,                                                  
-                    tabela.vl_empenhado 
-              FROM (                                                                        
-                   SELECT  AE.cod_autorizacao,                                              
-                           EE.cod_empenho,                                                  
-                           EE.vl_saldo_anterior,                                            
-                           TO_CHAR(EE.dt_vencimento,'dd/mm/yyyy') AS dt_vencimento,         
-                           TO_CHAR(EE.dt_empenho,'dd/mm/yyyy') AS dt_empenho,               
-                           PED_D_CD.cod_despesa,                                            
-                           PE.descricao,                                                    
-                           PE.exercicio,                                                    
-                           PE.cod_pre_empenho,                                              
-                           PE.cgm_beneficiario as credor,                                   
-                           EE.cod_entidade,                                                 
-                           AR.cod_reserva,                                                  
-                           PED_D_CD.cod_conta,                                              
-                           C.nom_cgm AS nom_fornecedor,                                     
-                           R.vl_reserva,                                                    
-                           PE.implantado,                                                   
+  $stSql = " SELECT tabela.cod_entidade,
+                    tabela.cod_empenho,
+                    tabela.cod_pre_empenho,
+                    tabela.cod_autorizacao,
+                    tabela.cod_reserva,
+                    tabela.implantado,
+                    tabela.exercicio,
+                    tabela.dt_empenho,
+                    tabela.nom_fornecedor,
+                    tabela.vl_empenhado
+              FROM (
+                   SELECT  AE.cod_autorizacao,
+                           EE.cod_empenho,
+                           EE.vl_saldo_anterior,
+                           TO_CHAR(EE.dt_vencimento,'dd/mm/yyyy') AS dt_vencimento,
+                           TO_CHAR(EE.dt_empenho,'dd/mm/yyyy') AS dt_empenho,
+                           PED_D_CD.cod_despesa,
+                           PE.descricao,
+                           PE.exercicio,
+                           PE.cod_pre_empenho,
+                           PE.cgm_beneficiario as credor,
+                           EE.cod_entidade,
+                           AR.cod_reserva,
+                           PED_D_CD.cod_conta,
+                           C.nom_cgm AS nom_fornecedor,
+                           R.vl_reserva,
+                           PE.implantado,
                            CASE WHEN PE.implantado = true
-                                THEN RE.num_orgao                                                 
-                                ELSE PED_D_CD.num_orgao                                           
-                           END as num_orgao,                                                
+                                THEN RE.num_orgao
+                                ELSE PED_D_CD.num_orgao
+                           END as num_orgao,
                            CASE WHEN PE.implantado = true
-                                THEN RE.num_unidade                                               
-                                ELSE PED_D_CD.num_unidade                                         
-                           END as num_unidade,                                              
+                                THEN RE.num_unidade
+                                ELSE PED_D_CD.num_unidade
+                           END as num_unidade,
                            CASE WHEN PE.implantado = true
-                                THEN RE.cod_estrutural                                            
-                                ELSE PED_D_CD.cod_estrutural                                      
-                           END as cod_estrutural,                                           
+                                THEN RE.cod_estrutural
+                                ELSE PED_D_CD.cod_estrutural
+                           END as cod_estrutural,
                            CASE WHEN PE.implantado = true
-                                THEN RE.recurso                                                   
-                                ELSE PED_D_CD.cod_recurso                                         
-                           END as cod_recurso,                                              
-                           PED_D_CD.cod_fonte,                                                   
-                           PE.cod_historico,                                                
-                           NL.cod_nota,                                                     
-                           NL.exercicio as exercicio_liquidacao,                            
-                           empenho.fn_consultar_valor_empenhado(  PE.exercicio               
-                                                                 ,EE.cod_empenho             
-                                                                 ,EE.cod_entidade            
-                           ) AS vl_empenhado,                                               
-                           empenho.fn_consultar_valor_empenhado_anulado(  PE.exercicio       
-                                                                         ,EE.cod_empenho     
-                                                                         ,EE.cod_entidade    
-                           ) AS vl_empenhado_anulado,                                       
-                           empenho.fn_consultar_valor_liquidado(  PE.exercicio               
-                                                                 ,EE.cod_empenho             
-                                                                 ,EE.cod_entidade            
-                           ) AS vl_liquidado,                                               
-                           empenho.fn_consultar_valor_liquidado_anulado( PE.exercicio       
-                                                                        ,EE.cod_empenho     
-                                                                        ,EE.cod_entidade    
-                           ) AS vl_liquidado_anulado,                                       
-                           empenho.fn_consultar_valor_empenhado_pago( PE.exercicio       
-                                                                     ,EE.cod_empenho     
-                                                                     ,EE.cod_entidade    
-                           ) AS vl_pago,                                                    
-                           empenho.fn_consultar_valor_empenhado_pago_anulado( PE.exercicio       
-                                                                           ,EE.cod_empenho     
-                                                                           ,EE.cod_entidade    
-                           ) AS vl_pago_anulado 
+                                THEN RE.recurso
+                                ELSE PED_D_CD.cod_recurso
+                           END as cod_recurso,
+                           PED_D_CD.cod_fonte,
+                           PE.cod_historico,
+                           NL.cod_nota,
+                           NL.exercicio as exercicio_liquidacao,
+                           empenho.fn_consultar_valor_empenhado(  PE.exercicio
+                                                                 ,EE.cod_empenho
+                                                                 ,EE.cod_entidade
+                           ) AS vl_empenhado,
+                           empenho.fn_consultar_valor_empenhado_anulado(  PE.exercicio
+                                                                         ,EE.cod_empenho
+                                                                         ,EE.cod_entidade
+                           ) AS vl_empenhado_anulado,
+                           empenho.fn_consultar_valor_liquidado(  PE.exercicio
+                                                                 ,EE.cod_empenho
+                                                                 ,EE.cod_entidade
+                           ) AS vl_liquidado,
+                           empenho.fn_consultar_valor_liquidado_anulado( PE.exercicio
+                                                                        ,EE.cod_empenho
+                                                                        ,EE.cod_entidade
+                           ) AS vl_liquidado_anulado,
+                           empenho.fn_consultar_valor_empenhado_pago( PE.exercicio
+                                                                     ,EE.cod_empenho
+                                                                     ,EE.cod_entidade
+                           ) AS vl_pago,
+                           empenho.fn_consultar_valor_empenhado_pago_anulado( PE.exercicio
+                                                                           ,EE.cod_empenho
+                                                                           ,EE.cod_entidade
+                           ) AS vl_pago_anulado
                          , compra_direta.cod_modalidade AS compra_cod_modalidade
                          , compra_direta.cod_compra_direta
                          , adjudicacao.cod_modalidade AS licitacao_cod_modalidade
-                         , adjudicacao.cod_licitacao                                            
-                   
+                         , adjudicacao.cod_licitacao
+
                    FROM empenho.empenho AS EE
-                           
+
               LEFT JOIN empenho.nota_liquidacao AS NL
-                     ON NL.exercicio_empenho = EE.exercicio                           
-                    AND NL.cod_entidade      = EE.cod_entidade                        
+                     ON NL.exercicio_empenho = EE.exercicio
+                    AND NL.cod_entidade      = EE.cod_entidade
                     AND NL.cod_empenho       = EE.cod_empenho
-                    
+
              LEFT JOIN empenho.empenho_autorizacao AS EA
-                    ON EA.exercicio       = EE.exercicio                             
-                   AND EA.cod_entidade    = EE.cod_entidade                          
+                    ON EA.exercicio       = EE.exercicio
+                   AND EA.cod_entidade    = EE.cod_entidade
                    AND EA.cod_empenho     = EE.cod_empenho
-                   
+
             LEFT JOIN empenho.autorizacao_empenho AS AE
-                   ON AE.exercicio       = EA.exercicio                             
-                  AND AE.cod_autorizacao = EA.cod_autorizacao                       
+                   ON AE.exercicio       = EA.exercicio
+                  AND AE.cod_autorizacao = EA.cod_autorizacao
                   AND AE.cod_entidade    = EA.cod_entidade
-                  
+
            LEFT JOIN empenho.autorizacao_reserva AS AR
-                  ON AR.exercicio       = AE.exercicio                             
-                 AND AR.cod_entidade    = AE.cod_entidade                          
+                  ON AR.exercicio       = AE.exercicio
+                 AND AR.cod_entidade    = AE.cod_entidade
                  AND AR.cod_autorizacao = AE.cod_autorizacao
-              
+
            LEFT JOIN orcamento.reserva AS  R
-                  ON R.cod_reserva = AR.cod_reserva                           
+                  ON R.cod_reserva = AR.cod_reserva
                  AND R.exercicio   = AR.exercicio
-                       
+
           INNER JOIN empenho.pre_empenho AS PE
-                  ON EE.cod_pre_empenho = PE.cod_pre_empenho                       
-                 AND EE.exercicio       = PE.exercicio     
-                 
+                  ON EE.cod_pre_empenho = PE.cod_pre_empenho
+                 AND EE.exercicio       = PE.exercicio
+
           INNER JOIN sw_cgm AS  C
                   ON C.numcgm = PE.cgm_beneficiario
-                           
+
      LEFT OUTER JOIN empenho.restos_pre_empenho as RE
                   ON PE.exercicio = RE.exercicio
-                 AND PE.cod_pre_empenho = RE.cod_pre_empenho                  
-     
+                 AND PE.cod_pre_empenho = RE.cod_pre_empenho
+
      LEFT OUTER JOIN ( SELECT PED.exercicio
                             , PED.cod_pre_empenho
                             , D.cod_despesa
@@ -2460,72 +2460,72 @@ function montaRestosConsultaEmpenhoCompraLicitacao()
                             , D.cod_recurso
                             , rec.cod_fonte
                             , CD.cod_conta
-                            , CD.cod_estrutural 
-                            
+                            , CD.cod_estrutural
+
                             FROM empenho.pre_empenho_despesa as PED
-                         
+
                       INNER JOIN orcamento.despesa as D
                               ON PED.cod_despesa = D.cod_despesa
                              AND PED.exercicio   = D.exercicio
-                              
+
                       INNER JOIN orcamento.recurso as rec
                               ON rec.cod_recurso = d.cod_recurso
                              AND rec.exercicio   = d.exercicio
-                          
-                      INNER JOIN orcamento.conta_despesa as CD 
+
+                      INNER JOIN orcamento.conta_despesa as CD
                               ON CD.cod_conta = PED.cod_conta
                              AND CD.exercicio = D.exercicio
                      ) as PED_D_CD
                   ON PE.exercicio       = PED_D_CD.exercicio
                  AND PE.cod_pre_empenho = PED_D_CD.cod_pre_empenho
-    
+
             LEFT JOIN empenho.item_pre_empenho
                    ON item_pre_empenho.cod_pre_empenho = pe.cod_pre_empenho
                   AND item_pre_empenho.exercicio       = pe.exercicio
-                  
+
             LEFT JOIN empenho.item_pre_empenho_julgamento
-                   ON item_pre_empenho_julgamento.cod_pre_empenho  = item_pre_empenho.cod_pre_empenho   
+                   ON item_pre_empenho_julgamento.cod_pre_empenho  = item_pre_empenho.cod_pre_empenho
                   AND item_pre_empenho_julgamento.exercicio        = item_pre_empenho.exercicio
                   AND item_pre_empenho_julgamento.num_item         = item_pre_empenho.num_item
-            
+
             LEFT JOIN compras.julgamento_item
                    ON julgamento_item.exercicio      = item_pre_empenho_julgamento.exercicio_julgamento
-                  AND julgamento_item.cod_cotacao    = item_pre_empenho_julgamento.cod_cotacao 
+                  AND julgamento_item.cod_cotacao    = item_pre_empenho_julgamento.cod_cotacao
                   AND julgamento_item.cod_item       = item_pre_empenho_julgamento.cod_item
                   AND julgamento_item.lote           = item_pre_empenho_julgamento.lote
                   AND julgamento_item.cgm_fornecedor = item_pre_empenho_julgamento.cgm_fornecedor
-            
+
             LEFT JOIN compras.cotacao_item
                    ON cotacao_item.exercicio   = julgamento_item.exercicio
                   AND cotacao_item.cod_cotacao = julgamento_item.cod_cotacao
                   AND cotacao_item.lote        = julgamento_item.lote
                   AND cotacao_item.cod_item    = julgamento_item.cod_item
-            
+
             LEFT JOIN compras.cotacao
                    ON cotacao.cod_cotacao = cotacao_item.cod_cotacao
                   AND cotacao.exercicio   = cotacao_item.exercicio
-            
+
             LEFT JOIN compras.mapa_cotacao
                    ON mapa_cotacao.cod_cotacao       = cotacao.cod_cotacao
                   AND mapa_cotacao.exercicio_cotacao = cotacao.exercicio
-            
+
             LEFT JOIN compras.mapa
                    ON mapa.cod_mapa  = mapa_cotacao.cod_mapa
                   AND mapa.exercicio = mapa_cotacao.exercicio_mapa
-            
+
             LEFT JOIN compras.compra_direta
                    ON compra_direta.cod_mapa       = mapa.cod_mapa
                   AND compra_direta.exercicio_mapa = mapa.exercicio
-            
+
             LEFT JOIN licitacao.adjudicacao
-                   ON adjudicacao.exercicio_cotacao = cotacao_item.exercicio 
+                   ON adjudicacao.exercicio_cotacao = cotacao_item.exercicio
                   AND adjudicacao.cod_cotacao       = cotacao_item.cod_cotacao
                   AND adjudicacao.lote              = cotacao_item.lote
-                  AND adjudicacao.cod_item          = cotacao_item.cod_item 
-         
+                  AND adjudicacao.cod_item          = cotacao_item.cod_item
+
         ) AS tabela \n";
-    
-    return $stSql;   
+
+    return $stSql;
 }
 
 /**
@@ -3398,19 +3398,19 @@ function recuperaRelatorioEmpenhoItens(&$rsRecordSet, $stCondicao = "", $boTrans
 
 function montaRelatorioEmpenhoItens()
 {
-    $stSql="SELECT                                                              
-                 it.vl_total                    as valor_total                  
-                ,(it.vl_total/it.quantidade)    as valor_unitario               
-                ,it.num_item                                                    
-                ,it.quantidade                                                  
+    $stSql="SELECT
+                 it.vl_total                    as valor_total
+                ,(it.vl_total/it.quantidade)    as valor_unitario
+                ,it.num_item
+                ,it.quantidade
                 ,CASE WHEN it.cod_marca IS NOT NULL
                     THEN it.nom_item||' (Marca: '||marca.cod_marca||' - '||marca.descricao||')'
                     ELSE it.nom_item
-                END AS nom_item                                                    
-                
-                ,it.complemento                                                 
-                ,it.sigla_unidade as simbolo                                    
-                ,it.cod_item                                                    
+                END AS nom_item
+
+                ,it.complemento
+                ,it.sigla_unidade as simbolo
+                ,it.cod_item
             FROM empenho.item_pre_empenho   as it
             LEFT JOIN almoxarifado.marca
                 ON marca.cod_marca = it.cod_marca
@@ -4313,67 +4313,67 @@ function recuperaDadosExportacao(&$rsRecordSet, $stCondicao = "", $boTransacao =
 
 function MontaRecuperaDadosExportacao()
 {
-    $stSql  = " SELECT                                                           
-                        tabela.num_orgao                                                
-                        ,tabela.num_unidade                                              
-                        ,tabela.cod_funcao                                               
-                        ,tabela.cod_subfuncao                                            
-                        ,tabela.cod_programa                                             
-                        ,0 as cod_subprograma                                            
-                        ,tabela.num_pao                                                  
-                        ,replace(tabela.cod_estrutural,'.','') as cod_estrutural       
-                        ,tabela.cod_recurso                                              
-                        ,0 as contrapartida                                              
-                        ,(tabela.exercicio || LPAD(tabela.cod_entidade::varchar,2,'0') || LPAD(tabela.cod_empenho::varchar,7,'0')) as num_empenho  
-                        ,to_char(tabela.dt_empenho,'ddmmyyyy')   as dt_empenho   
-                        ,replace(cast(tabela.vl_empenhado as varchar),'.','') as vl_empenhado    
-                        ,tabela.sinal                                                    
-                        ,tabela.cgm                                                      
-                        ,tabela.exercicio                                                
-                        ,tabela.cod_empenho                                              
-                        ,tabela.ordem                                                    
-                        ,tabela.historico                                                
-                        ,tabela.caracteristica                                           
-                        ,tabela.modalidade                                               
-                        ,tabela.nro_licitacao                                            
+    $stSql  = " SELECT
+                        tabela.num_orgao
+                        ,tabela.num_unidade
+                        ,tabela.cod_funcao
+                        ,tabela.cod_subfuncao
+                        ,tabela.cod_programa
+                        ,0 as cod_subprograma
+                        ,tabela.num_pao
+                        ,replace(tabela.cod_estrutural,'.','') as cod_estrutural
+                        ,tabela.cod_recurso
+                        ,0 as contrapartida
+                        ,(tabela.exercicio || LPAD(tabela.cod_entidade::varchar,2,'0') || LPAD(tabela.cod_empenho::varchar,7,'0')) as num_empenho
+                        ,to_char(tabela.dt_empenho,'ddmmyyyy')   as dt_empenho
+                        ,replace(cast(tabela.vl_empenhado as varchar),'.','') as vl_empenhado
+                        ,tabela.sinal
+                        ,tabela.cgm
+                        ,tabela.exercicio
+                        ,tabela.cod_empenho
+                        ,tabela.ordem
+                        ,tabela.historico
+                        ,tabela.caracteristica
+                        ,tabela.modalidade
+                        ,tabela.nro_licitacao
                         ,tabela.outras_modalidades
-                        ,tabela.preco             
+                        ,tabela.preco
                         ,'' as branco
                         ,modalidade_licitacao
-                FROM                                                             
-                    tcers.exportacaoEmpenho('".$this->getDado('stExercicio')."','".$this->getDado('dtInicial')."','".$this->getDado('dtFinal')."','".$this->getDado('stCodEntidades')."')  
+                FROM
+                    tcers.exportacaoEmpenho('".$this->getDado('stExercicio')."','".$this->getDado('dtInicial')."','".$this->getDado('dtFinal')."','".$this->getDado('stCodEntidades')."')
                     AS tabela
-                    (                                            
-                        num_orgao               integer                 
-                        ,num_unidade            integer                 
-                        ,cod_funcao             integer                 
-                        ,cod_subfuncao          integer                 
-                        ,cod_programa           integer                 
-                        ,num_pao                integer                 
-                        ,cod_recurso            integer                 
-                        ,cod_estrutural         varchar                 
-                        ,cod_empenho            integer                 
-                        ,dt_empenho             date                    
-                        ,vl_empenhado           numeric                 
-                        ,sinal                  varchar                 
-                        ,cgm                    integer                 
-                        ,historico              varchar                 
-                        ,cod_pre_empenho        integer                 
-                        ,exercicio              char(4)                 
-                        ,cod_entidade           integer                 
-                        ,ordem                  integer                 
-                        ,oid                    oid                     
-                        ,caracteristica         integer                 
-                        ,modalidade             integer                 
-                        ,nro_licitacao          text                    
-                        ,outras_modalidades     text                
-                        ,preco                  text                  
-                        ,modalidade_licitacao   text               
-                    )                                            
+                    (
+                        num_orgao               integer
+                        ,num_unidade            integer
+                        ,cod_funcao             integer
+                        ,cod_subfuncao          integer
+                        ,cod_programa           integer
+                        ,num_pao                integer
+                        ,cod_recurso            integer
+                        ,cod_estrutural         varchar
+                        ,cod_empenho            integer
+                        ,dt_empenho             date
+                        ,vl_empenhado           numeric
+                        ,sinal                  varchar
+                        ,cgm                    integer
+                        ,historico              varchar
+                        ,cod_pre_empenho        integer
+                        ,exercicio              char(4)
+                        ,cod_entidade           integer
+                        ,ordem                  integer
+                        ,oid                    oid
+                        ,caracteristica         integer
+                        ,modalidade             integer
+                        ,nro_licitacao          text
+                        ,outras_modalidades     text
+                        ,preco                  text
+                        ,modalidade_licitacao   text
+                    )
                 ORDER BY tabela.exercicio
                         ,tabela.cod_empenho
-                        ,tabela.ordem; 
-    "; 
+                        ,tabela.ordem;
+    ";
 
     return $stSql;
 }
@@ -4954,7 +4954,7 @@ function recuperaEmpenhoPreEmpenho(&$rsRecordSet, $stFiltro = "", $boTransacao =
                          , to_char( e.dt_empenho,'dd/mm/yyyy')
                          , to_char( e.dt_vencimento,'dd/mm/yyyy')
                          , sc.nom_cgm
-                         , e.cod_entidade 
+                         , e.cod_entidade
                     ORDER BY e.cod_empenho  \n";
     $stSql = $this->montaRecuperaEmpenhoPreEmpenho().$stFiltro.$groupBy;
     $this->setDebug( $stSql );
@@ -5010,10 +5010,10 @@ function montaRecuperaEmpenhoPreEmpenho()
     $stSql .= "    AND pe.cgm_beneficiario = sc.numcgm           			  		\n";
     $stSql .= "	   AND ie.cod_pre_empenho  = pe.cod_pre_empenho						\n";
     $stSql .= "	   AND ie.exercicio        = pe.exercicio                           \n";
-    
+
     # Busca somente empenhos da modalidade Registro de Preços
     if ($this->getDado('registro_precos')) {
-        $stSql .= "	   
+        $stSql .= "
            AND EXISTS (
                 SELECT 1
                  FROM empenho.atributo_empenho_valor
@@ -5022,9 +5022,9 @@ function montaRecuperaEmpenhoPreEmpenho()
                   AND atributo_empenho_valor.cod_modulo = 10
                   AND atributo_empenho_valor.cod_cadastro = 1
                   AND atributo_empenho_valor.cod_atributo = 101
-                  AND atributo_empenho_valor.valor = '14' 
+                  AND atributo_empenho_valor.valor = '14'
             ) \n ";
-    }    
+    }
 
     if ($this->getDado('cod_entidade')) {
         $stSql .= "    AND e.cod_entidade = ".$this->getDado('cod_entidade')." \n";
@@ -5033,11 +5033,11 @@ function montaRecuperaEmpenhoPreEmpenho()
     if ($this->getDado('cod_empenho')) {
         $stSql .= "    AND e.cod_empenho = ".$this->getDado('cod_empenho')." \n";
     }
-    
+
     if ($this->getDado('exercicio')) {
         $stSql .= "    AND e.exercicio = '".$this->getDado('exercicio')."' \n";
     }
-    
+
     if ($this->getDado('dt_emissao')) {
        $stSql .= "    AND nl.vl_nota_liquidacao <> 0.00                                                 \n";
        $stSql .= "    AND nl.dt_liquidacao >= to_date( '".$this->getDado('dt_emissao')."'  , 'dd/mm/yyyy')         \n";
@@ -5390,7 +5390,7 @@ function recuperaEmpenhoPreEmpenhoCgm(&$rsRecordSet, $stFiltro = "", $boTransaca
     $obConexao   = new Conexao;
     $rsRecordSet = new RecordSet;
 
-    $stSql = $this->montaRecuperaEmpenhoPreEmpenhoCgm().$stFiltro.$groupBy;
+    $stSql = $this->montaRecuperaEmpenhoPreEmpenhoCgm().$stFiltro;
     $this->setDebug( $stSql );
     $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
 
@@ -5562,7 +5562,7 @@ function recuperaEmpenhosPopUp(&$rsRecordSet, $stCondicao = "", $stOrdem = "", $
 
     if(trim($stOrdem))
         $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
-    $stSql = $this->montaRecuperaEmpenhosPopUp().$stCondicao.$stOrdem;    
+    $stSql = $this->montaRecuperaEmpenhosPopUp().$stCondicao.$stOrdem;
     $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
 
     return $obErro;
@@ -5570,27 +5570,27 @@ function recuperaEmpenhosPopUp(&$rsRecordSet, $stCondicao = "", $stOrdem = "", $
 
 function montaRecuperaEmpenhosPopUp()
 {
-    $stSql = "  SELECT                                                                        
-                    tabela.*                                                                
-                FROM (                                                                        
-                        SELECT                                                                                                   
-                                EE.cod_empenho                                                  
+    $stSql = "  SELECT
+                    tabela.*
+                FROM (
+                        SELECT
+                                EE.cod_empenho
                                 ,TO_CHAR(EE.dt_empenho,'dd/mm/yyyy') AS dt_empenho
-                                ,EE.exercicio as exercicio_empenho                                                
+                                ,EE.exercicio as exercicio_empenho
                                 ,EE.exercicio
                                 ,EE.cod_entidade
-                                ,C.nom_cgm AS nom_fornecedor                                                                      
-                        FROM                                                                     
-                                empenho.empenho             AS EE                            
-                                             
-                        JOIN empenho.pre_empenho AS PE                           
-                             ON EE.cod_pre_empenho = PE.cod_pre_empenho                       
-                            AND EE.exercicio       = PE.exercicio                             
+                                ,C.nom_cgm AS nom_fornecedor
+                        FROM
+                                empenho.empenho             AS EE
+
+                        JOIN empenho.pre_empenho AS PE
+                             ON EE.cod_pre_empenho = PE.cod_pre_empenho
+                            AND EE.exercicio       = PE.exercicio
                         JOIN sw_cgm AS  C
-                            ON C.numcgm = PE.cgm_beneficiario                             
-                                                    
-    ) AS tabela 
-    ";                                                                  
+                            ON C.numcgm = PE.cgm_beneficiario
+
+    ) AS tabela
+    ";
 
     return $stSql;
 }

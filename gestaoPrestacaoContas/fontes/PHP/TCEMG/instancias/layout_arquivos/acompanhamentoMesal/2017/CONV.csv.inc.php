@@ -42,17 +42,15 @@
 */
 include_once CAM_GPC_TCEMG_MAPEAMENTO.Sessao::getExercicio()."/TTCEMGConvenio.class.php";
 
-
 $rsRecordSetCONV10 = new RecordSet();
 $rsRecordSetCONV11 = new RecordSet();
 $rsRecordSetCONV20 = new RecordSet();
 
-
 $obTTCEMGConvenio = new TTCEMGConvenio();
-$obTTCEMGConvenio->setDado('exercicio' , Sessao::getExercicio());
-$obTTCEMGConvenio->setDado('entidade'  , $stEntidades);
+$obTTCEMGConvenio->setDado('exercicio', Sessao::getExercicio());
+$obTTCEMGConvenio->setDado('entidade', $stEntidades);
 $obTTCEMGConvenio->setDado('dt_inicial', $stDataInicial);
-$obTTCEMGConvenio->setDado('dt_final'  , $stDataFinal);
+$obTTCEMGConvenio->setDado('dt_final', $stDataFinal);
 
 //Tipo Registro 10
 $obTTCEMGConvenio->recuperaConvenio10($rsRecordSetCONV10);
@@ -73,176 +71,176 @@ $arRecordSetCONV99 = array(
 $rsRecordSetCONV99 = new RecordSet();
 $rsRecordSetCONV99->preenche($arRecordSetCONV99);
 
- 
+
 if (count($rsRecordSetCONV10->getElementos()) > 0) {
-    $inCount=0;
+    $inCount = 0;
     foreach ($rsRecordSetCONV10->getElementos() as $arCONV10) {
         $inCount++;
-        $stChave = $arCONV10['codconvenio'];
-        
-        $rsBloco = 'rsBloco_'.$inCount;
+        $stChave = $arCONV10['cod_convenio'];
+
+        $rsBloco = 'rsBloco_' . $inCount;
         unset($$rsBloco);
         $$rsBloco = new RecordSet();
         $$rsBloco->preenche(array($arCONV10));
-        
+
         $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
         $obExportador->roUltimoArquivo->addBloco($$rsBloco);
 
-        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tiporegistro");
+        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
 
-        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("codconvenio");
+        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_convenio");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(15);
 
-        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("codorgao");
+        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_orgao");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
 
-        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nroconvenio");
+        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_convenio");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(30);
 
-        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("dataassinatura");
+        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("data_assinatura");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("DATA_DDMMYYYY");
         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(8);
 
-        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("objetoconvenio");
+        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("objeto_convenio");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(500);
 
-        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("datainiciovigencia");
+        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("data_inicio_vigencia");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("DATA_DDMMYYYY");
         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(8);
 
-        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("datafinalvigencia");
+        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("data_final_vigencia");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("DATA_DDMMYYYY");
         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(8);
 
-        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("vlconvenio");
+        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("vl_convenio");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(14);
 
-        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("vlcontrapartida");
+        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("vl_contra_partida");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(14);
-        
+
         if (count($rsRecordSetCONV11->getElementos()) > 0) {
             foreach ($rsRecordSetCONV11->getElementos() as $arCONV11) {
-                $stChave1 = $arCONV11['codconvenio'];
-               
+                $stChave1 = $arCONV11['cod_convenio'];
+
                 if ($stChave === $stChave1) {
-                    $rsBloco = 'rsBloco_'.$inCount;
+                    $rsBloco = 'rsBloco_' . $inCount;
                     unset($$rsBloco);
                     $$rsBloco = new RecordSet();
                     $$rsBloco->preenche(array($arCONV11));
-                    
+
                     $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
                     $obExportador->roUltimoArquivo->addBloco($$rsBloco);
-  
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tiporegistro");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
-        
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("codconvenio");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_convenio");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(15);
-        
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipodocumento");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_documento");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(1);
-        
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nrodocumento");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_documento");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(14);
-        
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("esferaconcedente");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("esfera_concedente");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(1);
-        
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("valorconcedido");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("valor_concedido");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(14);
                 }
             }
         }
-         
+
         if (count($rsRecordSetCONV20->getElementos()) > 0) {
             foreach ($rsRecordSetCONV20->getElementos() as $arCONV20) {
-                $stChave2 = $arCONV20['codconvenio'];
-               
+                $stChave2 = $arCONV20['cod_convenio'];
+
                 if ($stChave === $stChave2) {
-                    $rsBloco = 'rsBloco_'.$inCount;
+                    $rsBloco = 'rsBloco_' . $inCount;
                     unset($$rsBloco);
                     $$rsBloco = new RecordSet();
                     $$rsBloco->preenche(array($arCONV20));
-                    
+
                     $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
                     $obExportador->roUltimoArquivo->addBloco($$rsBloco);
-       
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tiporegistro");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
-        
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("codorgao");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_orgao");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
-        
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nroconvenio");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_convenio");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(30);
-        
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("dataassinatura");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("data_assinatura");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("DATA_DDMMYYYY");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(8);
-        
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nroaditivo");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_aditivo");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(2);
-        
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("dscalteracao");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("dsc_alteracao");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(500);
-        
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("dtassinaturaaditivo");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("dt_assinatura_aditivo");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("DATA_DDMMYYYY");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(8);
-        
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("datavigencia");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("data_vigencia");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("DATA_DDMMYYYY");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(8);
-        
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("valoratualizado");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("valor_atualizado");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(14);
-        
-                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("valorcontra");
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("valor_contra_partida");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(14);
@@ -262,5 +260,5 @@ $rsRecordSetCONV10 = null;
 $rsRecordSetCONV11 = null;
 $rsRecordSetCONV20 = null;
 $rsRecordSetCONV99 = null;
-$obTTCEMGConvenio  = null;
+$obTTCEMGConvenio = null;
 ?>
