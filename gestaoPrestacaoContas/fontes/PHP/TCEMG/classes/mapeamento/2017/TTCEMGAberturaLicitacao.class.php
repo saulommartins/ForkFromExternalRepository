@@ -834,12 +834,17 @@ class TTCEMGAberturaLicitacao extends Persistente
                       ELSE NULL
                  END AS num_lote
                , homologacao.cod_item AS cod_item
-               --, TO_CHAR(cotacao.timestamp,'ddmmyyyy') AS dt_cotacao
                , TO_CHAR(licitacao.timestamp,'ddmmyyyy') AS dt_cotacao
                , CASE WHEN licitacao.cod_tipo_objeto = 4
                       THEN ('0,0000')
                       ELSE ((cotacao_fornecedor_item.vl_cotacao/SUM(((mapa_item.quantidade)-COALESCE(mapa_item_anulacao.quantidade, 0.0000))))::NUMERIC(14,4))::VARCHAR
                  END AS vl_cot_precos_unitario
+               , (
+                   CASE WHEN total_cotacao.total < 1 
+                        THEN 0
+                        ELSE round((cotacao_fornecedor_item.vl_cotacao/total_cotacao.total)*100, 2)
+                    END 
+                  ) AS percentual_referencial
                , SUM((mapa_item.quantidade)-COALESCE(mapa_item_anulacao.quantidade, 0.0000)) AS quantidade
                , '0,00' AS vl_min_alien_bens
             FROM licitacao.homologacao
@@ -983,6 +988,16 @@ class TTCEMGAberturaLicitacao extends Persistente
              AND cotacao_fornecedor_item.cgm_fornecedor = julgamento_item.cgm_fornecedor
              AND cotacao_fornecedor_item.lote           = julgamento_item.lote
 
+        LEFT JOIN (
+              SELECT exercicio, cod_cotacao, cod_item, lote, SUM(vl_cotacao) AS total
+                FROM  compras.cotacao_fornecedor_item
+               GROUP BY exercicio, cod_cotacao, cod_item, lote
+           ) AS total_cotacao
+              ON cotacao_fornecedor_item.exercicio      = total_cotacao.exercicio
+             AND cotacao_fornecedor_item.cod_cotacao    = total_cotacao.cod_cotacao
+             AND cotacao_fornecedor_item.cod_item       = total_cotacao.cod_item
+             AND cotacao_fornecedor_item.lote           = total_cotacao.lote
+
            WHERE TO_DATE(TO_CHAR(homologacao.timestamp,'dd/mm/yyyy'), 'dd/mm/yyyy') BETWEEN TO_DATE('01/" . $this->getDado('mes') . "/" . $this->getDado('exercicio') . "', 'dd/mm/yyyy')
              AND last_day(TO_DATE('" . $this->getDado('exercicio') . "' || '-' || '".$this->getDado('mes') . "' || '-' || '01','yyyy-mm-dd'))
              AND licitacao.cod_entidade IN (" . $this->getDado('entidades') . ")
@@ -1001,7 +1016,8 @@ class TTCEMGAberturaLicitacao extends Persistente
                , dt_cotacao
                , homologacao.cod_item
                , licitacao.cod_tipo_objeto
-               , cotacao_fornecedor_item.vl_cotacao ";
+               , cotacao_fornecedor_item.vl_cotacao
+               , total_cotacao.total";
 
         return $stSql;
     }
