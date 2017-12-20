@@ -304,6 +304,9 @@ $obFormulario->addHidden        ( $obHdnCtrl                                    
 $obFormulario->addHidden        ( $obHdnCodEntidade                             );
 $obFormulario->addHidden        ( $obHdnVlAssociadoTotal                        );
 $obFormulario->addComponente    ( $obCmbTipoNota                                );
+$obFormulario->addSpan          ( $obSpnChave                                   );
+$obFormulario->addSpan          ( $obSpnNumero                                  );
+$obFormulario->addSpan          ( $obSpnSerie                                   );
 $obFormulario->addHidden        ( $obHdnCodNota                                 );
 $obFormulario->addComponente    ( $obEntidadeUsuario                            );
 $obFormulario->addComponente    ( $obTxtIncricaoMunicipal                       );
@@ -311,9 +314,6 @@ $obFormulario->addComponente    ( $obTxtIncricaoEstadual                        
 $obFormulario->addComponente    ( $obTxtAIDF                                    );
 $obFormulario->addComponente    ( $obDtEmissao                                  );
 $obFormulario->addComponente    ( $obTxtExercicio                               );
-$obFormulario->addSpan          ( $obSpnNumero                                  );
-$obFormulario->addSpan          ( $obSpnSerie                                   );
-$obFormulario->addSpan          ( $obSpnChave                                   );
 
 $obFormulario->addTitulo        ( "Dados Financeiros dos Documentos Fiscais"   );
 $obFormulario->addComponente    ( $obTxtVlTotalDoctoFiscal                     );

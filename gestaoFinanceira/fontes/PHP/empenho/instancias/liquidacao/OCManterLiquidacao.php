@@ -1213,12 +1213,12 @@ function montaNF( $ent ){
             break;
             default:
                 $obFormulario->addComponente    ( $obCmbTipoNota                );
+                $obFormulario->addSpan          ( $obSpnTipoNF                  );
                 $obFormulario->addComponente    ( $obTxtIncricaoMunicipal       );
                 $obFormulario->addComponente    ( $obTxtIncricaoEstadual        );
                 $obFormulario->addComponente    ( $obTxtAIDF                    );
                 $obFormulario->addComponente    ( $obDtEmissao                  );
                 $obFormulario->addComponente    ( $obTxtExercicio               );
-                $obFormulario->addSpan          ( $obSpnTipoNF                  );
                 $obFormulario->addTitulo        ( "Dados Financeiros do Documento Fiscal"   );
                 $obFormulario->addComponente    ( $obTxtVlTotalDoctoFiscal      );
                 $obFormulario->addComponente    ( $obTxtVlDescontoDoctoFiscal   );
@@ -1263,6 +1263,7 @@ function montaChaveAcesso(&$obFormulario, $boMunicipal = false, $value = "")
     $obTxtChave->setInteiro   ( false                                 );
     $obTxtChave->setSize      ( $Size                                 );
     $obTxtChave->setMaxLength ( $Size                                 );
+    $obTxtChave->obEvento->setOnBlur( $obTxtChave->obEvento->getOnBlur(). " analisaChaveNFe(this, 'inNumeroNF', 'inNumSerie', 'dtEmissao')" );
 
     $obFormulario->addComponente( $obTxtChave );
 }
@@ -1305,6 +1306,10 @@ function montaTipoNF($boHabilita, $boNroNF, $boNroSerie, $boObrigatorio, $boChav
     if($boHabilita){
         $obFormulario = new Formulario;
         
+        if ($boChaveAcesso) {
+            montaChaveAcesso($obFormulario, $boMunicipal);
+        }
+
         if ($boNroNF) {
             montaNumeroNF($obFormulario, $boObrigatorio);        
         }
@@ -1313,10 +1318,6 @@ function montaTipoNF($boHabilita, $boNroNF, $boNroSerie, $boObrigatorio, $boChav
             montaNumSerie($obFormulario, $boObrigatorio);
         }
     
-        if ($boChaveAcesso) {
-            montaChaveAcesso($obFormulario, $boMunicipal);
-        }
-        
         $obFormulario->montaInnerHTML();
     
         $stHtml = $obFormulario->getHTML();

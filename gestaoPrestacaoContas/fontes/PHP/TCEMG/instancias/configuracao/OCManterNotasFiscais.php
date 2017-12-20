@@ -120,7 +120,8 @@ function montaChaveAcesso($boMunicipal = false, $value = "")
     $obTxtChave->setInteiro   ( false                                 );
     $obTxtChave->setSize      ( $Size                                 );
     $obTxtChave->setMaxLength ( $Size                                 );
-    
+    $obTxtChave->obEvento->setOnBlur( $obTxtChave->obEvento->getOnBlur(). " analisaChaveNFe(this, 'inNumeroNF', 'inNumSerie', 'dtEmissao')" );
+
     $obFormulario = new Formulario;
     $obFormulario->addComponente( $obTxtChave );
     $obFormulario->montaInnerHTML();
