@@ -77,7 +77,7 @@ $jsPath = constant('ENV_TYPE') == 'dev' ? '' : 'compressed/';
 <script src="<?=CAM_GA;?>javaScript/<?=$jsPath?>jquery.price_format.1.2.js" type="text/javascript"></script>
 <script src="<?=CAM_GA;?>javaScript/<?=$jsPath?>table_tree.js" type="text/javascript"></script>
 <script src="<?=CAM_GA;?>javaScript/<?=$jsPath?>jquery-migrate-1.2.1.js" type="text/javascript"></script>
-<script src="<?=CAM_GA;?>javaScript/<?=$jsPath?>jquery.formalize.js" type="text/javascript">></script>
+<script src="<?=CAM_GA;?>javaScript/<?=$jsPath?>jquery.formalize.js" type="text/javascript"></script>
 <script src="<?=CAM_GA;?>javaScript/<?=$jsPath?>jquery.meiomask.js" type="text/javascript" charset="utf-8"></script>
 <script src="<?=CAM_GA;?>javaScript/<?=$jsPath?>qTip.js" type="text/javascript"></script> <!-- IMPORTANTE - o arquivo qTip.js, reescreve o window.onLoad, que é usado em Window.js acima-->
 

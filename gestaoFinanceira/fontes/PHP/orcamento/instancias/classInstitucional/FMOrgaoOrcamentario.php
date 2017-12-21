@@ -142,10 +142,10 @@ $obFormulario->setAjuda     ( "UC-02.01.02"                   );
 $obFormulario->addHidden    ( $obHdnCtrl                      );
 $obFormulario->addHidden    ( $obHdnAcao                      );
 $obFormulario->addTitulo    ( "Dados para Órgão Orçamentário" );
+$obFormulario->addComponente( $obCmbEntidade                );
 $obFormulario->addComponente( $obTxtNumOrgao                  );
 $obFormulario->addComponente( $obTxtNomOrgao                  );
 $obFormulario->addComponente( $obPopUpResponsavel             );
-$obFormulario->addComponente( $obCmbEntidade                );
 
 $obFormulario->OK();
 $obFormulario->show();
