@@ -55,19 +55,20 @@ $stCtrl = $_GET['stCtrl'] ?  $_GET['stCtrl'] : $_POST['stCtrl'];
 
 
 function montaSpanCodigos(){
-  global $request;  
-  
-  //Filtros  
+  global $request;
+
+  //Filtros
   $inCodEntidade = $request->get('inCodEntidade');
   $inMes = $request->get('inMes');
   $stExercicio = Sessao::getExercicio();
   $stTipoExportacao = $request->get('stTipoExportacao');
-  
+  $boTransacao = new Transacao();
+
   $stFiltro = " WHERE cod_entidade = ".$inCodEntidade;
   $stFiltro .= " AND periodo = ".$inMes;
   $stFiltro .= " AND modulo_sicom = '".$stTipoExportacao."'";
   $stFiltro .= " AND exercicio = '".$stExercicio."'";
-  
+
   //Lista de códigos cadastrados para cada entidade
   $TTCEMGConsideracaoArquivoDescricao = new TTCEMGConsideracaoArquivoDescricao;
   $TTCEMGConsideracaoArquivoDescricao->recuperaDescricaoArquivos($rsConsideracao, $stFiltro, $boTransacao);
@@ -81,7 +82,9 @@ function montaSpanCodigos(){
     $TTCEMGConsideracaoArquivoDescricao->insereNovosArquivosPeriodo($boTransacao);
     $TTCEMGConsideracaoArquivoDescricao->recuperaDescricaoArquivos($rsConsideracao, $stFiltro, $boTransacao);
   }
-  
+
+  $obForm = new Form;
+
   $obFormulario = new Formulario;
   $obFormulario->addForm ( $obForm );
 
@@ -89,17 +92,17 @@ function montaSpanCodigos(){
   $obLista->setMostraPaginacao(false);
   $obLista->setTitulo('Lista de Arquivos');
   $obLista->setRecordSet($rsConsideracao);
-  
+
   //Cabeçalhos
   $obLista->addCabecalho('', 1);
   $obLista->addCabecalho('Arquivo', 5);
-  
+
   //Dados
   $obLista->addDado();
   $obLista->ultimoDado->setAlinhamento('ESQUERDA');
   $obLista->ultimoDado->setCampo('[cod_arquivo] - [nom_arquivo]');
   $obLista->commitDadoComponente();
-  
+
   $obTxtConsideracao = new TextArea;
   $obTxtConsideracao->setRotulo             ( "Consideração"                 );
   $obTxtConsideracao->setName               ( 'stConsideracao_[cod_arquivo]_[nom_arquivo]' );
@@ -109,18 +112,18 @@ function montaSpanCodigos(){
   $obTxtConsideracao->setRows               ( 2                              );
   $obTxtConsideracao->setCols               ( 150                            );
   $obTxtConsideracao->setTitle              ( "Informações complementares"   );
-  
+
   $obLista->addCabecalho('Consideração', 10);
   $obLista->addDadoComponente( $obTxtConsideracao , false);
   $obLista->ultimoDado->setAlinhamento('CENTRO');
   $obLista->ultimoDado->setCampo( "descricao" );
   $obLista->commitDadoComponente();
-  
+
   $obLista->montaInnerHTML();
   $stHTML = $obLista->getHTML();
-  
+
   $stJs = "jQuery('#spnCodigos').html('".$stHTML."');";
-  
+
   return $stJs;
 }
 
