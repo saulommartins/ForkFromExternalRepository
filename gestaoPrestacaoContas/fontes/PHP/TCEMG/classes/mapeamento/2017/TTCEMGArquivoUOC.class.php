@@ -49,13 +49,7 @@ class TTCEMGArquivoUOC extends Persistente {
         $this->setTabela('tcemg.arquivo_uoc');
         
         $this->setCampoCod('');
-        // $this->setComplementoChave('num_orgao, num_unidade, exercicio, mes');
-        /*
-        $this->AddCampo('num_orgao'  , 'integer', true, '', true, true);
-        $this->AddCampo('num_unidade', 'integer', true, '', true, true);
-        $this->AddCampo('exercicio'  , 'char'   , true,'4', true, true);
-        $this->AddCampo('mes'        , 'integer', true, '', true, false);
-        */
+
         $this->AddCampo('cod_orgao',     'char', true, '2');
         $this->AddCampo('cod_unidade',   'char', true, '10');
         $this->AddCampo('id_fundo',      'char', true, '2');

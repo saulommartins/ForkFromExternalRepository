@@ -232,15 +232,15 @@ class TExportacaoTCEMGUniOrcam extends Persistente
                     LPAD(oo.num_orgao::VARCHAR, 5, '0') AS cod_unidade,
                     LPAD(oo.num_orgao::VARCHAR, 5, '0') || LPAD(ou.num_unidade::VARCHAR, 3, '0') AS cod_sub_unidade,
                     (CASE WHEN tu.identificador IN (1, 2, 3, 4, 99) 
-                          THEN lpad(tu.identificador::VARCHAR, 2,'0')
-                          ELSE ''
+                      THEN lpad(tu.identificador::VARCHAR, 2,'0')
+                      ELSE ''
                     END) AS id_fundo, 
                     oo.nom_orgao AS descunidade,
                     ou.nom_unidade AS descunidadesub
                 
-              FROM  orcamento.entidade oe
+              FROM  orcamento.orgao oo
 
-              JOIN  orcamento.orgao oo
+              JOIN  orcamento.entidade oe
                 ON  oo.cod_entidade = oe.cod_entidade
                AND  oo.exercicio = oe.exercicio
 
@@ -251,61 +251,19 @@ class TExportacaoTCEMGUniOrcam extends Persistente
               JOIN  tcemg.uniorcam tu
                 ON  oo.num_orgao = tu.num_orgao
                AND  oo.exercicio = tu.exercicio
+               AND  tu.num_unidade = ou.num_unidade
 
-             WHERE  tu.exercicio = '".$this->getDado('exercicio')."'
+             WHERE  oo.exercicio = '".$this->getDado('exercicio')."'
                AND  NOT EXISTS (
                      SELECT 1
                        FROM tcemg.arquivo_uoc
                       WHERE arquivo_uoc.num_orgao   = tu.num_orgao
-                        AND arquivo_uoc.num_unidade = tu.num_unidade
-                        AND arquivo_uoc.exercicio   = '".$this->getDado('exercicio')."'
-                        AND arquivo_uoc.mes < ".$this->getDado('mes')." 
-                    )
+                    AND arquivo_uoc.num_unidade = tu.num_unidade
+                    AND arquivo_uoc.exercicio   = '".$this->getDado('exercicio')."'
+                    AND arquivo_uoc.mes < ".$this->getDado('mes')."  
+                )
         ";
     }
-
-    /*
-    public function montaRecuperaDadosExportacaoUOC()
-    {
-        $stSql = " SELECT  lpad(".$this->getDado('cod_orgao')."::VARCHAR,2,'0') AS codorgao
-                        , lpad(lpad(uniorcam.num_orgao::VARCHAR, 2, '0')||lpad(uniorcam.num_unidade::VARCHAR, 2, '0'),5,'0') AS codunidadesub
-                        , CASE WHEN uniorcam.identificador = 1 OR uniorcam.identificador = 2 OR uniorcam.identificador = 3 OR
-                                    uniorcam.identificador = 4 OR uniorcam.identificador = 99
-                                THEN lpad(uniorcam.identificador::VARCHAR, 2,'0')
-                                ELSE ''
-                            END AS idfundo
-                        , unidade.nom_unidade AS descunidadesub
-                        , 2 AS esubunidade
-                        , uniorcam.num_orgao
-                        , uniorcam.num_unidade
-
-                     FROM tcemg.uniorcam
-
-                     JOIN orcamento.orgao
-                       ON orgao.num_orgao = uniorcam.num_orgao
-                      AND orgao.exercicio = uniorcam.exercicio
-
-                     JOIN orcamento.unidade
-                       ON unidade.num_unidade = uniorcam.num_unidade
-                      AND unidade.num_orgao = uniorcam.num_orgao
-                      AND unidade.exercicio = uniorcam.exercicio
-
-                    WHERE uniorcam.exercicio = '".$this->getDado('exercicio')."'
-
-                      AND NOT EXISTS (
-                                         SELECT 1
-                                           FROM tcemg.arquivo_uoc
-                                          WHERE arquivo_uoc.num_orgao   = uniorcam.num_orgao
-                                            AND arquivo_uoc.num_unidade = uniorcam.num_unidade
-                                            AND arquivo_uoc.exercicio   = '".$this->getDado('exercicio')."'
-                                            AND arquivo_uoc.mes < ".$this->getDado('mes')." 
-                                        )
-
-        ";
-
-        return $stSql;
-    }
-    */
 
     public function recuperaDadosExportacaoIUOC(&$rsRecordSet,$stFiltro="",$stOrder="",$boTransacao="")
     {
