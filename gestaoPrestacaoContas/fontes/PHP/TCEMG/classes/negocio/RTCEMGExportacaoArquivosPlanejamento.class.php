@@ -412,7 +412,7 @@ class RTCEMGExportacaoArquivosPlanejamento
 
                 $stFiltro = "AND oe.cod_entidade = " . $elemento['cod_entidade'];
                 $stFiltro .= " ORDER BY cod_orgao, cod_unidade, cod_sub_unidade";
-                
+
                 $this->obTExportacaoTCEMGUniOrcam->recuperaDadosExportacaoUOC($rsRecordSetUOC, $stFiltro);
                 $ultimaUnidade = 0;
 
