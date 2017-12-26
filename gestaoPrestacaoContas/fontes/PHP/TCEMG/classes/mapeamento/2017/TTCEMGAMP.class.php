@@ -48,7 +48,7 @@ class TTCEMGAMP extends Persistente
     public function recuperaDadosExportacaoTipo10(&$rsRecordSet, $stFiltro = '', $stOrdem = '', $boTransacao = '')
     {
         $rsRecordSet = new RecordSet();
-        $obConexao   = new Conexao();
+        $obConexao = new Conexao();
 
         $stSQL = $this->montaRecuperaDadosExportacaoTipo10($stFiltro, $stOrdem);
         $this->setDebug($stSQL);
@@ -78,11 +78,11 @@ class TTCEMGAMP extends Persistente
                        LEFT JOIN ppa.produto ON acao_dados.cod_produto = produto.cod_produto
                        LEFT JOIN administracao.unidade_medida ON unidade_medida.cod_unidade = acao_dados.cod_unidade_medida
                                  AND unidade_medida.cod_grandeza = acao_dados.cod_grandeza
-                  WHERE NOT EXISTS (SELECT 1
-                                    FROM tcemg.arquivo_amp
-                                    WHERE arquivo_amp.cod_acao = acao.cod_acao
-                                          AND arquivo_amp.exercicio <= '" . $this->getDado('exercicio') . "'
-                                          AND arquivo_amp.mes < " . $this->getDado('mes') . ")
+                  WHERE EXISTS (SELECT 1
+                                FROM tcemg.arquivo_amp
+                                WHERE arquivo_amp.cod_acao = acao.cod_acao
+                                      AND arquivo_amp.exercicio = '" . $this->getDado('exercicio') . "'
+                                      AND arquivo_amp.mes = " . $this->getDado('mes') . ")
                   GROUP BY acao.num_acao,
                            acao.cod_acao,
                            acao_dados.descricao,
@@ -97,7 +97,7 @@ class TTCEMGAMP extends Persistente
     public function recuperaDadosExportacaoTipo12(&$rsRecordSet, $stCondicao = '' , $stOrdem = '' , $boTransacao = '')
     {
         $rsRecordSet = new RecordSet();
-        $obConexao   = new Conexao();
+        $obConexao = new Conexao();
 
         $stSQL = $this->montaRecuperaDadosExportacaoTipo12($stCondicao, $stOrdem);
         $this->setDebug($stSQL);

@@ -49,15 +49,15 @@ class TTCEMGAMP extends Persistente
     {
         $rsRecordSet = new RecordSet();
         $obConexao   = new Conexao();
-        
+
         $stSQL = $this->montaRecuperaDadosExportacaoTipo10($stFiltro, $stOrdem);
         $this->setDebug($stSQL);
-        
+
         return $obConexao->executaSQL($rsRecordSet, $stSQL, $boTransacao);
     }
 
     private function montaRecuperaDadosExportacaoTipo10($stFiltro = '', $stOrdem = '')
-    {        
+    {
         $stSQL = "
         SELECT 10 AS tipo_registro
              , 2 AS possui_sub_acao
@@ -93,29 +93,29 @@ class TTCEMGAMP extends Persistente
                              FROM tcemg.arquivo_amp
                             WHERE arquivo_amp.cod_acao  = acao.cod_acao
                               AND arquivo_amp.exercicio = '".$this->getDado('exercicio')."'
-                              AND arquivo_amp.mes < ".$this->getDado('mes')." 
+                              AND arquivo_amp.mes < ".$this->getDado('mes')."
                           )
 
       GROUP BY acao.num_acao
              , acao.cod_acao
              , acao_dados.descricao
              , acao_dados.finalidade
-             , produto.descricao 
+             , produto.descricao
              , unidade_medida.nom_unidade ";
-             
+
         $stSQL .= $stOrdem;
-        
+
         return $stSQL;
     }
-    
+
     public function recuperaDadosExportacaoTipo12(&$rsRecordSet, $stCondicao = '' , $stOrdem = '' , $boTransacao = '')
     {
         $rsRecordSet = new RecordSet();
         $obConexao   = new Conexao();
-        
+
         $stSQL = $this->montaRecuperaDadosExportacaoTipo12($stCondicao, $stOrdem);
         $this->setDebug($stSQL);
-        
+
         return $obConexao->executaSQL($rsRecordSet, $stSQL, $boTransacao);
     }
 
@@ -142,7 +142,7 @@ class TTCEMGAMP extends Persistente
                           , acao.cod_acao
                           , acao.num_acao AS id_acao
                           , '' AS id_sub_acao
-                          
+
                           , COALESCE((SELECT ppa.busca_valor_meta_ano_ppa(acao.cod_acao,'1',acao.ultimo_timestamp_acao_dados)), 0.00) AS metas_ano_1
                           , COALESCE((SELECT ppa.busca_valor_meta_ano_ppa(acao.cod_acao,'2',acao.ultimo_timestamp_acao_dados)), 0.00) AS metas_ano_2
                           , COALESCE((SELECT ppa.busca_valor_meta_ano_ppa(acao.cod_acao,'3',acao.ultimo_timestamp_acao_dados)), 0.00) AS metas_ano_3
@@ -151,7 +151,7 @@ class TTCEMGAMP extends Persistente
                           , COALESCE((SELECT ppa.busca_valor_recurso_ano_ppa(acao.cod_acao,'2',acao.ultimo_timestamp_acao_dados)), 0.00) AS recursos_ano_2
                           , COALESCE((SELECT ppa.busca_valor_recurso_ano_ppa(acao.cod_acao,'3',acao.ultimo_timestamp_acao_dados)), 0.00) AS recursos_ano_3
                           , COALESCE((SELECT ppa.busca_valor_recurso_ano_ppa(acao.cod_acao,'4',acao.ultimo_timestamp_acao_dados)), 0.00) AS recursos_ano_4
-                          
+
                        FROM ppa.acao
                        JOIN ppa.acao_dados
                          ON acao_dados.cod_acao             = acao.cod_acao
@@ -161,42 +161,42 @@ class TTCEMGAMP extends Persistente
                         AND acao_unidade_executora.timestamp_acao_dados = acao.ultimo_timestamp_acao_dados
                        JOIN ppa.programa
                          ON programa.cod_programa = acao.cod_programa
-                         
+
 
                        JOIN (  SELECT despesa.exercicio
                                      , despesa.cod_entidade
                                      , programa.cod_programa
                                   FROM ppa.programa
-                
+
                                   JOIN orcamento.programa_ppa_programa
                                     ON programa_ppa_programa.cod_programa_ppa = programa.cod_programa
-                
+
                                   JOIN orcamento.programa AS o_p
                                     ON o_p.exercicio = programa_ppa_programa.exercicio
                                    AND o_p.cod_programa = programa_ppa_programa.cod_programa
-                
+
                                   JOIN orcamento.despesa
                                     ON despesa.cod_programa = o_p.cod_programa
                                    AND despesa.exercicio = o_p.exercicio
-                                 
+
                                  WHERE despesa.exercicio = '".Sessao::getExercicio()."'
                                    AND despesa.cod_entidade IN (".$this->getDado('entidades').")
-                
+
                                  GROUP BY despesa.exercicio
                                     , despesa.cod_entidade
                                     , programa.cod_programa
-                    
+
                               ) AS despesa
-                 
-                        ON despesa.cod_programa = programa.cod_programa 
-                
+
+                        ON despesa.cod_programa = programa.cod_programa
+
                       JOIN administracao.configuracao_entidade
                         ON configuracao_entidade.cod_entidade = despesa.cod_entidade
                        AND configuracao_entidade.exercicio    = despesa.exercicio
                        AND configuracao_entidade.cod_modulo   = 55
                        AND configuracao_entidade.parametro    = 'tcemg_codigo_orgao_entidade_sicom'
-                       
-                       
+
+
                     GROUP BY acao.num_acao
                            , acao.cod_acao
                            , programa.num_programa
@@ -207,12 +207,12 @@ class TTCEMGAMP extends Persistente
                            , TRIM(configuracao_entidade.valor)
                     ORDER BY acao.num_acao
          ";
-         
+
         $stSql .= $stFiltro . $stOrdem;
-        
+
         return $stSql;
     }
-    
+
     public function __destruct(){}
 
 }
