@@ -142,6 +142,10 @@ class TTCEMGAMP extends Persistente
                        JOIN ppa.acao_unidade_executora ON acao_unidade_executora.cod_acao = acao.cod_acao
                             AND acao_unidade_executora.timestamp_acao_dados = acao.ultimo_timestamp_acao_dados
                        JOIN ppa.programa ON programa.cod_programa = acao.cod_programa
+                       JOIN ppa.programa_setorial ON programa.cod_setorial = programa_setorial.cod_setorial
+                       JOIN ppa.macro_objetivo ON programa_setorial.cod_macro = macro_objetivo.cod_macro
+                       JOIN ppa.ppa ON macro_objetivo.cod_ppa = ppa.cod_ppa
+                  WHERE ppa.cod_ppa = " . ($this->getDado('exercicio') > 2017 ? 2 : 1) . "
                   GROUP BY acao.num_acao,
                            acao.cod_acao,
                            programa.num_programa,
@@ -152,7 +156,6 @@ class TTCEMGAMP extends Persistente
                   ORDER BY acao.num_acao
                   " . $stFiltro . "
                   " . $stOrdem;
-
         return $stSql;
     }
 
