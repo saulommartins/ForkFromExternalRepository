@@ -93,7 +93,6 @@ if ($_POST OR $_GET['pg']) {
 }
 
 $arFiltro = array();
-
 if ($_REQUEST['inCodPPA'] != '') {
     $arFiltro[] = ' cod_ppa::INTEGER = ' . $_REQUEST['inCodPPA'];
 }
@@ -120,9 +119,9 @@ if ($_REQUEST['inCodTipo'] != '') {
 }
 if ( isset($_REQUEST['inCodIdentificadorAcao'])) {
     if ( $_REQUEST['inCodIdentificadorAcao'] == '' )
-        $arFiltro[] = " num_programa IS NOT NULL ";       
+        $arFiltro[] = " num_programa IS NOT NULL ";
     else
-        $arFiltro[] = " acao_identificador_acao.cod_identificador = ".$_REQUEST['inCodIdentificadorAcao']." ";   
+        $arFiltro[] = " acao_identificador_acao.cod_identificador = ".$_REQUEST['inCodIdentificadorAcao']." ";
 }
 
 if (count($arFiltro) > 0) {
@@ -135,7 +134,7 @@ if ($_REQUEST['stAcao'] == 'alterar') {
     $inCodUf = SistemaLegado::pegaConfiguracao('cod_uf', 2, Sessao::getExercicio(),$boTransacao);
     if ( ($inCodUf == 2) || ($inCodUf = 27)) {
         $obTPPAAcao->setDado('cod_uf',$inCodUf);
-        $obTPPAAcao->recuperaListaAcoesProgramasTCE($rsListaAcao,$stFiltro,$stOrder);              
+        $obTPPAAcao->recuperaListaAcoesProgramasTCE($rsListaAcao,$stFiltro,$stOrder);
     }else{
         $obTPPAAcao->recuperaListaAcoesProgramas($rsListaAcao,$stFiltro,$stOrder);
     }

@@ -58,6 +58,7 @@ class TTCEMGAMP extends Persistente
 
     private function montaRecuperaDadosExportacaoTipo10($stFiltro = '', $stOrdem = '')
     {
+        // Como não há filtro no relatório, cod_ppa foi fixo
         $stSQL = "SELECT 10 AS tipo_registro,
                          2 AS possui_sub_acao,
                          acao.cod_acao,
@@ -78,11 +79,7 @@ class TTCEMGAMP extends Persistente
                        LEFT JOIN ppa.produto ON acao_dados.cod_produto = produto.cod_produto
                        LEFT JOIN administracao.unidade_medida ON unidade_medida.cod_unidade = acao_dados.cod_unidade_medida
                                  AND unidade_medida.cod_grandeza = acao_dados.cod_grandeza
-                  WHERE EXISTS (SELECT 1
-                                FROM tcemg.arquivo_amp
-                                WHERE arquivo_amp.cod_acao = acao.cod_acao
-                                      AND arquivo_amp.exercicio = '" . $this->getDado('exercicio') . "'
-                                      AND arquivo_amp.mes = " . $this->getDado('mes') . ")
+                  WHERE ppa.cod_ppa = " . ($this->getDado('exercicio') > 2017 ? 2 : 1) . "
                   GROUP BY acao.num_acao,
                            acao.cod_acao,
                            acao_dados.descricao,
@@ -90,7 +87,6 @@ class TTCEMGAMP extends Persistente
                            produto.descricao,
                            unidade_medida.nom_unidade
                   " . $stOrdem;
-
         return $stSQL;
     }
 

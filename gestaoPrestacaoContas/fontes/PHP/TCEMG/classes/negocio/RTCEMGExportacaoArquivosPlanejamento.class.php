@@ -131,21 +131,17 @@ class RTCEMGExportacaoArquivosPlanejamento
     public function geraRecordset(&$arRecordSetArquivos)
     {
         if (in_array("AMP.csv",$this->getArquivos())) {
-
             //Tipo Registro 10
             $this->obTTCEMGAMP->setDado('exercicio', $this->getExercicio());
-            $this->obTTCEMGAMP->setDado('mes'      , $this->getMes());
+            $this->obTTCEMGAMP->setDado('mes', $this->getMes());
             $this->obTTCEMGAMP->recuperaDadosExportacaoTipo10($rsRecordSet10);
 
             $arRecordSetArquivos["AMP10"] = $rsRecordSet10;
 
-            // echo '<pre>'; print_r($rsRecordSet10); echo '</pre>';
-            // exit();
-
             foreach ($rsRecordSet10->arElementos AS $arAMP) {
-                $this->obTTCEMGArquivoAMP->setDado('cod_acao' , $arAMP['cod_acao']);
+                $this->obTTCEMGArquivoAMP->setDado('cod_acao', $arAMP['cod_acao']);
                 $this->obTTCEMGArquivoAMP->setDado('exercicio', $this->getExercicio());
-                $this->obTTCEMGArquivoAMP->setDado('mes'      , $this->getMes());
+                $this->obTTCEMGArquivoAMP->setDado('mes', $this->getMes());
                 $this->obTTCEMGArquivoAMP->recuperaPorChave($rsArquivoAMP);
 
                 if ($rsArquivoAMP->getNumLinhas() < 1) {
