@@ -85,6 +85,7 @@ $arrAOC11 = $rsRecordSetAOC11->getElementos();
 for ($i = 0; $i < count($arrAOC11); $i++) {
     if ($arrAOC11[$i]['nrodecreto'] == $arrAOC11[$i + 1]['nrodecreto'] && $arrAOC11[$i]['tipodecretoalteracao'] == $arrAOC11[$i + 1]['tipodecretoalteracao']) {
       $arrAOC11[$i]['valoraberto'] += $arrAOC11[$i + 1]['valoraberto'];
+      $arrAOC11[$i]['valoraberto'] = number_format($arrAOC11[$i]['valoraberto'], 2, ',', '');
       unset($arrAOC11[$i + 1]);
       sort($arrAOC11);
     }

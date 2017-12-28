@@ -491,6 +491,11 @@ if (count($rsRecordSetABERLIC10->getElementos()) > 0) {
                                 $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("DATA_DDMMYYYY");
                                 $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(8);
                                 
+                                $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("percentual_referencial");
+                                $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                                $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
+                                $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(6);
+
                                 $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("vl_cot_precos_unitario");
                                 $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                                 $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");

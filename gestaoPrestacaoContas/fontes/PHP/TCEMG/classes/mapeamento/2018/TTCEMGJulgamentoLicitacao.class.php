@@ -315,8 +315,20 @@ class TTCEMGJulgamentoLicitacao extends Persistente
 
     public function montaRecuperaExportacao30()
     {
+        return "
+          
+        ";
+    }
+
+    public function recuperaExportacao40(&$rsRecordSet,$stFiltro="",$stOrder="",$boTransacao="")
+    {
+        return $this->executaRecupera("montaRecuperaExportacao40",$rsRecordSet,$stFiltro,$stOrder,$boTransacao);
+    }
+
+    public function montaRecuperaExportacao40()
+    {
         $stSql = "
-          SELECT 30 AS tipo_registro
+          SELECT 40 AS tipo_registro
                , LPAD(configuracao_entidade.valor,2,'0') AS cod_orgao
                , LPAD(LPAD(licitacao.num_orgao::VARCHAR, 2, '0') || LPAD(licitacao.num_unidade::VARCHAR, 2, '0'),5,'0') AS cod_unidade
                , (SELECT exercicio_licitacao

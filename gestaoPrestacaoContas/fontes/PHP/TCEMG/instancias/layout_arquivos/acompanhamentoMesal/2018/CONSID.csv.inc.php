@@ -45,10 +45,11 @@ include_once CAM_GPC_TCEMG_MAPEAMENTO.Sessao::getExercicio()."/TTCEMGConsideraca
 $rsRecuperaConsid10 = new RecordSet();
 
 $obTTCEMGConsideracaoArquivo = new TTCEMGConsideracaoArquivo();
-$obTTCEMGConsideracaoArquivo->setDado('exercicio'   , Sessao::getExercicio());
-$obTTCEMGConsideracaoArquivo->setDado('entidade'    , $stEntidades);
-$obTTCEMGConsideracaoArquivo->setDado('mes'         , $stMes);
-$obTTCEMGConsideracaoArquivo->setDado('modulo_sicom','mensal');
+$obTTCEMGConsideracaoArquivo->setDado('exercicio', Sessao::getExercicio());
+$obTTCEMGConsideracaoArquivo->setDado('entidade', $stEntidades);
+$obTTCEMGConsideracaoArquivo->setDado('mes', $stMes);
+$obTTCEMGConsideracaoArquivo->setDado('modulo_sicom', 'mensal');
+
 //10 – Considerações
 $obTTCEMGConsideracaoArquivo->recuperaConsid($rsRecuperaConsid10);
 
@@ -82,12 +83,12 @@ if (count($rsRecuperaConsid10->getElementos()) > 0) {
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
     }
-    
+
     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("consideracoes");
     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(3000);
-    
+
 } else {
     $obExportador->roUltimoArquivo->addBloco($rsRecuperaConsid99);
     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");

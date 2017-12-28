@@ -37,72 +37,58 @@
     */
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
-include_once( CLA_PERSISTENTE                                                                      );
+include_once(CLA_PERSISTENTE);
 
 class TTCEMGConsideracaoArquivo extends Persistente
 {
-    public function TTCEMGConsideracaoArquivo()
-    {
+    public function TTCEMGConsideracaoArquivo() {
         parent::Persistente();
         $this->setTabela("tcemg.consideracao_arquivo");
         $this->setCampoCod('cod_arquivo');
         $this->setComplementoChave('');
-        $this->AddCampo('cod_arquivo','integer',true,'',true,false);
-        $this->AddCampo('nom_arquivo','varchar',true,'"15"',false,false);
+        $this->AddCampo('cod_arquivo', 'integer', true, '', true, false);
+        $this->AddCampo('nom_arquivo', 'varchar', true, '"15"', false, false);
     }
 
-    public function recuperaDadosArquivo(&$rsRecordSet, $stFiltro, $boTransacao = "")
-    {
-        $obErro      = new Erro;
-        $obConexao   = new Conexao;
+    public function recuperaDadosArquivo(&$rsRecordSet, $stFiltro, $boTransacao = "") {
+        $obErro = new Erro;
+        $obConexao = new Conexao;
         $rsRecordSet = new RecordSet;
         $stOrdem = " ORDER BY consideracao_arquivo.cod_arquivo";
-        $stSql = $this->montaRecuperaDadosArquivo().$stFiltro.$stOrdem;
+        $stSql = $this->montaRecuperaDadosArquivo() . $stFiltro . $stOrdem;
         $this->stDebug = $stSql;
-        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
+        $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
 
         return $obErro;
     }
 
-    public function montaRecuperaDadosArquivo()
-    {
-        $stSql  = "
-            SELECT *
-              FROM tcemg.consideracao_arquivo
-              ";
-
+    public function montaRecuperaDadosArquivo() {
+        $stSql = "SELECT * FROM tcemg.consideracao_arquivo";
         return $stSql;
     }
 
-    public function recuperaConsid(&$rsRecordSet, $boTransacao = "")
-    {
-        $obErro      = new Erro;
-        $obConexao   = new Conexao;
+    public function recuperaConsid(&$rsRecordSet, $boTransacao = "") {
+        $obErro = new Erro;
+        $obConexao = new Conexao;
         $rsRecordSet = new RecordSet;
-        $stSql = $this->montaRecuperaConsid().$stFiltro.$stOrdem;
+        $stSql = $this->montaRecuperaConsid() . $stFiltro . $stOrdem;
         $this->stDebug = $stSql;
-        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
+        $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
 
         return $obErro;
     }
 
-    public function montaRecuperaConsid()
-    {
-        $stSql  = "
-            SELECT 10 as tipo_registro
-                  , 'FLPGO' AS nom_arquivo
-                  , CAD.descricao as consideracoes
-              FROM tcemg.consideracao_arquivo
-              
-              JOIN tcemg.consideracao_arquivo_descricao as CAD
-                ON CAD.cod_arquivo = consideracao_arquivo.cod_arquivo
-               AND CAD.descricao != ''
-             
-             WHERE CAD.periodo      = '".$this->getDado('mes')."'
-               AND CAD.cod_entidade IN(".$this->getDado('entidade').")
-               AND CAD.modulo_sicom = '".$this->getDado('modulo_sicom')."'
-          ORDER BY consideracao_arquivo.cod_arquivo
-        ";
+    public function montaRecuperaConsid() {
+        $stSql = "SELECT 10 as tipo_registro,
+                         'FLPGO' AS nom_arquivo,
+                         CAD.descricao as consideracoes
+                  FROM tcemg.consideracao_arquivo
+                       JOIN tcemg.consideracao_arquivo_descricao as CAD ON CAD.cod_arquivo = consideracao_arquivo.cod_arquivo
+                            AND CAD.descricao != ''
+                  WHERE CAD.periodo = '" . $this->getDado('mes') . "'
+                        AND CAD.cod_entidade IN(" . $this->getDado('entidade') . ")
+                        AND CAD.modulo_sicom = '" . $this->getDado('modulo_sicom') . "'
+                  ORDER BY consideracao_arquivo.cod_arquivo";
         return $stSql;
     }
 

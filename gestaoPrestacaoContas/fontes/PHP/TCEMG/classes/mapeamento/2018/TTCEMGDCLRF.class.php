@@ -26,11 +26,11 @@
 /**
     * Classe de mapeamento da tabela TCEMG.METAS_FISCAIS
     * Data de Criação: 20/02/2014
-    
-    
+
+
     * @author Analista: Eduardo Paculski Schitz
     * @author Desenvolvedor: Franver Sarmento de Moraes
-    
+
     * @package URBEM
     * @subpackage Mapeamento
     *
@@ -52,33 +52,30 @@ class TTCEMGDCLRF extends Persistente {
     {
         parent::Persistente();
     }
-    
+
     function recuperaValoresArquivoDCLRF(&$rsRecordSet)
     {
         return $this->executaRecupera("montaRecuperaValoresArquivoDCLRF",$rsRecordSet,$stFiltro,$stOrder,$boTransacao);
     }
-    
+
     function montaRecuperaValoresArquivoDCLRF()
     {
-        $stSql .= "
-        SELECT exercicio ";
-        
+        $stSql.= "SELECT exercicio, ";
+
         if($this->getDado("cod_orgao") != ''){
-            $stSql .= "
-             , 10 AS tipo_registro
-             , '".$this->getDado("cod_orgao")."' AS cod_orgao
-            ";
+            $stSql.= "'" . $this->getDado("tipo_registro") . "' AS tipo_registro,
+                      '" . $this->getDado("cod_orgao") . "' AS cod_orgao, ";
         }
-        
-        $stSql .= "
-             , mes_referencia
-             , *
-          FROM tcemg.configuracao_arquivo_dclrf 
-         WHERE exercicio = '".$this->getDado('exercicio')."'
-           AND mes_referencia = ".$this->getDado('mes_referencia');
+
+        $stSql.= " mes_referencia,
+                   *
+          FROM tcemg.configuracao_arquivo_dclrf
+          WHERE exercicio = '" . $this->getDado('exercicio') . "'
+                AND mes_referencia = " . $this->getDado('mes_referencia');
+
         return $stSql;
     }
-    
+
     public function __destruct(){}
 
 }

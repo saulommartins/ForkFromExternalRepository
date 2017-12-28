@@ -113,7 +113,7 @@ if (count($rsRecordSetLAO10->getElementos()) > 0) {
 
         $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_lei_alteracao");
         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
-        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_ESQ");
+        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(6);
 
         $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("dt_lei_alteracao");
@@ -134,10 +134,10 @@ if (count($rsRecordSetLAO10->getElementos()) > 0) {
                     unset($$rsBloco);
                     $$rsBloco = new RecordSet();
                     $$rsBloco->preenche(array($arLAO11));
-                    
+
                     $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
                     $obExportador->roUltimoArquivo->addBloco($$rsBloco);
-                    
+
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
@@ -145,7 +145,7 @@ if (count($rsRecordSetLAO10->getElementos()) > 0) {
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_lei_alteracao");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
-                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(6);
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_lei_alteracao");
@@ -202,7 +202,7 @@ if (count($rsRecordSetLAO20->getElementos()) > 0) {
 
         $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_lei_alter_orcam");
         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
-        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_ESQ");
+        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(6);
 
         $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("dt_lei_alter_orcam");
