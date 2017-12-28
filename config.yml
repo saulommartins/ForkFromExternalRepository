@@ -1,10 +1,10 @@
 urbem:
   connection:
     database: urbem
-    host:     10.20.0.138
+    host:     192.168.170.8
     port:     5432
-    username: urbem
-    password: root
+    username: postgres
+    password: urbem
   env:
     type: prod
   birt:

@@ -27,7 +27,7 @@
   * Página de Formulario de Configuração de Orgão
   * Data de Criação: 07/01/2014
 
-  * @author Analista:      
+  * @author Analista:
   * @author Desenvolvedor: Franver Sarmento de Moraes
 
   * @ignore
@@ -46,23 +46,23 @@ class TTCEMGBALANCETE extends Persistente {
     public function TTCEMGConfiguracaoOrgao()
     {
         parent::Persistente();
-    }    
+    }
 
     public function recuperaRegistro10(&$rsRecordSet)
     {
        $obErro      = new Erro;
        $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
-    
+
        if(trim($stOrdem))
            $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
        $stSql = $this->montaRecuperaRegistro10().$stCondicao.$stOrdem;
        $this->setDebug( $stSql );
        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
-    
+
        return $obErro;
     }
-    
+
     public function montaRecuperaRegistro10()
     {
 	    $stSql = "
@@ -85,16 +85,16 @@ class TTCEMGBALANCETE extends Persistente {
        $obErro      = new Erro;
        $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
-    
+
        if(trim($stOrdem))
            $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
        $stSql = $this->montaRecuperaRegistro11().$stCondicao.$stOrdem;
        $this->setDebug( $stSql );
        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
-    
+
        return $obErro;
     }
-    
+
     public function montaRecuperaRegistro11()
     {
 	    $stSql = "
@@ -127,16 +127,16 @@ class TTCEMGBALANCETE extends Persistente {
        $obErro      = new Erro;
        $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
-    
+
        if(trim($stOrdem))
            $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
        $stSql = $this->montaRecuperaRegistro12().$stCondicao.$stOrdem;
        $this->setDebug( $stSql );
        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
-    
+
        return $obErro;
     }
-    
+
     public function montaRecuperaRegistro12()
     {
 	    $stSql = "
@@ -161,16 +161,16 @@ class TTCEMGBALANCETE extends Persistente {
        $obErro      = new Erro;
        $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
-    
+
        if(trim($stOrdem))
            $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
        $stSql = $this->montaRecuperaRegistro13().$stCondicao.$stOrdem;
        $this->setDebug( $stSql );
        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
-    
+
        return $obErro;
     }
-    
+
     public function montaRecuperaRegistro13()
     {
 	    $stSql = "
@@ -196,16 +196,16 @@ class TTCEMGBALANCETE extends Persistente {
        $obErro      = new Erro;
        $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
-    
+
        if(trim($stOrdem))
            $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
        $stSql = $this->montaRecuperaRegistro14().$stCondicao.$stOrdem;
        $this->setDebug( $stSql );
        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
-    
+
        return $obErro;
     }
-    
+
     public function montaRecuperaRegistro14()
     {
 	    $stSql = "
@@ -230,6 +230,8 @@ class TTCEMGBALANCETE extends Persistente {
                  , ABS(total_creditos_rsp) AS total_creditos_rsp
                  , ABS(saldo_final_rsp) AS saldo_final_rsp
                  , natureza_saldo_final_rsp
+                 , LPAD(num_orgao::VARCHAR, 2, '0') || LPAD(num_unidade::VARCHAR, 2, '0')::VARCHAR AS cod_unidade_sub
+                 , LPAD(num_orgao::VARCHAR, 2, '0') || LPAD(num_unidade::VARCHAR, 2, '0')::VARCHAR AS cod_unidade_sub_orig
               FROM tcemg.fn_balancete_contabil_14('".$this->getDado('exercicio')."',' cod_entidade IN ( ".$this->getDado('cod_entidade')." ) ','".$this->getDado('dt_inicial')."','".$this->getDado('dt_final')."')
           ORDER BY conta_contabil
 	    ";
@@ -241,16 +243,16 @@ class TTCEMGBALANCETE extends Persistente {
        $obErro      = new Erro;
        $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
-    
+
        if(trim($stOrdem))
            $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
        $stSql = $this->montaRecuperaRegistro15().$stCondicao.$stOrdem;
        $this->setDebug( $stSql );
        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
-    
+
        return $obErro;
     }
-    
+
     public function montaRecuperaRegistro15()
     {
 	    $stSql = "
@@ -274,16 +276,16 @@ class TTCEMGBALANCETE extends Persistente {
        $obErro      = new Erro;
        $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
-    
+
        if(trim($stOrdem))
            $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
        $stSql = $this->montaRecuperaRegistro16().$stCondicao.$stOrdem;
        $this->setDebug( $stSql );
        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
-    
+
        return $obErro;
     }
-    
+
     public function montaRecuperaRegistro16()
     {
 	    $stSql = "
@@ -307,16 +309,16 @@ class TTCEMGBALANCETE extends Persistente {
        $obErro      = new Erro;
        $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
-    
+
        if(trim($stOrdem))
            $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
        $stSql = $this->montaRecuperaRegistro17().$stCondicao.$stOrdem;
        $this->setDebug( $stSql );
        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
-    
+
        return $obErro;
     }
-    
+
     public function montaRecuperaRegistro17()
     {
 	    $stSql = "
@@ -342,16 +344,16 @@ class TTCEMGBALANCETE extends Persistente {
        $obErro      = new Erro;
        $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
-    
+
        if(trim($stOrdem))
            $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
        $stSql = $this->montaRecuperaRegistro18().$stCondicao.$stOrdem;
        $this->setDebug( $stSql );
        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
-    
+
        return $obErro;
     }
-    
+
     public function montaRecuperaRegistro18()
     {
 	    $stSql = "
@@ -375,16 +377,16 @@ class TTCEMGBALANCETE extends Persistente {
        $obErro      = new Erro;
        $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
-    
+
        if(trim($stOrdem))
            $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
        $stSql = $this->montaRecuperaRegistro22().$stCondicao.$stOrdem;
        $this->setDebug( $stSql );
        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
-    
+
        return $obErro;
     }
-    
+
     public function montaRecuperaRegistro22()
     {
 	    $stSql = "

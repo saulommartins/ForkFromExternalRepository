@@ -96,7 +96,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
         unset($$rsBloco10);
         $$rsBloco10 = new RecordSet();
         $$rsBloco10->preenche(array($arBALANCETE10));
-        
+
         $obExportador->roUltimoArquivo->addBloco( $$rsBloco10 );
 
         $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -146,7 +146,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco11);
                     $$rsBloco11 = new RecordSet();
                     $$rsBloco11->preenche(array($arBALANCETE11));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco11 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -250,7 +250,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco12);
                     $$rsBloco12 = new RecordSet();
                     $$rsBloco12->preenche(array($arBALANCETE12));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco12 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -314,7 +314,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco13);
                     $$rsBloco13 = new RecordSet();
                     $$rsBloco13->preenche(array($arBALANCETE13));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco13 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -383,7 +383,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco14);
                     $$rsBloco14 = new RecordSet();
                     $$rsBloco14->preenche(array($arBALANCETE14));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco14 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -502,7 +502,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco15);
                     $$rsBloco15 = new RecordSet();
                     $$rsBloco15->preenche(array($arBALANCETE15));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco15 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -561,7 +561,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco16);
                     $$rsBloco16 = new RecordSet();
                     $$rsBloco16->preenche(array($arBALANCETE16));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco16 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -625,7 +625,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco17);
                     $$rsBloco17 = new RecordSet();
                     $$rsBloco17->preenche(array($arBALANCETE17));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco17 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -694,7 +694,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco18);
                     $$rsBloco18 = new RecordSet();
                     $$rsBloco18->preenche(array($arBALANCETE18));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco18 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -753,7 +753,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco22);
                     $$rsBloco22 = new RecordSet();
                     $$rsBloco22->preenche(array($arBALANCETE22));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco22 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -817,10 +817,10 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
             'tipo_registro' => '99',
         )
     );
-    
+
     $rsRegistroBALANCETE99 = new RecordSet();
     $rsRegistroBALANCETE99->preenche($arRecordSetBALANCETE99);
-    
+
     $obExportador->roUltimoArquivo->addBloco($rsRegistroBALANCETE99);
     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
