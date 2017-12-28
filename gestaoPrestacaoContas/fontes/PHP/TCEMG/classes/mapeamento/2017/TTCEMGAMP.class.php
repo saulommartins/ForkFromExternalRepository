@@ -87,6 +87,11 @@ class TTCEMGAMP extends Persistente
                            produto.descricao,
                            unidade_medida.nom_unidade
                   " . $stOrdem;
+
+        echo '<pre>Exercicio: '; print_r($this->getDado('exercicio')); echo '</pre>';
+        echo '<pre>Sql: '; print_r($stSQL); echo '</pre>';
+        exit();
+
         return $stSQL;
     }
 

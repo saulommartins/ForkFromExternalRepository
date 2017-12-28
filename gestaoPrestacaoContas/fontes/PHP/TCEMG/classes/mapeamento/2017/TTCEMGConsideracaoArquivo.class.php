@@ -37,47 +37,43 @@
     */
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
-include_once( CLA_PERSISTENTE                                                                      );
+include_once(CLA_PERSISTENTE);
 
 class TTCEMGConsideracaoArquivo extends Persistente
 {
-    public function TTCEMGConsideracaoArquivo()
-    {
+    public function TTCEMGConsideracaoArquivo() {
         parent::Persistente();
         $this->setTabela("tcemg.consideracao_arquivo");
         $this->setCampoCod('cod_arquivo');
         $this->setComplementoChave('');
-        $this->AddCampo('cod_arquivo','integer',true,'',true,false);
-        $this->AddCampo('nom_arquivo','varchar',true,'"15"',false,false);
+        $this->AddCampo('cod_arquivo', 'integer', true, '', true, false);
+        $this->AddCampo('nom_arquivo', 'varchar', true, '"15"', false, false);
     }
 
-    public function recuperaDadosArquivo(&$rsRecordSet, $stFiltro, $boTransacao = "")
-    {
+    public function recuperaDadosArquivo(&$rsRecordSet, $stFiltro, $boTransacao = "") {
         $obErro = new Erro;
         $obConexao = new Conexao;
         $rsRecordSet = new RecordSet;
         $stOrdem = " ORDER BY consideracao_arquivo.cod_arquivo";
-        $stSql = $this->montaRecuperaDadosArquivo().$stFiltro.$stOrdem;
+        $stSql = $this->montaRecuperaDadosArquivo() . $stFiltro . $stOrdem;
         $this->stDebug = $stSql;
-        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
+        $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
 
         return $obErro;
     }
 
-    public function montaRecuperaDadosArquivo()
-    {
-        $stSql  = "SELECT * FROM tcemg.consideracao_arquivo";
+    public function montaRecuperaDadosArquivo() {
+        $stSql = "SELECT * FROM tcemg.consideracao_arquivo";
         return $stSql;
     }
 
-    public function recuperaConsid(&$rsRecordSet, $boTransacao = "")
-    {
+    public function recuperaConsid(&$rsRecordSet, $boTransacao = "") {
         $obErro = new Erro;
         $obConexao = new Conexao;
         $rsRecordSet = new RecordSet;
-        $stSql = $this->montaRecuperaConsid().$stFiltro.$stOrdem;
+        $stSql = $this->montaRecuperaConsid() . $stFiltro . $stOrdem;
         $this->stDebug = $stSql;
-        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
+        $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
 
         return $obErro;
     }
