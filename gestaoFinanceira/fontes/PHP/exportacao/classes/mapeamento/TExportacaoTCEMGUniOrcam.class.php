@@ -230,7 +230,8 @@ class TExportacaoTCEMGUniOrcam extends Persistente
             SELECT  DISTINCT
                     LPAD(oe.cod_entidade::VARCHAR, 2, '0') AS cod_orgao,
                     LPAD(oo.num_orgao::VARCHAR, 5, '0') AS cod_unidade,
-                    LPAD(oo.num_orgao::VARCHAR, 5, '0') || LPAD(ou.num_unidade::VARCHAR, 3, '0') AS cod_sub_unidade,
+                    LPAD(LPAD(oo.num_orgao::VARCHAR, 2, '0')||LPAD(ou.num_unidade::VARCHAR, 2, '0'),5,'0')::VARCHAR
+                     AS cod_sub_unidade,
                     (CASE WHEN tu.identificador IN (1, 2, 3, 4, 99) 
                       THEN lpad(tu.identificador::VARCHAR, 2,'0')
                       ELSE ''
