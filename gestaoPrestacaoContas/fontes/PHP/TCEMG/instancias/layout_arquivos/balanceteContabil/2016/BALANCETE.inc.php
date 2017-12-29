@@ -32,7 +32,7 @@
   *
   * @ignore
   * $Id: BALANCETE.inc.php 62872 2015-07-01 20:16:55Z franver $
-  * $Date: 2015-07-01 17:16:55 -0300 (Qua, 01 Jul 2015) $
+  * $Date: 2015-07-01 17:16:55 -0300 (Wed, 01 Jul 2015) $
   * $Author: franver $
   * $Rev: 62872 $
   *
@@ -58,6 +58,8 @@ $rsRegistroBALANCETE19 = new RecordSet();
 $rsRegistroBALANCETE20 = new RecordSet();
 $rsRegistroBALANCETE21 = new RecordSet();
 $rsRegistroBALANCETE22 = new RecordSet();
+$rsRegistroBALANCETE23 = new RecordSet();
+$rsRegistroBALANCETE24 = new RecordSet();
 
 $obTTCEMGBALANCETE = new TTCEMGBALANCETE();
 $obTTCEMGBALANCETE->setDado('exercicio'   , Sessao::getExercicio());
@@ -68,23 +70,27 @@ $obTTCEMGBALANCETE->setDado('dt_final'    , $arDatasInicialFinal['stDtFinal']);
 // REGISTRO 10
 $obTTCEMGBALANCETE->recuperaRegistro10($rsRegistroBALANCETE10);
 // REGISTRO 11
-$obTTCEMGBALANCETE->recuperaRegistro11($rsRegistroBALANCETE11);
-// REGISTRO 12
-$obTTCEMGBALANCETE->recuperaRegistro12($rsRegistroBALANCETE12);
-// REGISTRO 13
-$obTTCEMGBALANCETE->recuperaRegistro13($rsRegistroBALANCETE13);
-// REGISTRO 14
-$obTTCEMGBALANCETE->recuperaRegistro14($rsRegistroBALANCETE14);
-// REGISTRO 15
-$obTTCEMGBALANCETE->recuperaRegistro15($rsRegistroBALANCETE15);
-// REGISTRO 16
-$obTTCEMGBALANCETE->recuperaRegistro16($rsRegistroBALANCETE16);
-// REGISTRO 17
-$obTTCEMGBALANCETE->recuperaRegistro17($rsRegistroBALANCETE17);
-// REGISTRO 18
-$obTTCEMGBALANCETE->recuperaRegistro18($rsRegistroBALANCETE18);
-// REGISTRO 22
-$obTTCEMGBALANCETE->recuperaRegistro22($rsRegistroBALANCETE22);
+// $obTTCEMGBALANCETE->recuperaRegistro11($rsRegistroBALANCETE11);
+// // REGISTRO 12
+// $obTTCEMGBALANCETE->recuperaRegistro12($rsRegistroBALANCETE12);
+// // REGISTRO 13
+// $obTTCEMGBALANCETE->recuperaRegistro13($rsRegistroBALANCETE13);
+// // REGISTRO 14
+// $obTTCEMGBALANCETE->recuperaRegistro14($rsRegistroBALANCETE14);
+// // REGISTRO 15
+// $obTTCEMGBALANCETE->recuperaRegistro15($rsRegistroBALANCETE15);
+// // REGISTRO 16
+// $obTTCEMGBALANCETE->recuperaRegistro16($rsRegistroBALANCETE16);
+// // REGISTRO 17
+// $obTTCEMGBALANCETE->recuperaRegistro17($rsRegistroBALANCETE17);
+// // REGISTRO 18
+// $obTTCEMGBALANCETE->recuperaRegistro18($rsRegistroBALANCETE18);
+// // REGISTRO 22
+// $obTTCEMGBALANCETE->recuperaRegistro22($rsRegistroBALANCETE22);
+// REGISTRO 23
+$obTTCEMGBALANCETE->recuperaRegistro23($rsRegistroBALANCETE22);
+// REGISTRO 24
+// $obTTCEMGBALANCETE->recuperaRegistro24($rsRegistroBALANCETE22);
 
 if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
     foreach($rsRegistroBALANCETE10->getElementos() AS $arBALANCETE10) {
@@ -96,7 +102,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
         unset($$rsBloco10);
         $$rsBloco10 = new RecordSet();
         $$rsBloco10->preenche(array($arBALANCETE10));
-        
+
         $obExportador->roUltimoArquivo->addBloco( $$rsBloco10 );
 
         $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -146,7 +152,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco11);
                     $$rsBloco11 = new RecordSet();
                     $$rsBloco11->preenche(array($arBALANCETE11));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco11 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -250,7 +256,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco12);
                     $$rsBloco12 = new RecordSet();
                     $$rsBloco12->preenche(array($arBALANCETE12));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco12 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -314,7 +320,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco13);
                     $$rsBloco13 = new RecordSet();
                     $$rsBloco13->preenche(array($arBALANCETE13));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco13 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -383,7 +389,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco14);
                     $$rsBloco14 = new RecordSet();
                     $$rsBloco14->preenche(array($arBALANCETE14));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco14 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -502,7 +508,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco15);
                     $$rsBloco15 = new RecordSet();
                     $$rsBloco15->preenche(array($arBALANCETE15));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco15 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -561,7 +567,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco16);
                     $$rsBloco16 = new RecordSet();
                     $$rsBloco16->preenche(array($arBALANCETE16));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco16 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -625,7 +631,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco17);
                     $$rsBloco17 = new RecordSet();
                     $$rsBloco17->preenche(array($arBALANCETE17));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco17 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -694,7 +700,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco18);
                     $$rsBloco18 = new RecordSet();
                     $$rsBloco18->preenche(array($arBALANCETE18));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco18 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -753,7 +759,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                     unset($$rsBloco22);
                     $$rsBloco22 = new RecordSet();
                     $$rsBloco22->preenche(array($arBALANCETE22));
-                    
+
                     $obExportador->roUltimoArquivo->addBloco( $$rsBloco22 );
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
@@ -810,6 +816,122 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
                 }
             }
         }
+
+        if ( $rsRegistroBALANCETE23->getNumLinhas() > 0 ) {
+            foreach( $rsRegistroBALANCETE23->getElementos() AS $arBALANCETE23 ) {
+                if ( $stChave == $arBALANCETE23['conta_contabil'] ){
+                    $$rsBloco23 = 'rsBloco23_'.$inCount;
+                    unset($$rsBloco23);
+                    $$rsBloco23 = new RecordSet();
+                    $$rsBloco23->preenche(array($arBALANCETE23));
+
+                    $obExportador->roUltimoArquivo->addBloco( $$rsBloco23 );
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("conta_contabil");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(9);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("natureza_receita");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(8);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("saldo_inicial_nat_receita");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(14);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("natureza_saldo_inicial_nat_receita");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(1);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("total_debitos_nat_receita");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(14);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("total_creditos_nat_receita");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(14);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("saldo_final_nat_receita");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(14);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("natureza_saldo_final_nat_receita");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(1);
+                }
+            }
+        }
+
+        if ( $rsRegistroBALANCETE24->getNumLinhas() > 0 ) {
+            foreach( $rsRegistroBALANCETE24->getElementos() AS $arBALANCETE24 ) {
+                if ( $stChave == $arBALANCETE24['conta_contabil'] ){
+                    $$rsBloco24 = 'rsBloco24_'.$inCount;
+                    unset($$rsBloco24);
+                    $$rsBloco24 = new RecordSet();
+                    $$rsBloco24->preenche(array($arBALANCETE24));
+
+                    $obExportador->roUltimoArquivo->addBloco( $$rsBloco24 );
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("conta_contabil");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(9);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_orgao");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ZEROS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("saldo_inicial_orgao");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(14);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("natureza_saldo_inicial_orgao");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(1);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("total_debitos_orgao");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(14);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("total_creditos_orgao");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(14);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("saldo_final_orgao");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(14);
+
+                    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("natureza_saldo_final_orgao");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(1);
+                }
+            }
+        }
     }
 } else {
     $arRecordSetBALANCETE99 = array(
@@ -817,10 +939,10 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
             'tipo_registro' => '99',
         )
     );
-    
+
     $rsRegistroBALANCETE99 = new RecordSet();
     $rsRegistroBALANCETE99->preenche($arRecordSetBALANCETE99);
-    
+
     $obExportador->roUltimoArquivo->addBloco($rsRegistroBALANCETE99);
     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
@@ -841,6 +963,8 @@ $rsRegistroBALANCETE19 = null;
 $rsRegistroBALANCETE20 = null;
 $rsRegistroBALANCETE21 = null;
 $rsRegistroBALANCETE22 = null;
+$rsRegistroBALANCETE23 = null;
+$rsRegistroBALANCETE24 = null;
 $rsRegistroBALANCETE99 = null;
 
 ?>
