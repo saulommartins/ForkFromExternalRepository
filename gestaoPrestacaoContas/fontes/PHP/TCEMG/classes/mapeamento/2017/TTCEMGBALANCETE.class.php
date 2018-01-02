@@ -33,7 +33,7 @@
   * @ignore
 
   $Id: TTCEMGBALANCETE.class.php 62994 2015-07-15 12:39:47Z franver $
-  $Date: 2015-07-15 09:39:47 -0300 (Qua, 15 Jul 2015) $
+  $Date: 2015-07-15 09:39:47 -0300 (Wed, 15 Jul 2015) $
   $Author: franver $
   $Rev: 62994 $
 */
@@ -65,6 +65,7 @@ class TTCEMGBALANCETE extends Persistente {
     public function montaRecuperaRegistro10() {
 	    $stSql = "SELECT tipo_registro,
                        SUBSTR(REPLACE(conta_contabil, '.', ''), 1, 9) AS conta_contabil,
+                       cod_fundo,
                        ABS(saldo_inicial) AS saldo_inicial,
                        natureza_saldo_inicial,
                        ABS(total_debitos) AS total_debitos,
@@ -80,16 +81,15 @@ class TTCEMGBALANCETE extends Persistente {
     }
 
     public function recuperaRegistro11(&$rsRecordSet) {
-       $obErro = new Erro;
-       $obConexao = new Conexao;
+       $obErro      = new Erro;
+       $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
 
        if(trim($stOrdem))
-           $stOrdem = (strpos($stOrdem, "ORDER BY") === false) ? " ORDER BY $stOrdem" : $stOrdem;
-
-       $stSql = $this->montaRecuperaRegistro11() . $stCondicao . $stOrdem;
+           $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
+       $stSql = $this->montaRecuperaRegistro11().$stCondicao.$stOrdem;
        $this->setDebug( $stSql );
-       $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
+       $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
 
        return $obErro;
     }
@@ -97,6 +97,7 @@ class TTCEMGBALANCETE extends Persistente {
     public function montaRecuperaRegistro11() {
 	    $stSql = "SELECT tipo_registro,
                        SUBSTR(REPLACE(conta_contabil, '.', ''), 1, 9) AS conta_contabil,
+                       cod_fundo,
                        cod_orgao,
                        LPAD(num_orgao::VARCHAR, 2, '0') || LPAD(num_unidade::VARCHAR, 2, '0')::VARCHAR AS cod_unidade_sub,
                        cod_funcao,
@@ -114,7 +115,7 @@ class TTCEMGBALANCETE extends Persistente {
                        ABS(saldo_final_cd) AS saldo_final_cd,
                        natureza_saldo_final_cd
                 FROM tcemg.fn_balancete_contabil_11('" . $this->getDado('exercicio') . "',
-                                                    'cod_entidade IN (" . $this->getDado('cod_entidade') . " )',
+                                                    'cod_entidade IN (" . $this->getDado('cod_entidade') . ")',
                                                     '" . $this->getDado('dt_inicial') . "',
                                                     '" . $this->getDado('dt_final') . "')
                 ORDER BY conta_contabil";
@@ -122,16 +123,15 @@ class TTCEMGBALANCETE extends Persistente {
     }
 
     public function recuperaRegistro12(&$rsRecordSet) {
-       $obErro = new Erro;
-       $obConexao = new Conexao;
+       $obErro      = new Erro;
+       $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
 
        if(trim($stOrdem))
-           $stOrdem = (strpos($stOrdem, "ORDER BY") === false) ? " ORDER BY $stOrdem" : $stOrdem;
-
-       $stSql = $this->montaRecuperaRegistro12() . $stCondicao . $stOrdem;
-       $this->setDebug($stSql);
-       $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
+           $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
+       $stSql = $this->montaRecuperaRegistro12().$stCondicao.$stOrdem;
+       $this->setDebug( $stSql );
+       $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
 
        return $obErro;
     }
@@ -139,6 +139,7 @@ class TTCEMGBALANCETE extends Persistente {
     public function montaRecuperaRegistro12() {
 	    $stSql = "SELECT tipo_registro,
                        SUBSTR(REPLACE(conta_contabil, '.', ''), 1, 9) AS conta_contabil,
+                       cod_fundo,
                        natureza_receita,
                        cod_fonte_recursos,
                        ABS(saldo_inicial_cr) AS saldo_inicial_cr,
@@ -156,16 +157,15 @@ class TTCEMGBALANCETE extends Persistente {
     }
 
     public function recuperaRegistro13(&$rsRecordSet) {
-       $obErro = new Erro;
-       $obConexao = new Conexao;
+       $obErro      = new Erro;
+       $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
 
        if(trim($stOrdem))
-           $stOrdem = (strpos($stOrdem, "ORDER BY") === false) ? " ORDER BY $stOrdem" : $stOrdem;
-
-       $stSql = $this->montaRecuperaRegistro13() . $stCondicao . $stOrdem;
-       $this->setDebug($stSql);
-       $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
+           $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
+       $stSql = $this->montaRecuperaRegistro13().$stCondicao.$stOrdem;
+       $this->setDebug( $stSql );
+       $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
 
        return $obErro;
     }
@@ -173,6 +173,7 @@ class TTCEMGBALANCETE extends Persistente {
     public function montaRecuperaRegistro13() {
 	    $stSql = "SELECT tipo_registro,
                        SUBSTR(REPLACE(conta_contabil, '.', ''), 1, 9) AS conta_contabil,
+                       cod_fundo,
                        cod_programa,
                        id_acao,
                        id_sub_acao,
@@ -183,7 +184,7 @@ class TTCEMGBALANCETE extends Persistente {
                        ABS(saldo_final_pa) AS saldo_final_pa,
                        natureza_saldo_final_pa
                 FROM tcemg.fn_balancete_contabil_13('" . $this->getDado('exercicio') . "',
-                                                    'cod_entidade IN (" . $this->getDado('cod_entidade') . " )',
+                                                    'cod_entidade IN (" . $this->getDado('cod_entidade') . ")',
                                                     '" . $this->getDado('dt_inicial') . "',
                                                     '" . $this->getDado('dt_final') . "')
                 ORDER BY conta_contabil";
@@ -191,23 +192,23 @@ class TTCEMGBALANCETE extends Persistente {
     }
 
     public function recuperaRegistro14(&$rsRecordSet) {
-       $obErro = new Erro;
-       $obConexao = new Conexao;
+       $obErro      = new Erro;
+       $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
 
        if(trim($stOrdem))
-           $stOrdem = (strpos($stOrdem, "ORDER BY") === false) ? " ORDER BY $stOrdem" : $stOrdem;
-
-       $stSql = $this->montaRecuperaRegistro14() . $stCondicao . $stOrdem;
-       $this->setDebug($stSql);
-       $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
+           $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
+       $stSql = $this->montaRecuperaRegistro14().$stCondicao.$stOrdem;
+       $this->setDebug( $stSql );
+       $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
 
        return $obErro;
     }
 
     public function montaRecuperaRegistro14() {
 	    $stSql = "SELECT tipo_registro,
-                       SUBSTR(REPLACE(conta_contabil, '.', ''),1,9) AS conta_contabil,
+                       SUBSTR(REPLACE(conta_contabil, '.', ''), 1, 9) AS conta_contabil,
+                       cod_fundo,
                        cod_orgao,
                        num_orgao,
                        num_unidade,
@@ -226,7 +227,9 @@ class TTCEMGBALANCETE extends Persistente {
                        ABS(total_debitos_rsp) AS total_debitos_rsp,
                        ABS(total_creditos_rsp) AS total_creditos_rsp,
                        ABS(saldo_final_rsp) AS saldo_final_rsp,
-                       natureza_saldo_final_rsp
+                       natureza_saldo_final_rsp,
+                       LPAD(num_orgao::VARCHAR, 2, '0') || LPAD(num_unidade::VARCHAR, 2, '0')::VARCHAR AS cod_unidade_sub,
+                       LPAD(num_orgao::VARCHAR, 2, '0') || LPAD(num_unidade::VARCHAR, 2, '0')::VARCHAR AS cod_unidade_sub_orig
                 FROM tcemg.fn_balancete_contabil_14('" . $this->getDado('exercicio') . "',
                                                     'cod_entidade IN (" . $this->getDado('cod_entidade') . ")',
                                                     '" . $this->getDado('dt_inicial') . "',
@@ -236,16 +239,15 @@ class TTCEMGBALANCETE extends Persistente {
     }
 
     public function recuperaRegistro15(&$rsRecordSet) {
-       $obErro = new Erro;
-       $obConexao = new Conexao;
+       $obErro      = new Erro;
+       $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
 
        if(trim($stOrdem))
-           $stOrdem = (strpos($stOrdem, "ORDER BY") === false) ? " ORDER BY $stOrdem" : $stOrdem;
-
-       $stSql = $this->montaRecuperaRegistro15() . $stCondicao . $stOrdem;
-       $this->setDebug($stSql);
-       $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
+           $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
+       $stSql = $this->montaRecuperaRegistro15().$stCondicao.$stOrdem;
+       $this->setDebug( $stSql );
+       $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
 
        return $obErro;
     }
@@ -253,6 +255,7 @@ class TTCEMGBALANCETE extends Persistente {
     public function montaRecuperaRegistro15() {
 	    $stSql = "SELECT tipo_registro,
                        SUBSTR(REPLACE(conta_contabil, '.', ''), 1, 9) AS conta_contabil,
+                       cod_fundo,
                        atributo_sf,
                        ABS(saldo_inicial_sf) AS saldo_inicial_sf,
                        natureza_saldo_inicial_sf,
@@ -261,7 +264,7 @@ class TTCEMGBALANCETE extends Persistente {
                        ABS(saldo_final_sf) AS saldo_final_sf,
                        natureza_saldo_final_sf
                 FROM tcemg.fn_balancete_contabil_15('" . $this->getDado('exercicio') . "',
-                                                    'cod_entidade IN (" . $this->getDado('cod_entidade') . " )',
+                                                    'cod_entidade IN (" . $this->getDado('cod_entidade') . ")',
                                                     '" . $this->getDado('dt_inicial') . "',
                                                     '" . $this->getDado('dt_final') . "')
                 ORDER BY conta_contabil";
@@ -269,16 +272,15 @@ class TTCEMGBALANCETE extends Persistente {
     }
 
     public function recuperaRegistro16(&$rsRecordSet) {
-       $obErro = new Erro;
-       $obConexao = new Conexao;
+       $obErro      = new Erro;
+       $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
 
        if(trim($stOrdem))
-           $stOrdem = (strpos($stOrdem, "ORDER BY") === false) ? " ORDER BY $stOrdem" : $stOrdem;
-
-       $stSql = $this->montaRecuperaRegistro16() . $stCondicao . $stOrdem;
-       $this->setDebug($stSql);
-       $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
+           $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
+       $stSql = $this->montaRecuperaRegistro16().$stCondicao.$stOrdem;
+       $this->setDebug( $stSql );
+       $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
 
        return $obErro;
     }
@@ -286,6 +288,7 @@ class TTCEMGBALANCETE extends Persistente {
     public function montaRecuperaRegistro16() {
 	    $stSql = "SELECT tipo_registro,
                        SUBSTR(REPLACE(conta_contabil, '.', ''), 1, 9) AS conta_contabil,
+                       cod_fundo,
                        cod_fonte_recursos,
                        ABS(saldo_inicial_fonte_sf) AS saldo_inicial_fonte_sf,
                        natureza_saldo_inicial_fonte_sf,
@@ -302,16 +305,15 @@ class TTCEMGBALANCETE extends Persistente {
     }
 
     public function recuperaRegistro17(&$rsRecordSet) {
-       $obErro = new Erro;
-       $obConexao = new Conexao;
+       $obErro      = new Erro;
+       $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
 
        if(trim($stOrdem))
-           $stOrdem = (strpos($stOrdem, "ORDER BY") === false) ? " ORDER BY $stOrdem" : $stOrdem;
-
-       $stSql = $this->montaRecuperaRegistro17() . $stCondicao . $stOrdem;
-       $this->setDebug($stSql);
-       $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
+           $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
+       $stSql = $this->montaRecuperaRegistro17().$stCondicao.$stOrdem;
+       $this->setDebug( $stSql );
+       $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
 
        return $obErro;
     }
@@ -319,6 +321,7 @@ class TTCEMGBALANCETE extends Persistente {
     public function montaRecuperaRegistro17() {
 	    $stSql = "SELECT tipo_registro,
                        SUBSTR(REPLACE(conta_contabil, '.', ''), 1, 9) AS conta_contabil,
+                       cod_fundo,
                        atributo_sf,
                        cod_ctb,
                        cod_fonte_recursos,
@@ -337,16 +340,15 @@ class TTCEMGBALANCETE extends Persistente {
     }
 
     public function recuperaRegistro18(&$rsRecordSet) {
-       $obErro = new Erro;
-       $obConexao = new Conexao;
+       $obErro      = new Erro;
+       $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
 
        if(trim($stOrdem))
-           $stOrdem = (strpos($stOrdem, "ORDER BY") === false) ? " ORDER BY $stOrdem" : $stOrdem;
-
-       $stSql = $this->montaRecuperaRegistro18() . $stCondicao . $stOrdem;
-       $this->setDebug($stSql);
-       $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
+           $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
+       $stSql = $this->montaRecuperaRegistro18().$stCondicao.$stOrdem;
+       $this->setDebug( $stSql );
+       $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
 
        return $obErro;
     }
@@ -370,16 +372,15 @@ class TTCEMGBALANCETE extends Persistente {
     }
 
     public function recuperaRegistro22(&$rsRecordSet) {
-       $obErro = new Erro;
-       $obConexao = new Conexao;
+       $obErro      = new Erro;
+       $obConexao   = new Conexao;
        $rsRecordSet = new RecordSet;
 
        if(trim($stOrdem))
-           $stOrdem = (strpos($stOrdem, "ORDER BY") === false) ? " ORDER BY $stOrdem" : $stOrdem;
-
-       $stSql = $this->montaRecuperaRegistro22() . $stCondicao . $stOrdem;
-       $this->setDebug($stSql);
-       $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
+           $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
+       $stSql = $this->montaRecuperaRegistro22().$stCondicao.$stOrdem;
+       $this->setDebug( $stSql );
+       $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
 
        return $obErro;
     }
@@ -387,6 +388,7 @@ class TTCEMGBALANCETE extends Persistente {
     public function montaRecuperaRegistro22() {
 	    $stSql = "SELECT tipo_registro,
                        SUBSTR(REPLACE(conta_contabil, '.', ''), 1, 9) AS conta_contabil,
+                       cod_fundo,
                        atributo_sf,
                        cod_ctb,
                        ABS(saldo_inicial_ctb_sf) AS saldo_inicial_ctb_sf,
@@ -401,6 +403,107 @@ class TTCEMGBALANCETE extends Persistente {
                                                     '" . $this->getDado('dt_final') . "')
                 ORDER BY conta_contabil";
 	    return $stSql;
+    }
+
+    public function recuperaRegistro23(&$rsRecordSet) {
+       $obErro      = new Erro;
+       $obConexao   = new Conexao;
+       $rsRecordSet = new RecordSet;
+
+       if(trim($stOrdem))
+           $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
+       $stSql = $this->montaRecuperaRegistro23().$stCondicao.$stOrdem;
+       $this->setDebug( $stSql );
+       $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
+
+       return $obErro;
+    }
+
+    public function montaRecuperaRegistro23() {
+      $stSql = "SELECT tipo_registro,
+                       SUBSTR(REPLACE(cod_estrutural_contabil, '.', ''), 1, 9) AS conta_contabil,
+                       cod_fundo,
+                       natureza_receita,
+                       ABS(saldo_inicial_nat_receita) AS saldo_inicial_nat_receita,
+                       natureza_saldo_inicial_nat_receita,
+                       ABS(total_debitos_nat_receita) AS total_debitos_nat_receita,
+                       ABS(total_creditos_nat_receita) AS total_creditos_nat_receita,
+                       ABS(saldo_final_nat_receita) AS saldo_final_nat_receita,
+                       natureza_saldo_final_nat_receita
+                FROM tcemg.fn_balancete_contabil_23('" . $this->getDado('exercicio') . "',
+                                                    'cod_entidade IN (" . $this->getDado('cod_entidade') . ")',
+                                                    '" . $this->getDado('dt_inicial') . "',
+                                                    '" . $this->getDado('dt_final') . "')
+                ORDER BY conta_contabil";
+      return $stSql;
+    }
+
+    public function recuperaRegistro24(&$rsRecordSet) {
+       $obErro      = new Erro;
+       $obConexao   = new Conexao;
+       $rsRecordSet = new RecordSet;
+
+       if(trim($stOrdem))
+           $stOrdem = (strpos($stOrdem,"ORDER BY")===false)?" ORDER BY $stOrdem":$stOrdem;
+       $stSql = $this->montaRecuperaRegistro24().$stCondicao.$stOrdem;
+       $this->setDebug( $stSql );
+       $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
+
+       return $obErro;
+    }
+
+    public function montaRecuperaRegistro24() {
+	    $stSql = "SELECT tipo_registro,
+                       SUBSTR(REPLACE(conta_contabil, '.',''), 1, 9) AS conta_contabil,
+                       cod_fundo,
+                       cod_orgao,
+                       ABS(saldo_inicial_orgao) AS saldo_inicial_orgao,
+                       natureza_saldo_inicial_orgao,
+                       ABS(total_debitos_orgao) AS total_debitos_orgao,
+                       ABS(total_creditos_orgao) AS total_creditos_orgao,
+                       ABS(saldo_final_orgao) AS saldo_final_orgao,
+                       natureza_saldo_final_orgao
+                FROM tcemg.fn_balancete_contabil_24('" . $this->getDado('exercicio') . "',
+                                                    'cod_entidade IN (" . $this->getDado('cod_entidade') . " )',
+                                                    '" . $this->getDado('dt_inicial') . "',
+                                                    '" . $this->getDado('dt_final') . "')
+                ORDER BY conta_contabil";
+	    return $stSql;
+    }
+
+    public function recuperaRegistro25(&$rsRecordSet) {
+      $obErro = new Erro;
+      $obConexao = new Conexao;
+      $rsRecordSet = new RecordSet;
+
+      if(trim($stOrdem))
+        $stOrdem = (strpos($stOrdem, "ORDER BY") === false) ? " ORDER BY $stOrdem" : $stOrdem;
+
+      $stSql = $this->montaRecuperaRegistro25() . $stCondicao . $stOrdem;
+      $this->setDebug($stSql);
+      $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
+
+      return $obErro;
+    }
+
+    public function montaRecuperaRegistro25() {
+      $stSql = "SELECT tipo_registro,
+                       SUBSTR(REPLACE(cod_estrutural_contabil, '.', ''), 1, 9) AS conta_contabil,
+                       cod_fundo,
+                       atributo_sf,
+                       natureza_receita,
+                       ABS(saldo_inicial_nr_sf) AS saldo_inicial_nr_sf,
+                       natureza_saldo_inicial_nr_sf,
+                       ABS(total_debitos_nr_sf) AS total_debitos_nr_sf,
+                       ABS(total_creditos_nr_sf) AS total_creditos_nr_sf,
+                       ABS(saldo_final_nr_sf) AS saldo_final_nr_sf,
+                       natureza_saldo_final_nr_sf
+                FROM tcemg.fn_balancete_contabil_25('" . $this->getDado('exercicio') . "',
+                                                    'cod_entidade IN (" . $this->getDado('cod_entidade') . ")',
+                                                    '" . $this->getDado('dt_inicial') . "',
+                                                    '" . $this->getDado('dt_final') . "')
+                ORDER BY conta_contabil";
+      return $stSql;
     }
 
 }

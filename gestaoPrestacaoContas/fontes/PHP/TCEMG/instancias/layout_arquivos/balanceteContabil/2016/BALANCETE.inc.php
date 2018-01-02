@@ -70,27 +70,27 @@ $obTTCEMGBALANCETE->setDado('dt_final'    , $arDatasInicialFinal['stDtFinal']);
 // REGISTRO 10
 $obTTCEMGBALANCETE->recuperaRegistro10($rsRegistroBALANCETE10);
 // REGISTRO 11
-// $obTTCEMGBALANCETE->recuperaRegistro11($rsRegistroBALANCETE11);
-// // REGISTRO 12
-// $obTTCEMGBALANCETE->recuperaRegistro12($rsRegistroBALANCETE12);
-// // REGISTRO 13
-// $obTTCEMGBALANCETE->recuperaRegistro13($rsRegistroBALANCETE13);
-// // REGISTRO 14
-// $obTTCEMGBALANCETE->recuperaRegistro14($rsRegistroBALANCETE14);
-// // REGISTRO 15
-// $obTTCEMGBALANCETE->recuperaRegistro15($rsRegistroBALANCETE15);
-// // REGISTRO 16
-// $obTTCEMGBALANCETE->recuperaRegistro16($rsRegistroBALANCETE16);
-// // REGISTRO 17
-// $obTTCEMGBALANCETE->recuperaRegistro17($rsRegistroBALANCETE17);
-// // REGISTRO 18
-// $obTTCEMGBALANCETE->recuperaRegistro18($rsRegistroBALANCETE18);
-// // REGISTRO 22
-// $obTTCEMGBALANCETE->recuperaRegistro22($rsRegistroBALANCETE22);
+$obTTCEMGBALANCETE->recuperaRegistro11($rsRegistroBALANCETE11);
+// REGISTRO 12
+$obTTCEMGBALANCETE->recuperaRegistro12($rsRegistroBALANCETE12);
+// REGISTRO 13
+$obTTCEMGBALANCETE->recuperaRegistro13($rsRegistroBALANCETE13);
+// REGISTRO 14
+$obTTCEMGBALANCETE->recuperaRegistro14($rsRegistroBALANCETE14);
+// REGISTRO 15
+$obTTCEMGBALANCETE->recuperaRegistro15($rsRegistroBALANCETE15);
+// REGISTRO 16
+$obTTCEMGBALANCETE->recuperaRegistro16($rsRegistroBALANCETE16);
+// REGISTRO 17
+$obTTCEMGBALANCETE->recuperaRegistro17($rsRegistroBALANCETE17);
+// REGISTRO 18
+$obTTCEMGBALANCETE->recuperaRegistro18($rsRegistroBALANCETE18);
+// REGISTRO 22
+$obTTCEMGBALANCETE->recuperaRegistro22($rsRegistroBALANCETE22);
 // REGISTRO 23
-$obTTCEMGBALANCETE->recuperaRegistro23($rsRegistroBALANCETE22);
+$obTTCEMGBALANCETE->recuperaRegistro23($rsRegistroBALANCETE23);
 // REGISTRO 24
-// $obTTCEMGBALANCETE->recuperaRegistro24($rsRegistroBALANCETE22);
+$obTTCEMGBALANCETE->recuperaRegistro24($rsRegistroBALANCETE24);
 
 if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
     foreach($rsRegistroBALANCETE10->getElementos() AS $arBALANCETE10) {
