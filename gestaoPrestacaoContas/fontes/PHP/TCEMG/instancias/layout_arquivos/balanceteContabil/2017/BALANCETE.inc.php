@@ -1086,6 +1086,7 @@ $rsRegistroBALANCETE21 = null;
 $rsRegistroBALANCETE22 = null;
 $rsRegistroBALANCETE23 = null;
 $rsRegistroBALANCETE24 = null;
+$rsRegistroBALANCETE25 = null;
 $rsRegistroBALANCETE99 = null;
 
 ?>
