@@ -33,13 +33,13 @@
     * @package URBEM
     * @subpackage Mapeamento
 
-    $Id: TTCEMGArquivoMensalIDE.class.php 62857 2015-06-30 13:53:56Z franver $
+    $Id: TTCEMGArquivoMensalIDE.class.php 65300 2016-05-10 20:27:55Z evandro $
 */
+
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 include_once (CLA_PERSISTENTE);
 
-class TTCEMGArquivoMensalIDE extends Persistente
-{
+class TTCEMGArquivoMensalIDE extends Persistente {
     public function TTCEMGArquivoMensalIDE() {
         parent::Persistente();
         $this->setDado('exercicio', Sessao::getExercicio());
@@ -56,8 +56,7 @@ class TTCEMGArquivoMensalIDE extends Persistente
                                     AND configuracao.exercicio = '" . Sessao::getExercicio() . "'
                                LEFT JOIN orcamento.entidade ON cod_entidade = configuracao.valor::integer
                                     AND entidade.exercicio = configuracao.exercicio
-                          WHERE sw_cgm_pessoa_juridica.numcgm = entidade.numcgm
-                         ) AS cnpj_municipio,
+                          WHERE sw_cgm_pessoa_juridica.numcgm = entidade.numcgm) AS cnpj_municipio,
                          (SELECT DISTINCT cod_municipio
                           FROM tcemg.configurar_ide) AS cod_municipio,
                          LPAD((SELECT valor
@@ -65,17 +64,18 @@ class TTCEMGArquivoMensalIDE extends Persistente
                                     INNER JOIN administracao.configuracao_entidade ON configuracao_entidade.valor::integer = orgao.num_orgao
                                WHERE configuracao_entidade.exercicio = ACE.exercicio
                                      AND configuracao_entidade.cod_entidade = ACE.cod_entidade
-                                     AND parametro = 'tcemg_codigo_orgao_entidade_sicom'), 2, '0') AS cod_orgao,
+                                     AND parametro = 'tcemg_codigo_orgao_entidade_sicom'
+                              ), 3, '0') AS cod_orgao,
                          (SELECT valor
                           FROM tcemg.orgao
                                INNER JOIN administracao.configuracao_entidade ON configuracao_entidade.valor::integer = orgao.num_orgao
                           WHERE configuracao_entidade.exercicio = ACE.exercicio
                                 AND configuracao_entidade.cod_entidade = ACE.cod_entidade
                                 AND parametro = 'tcemg_tipo_orgao_entidade_sicom') AS tipo_orgao,
-                         '" . $this->getDado('exercicio') . "' AS exercicio_referencia,
+                         '" . Sessao::getExercicio() . "' AS exercicio_referencia,
                          '" . $this->getDado('mes') . "' AS mes_referencia,
                          to_char(CURRENT_DATE::timestamp, 'ddmmyyyy') as data_geracao,
-                         to_char(CURRENT_DATE::timestamp, 'yyyymmdd') || '' || '" . $this->getDado('exercicio') . "' || '" . $this->getDado('mes') . "' as cod_remessa
+                         to_char(CURRENT_DATE::timestamp, 'yyyymmdd') ||''|| '" . Sessao::getExercicio() . "' || '" . $this->getDado('mes') . "' as cod_remessa
                   FROM administracao.configuracao_entidade AS ACE
                   WHERE ACE.exercicio = '" . Sessao::getExercicio() . "'
                         AND ACE.cod_entidade IN (" . $this->getDado('entidades') . ")
@@ -83,6 +83,8 @@ class TTCEMGArquivoMensalIDE extends Persistente
         return $stSql;
     }
 
-    public function __destruct() {}
+    public function __destruct(){}
 
 }
+
+?>

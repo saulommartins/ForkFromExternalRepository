@@ -37,7 +37,7 @@ Casos de uso: uc-02.00.00
 */
 
 //DEFINICAO DE VALIDADE E VERSAO DA GESTAO
-define( "VALIDADE_GF",               "31/12/2017" );
+define( "VALIDADE_GF",               "31/12/2018" );
 define( "VERSAO_GF",                 "2.05.4" );
 
 define( "CAM_GF",  "../../../../../../gestaoFinanceira/fontes/" );

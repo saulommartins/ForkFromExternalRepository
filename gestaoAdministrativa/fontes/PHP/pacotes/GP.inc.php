@@ -37,7 +37,7 @@ Casos de uso: uc-03.00.00
 */
 
 //DEFINICAO DE VALIDADE E VERSAO DA GESTAO
-define( "VALIDADE_GP",               "31/12/2017" );
+define( "VALIDADE_GP",               "31/12/2018" );
 define( "VERSAO_GP",                 "2.05.4" );
 
 define( "CAM_GP",  "../../../../../../gestaoPatrimonial/fontes/" );

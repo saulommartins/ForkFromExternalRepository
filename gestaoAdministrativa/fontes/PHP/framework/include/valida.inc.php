@@ -76,16 +76,16 @@ if (constant('ENV_TYPE') != 'dev') {
 			if ($_REQUEST['cod_gestao_pass'] == $obGestao->getCodigoGestao()) {
 				$arDataExpiracao = explode('/', $arGestoes[$inI][0]);
 				$inTimestamp     = mktime(23, 59, 59, $arDataExpiracao[1], (int) $arDataExpiracao[0], $arDataExpiracao[2]);
-				// if (time() > $inTimestamp) {
-				// 	$stURL = Sessao::getId().'&stGestao='.$obGestao->getNomeGestao().'&dtData='.urlencode($arGestoes[$inI][0]);
-				// 	header('location:'.CAM_FW_INSTANCIAS.'index/validade.php?'.$stURL);
-				// 	exit();
-				// }
-        //
-				// if (filter_var($obGestao->getVersao(), FILTER_SANITIZE_NUMBER_INT) != filter_var($arGestoes[$inI][1], FILTER_SANITIZE_NUMBER_INT)) {
-				// 	header('location:'.CAM_FW_INSTANCIAS.'index/versao.php?'.Sessao::getId().'&stGestao='.$obGestao->getNomeGestao());
-				// 	exit();
-				// }
+				if (time() > $inTimestamp) {
+					$stURL = Sessao::getId().'&stGestao='.$obGestao->getNomeGestao().'&dtData='.urlencode($arGestoes[$inI][0]);
+					header('location:'.CAM_FW_INSTANCIAS.'index/validade.php?'.$stURL);
+					exit();
+				}
+
+				if (filter_var($obGestao->getVersao(), FILTER_SANITIZE_NUMBER_INT) != filter_var($arGestoes[$inI][1], FILTER_SANITIZE_NUMBER_INT)) {
+					header('location:'.CAM_FW_INSTANCIAS.'index/versao.php?'.Sessao::getId().'&stGestao='.$obGestao->getNomeGestao());
+					exit();
+				}
 			}
 		}
 		++$inI;

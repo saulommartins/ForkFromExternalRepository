@@ -32,15 +32,15 @@
   *
   * @ignore
   * $Id: IDE.inc.php 62872 2015-07-01 20:16:55Z franver $
-  * $Date: 2015-07-01 17:16:55 -0300 (Qua, 01 Jul 2015) $
+  * $Date: 2015-07-01 17:16:55 -0300 (Wed, 01 Jul 2015) $
   * $Author: franver $
   * $Rev: 62872 $
   *
 */
 /**
-* IDE.csv | Autor : Franver Sarmento de Moraes
+* IDE.csv | Autor : Franver Sarmento de sMoraes
 */
-include_once CAM_GPC_TCEMG_MAPEAMENTO.Sessao::getExercicio() . "/TTCEMGArquivoMensalIDE.class.php";
+include_once CAM_GPC_TCEMG_MAPEAMENTO . Sessao::getExercicio() . "/TTCEMGArquivoMensalIDE.class.php";
 
 $rsRecordSetIDE = new RecordSet();
 $obTTCEMGArquivoMensalIDE = new TTCEMGArquivoMensalIDE();
@@ -95,4 +95,5 @@ if (count($rsRecordSetIDE->getElementos()) > 0) {
 
 $rsRecordSetIDE = null;
 $obTTCEMGArquivoMensalIDE = null;
+
 ?>
