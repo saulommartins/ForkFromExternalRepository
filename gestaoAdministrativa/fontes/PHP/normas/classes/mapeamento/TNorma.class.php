@@ -312,7 +312,8 @@ function montaRecuperaDadosExportacaoLPP()
                                          WHERE configuracao_leis_ppa.tipo_configuracao = 'alteracao'
                                                AND configuracao_leis_ppa.status <> 'f'
                                         ) = norma.dt_publicacao
-                             ) as ppa_alteracao ON ppa_anterior.exercicio = configuracao_leis_ppa.exercicio
+                             ) as ppa_alteracao ON ppa_alteracao.exercicio = configuracao_leis_ppa.exercicio
+                             AND ppa_alteracao.nroleialteracao = norma.num_norma
                 WHERE configuracao_leis_ppa.exercicio = '" . $this->getDado('exercicio') . "'
                       AND configuracao_leis_ppa.status <> 'f'
                 ORDER BY dataLeiPPA

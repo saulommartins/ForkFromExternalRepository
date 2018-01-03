@@ -1,7 +1,7 @@
 urbem:
   connection:
     database: urbem
-    host:     192.168.170.8
+    host:     192.168.170.77
     port:     5432
     username: postgres
     password: urbem
