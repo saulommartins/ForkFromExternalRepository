@@ -365,12 +365,12 @@ function montaRecuperaDadosExportacaoLDO()
                                    JOIN normas.norma ON norma.cod_norma = configuracao_leis_ldo.cod_norma
                               WHERE configuracao_leis_ldo.tipo_configuracao = 'alteracao'
                                     AND configuracao_leis_ldo.status <> 'f'
-                             ) AS ldo_alteracao ON ldo_anterior.exercicio = configuracao_leis_ldo.exercicio
+                             ) AS ldo_alteracao ON ldo_alteracao.exercicio = configuracao_leis_ldo.exercicio
+                             AND ldo_alteracao.numero_ldo = norma.num_norma
               WHERE configuracao_leis_ldo.exercicio = '" . $this->getDado('exercicio') . "'
                     AND configuracao_leis_ldo.status <> 'f'
               ORDER BY 6
               LIMIT 1";
-
     return $stSql;
 }
 
