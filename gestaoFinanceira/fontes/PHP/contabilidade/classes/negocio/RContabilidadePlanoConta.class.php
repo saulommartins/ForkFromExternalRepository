@@ -135,6 +135,28 @@ var $inTipoContaCorrenteTCEPE;
 */
 var $inTipoContaCorrenteTCEMG;
 
+    /**
+     * @access Private
+     * @var Integer
+     */
+    var $inCodFundo;
+
+    /**
+     * @access Public
+     * @param integer $Valor
+     */
+    public function setCodFundo($valor) {
+        $this->inCodFundo = $valor; 
+    }
+    
+    /**
+     * @access public
+     * @return integer
+     */
+    public function getCodFundo() {
+        return $this->inCodFundo;
+    }
+
 /**
     * @access Public
     * @param Object $Valor
@@ -707,7 +729,10 @@ function salvar($boTransacao = "")
         $obTContabilidadePlanoConta->setDado( "cod_estrutural"    , $this->stCodEstrutural    );
         $obTContabilidadePlanoConta->setDado( "cod_classificacao" , $this->obRContabilidadeClassificacaoContabil->getCodClassificacao() );
         $obTContabilidadePlanoConta->setDado( "cod_sistema"       , $this->obRContabilidadeSistemaContabil->getCodSistema() );
+        
         $obTContabilidadePlanoConta->setDado( "cod_estrutural"    , $this->stCodEstrutural );
+        $obTContabilidadePlanoConta->setDado( "cod_fundo"         , $this->inCodFundo );
+        
         if ( Sessao::getExercicio() > '2012' ) {
             $obTContabilidadePlanoConta->setDado( "escrituracao"    , $this->stEscrituracao );
             $obTContabilidadePlanoConta->setDado( "natureza_saldo"    , $this->stNaturezaSaldo );

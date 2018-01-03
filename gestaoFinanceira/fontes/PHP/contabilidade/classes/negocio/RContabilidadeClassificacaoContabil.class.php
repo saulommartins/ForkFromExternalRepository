@@ -152,6 +152,7 @@ function listar(&$rsRecordSet, $stOrder = "" , $boTransacao = "")
 {
     include_once ( CAM_GF_CONT_MAPEAMENTO."TContabilidadeClassificacaoContabil.class.php");
     $obTContabilidadeClassificacaoContabil = new TContabilidadeClassificacaoContabil;
+    $stFiltro = "";
 
     if($this->inCodClassificacao)
         $stFiltro  = " cod_classificacao = "  . $this->inCodClassificacao  . "  AND ";
@@ -159,6 +160,7 @@ function listar(&$rsRecordSet, $stOrder = "" , $boTransacao = "")
         $stFiltro .= " exercicio = '"         . $this->stExercicio         . "' AND ";
     if($this->stNomClassificacao)
         $stFiltro .= " lower(nom_classificacao) like lower('%" . $this->stNomClassificacao . "%') AND ";
+    
     $stFiltro = ($stFiltro) ? " WHERE " . substr($stFiltro, 0, strlen($stFiltro)-4) : "";
     $stOrder = ($stOrder) ? $stOrder : "cod_classificacao";
     $obErro = $obTContabilidadeClassificacaoContabil->recuperaTodos( $rsRecordSet, $stFiltro, $stOrder, $boTransacao );

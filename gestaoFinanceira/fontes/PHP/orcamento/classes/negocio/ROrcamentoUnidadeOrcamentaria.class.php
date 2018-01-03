@@ -105,6 +105,7 @@ var $stNomUnidade;
     * @access Private
 */
 var $inCodResponsavel;
+
 /**
     * @access Public
     * @param Object $valor
@@ -305,15 +306,19 @@ function listar(&$rsLista, $stOrder = "", $obTransacao = "")
 
     $this->pegarMascara($obTOrcamentoUnidade);
     $stFiltro = "";
+    
     if ( $this->getNumeroUnidade() ) {
         $stFiltro .= " unidade.num_unidade = ".$this->getNumeroUnidade()." AND ";
     }
+    
     if ( $this->getExercicio() ) {
         $stFiltro .= " unidade.exercicio = '" . $this->getExercicio() . "' AND ";
     }
+
     if ( $this->obROrcamentoOrgaoOrcamentario->getNumeroOrgao() ) {
         $stFiltro .= " unidade.num_orgao = ".$this->obROrcamentoOrgaoOrcamentario->getNumeroOrgao()." AND ";
     }
+    
     if ($stFiltro) {
         $stFiltro = " WHERE ".substr( $stFiltro, 0, strlen( $stFiltro ) - 4 );
     }

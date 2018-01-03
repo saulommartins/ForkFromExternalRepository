@@ -285,12 +285,19 @@ function listar(&$rsLista, $stOrder = "", $obTransacao = "")
     $obTOrcamentoOrgao        = new TOrcamentoOrgao;
 
     $stFiltro = "";
+
     if ( $this->getNumeroOrgao() ) {
         $stFiltro .= " AND OO.num_orgao = ".$this->getNumeroOrgao();
     }
+
+    if ( $this->getCodigoEntidade() ) {
+        $stFiltro .= " AND OO.cod_entidade = ".$this->getCodigoEntidade();
+    }
+
     if ( $this->getExercicio() ) {
         $stFiltro .= " AND OO.exercicio = '".$this->getExercicio()."'";
     }
+
     $obErro = $obTOrcamentoOrgao->recuperaRelacionamento( $rsLista, $stFiltro, $stOrder, $obTransacao );
 
     return $obErro;

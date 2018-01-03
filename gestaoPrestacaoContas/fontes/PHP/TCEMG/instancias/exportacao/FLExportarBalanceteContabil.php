@@ -95,8 +95,13 @@ $obRdbTipoExportArqCompactado->setValue ( "compactados"  );
 $arNomeArquivos = array(
     'IDE.csv',
     'BALANCETE.csv',
-    'CONSID.csv'
+    'CONSID.csv',
 );
+
+
+if (Sessao::getExercicio() > '2016'){
+    $arNomeArquivos[] = 'FUNDOS.csv';
+}
 
 // Preenche array
 for ($inCounter=0;$inCounter < count($arNomeArquivos);$inCounter++) {

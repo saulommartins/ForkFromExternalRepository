@@ -56,174 +56,228 @@ include_once CAM_GF_ORC_NEGOCIO.'ROrcamentoRecurso.class.php';
 */
 class RContabilidadePlanoBanco extends RContabilidadePlanoContaAnalitica
 {
-/**
-    * @access Private
-    * @var Object
-*/
-var $obRMONAgencia;
-/**
-    * @access Private
-    * @var Object
-*/
-var $obROrcamentoRecurso;
-/**
-    * @access Private
-    * @var Object
-*/
-var $obROrcamentoEntidade;
-/**
-    * @access Private
-    * @var Object
-*/
-var $obRMONBanco;
-/**
-    * @access Private
-    * @var String
-*/
-var $stContaCorrente;
-/**
-    * @access Private
-    * @var String
-*/
-var $stCodEntidade;
-/**
-    * @access Private
-    * @var String
-*/
-var $inCodConta;
-/**
-    * @access Private
-    * @var Integer
-*/
-var $inContaCorrente;
+    /**
+     * @access Private
+     * @var Object
+    */
+    var $obRMONAgencia;
 
-/**
-    * @access Private
-    * @var Integer
-*/
-var $inNumAgencia;
+    /**
+     * @access Private
+     * @var Object
+     */
+    var $obROrcamentoRecurso;
+    
+    /**
+     * @access Private
+     * @var Object
+     */
+    var $obROrcamentoEntidade;
 
-/**
-    * @access Private
-    * @var Integer
-*/
-var $inNumBanco;
+    /**
+     * @access Private
+     * @var Object
+     */
+    var $obRMONBanco;
 
-/**
-    * @access Private
-    * @var Integer
-*/
-var $inTipoContaTCEPE;
+    /**
+     * @access Private
+     * @var String
+     */
+    var $stContaCorrente;
 
+    /**
+     * @access Private
+     * @var String
+     */
+    var $stCodEntidade;
 
-/**
-    * @access Public
-    * @param Object $Valor
-*/
-function setRMONAgencia($valor) { $this->obRMONAgencia = $valor;     }
-/**
-    * @access Public
-    * @param Object $Valor
-*/
-function setROrcamentoEntidade($valor) { $this->obROrcamentoEntidade = $valor;     }
-/**
-    * @access Public
-    * @param Object $Valor
-*/
-function setRMONBanco($valor) { $this->obRMONBanco = $valor;     }
-/**
-    * @access Public
-    * @param String $Valor
-*/
-function setContaCorrente($valor) { $this->stContaCorrente  = $valor; }
+    /**
+     * @access Private
+     * @var String
+     */
+    var $inCodConta;
 
-/**
-    * @access Public
-    * @param String $Valor
-*/
-function setNumAgencia($valor){ $this->inNumAgencia = $valor; }
+    /**
+     * @access Private
+     * @var Integer
+     */
+    var $inContaCorrente;
 
-/**
-    * @access Public
-    * @param String $Valor
-*/
-function setNumBanco($valor){ $this->inNumBanco = $valor; }
+    /**
+     * @access Private
+     * @var Integer
+     */
+    var $inNumAgencia;
 
-/**
-    * @access Public
-    * @param String $Valor
-*/
-function setCodConta($valor) { $this->inCodConta  = $valor; }
+    /**
+     * @access Private
+     * @var Integer
+     */
+    var $inNumBanco;
 
-/**
-    * @access Public
-    * @param String $Valor
-*/
-function setCodigoEntidade($valor) { $this->stCodEntidade  = $valor; }
-/**
-    * @access Public
-    * @param Integer $Valor
-*/
-function setCodContaCorrente($valor) { $this->inContaCorrente  = $valor; }
-/**
-    * @access Public
-    * @param Integer $Valor
-*/
-function setTipoContaTCEPE($valor) { $this->inTipoContaTCEPE  = $valor; }
-/**
-    * @access Public
-    * @param Integer $Valor
-*/
-function setFiltroEncerrado($valor) { $this->filtroEncerrado  = $valor; }
+    /**
+     * @access Private
+     * @var Integer
+     */
+    var $inTipoContaTCEPE;
 
-/**
-    * @access Public
-    * @return Object
-*/
-function getRMONAgencia() { return $this->obRMONAgencia; }
-/**
-    * @access Public
-    * @return Object
-*/
-function getRMONBanco() { return $this->obRMONBanco; }
-/**
-    * @access Public
-    * @return String
-*/
-function getContaCorrente() { return $this->stContaCorrente; }
-/**
-    * @access Public
-    * @return String
-*/
-function getCodigoEntidade() { return $this->stCodEntidade; }
-/**
-    * @access Public
-    * @return Integer
-*/
-function getCodContaCorrente() { return $this->inContaCorrente; }
-/**
-    * @access Public
-    * @return Integer
-*/
-function getTipoContaTCEPE() { return $this->inTipoContaTCEPE; }
-/**
-    * @access Public
-    * @return Integer
-*/
-function getFiltroEncerrado() { return $this->filtroEncerrado; }
-
-/**
-     * Método construtor
+    /**
      * @access Public
-*/
-function RContabilidadePlanoBanco()
-{
-    parent::RContabilidadePlanoContaAnalitica();
-    $this->obRMONAgencia         = new RMONAgencia;
-    $this->obRMONBanco           = new RMONBanco;
-    $this->obROrcamentoEntidade  = new ROrcamentoEntidade;
-    $this->obROrcamentoRecurso   = new ROrcamentoRecurso;
-}
+     * @param Object $Valor
+     */
+    function setRMONAgencia($valor) {
+        $this->obRMONAgencia = $valor;
+    }
+
+    /**
+     * @access Public
+     * @param Object $Valor
+     */
+    function setROrcamentoEntidade($valor) {
+        $this->obROrcamentoEntidade = $valor;
+    }
+
+    /**
+     * @access Public
+     * @param Object $Valor
+     */
+    function setRMONBanco($valor) {
+        $this->obRMONBanco = $valor;
+    }
+
+    /**
+     * @access Public
+     * @param String $Valor
+     */
+    function setContaCorrente($valor) {
+        $this->stContaCorrente = $valor;
+    }
+
+    /**
+     * @access Public
+     * @param String $Valor
+     */
+    function setNumAgencia($valor) {
+        $this->inNumAgencia = $valor;
+    }
+
+    /**
+     * @access Public
+     * @param String $Valor
+     */
+    function setNumBanco($valor) {
+        $this->inNumBanco = $valor;
+    }
+
+    /**
+     * @access Public
+     * @param String $Valor
+     */
+    function setCodConta($valor) {
+        $this->inCodConta = $valor;
+    }
+
+    /**
+     * @access Public
+     * @param String $Valor
+     */
+    function setCodigoEntidade($valor) {
+        $this->stCodEntidade = $valor;
+    }
+
+    /**
+     * @access Public
+     * @param Integer $Valor
+     */
+    function setCodContaCorrente($valor) {
+        $this->inContaCorrente = $valor;
+    }
+
+    /**
+     * @access Public
+     * @param Integer $Valor
+     */
+    function setTipoContaTCEPE($valor) {
+        $this->inTipoContaTCEPE = $valor;
+    }
+
+    /**
+     * @access Public
+     * @param Integer $Valor
+     */
+    function setFiltroEncerrado($valor) {
+        $this->filtroEncerrado = $valor;
+    }
+
+    /**
+     * @access Public
+     * @return Object
+     */
+    function getRMONAgencia() {
+        return $this->obRMONAgencia;
+    }
+
+    /**
+     * @access Public
+     * @return Object
+     */
+    function getRMONBanco() {
+        return $this->obRMONBanco;
+    }
+    
+    /**
+     * @access Public
+     * @return String
+     */
+    function getContaCorrente() {
+        return $this->stContaCorrente;
+    }
+
+    /**
+     * @access Public
+     * @return String
+     */
+    function getCodigoEntidade() {
+        return $this->stCodEntidade;
+    }
+    
+    /**
+     * @access Public
+     * @return Integer
+     */
+    function getCodContaCorrente() {
+        return $this->inContaCorrente;
+    }
+
+    /**
+     * @access Public
+     * @return Integer
+     */
+    function getTipoContaTCEPE() {
+        return $this->inTipoContaTCEPE;
+    }
+    
+    /**
+     * @access Public
+     * @return Integer
+     */
+    function getFiltroEncerrado() {
+        return $this->filtroEncerrado;
+    }
+
+    /**
+     * Método construtor
+     * @access public
+     */
+    function RContabilidadePlanoBanco()
+    {
+        parent::RContabilidadePlanoContaAnalitica();
+        $this->obRMONAgencia         = new RMONAgencia;
+        $this->obRMONBanco           = new RMONBanco;
+        $this->obROrcamentoEntidade  = new ROrcamentoEntidade;
+        $this->obROrcamentoRecurso   = new ROrcamentoRecurso;
+    }
 
 /**
     * Executa um recuperaPorChave na classe Persistente
@@ -537,6 +591,7 @@ function salvar($boTransacao = "")
                         $obTContabilidadePlanoBanco->setDado( "cod_agencia"    , $this->obRMONAgencia->getCodAgencia() );
                         $obTContabilidadePlanoBanco->setDado( "cod_entidade"   , $this->obROrcamentoEntidade->getCodigoEntidade()     );
                         $obTContabilidadePlanoBanco->setDado( "cod_conta_corrente" , $this->inContaCorrente );
+
                         $obTContabilidadePlanoBanco->recuperaPorChave( $rsPlanoContaAnalitica, $boTransacao );
                         if( !$rsPlanoContaAnalitica->eof() )
                             $obErro = $obTContabilidadePlanoBanco->alteracao( $boTransacao );

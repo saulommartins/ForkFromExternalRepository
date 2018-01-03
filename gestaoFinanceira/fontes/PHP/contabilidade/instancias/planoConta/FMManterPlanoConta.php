@@ -38,6 +38,7 @@ include_once( '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/Framewo
 include_once( '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php');
 include_once( CAM_FRAMEWORK."legado/funcoesLegado.lib.php");
 include_once( CAM_GF_CONT_NEGOCIO."RContabilidadePlanoBanco.class.php");
+include_once( CAM_GF_CONT_NEGOCIO."RContabilidadeFundo.class.php");
 include_once( CAM_GF_CONT_MAPEAMENTO."TContabilidadePlanoContaTCEMS.class.php");
 include_once( CAM_GF_CONT_MAPEAMENTO."TContabilidadePlanoConta.class.php");
 include_once( CAM_GF_ORC_NEGOCIO."ROrcamentoConfiguracao.class.php");
@@ -67,9 +68,11 @@ if (isset($filtro)) {
             }
         } else {
             $stFiltro .= "&".$stCampo2."=".urlencode( $stValor2 );
-       }
+        }
     }
 }
+
+$boTransacao = "";
 
 //busca entidade logada
 $stFiltroEntidade = " AND entidade.cod_entidade = ".Sessao::getCodEntidade($boTransacao)." AND entidade.exercicio = '".Sessao::getExercicio()."'";
@@ -137,6 +140,7 @@ if ($stAcao == 'alterar') {
     $stCodClassificacao = $obRContabilidadePlanoBanco->getCodEstrutural();
     $stNomConta = $obRContabilidadePlanoBanco->getNomConta();
     $stNatSaldo = $obRContabilidadePlanoBanco->getNaturezaSaldo();
+
     if ($stNatSaldo == 'devedor') {
         $stNatSaldo = 'D';
     } else if ($stNatSaldo == 'credor') {
@@ -181,7 +185,7 @@ if ($stAcao == 'alterar') {
     }
 }
 
-if (!$inCodEntidade) {
+if (!isset($inCodEntidade)) {
    $obROrcamentoConfiguracao     = new ROrcamentoConfiguracao;
 
    $obROrcamentoConfiguracao->setExercicio( Sessao::getExercicio() );
@@ -189,6 +193,8 @@ if (!$inCodEntidade) {
    $obROrcamentoConfiguracao->consultarConfiguracaoEspecifica('cod_entidade_prefeitura');
    $inCodEntidade = $obROrcamentoConfiguracao->getCodEntidadePrefeitura();
 }
+
+$js = "";
 
 if ($stAcao == "incluir") {
     $boContaAnalitica = true;
@@ -229,9 +235,11 @@ if ($stAcao == 'alterar') {
     } else {
         $obTContabilidadePlanoConta = new TContabilidadePlanoConta;
     }
+    
     $obTContabilidadePlanoConta->setDado('stCodEstrutural',mascaraReduzida($stCodClassificacao));
     $obTContabilidadePlanoConta->setDado('exercicio',Sessao::getExercicio());
     $obTContabilidadePlanoConta->verificaMovimentacaoConta($rsMovimentacao,$boTransacao);
+
     if ($rsMovimentacao->getCampo('retorno') == 't') {
         $boTemMovimentacao = true;
     }
@@ -241,6 +249,7 @@ if ($stAcao == 'alterar') {
     } else {
         $obTContabilidadePlanoConta = new TContabilidadePlanoConta;
     }
+
     $obTContabilidadePlanoConta->setDado( 'exercicio',Sessao::getExercicio() );
     $obTContabilidadePlanoConta->setDado( 'cod_estrutural',$stCodClassificacao );
     $obTContabilidadePlanoConta->verificaContaDesdobrada( $rsContas );
@@ -282,7 +291,7 @@ if ($stAcao == 'alterar') {
 
     //Define Objeto Label para Código da Classificacao Contabil
     $obLblCodClassContabil = new Label;
-    $obLblCodClassContabil->setRotulo    ( "Código de Classificação"                    );
+    $obLblCodClassContabil->setRotulo( "Código de Classificação" );
     if ( !Sessao::getExercicio() > '2012' ) {
         $obLblCodClassContabil->setValue( $stCodClassificacao );
     } else {
@@ -326,7 +335,28 @@ if ( !Sessao::getExercicio() > '2012' ) {
     $obCmbClassContabil->obEvento->setOnChange( "document.getElementById('inCodClassContabil').value = this.value;");
 }
 
+//Campo Fundo
+$rsFundo = new RecordSet;
+$obRContabilidadeFundo = new RContabilidadeFundo();
+$obRContabilidadeFundo->listar($rsFundo);
+
+$obCmbFundo = new Select;
+$obCmbFundo->setRotulo        ( "Fundo" );
+$obCmbFundo->setName          ( "inCodFundo" );
+$obCmbFundo->setStyle         ( "width: 500px");
+$obCmbFundo->setCampoID       ( "cod_fundo" );
+$obCmbFundo->setCampoDesc     ( "descricao" );
+$obCmbFundo->addOption        ( "", "Selecione" );
+$obCmbFundo->setValue         ( $inCodFundo );
+$obCmbFundo->setNull          ( false );
+$obCmbFundo->preencheCombo    ( $rsFundo );
+
 if ($stAcao == 'incluir') {
+
+    if (!isset($stCodClassificacao)) {
+        $stCodClassificacao = "";
+    }
+
     // Define Objeto Textbox para Codigo de Classificação
     $obTxtCodClass = new TextBox;
     $obTxtCodClass->setName      ( "stCodClass"                                 );
@@ -346,7 +376,7 @@ if ($stAcao == 'incluir') {
 $obTxtDescrConta = new TextBox;
 $obTxtDescrConta->setName     ( "stDescrConta"                 );
 $obTxtDescrConta->setId       ( "stDescrConta"                 );
-$obTxtDescrConta->setValue    ( "$stNomConta"                  );
+$obTxtDescrConta->setValue    ( $stNomConta                    );
 $obTxtDescrConta->setSize     ( 80                             );
 $obTxtDescrConta->setMaxLength( 150                            );
 $obTxtDescrConta->setRotulo   ( "Descrição da Conta"           );
@@ -377,11 +407,11 @@ if ($boDesdobrada || $boTemMovimentacao) {
 } else {
     // Define Objeto Radio Para Tipo de conta
     $obRdTipoContaSintetica = new Radio;
-    $obRdTipoContaSintetica->setName   ( "inTipoConta"    );
-    $obRdTipoContaSintetica->setId     ( "inTipoConta"    );
-    $obRdTipoContaSintetica->setValue  ( "Sintetica"      );
-    $obRdTipoContaSintetica->setLabel  ("Sintética"       );
-    $obRdTipoContaSintetica->setChecked( $boContaSintetica);
+    $obRdTipoContaSintetica->setName   ( "inTipoConta"     );
+    $obRdTipoContaSintetica->setId     ( "inTipoConta"     );
+    $obRdTipoContaSintetica->setValue  ( "Sintetica"       );
+    $obRdTipoContaSintetica->setLabel  ("Sintética"        );
+    $obRdTipoContaSintetica->setChecked( $boContaSintetica );
     $obRdTipoContaSintetica->obEvento->setOnClick( "buscaValor('tipoContaSintetica'); document.getElementById('stTipoConta').value = 'S'; montaParametrosGET('HabilitaCampos'); " );
 
     $obRdTipoContaAnalitica = new Radio;
@@ -436,7 +466,7 @@ $obCmbNaturezaDoSaldo->setID        ( "stNatSaldo"                    );
 $obCmbNaturezaDoSaldo->addOption    ( "", "Selecione"                 );
 $obCmbNaturezaDoSaldo->addOption    ( "D", "Devedor"                  );
 $obCmbNaturezaDoSaldo->addOption    ( "C", "Credor"                   );
-$obCmbNaturezaDoSaldo->setValue     ( $stNatSaldo   );
+$obCmbNaturezaDoSaldo->setValue     ( $stNatSaldo                     );
 if ( strtolower($rsEntidades->getCampo('nom_cgm')) == 'tribunal de contas estado de mato grosso do sul' && Sessao::getExercicio() > 2011 ) {
     $obCmbNaturezaDoSaldo->addOption    ( "X", "Misto"                   );
 }
@@ -563,12 +593,13 @@ if ($boTemMovimentacao == 1) {
 }
 
 $obCmbNomEntidade->setStyle  ( "width: 500px;" );
+$inNumBanco = (isset($_REQUEST['inNumBanco'])) ? $_REQUEST['inNumBanco'] : "";
 
 // Define Objeto TextBox para Codigo do Banco
 $obTxtBanco = new TextBox;
 $obTxtBanco->setName     ( "inNumBanco"        );
 $obTxtBanco->setId       ( "inNumBanco"        );
-$obTxtBanco->setValue    ( $_REQUEST['inNumBanco']         );
+$obTxtBanco->setValue    ( $inNumBanco         );
 $obTxtBanco->setRotulo   ( "*Banco"            );
 $obTxtBanco->setMaxlength( 5                   );
 $obTxtBanco->setTitle    ( "Selecione o banco" );
@@ -582,16 +613,17 @@ $obTxtBanco->obEvento->setOnChange  ( " if(this.value != '') montaParametrosGET(
                                         }
                                     ");
 
+$inCodBanco = (isset($_REQUEST['inCodBanco'])) ? $_REQUEST['inCodBanco'] : "";
 $obHdnBanco = new Hidden;
 $obHdnBanco->setName('inCodBanco');
 $obHdnBanco->setId ('inCodBanco');
-$obHdnBanco->setValue ( $_REQUEST['inCodBanco'] );
+$obHdnBanco->setValue ( $inCodBanco );
 
 // Define Objeto Select para Nome do Banco
 $obCmbBanco = new Select;
 $obCmbBanco->setName      ( "stNomeBanco"   );
 $obCmbBanco->setId        ( "stNomeBanco"   );
-$obCmbBanco->setValue     ( $_REQUEST['inNumBanco']   );
+$obCmbBanco->setValue     ( $inNumBanco     );
 $obCmbBanco->setDisabled  ( $boDisabled     );
 $obCmbBanco->addOption    ( "", "Selecione" );
 $obCmbBanco->setCampoId   ( "num_banco"     );
@@ -599,27 +631,29 @@ $obCmbBanco->setCampoDesc ( "nom_banco"     );
 $obCmbBanco->preencheCombo( $rsBanco        );
 $obCmbBanco->obEvento->setOnChange  ( " montaParametrosGET('MontaAgencia');");
 
+$inNumAgencia = (isset($_REQUEST['inNumAgencia'])) ? $_REQUEST['inNumAgencia'] : "";
 // Define Objeto TextBox para Codigo da Agência
 $obTxtAgencia = new TextBox;
 $obTxtAgencia->setName     ( "inNumAgencia"        );
 $obTxtAgencia->setId       ( "inNumAgencia"        );
-$obTxtAgencia->setValue    ( $_REQUEST['inNumAgencia'] );
+$obTxtAgencia->setValue    ( $inNumAgencia );
 $obTxtAgencia->setRotulo   ( "*Agência"            );
 $obTxtAgencia->setMaxLength( 10                    );
 $obTxtAgencia->setTitle    ( "Selecione a agência" );
 $obTxtAgencia->setDisabled ( $boDisabled           );
 $obTxtAgencia->obEvento->setOnChange  ( " montaParametrosGET('MontaContaCorrente'); ");
 
+$inCodAgencia = (isset($_REQUEST['inCodAgencia'])) ? $_REQUEST['inCodAgencia'] : "";
 $obHdnAgencia = new Hidden;
 $obHdnAgencia->setName ( 'inCodAgencia' );
 $obHdnAgencia->setId ( 'inCodAgencia' );
-$obHdnAgencia->setValue ( $_REQUEST['inCodAgencia'] );
+$obHdnAgencia->setValue ( $inCodAgencia );
 
 // Define Objeto Select para Nome da agencia
 $obCmbAgencia = new Select;
 $obCmbAgencia->setName      ( "stNomeAgencia"  );
 $obCmbAgencia->setId        ( "stNomeAgencia"  );
-$obCmbAgencia->setValue     ( $_REQUEST['inNumAgencia']  );
+$obCmbAgencia->setValue     ( $inNumAgencia    );
 $obCmbAgencia->addOption    ( "", "Selecione"  );
 if ($stAcao == "alterar") {
     $obCmbAgencia->setCampoId   ( "num_agencia"    );
@@ -629,22 +663,28 @@ if ($stAcao == "alterar") {
 $obCmbAgencia->setDisabled  ( $boDisabled      );
 $obCmbAgencia->obEvento->setOnChange( " montaParametrosGET('MontaContaCorrente'); ");
 
+
+$inContaCorrente = (isset($_REQUEST['inContaCorrente'])) ? $_REQUEST['inContaCorrente'] : "";
+$stContaCorrente = (isset($_REQUEST['stContaCorrente'])) ? $_REQUEST['stContaCorrente'] : "";
+
 $obHdnContaCorrente = new Hidden();
 $obHdnContaCorrente->setName( 'inContaCorrente');
 $obHdnContaCorrente->setId  ( 'inContaCorrente');
-$obHdnContaCorrente->setValue( $_REQUEST['inContaCorrente']);
+$obHdnContaCorrente->setValue( $inContaCorrente );
 
 $obCmbContaCorrente = new Select();
-$obCmbContaCorrente->setRotulo	 ( "*Conta Corrente");
-$obCmbContaCorrente->setName      ( "stContaCorrente"    );
-$obCmbContaCorrente->setId        ( "stContaCorrente"    );
-$obCmbContaCorrente->setValue     ( $_REQUEST['stContaCorrente']   );
-$obCmbContaCorrente->addOption    ( "", "Selecione"          );
+$obCmbContaCorrente->setRotulo	 ( "*Conta Corrente"        );
+$obCmbContaCorrente->setName     ( "stContaCorrente"        );
+$obCmbContaCorrente->setId       ( "stContaCorrente"        );
+$obCmbContaCorrente->setValue    ( $stContaCorrente         );
+$obCmbContaCorrente->addOption   ( "", "Selecione"          );
+
 if ($stAcao == "alterar") {
     $obCmbContaCorrente->setCampoId ( "num_conta_corrente"  );
     $obCmbContaCorrente->setCampoDesc( "num_conta_corrente" );
     $obCmbContaCorrente->preencheCombo( $rsContaCorrente );
 }
+
 $obCmbContaCorrente->setCampoId   ( "num_conta_corrente"     );
 $obCmbContaCorrente->setCampoDesc ( "num_conta_corrente"     );
 $obCmbContaCorrente->setDisabled  ( $boDisabled );
@@ -699,6 +739,8 @@ if (SistemaLegado::pegaConfiguracao('cod_uf', 2, Sessao::getExercicio(), $boTran
 //Conta Corrente - TCE-MG
 if (SistemaLegado::pegaConfiguracao('cod_uf', 2, Sessao::getExercicio(), $boTransacao) == 11 && (Sessao::getExercicio() >= "2015")) {
     
+    $inTipoContaCorrenteTCEMG = (isset($_REQUEST['inTipoContaCorrenteTCEMG'])) ? $_REQUEST['inTipoContaCorrenteTCEMG'] : "";
+
     include_once(CAM_GPC_TCEMG_MAPEAMENTO.'TTCEMGTipoContaCorrente.class.php');
     $obTTCEMGTipoContaCorrente = new TTCEMGTipoContaCorrente();
     $obTTCEMGTipoContaCorrente->recuperaTodos($rsListaTipoConta);
@@ -711,7 +753,7 @@ if (SistemaLegado::pegaConfiguracao('cod_uf', 2, Sessao::getExercicio(), $boTran
     $obCmbTipoContaCorrenteTCEMG->setCampoId   ( "cod_tipo"                            );
     $obCmbTipoContaCorrenteTCEMG->setCampoDesc ( "[cod_tipo] - [descricao]"            );
     $obCmbTipoContaCorrenteTCEMG->preencheCombo( $rsListaTipoConta                     );
-    $obCmbTipoContaCorrenteTCEMG->setValue     ( $_REQUEST['inTipoContaCorrenteTCEMG'] );
+    $obCmbTipoContaCorrenteTCEMG->setValue     ( $inTipoContaCorrenteTCEMG             );
     $obCmbTipoContaCorrenteTCEMG->setObrigatorio (true);
 }
 SistemaLegado::executaFramePrincipal($js);
@@ -800,12 +842,15 @@ if($rsContaEncerrada->getNumLinhas() > 0 && $stAcao == 'alterar'){
     $obFormulario->addHidden    ( $obHdnAcao               );
     $obFormulario->addComponente( $obLblTipoContaAnalitica );
     $obFormulario->addComponente( $obLblNaturezaSaldo      );
+    $obFormulario->addComponente( $obCmbFundo              );
+
     if($boContaAnalitica){
         $obFormulario->addComponente( $obLblSistemaContabil );
         if ( Sessao::getExercicio() > '2012' ) {
             $obFormulario->addComponente( $obLblIndicadorSuperavit );
         }
     }
+    
     $obFormulario->addComponente( $obLblCodClassContabil   );
     $obFormulario->addComponente( $obLblDescrConta         );
     $obFormulario->addComponente( $obLblFuncao             );
@@ -903,6 +948,7 @@ if($rsContaEncerrada->getNumLinhas() > 0 && $stAcao == 'alterar'){
         $obFormulario->agrupaComponentes( array($obRdTipoContaAnalitica, $obRdTipoContaSintetica) );
     }
     $obFormulario->addComponente($obCmbNaturezaDoSaldo);
+    $obFormulario->addComponente($obCmbFundo);
     
     $obFormulario->addSpan( $obSpanSistemaContabil );
     

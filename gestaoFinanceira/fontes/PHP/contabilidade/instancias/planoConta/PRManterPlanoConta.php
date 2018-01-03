@@ -144,6 +144,8 @@ switch ($stAcao) {
                 $obRContabilidadePlanoBanco->setTipoContaCorrenteTCEMG($_REQUEST['inTipoContaCorrenteTCEMG']);
             }
             
+            $obRContabilidadePlanoBanco->setCodFundo( $_POST['inCodFundo'] );
+
             if ( Sessao::getExercicio() > '2012' ) {
                 $stNaturezaSaldo = '';
                 switch ($_REQUEST['stNatSaldo']) {
@@ -315,6 +317,8 @@ switch ($stAcao) {
                 */
             }
             
+            $obRContabilidadePlanoBanco->setCodFundo($_POST['inCodFundo']);
+
             if( !$obErro->ocorreu() ) {
                 $obErro = $obRContabilidadePlanoBanco->salvar($boTransacao);
             }
@@ -349,7 +353,7 @@ switch ($stAcao) {
             }
         }
 
-    if (($_REQUEST['stCodClass'][0] == 3 || $_REQUEST['stCodClass'][0] == 9) && $_REQUEST['stNatSaldo'] == 'C') {
+        if (($_REQUEST['stCodClass'][0] == 3 || $_REQUEST['stCodClass'][0] == 9) && $_REQUEST['stNatSaldo'] == 'C') {
             SistemaLegado::exibeAviso("Contas do Grupo ".$_REQUEST['stCodClass'][0]." só podem ser de natureza 'Devedor'.","n_incluir","erro");
             exit;
         }
@@ -393,6 +397,7 @@ switch ($stAcao) {
                 $obRContabilidadePlanoBanco->setEscrituracao( $_POST['stTipoConta'] == 'A' ? 'analitica' : 'sintetica' );
                 $obRContabilidadePlanoBanco->setIndicadorSuperavit( trim($_POST['stIndicadorSuperavit']) );
                 $obRContabilidadePlanoBanco->setFuncao( $_POST['stFuncao'] );
+                $obRContabilidadePlanoBanco->setCodFundo( $_POST['inCodFundo'] );
             }
             //if( $_POST['inTipoConta'] == 'Analitica' )
             if ($_POST['stTipoConta'] == 'A') {

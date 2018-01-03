@@ -50,18 +50,19 @@ function TContabilidadePlanoContaTCEMS()
     $this->setCampoCod('cod_conta');
     $this->setComplementoChave('exercicio');
 
-    $this->AddCampo('cod_conta','integer',true,'',true,false);
-    $this->AddCampo('exercicio','char',true,'04',true,true);
-    $this->AddCampo('nom_conta','varchar',true,'160',false,false);
-    $this->AddCampo('cod_classificacao','integer',true,'',false,true);
-    $this->AddCampo('cod_sistema','integer',true,'',false,true);
-    $this->AddCampo('cod_estrutural','varchar',false,'150',false,false);
-    $this->AddCampo('escrituracao','char',false,'9',false,false);
-    $this->AddCampo('natureza_saldo','char',false,'7',false,false);
-    $this->AddCampo('indicador_superavit','char',false,'12',false,false);
-    $this->AddCampo('funcao','text',false,'',false,false);
-    $this->AddCampo('atributo_tcepe','integer',false,'',false,false);
-    $this->AddCampo('atributo_tcemg','integer',false,'',false,false);
+    $this->AddCampo('cod_conta',            'integer',  true,    '',  true, false);
+    $this->AddCampo('exercicio',            'char',     true,  '04',  true,  true);
+    $this->AddCampo('nom_conta',            'varchar',  true, '160', false, false);
+    $this->AddCampo('cod_classificacao',    'integer',  true,    '', false,  true);
+    $this->AddCampo('cod_sistema',          'integer',  true,    '', false,  true);
+    $this->AddCampo('cod_estrutural',       'varchar', false, '150', false, false);
+    $this->AddCampo('escrituracao',         'char',    false,   '9', false, false);
+    $this->AddCampo('natureza_saldo',       'char',    false,   '7', false, false);
+    $this->AddCampo('indicador_superavit',  'char',    false,  '12', false, false);
+    $this->AddCampo('funcao',               'text',    false,    '', false, false);
+    $this->AddCampo('atributo_tcepe',       'integer', false,    '', false, false);
+    $this->AddCampo('atributo_tcemg',       'integer', false,    '', false, false);
+    $this->AddCampo('cod_fundo',            'integer',  true,    '', false, false);
 
 }
 

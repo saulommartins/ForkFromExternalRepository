@@ -153,6 +153,8 @@ function listar(&$rsRecordSet, $stOrder = "" , $boTransacao = "")
     include_once ( CAM_GF_CONT_MAPEAMENTO."TContabilidadeSistemaContabil.class.php");
     $obTContabilidadeSistemaContabil = new TContabilidadeSistemaContabil;
 
+    $stFiltro = "";
+
     if($this->inCodSistema)
         $stFiltro  = " cod_sistema = "  . $this->inCodSistema . "  AND ";
     if($this->stExercicio)
