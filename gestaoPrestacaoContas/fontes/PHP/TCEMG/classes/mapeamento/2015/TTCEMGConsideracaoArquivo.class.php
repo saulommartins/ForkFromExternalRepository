@@ -108,6 +108,12 @@ class TTCEMGConsideracaoArquivo extends Persistente
                AND CAD.cod_entidade IN(".$this->getDado('entidade').")
                AND CAD.modulo_sicom = '".$this->getDado('modulo_sicom')."'
           ORDER BY consideracao_arquivo.cod_arquivo";
+
+        echo "<pre>";
+        var_dump($stSql);
+        echo "</pre>";
+        die;
+
         return $stSql;
     }
 

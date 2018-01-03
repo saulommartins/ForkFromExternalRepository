@@ -76,6 +76,7 @@ $obTxtCodFundo->setTitle  ( "Informe o Nro do Fundo" );
 $obTxtCodFundo->setInteiro( true );
 $obTxtCodFundo->setStyle  ( "width: 150px" );
 $obTxtCodFundo->setNull   ( false );
+$obTxtCodFundo->setMaxLength( 8 );
 
 
 // Define Objeto TextBox para Descricao do Fundo
@@ -97,7 +98,7 @@ $obTxtCnpjFundo->setRotulo   ( "CNPJ do fundo" );
 $obTxtCnpjFundo->setTitle    ( "Informe o CNPJ do Fundo" );
 $obTxtCnpjFundo->setStyle    ( "width: 150px" );
 $obTxtCnpjFundo->setNull     ( false );
-$obTxtCnpjFundo->setMaxLength( 17 );
+$obTxtCnpjFundo->setMaxLength( 18 );
 $obTxtCnpjFundo->obEvento->setOnKeyUp("mascaraCNPJ(this, event);");
 
 $obCmbObjTipoContabilidade = new Select;

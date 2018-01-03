@@ -1,9 +1,5 @@
 <?php
 
-
-ini_set("display_errors", 1);
-error_reporting(E_ALL);
-
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 include_once ( CAM_FW_BANCO_DADOS."Transacao.class.php"  );
 
