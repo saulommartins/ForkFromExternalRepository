@@ -93,26 +93,26 @@ class RTCEMGExportacaoArquivosPlanejamento
     */
     public function RTCEMGExportacaoArquivosPlanejamento()
     {
-        $this->obTPPPrograma                        = new TPPAPrograma();
-        $this->obTPPAAcao                           = new TPPAAcao();
-        $this->obTPPAAcaoQuantidade                 = new TPPAAcaoQuantidade();
-        $this->obTOrcamentoPrevisaoReceita          = new TOrcamentoPrevisaoReceita;
-        $this->obTNorma                             = new TNorma;
-        $this->obTOrcamentoReceita                  = new TOrcamentoReceita;
+        $this->obTPPPrograma = new TPPAPrograma();
+        $this->obTPPAAcao = new TPPAAcao();
+        $this->obTPPAAcaoQuantidade = new TPPAAcaoQuantidade();
+        $this->obTOrcamentoPrevisaoReceita = new TOrcamentoPrevisaoReceita;
+        $this->obTNorma = new TNorma;
+        $this->obTOrcamentoReceita = new TOrcamentoReceita;
         $this->obTAdministracaoConfiguracaoEntidade = new TAdministracaoConfiguracaoEntidade;
-        $this->obTTCEMGConfiguracaoLOA              = new TTCEMGConfiguracaoLOA;
-        $this->obTSTNRiscosFiscais                  = new TSTNRiscosFiscais;
-        $this->obTSTNProvidencias                   = new TSTNProvidencias;
-        $this->obTTCEMGConfigurarIDE                = new TTCEMGConfigurarIDE;
-        $this->obTExportacaoTCEMGUniOrcam           = new TExportacaoTCEMGUniOrcam;
-        $this->obTExportacaoTCEMGItem               = new TExportacaoTCEMGItem;
-        $this->obTTCEMGConfiguracaoPERC             = new TTCEMGConfiguracaoPERC;
-        $this->obTTCEMGAMP                          = new TTCEMGAMP;
-        $this->obTTCEMGArquivoAMP                   = new TTCEMGArquivoAMP;
-        $this->obTTCEMGArquivoUOC                   = new TTCEMGArquivoUOC;
-        $this->obTTCEMGRegistrosArquivoPrograma     = new TTCEMGRegistrosArquivoPrograma;
-        $this->obTTCEMGORGAO                        = new TTCEMGORGAO;
-        $this->obTTCEMGCONSID                       = new TTCEMGConsideracaoArquivo;
+        $this->obTTCEMGConfiguracaoLOA = new TTCEMGConfiguracaoLOA;
+        $this->obTSTNRiscosFiscais = new TSTNRiscosFiscais;
+        $this->obTSTNProvidencias = new TSTNProvidencias;
+        $this->obTTCEMGConfigurarIDE = new TTCEMGConfigurarIDE;
+        $this->obTExportacaoTCEMGUniOrcam = new TExportacaoTCEMGUniOrcam;
+        $this->obTExportacaoTCEMGItem = new TExportacaoTCEMGItem;
+        $this->obTTCEMGConfiguracaoPERC = new TTCEMGConfiguracaoPERC;
+        $this->obTTCEMGAMP = new TTCEMGAMP;
+        $this->obTTCEMGArquivoAMP = new TTCEMGArquivoAMP;
+        $this->obTTCEMGArquivoUOC = new TTCEMGArquivoUOC;
+        $this->obTTCEMGRegistrosArquivoPrograma = new TTCEMGRegistrosArquivoPrograma;
+        $this->obTTCEMGORGAO = new TTCEMGORGAO;
+        $this->obTTCEMGCONSID = new TTCEMGConsideracaoArquivo;
     }
 
     // SETANDO
@@ -299,33 +299,19 @@ class RTCEMGExportacaoArquivosPlanejamento
         }
 
         if (in_array("REC.csv",$this->getArquivos())) {
-            $this->obTOrcamentoReceita->setDado('entidades' , $this->getCodEntidades());
-            $stDataInicial = "01/".$this->getMes()."/".Sessao::getExercicio();
-            $stDataFinal   = SistemaLegado::retornaUltimoDiaMes($this->getMes(), Sessao::getExercicio());
-            $this->obTOrcamentoReceita->setDado('dt_inicial', $stDataInicial );
-            $this->obTOrcamentoReceita->setDado('dt_final'  , $stDataFinal   );
+            $this->obTOrcamentoReceita->setDado('entidades', $this->getCodEntidades());
+            $stDataInicial = "01/" . $this->getMes() . "/" . Sessao::getExercicio();
+            $stDataFinal = SistemaLegado::retornaUltimoDiaMes($this->getMes(), Sessao::getExercicio());
+            $this->obTOrcamentoReceita->setDado('dt_inicial', $stDataInicial);
+            $this->obTOrcamentoReceita->setDado('dt_final', $stDataFinal);
 
             //Tipo Registro 10
             $this->obTOrcamentoReceita->recuperaReceitaExportacaoPlanejamento10($rsRecordSet, $boTransacao);
-
             $arRecordSetArquivos["REC10"] = $rsRecordSet;
 
             //Tipo Registro 11
             $this->obTOrcamentoReceita->recuperaReceitaExportacaoPlanejamento11($rsRecordSet, $boTransacao);
-
             $arRecordSetArquivos["REC11"] = $rsRecordSet;
-
-            //Tipo Registro 99
-            $arRecordSetRECS99 = array(
-                '0' => array(
-                    'tipo_registro' => '99',
-                )
-            );
-
-            $rsRecordSet = new RecordSet();
-            $rsRecordSet->preenche($arRecordSetRECS99);
-
-            $arRecordSetArquivos["REC99"] = $rsRecordSet;
         }
 
         if (in_array("RFIS.csv",$this->getArquivos())) {

@@ -1,5 +1,8 @@
 <?php
 
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 include_once ( CAM_FW_BANCO_DADOS."Transacao.class.php"  );
 
@@ -307,10 +310,11 @@ class RContabilidadeFundo
 
     public function listar(&$rsRecordSet, $filtrosAdicionais = array(), $stOrder = "", $boTransacao = "")
     {   
-        $stFiltro = "WHERE situacao = 1";
+        $stFiltro = "WHERE fundo.situacao = 1";
+        $stFiltro .= " AND fundo.exercicio = '".$this->getExercicio()."'";
 
         if (isset($filtrosAdicionais['cod_fundo']) && !empty($filtrosAdicionais['cod_fundo'])) {
-            $stFiltro .= " AND cod_fundo = " . $filtrosAdicionais['cod_fundo'];
+            $stFiltro .= " AND fundo.cod_fundo = " . $filtrosAdicionais['cod_fundo'];
         }
 
         return $this->obTContabilidadeFundo->listar( $rsRecordSet, $stFiltro, $stOrder, $boTransacao );

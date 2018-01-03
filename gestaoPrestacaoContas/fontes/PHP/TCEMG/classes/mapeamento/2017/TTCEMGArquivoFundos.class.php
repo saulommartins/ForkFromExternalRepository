@@ -26,15 +26,37 @@
         private function montaRecuperaRegistro10()
         {
             return "
-                 SELECT 10 as tipo_registro, 
-                        fundo.cod_fundo, 
-                        NULLIF(regexp_replace(fundo.cnpj, '\D','','g'), '')::numeric AS cnpj,
-                        fundo.descricao, 
-                        fundo.contabilidade_centralizada,
-                        (CASE WHEN fundo.cod_entidade = 5 THEN fundo.plano::VARCHAR ELSE '' END) AS plano
-                   FROM contabilidade.fundo
-                  WHERE exercicio = '".$this->getDado('exercicio')."'
-                    AND situacao = 1";
+                SELECT 10 as tipo_registro, 
+                       fundo.cod_fundo,
+                       NULLIF(
+                          regexp_replace(
+                            CASE WHEN fundo.cnpj IS NOT NULL AND fundo.cnpj != ''
+                                 THEN fundo.cnpj::VARCHAR
+                                 ELSE sw_cgm_pessoa_juridica.cnpj
+                             END
+                          , '\D','','g'),
+                       '')::numeric AS cnpj,
+                       fundo.descricao, 
+                       fundo.contabilidade_centralizada,
+                       CASE WHEN fundo.cod_entidade = 5
+                            THEN fundo.plano::VARCHAR
+                            ELSE '' 
+                        END AS plano
+
+                  FROM contabilidade.fundo
+                  
+                  JOIN orcamento.entidade
+                    ON entidade.cod_entidade = fundo.cod_entidade
+                   AND entidade.exercicio = fundo.exercicio
+
+                  LEFT JOIN sw_cgm 
+                    ON sw_cgm.numcgm = entidade.numcgm
+
+                  LEFT JOIN sw_cgm_pessoa_juridica 
+                    ON sw_cgm_pessoa_juridica.numcgm = sw_cgm.numcgm
+
+                 WHERE fundo.exercicio = '".$this->getDado('exercicio')."'
+                   AND situacao = 1";
         }
 
         private function montaRecuperaRegistro11()

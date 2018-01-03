@@ -46,36 +46,36 @@ class TContabilidadeFundo extends Persistente
     private function montaRecuperaRelacionamentoFundoEntidade()
     {
       return "
-        select fu.cod_fundo, 
-               fu.cod_entidade,
+        select fundo.cod_fundo, 
+               fundo.cod_entidade,
                cgm.nom_cgm as entidade,
-               fu.cod_orgao,
-               org.nom_orgao as orgao,
-               fu.cod_unidade,
-               uni.num_unidade, 
-               uni.nom_unidade as unidade, 
-               fu.cnpj, 
-               fu.descricao, 
-               fu.plano, 
-               fu.situacao, 
-               fu.exercicio
-          from contabilidade.fundo fu
+               fundo.cod_orgao,
+               orgao.nom_orgao as orgao,
+               fundo.cod_unidade,
+               unidade.num_unidade, 
+               unidade.nom_unidade as unidade, 
+               fundo.cnpj, 
+               fundo.descricao, 
+               fundo.plano, 
+               fundo.situacao, 
+               fundo.exercicio
+          from contabilidade.fundo fundo
 
           join orcamento.entidade en
-            on en.cod_entidade = fu.cod_entidade
-           and en.exercicio = fu.exercicio
+            on en.cod_entidade = fundo.cod_entidade
+           and en.exercicio = fundo.exercicio
 
           join sw_cgm cgm
             on cgm.numcgm = en.numcgm
 
-          join orcamento.orgao org
-            on org.num_orgao = fu.cod_orgao
-           and org.exercicio = fu.exercicio
+          join orcamento.orgao orgao
+            on orgao.num_orgao = fundo.cod_orgao
+           and orgao.exercicio = fundo.exercicio
          
-          left join orcamento.unidade uni 
-            on fu.cod_unidade = uni.num_unidade
-           and fu.exercicio = uni.exercicio
-           and fu.cod_orgao = uni.num_orgao
+          left join orcamento.unidade unidade 
+            on fundo.cod_unidade = unidade.num_unidade
+           and fundo.exercicio = unidade.exercicio
+           and fundo.cod_orgao = unidade.num_orgao
       ";
     }
 

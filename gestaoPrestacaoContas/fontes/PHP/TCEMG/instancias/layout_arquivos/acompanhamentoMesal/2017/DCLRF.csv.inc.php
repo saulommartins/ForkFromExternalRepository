@@ -110,12 +110,12 @@ if (count($rsRecordSetDCLRF10->getElementos()) > 0) {
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(14);
     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
 
-    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("valor_saldo_atual_concessoes_garantia");
+    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("valor_saldo_atual_concessoes_garantia_interna");
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(14);
     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
 
-    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("valor_saldo_atual_concessoes_garantia_interna");
+    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("valor_saldo_atual_concessoes_garantia");
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(14);
     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');

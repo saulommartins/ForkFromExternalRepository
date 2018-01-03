@@ -48,35 +48,29 @@ class TTCEMGDCLRF extends Persistente {
         * Método Construtor
         * @access Private
     */
-    function TTCEMGDCLRF()
-    {
+    function TTCEMGDCLRF() {
         parent::Persistente();
     }
 
-    function recuperaValoresArquivoDCLRF(&$rsRecordSet)
-    {
+    function recuperaValoresArquivoDCLRF(&$rsRecordSet) {
         return $this->executaRecupera("montaRecuperaValoresArquivoDCLRF",$rsRecordSet,$stFiltro,$stOrder,$boTransacao);
     }
 
-    function montaRecuperaValoresArquivoDCLRF()
-    {
+    function montaRecuperaValoresArquivoDCLRF() {
         $stSql.= "SELECT exercicio, ";
-
         if($this->getDado("cod_orgao") != ''){
             $stSql.= "'" . $this->getDado("tipo_registro") . "' AS tipo_registro,
                       '" . $this->getDado("cod_orgao") . "' AS cod_orgao, ";
         }
-
         $stSql.= " mes_referencia,
                    *
-          FROM tcemg.configuracao_arquivo_dclrf
-          WHERE exercicio = '" . $this->getDado('exercicio') . "'
-                AND mes_referencia = " . $this->getDado('mes_referencia');
-
+                   FROM tcemg.configuracao_arquivo_dclrf
+                   WHERE exercicio = '" . $this->getDado('exercicio') . "'
+                         AND mes_referencia = " . $this->getDado('mes_referencia');
         return $stSql;
     }
 
-    public function __destruct(){}
+    public function __destruct() {}
 
 }
 ?>

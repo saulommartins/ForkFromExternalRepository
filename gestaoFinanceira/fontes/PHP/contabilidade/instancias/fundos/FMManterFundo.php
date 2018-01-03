@@ -97,7 +97,7 @@ $obTxtCnpjFundo->setId       ( "stCnpjFundo" );
 $obTxtCnpjFundo->setRotulo   ( "CNPJ do fundo" );
 $obTxtCnpjFundo->setTitle    ( "Informe o CNPJ do Fundo" );
 $obTxtCnpjFundo->setStyle    ( "width: 150px" );
-$obTxtCnpjFundo->setNull     ( false );
+$obTxtCnpjFundo->setNull     ( true );
 $obTxtCnpjFundo->setMaxLength( 18 );
 $obTxtCnpjFundo->obEvento->setOnKeyUp("mascaraCNPJ(this, event);");
 
