@@ -1052,7 +1052,11 @@ class TOrcamentoReceita extends Persistente
                          THEN SUBSTR(natureza_receita::text, 2, 8)::integer
                        ELSE natureza_receita
                      END AS natureza_receita,
-                     remove_acentos(especificacao) as especificacao,
+                     CASE
+                       WHEN especificacao IS NULL
+                         THEN ''
+                       ELSE remove_acentos(especificacao)
+                     END as especificacao,
                      CASE
                        WHEN SUBSTR(cod_receita_final::VARCHAR, 1, 1) = '9'
                          THEN REPLACE(REPLACE(sum(tabela.vl_previsto)::VARCHAR,'.',','),'-','')
