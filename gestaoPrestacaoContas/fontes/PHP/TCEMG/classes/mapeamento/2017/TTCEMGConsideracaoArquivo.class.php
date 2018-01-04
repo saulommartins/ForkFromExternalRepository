@@ -41,57 +41,60 @@ include_once(CLA_PERSISTENTE);
 
 class TTCEMGConsideracaoArquivo extends Persistente
 {
-    public function TTCEMGConsideracaoArquivo() {
-        parent::Persistente();
-        $this->setTabela("tcemg.consideracao_arquivo");
-        $this->setCampoCod('cod_arquivo');
-        $this->setComplementoChave('');
-        $this->AddCampo('cod_arquivo', 'integer', true, '', true, false);
-        $this->AddCampo('nom_arquivo', 'varchar', true, '"15"', false, false);
-    }
+  public function TTCEMGConsideracaoArquivo() {
+    parent::Persistente();
+    $this->setTabela("tcemg.consideracao_arquivo");
+    $this->setCampoCod('cod_arquivo');
+    $this->setComplementoChave('');
+    $this->AddCampo('cod_arquivo', 'integer', true, '', true, false);
+    $this->AddCampo('nom_arquivo', 'varchar', true, '"15"', false, false);
+  }
 
-    public function recuperaDadosArquivo(&$rsRecordSet, $stFiltro, $boTransacao = "") {
-        $obErro = new Erro;
-        $obConexao = new Conexao;
-        $rsRecordSet = new RecordSet;
-        $stOrdem = " ORDER BY consideracao_arquivo.cod_arquivo";
-        $stSql = $this->montaRecuperaDadosArquivo() . $stFiltro . $stOrdem;
-        $this->stDebug = $stSql;
-        $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
+  public function recuperaDadosArquivo(&$rsRecordSet, $stFiltro, $boTransacao = "") {
+    $obErro = new Erro;
+    $obConexao = new Conexao;
+    $rsRecordSet = new RecordSet;
+    $stOrdem = " ORDER BY consideracao_arquivo.cod_arquivo";
+    $stSql = $this->montaRecuperaDadosArquivo() . $stFiltro . $stOrdem;
+    $this->stDebug = $stSql;
+    $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
 
-        return $obErro;
-    }
+    return $obErro;
+  }
 
-    public function montaRecuperaDadosArquivo() {
-        $stSql = "SELECT * FROM tcemg.consideracao_arquivo";
-        return $stSql;
-    }
+  public function montaRecuperaDadosArquivo() {
+    $stSql = "SELECT * FROM tcemg.consideracao_arquivo";
+    return $stSql;
+  }
 
-    public function recuperaConsid(&$rsRecordSet, $boTransacao = "") {
-        $obErro = new Erro;
-        $obConexao = new Conexao;
-        $rsRecordSet = new RecordSet;
-        $stSql = $this->montaRecuperaConsid() . $stFiltro . $stOrdem;
-        $this->stDebug = $stSql;
-        $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
+  public function recuperaConsid(&$rsRecordSet, $boTransacao = "") {
+    $obErro = new Erro;
+    $obConexao = new Conexao;
+    $rsRecordSet = new RecordSet;
+    $stSql = $this->montaRecuperaConsid() . $stFiltro . $stOrdem;
+    $this->stDebug = $stSql;
+    $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao);
 
-        return $obErro;
-    }
+    return $obErro;
+  }
 
-    public function montaRecuperaConsid() {
-        $stSql = "SELECT 10 as tipo_registro,
-                         'FLPGO' AS nom_arquivo,
-                         CAD.descricao as consideracoes
-                  FROM tcemg.consideracao_arquivo
-                       JOIN tcemg.consideracao_arquivo_descricao as CAD ON CAD.cod_arquivo = consideracao_arquivo.cod_arquivo
-                            AND CAD.descricao != ''
-                  WHERE CAD.periodo = '" . $this->getDado('mes') . "'
-                        AND CAD.cod_entidade IN(" . $this->getDado('entidade') . ")
-                        AND CAD.modulo_sicom = '" . $this->getDado('modulo_sicom') . "'
-                  ORDER BY consideracao_arquivo.cod_arquivo";
-        return $stSql;
-    }
+  public function montaRecuperaConsid() {
+    $stSql = "SELECT 10 as tipo_registro,
+                     consideracao_arquivo.nom_arquivo AS cod_arquivo,
+                     " . $this->getDado('exercicio') . " AS exercicio_referencia,
+                     " . $this->getDado('mes') . " AS mes_referencia,
+                     consideracao_arquivo_descricao.descricao as consideracoes
+              FROM tcemg.consideracao_arquivo
+                   JOIN tcemg.consideracao_arquivo_descricao ON consideracao_arquivo_descricao.cod_arquivo = consideracao_arquivo.cod_arquivo
+                        AND consideracao_arquivo_descricao.descricao != ''
+              WHERE consideracao_arquivo_descricao.periodo = '" . $this->getDado('mes') . "'
+                    AND consideracao_arquivo_descricao.cod_entidade IN(" . $this->getDado('entidade') . ")
+                    AND consideracao_arquivo_descricao.modulo_sicom = '" . $this->getDado('modulo_sicom') . "'
+                    AND consideracao_arquivo_descricao.exercicio = '" . $this->getDado('exercicio') . "'
+              ORDER BY consideracao_arquivo.cod_arquivo";
+    return $stSql;
+  }
 
-    public function __destruct(){}
+  public function __destruct() {}
 }
 ?>

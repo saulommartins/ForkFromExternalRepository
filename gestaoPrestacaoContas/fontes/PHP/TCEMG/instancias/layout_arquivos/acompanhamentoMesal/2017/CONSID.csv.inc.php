@@ -40,7 +40,7 @@
 /**
 * CONSID.csv | Autor : Lisiane Morais
 */
-include_once CAM_GPC_TCEMG_MAPEAMENTO.Sessao::getExercicio()."/TTCEMGConsideracaoArquivo.class.php";
+include_once CAM_GPC_TCEMG_MAPEAMENTO . Sessao::getExercicio() . "/TTCEMGConsideracaoArquivo.class.php";
 
 $rsRecuperaConsid10 = new RecordSet();
 
@@ -55,46 +55,48 @@ $obTTCEMGConsideracaoArquivo->recuperaConsid($rsRecuperaConsid10);
 
 //Tipo Registro 99 – Declaração de inexistência de informações
 $arRecordSetCONSID99 = array(
-    '0' => array(
-        'tipo_registro' => '99',
-    )
+  '0' => array(
+    'tipo_registro' => '99',
+  )
 );
 
 $rsRecuperaConsid99 = new RecordSet();
 $rsRecuperaConsid99->preenche($arRecordSetCONSID99);
 
 if (count($rsRecuperaConsid10->getElementos()) > 0) {
-    $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
-    $obExportador->roUltimoArquivo->addBloco($rsRecuperaConsid10);
+  $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
+  $obExportador->roUltimoArquivo->addBloco($rsRecuperaConsid10);
 
-    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
-    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
-    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
-    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
+  $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
+  $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+  $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+  $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
 
-    if ( Sessao::getExercicio() >= "2015" ) {
-        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nom_arquivo");
-        $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
-        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
-        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(20);
-    } else {
-        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_arquivo");
-        $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
-        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
-        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
-    }
+  $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("cod_arquivo");
+  $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+  $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
+  $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(20);
 
-    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("consideracoes");
-    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
-    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
-    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(3000);
+  $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("exercicio_referencia");
+  $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+  $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+  $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(4);
 
+  $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("mes_referencia");
+  $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+  $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+  $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
+
+  $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("consideracoes");
+  $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+  $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
+  $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(3000);
 } else {
-    $obExportador->roUltimoArquivo->addBloco($rsRecuperaConsid99);
-    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
-    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
-    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
-    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
+  $obExportador->roUltimoArquivo->addBloco($rsRecuperaConsid99);
+  $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
+  $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
+  $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+  $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
 }
 
 $obTTCEMGConsideracaoArquivo = null;
