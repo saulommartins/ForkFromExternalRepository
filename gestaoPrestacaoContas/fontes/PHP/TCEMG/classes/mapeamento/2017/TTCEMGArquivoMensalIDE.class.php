@@ -49,7 +49,7 @@ class TTCEMGArquivoMensalIDE extends Persistente {
         return $this->executaRecupera("montaRecuperaDadosExportacao", $rsRecordSet, $stFiltro, $stOrder, $boTransacao);
     }
 
-    public function montaRecuperaDadosExportacao() {
+    /*public function montaRecuperaDadosExportacao() {
         $stSql = "SELECT (SELECT cnpj
                           FROM sw_cgm_pessoa_juridica
                                LEFT JOIN administracao.configuracao ON parametro = 'cod_entidade_prefeitura'
@@ -81,6 +81,63 @@ class TTCEMGArquivoMensalIDE extends Persistente {
                         AND ACE.cod_entidade IN (" . $this->getDado('entidades') . ")
                         AND ACE.parametro = 'tcemg_codigo_orgao_entidade_sicom'";
         return $stSql;
+    }*/
+
+    public function montaRecuperaDadosExportacao()
+    {
+        return "
+         SELECT
+                (   SELECT cnpj
+                      FROM sw_cgm_pessoa_juridica
+                    
+                      LEFT JOIN administracao.configuracao
+                        ON parametro = 'cod_entidade_prefeitura'
+                       AND configuracao.exercicio = '" . $this->getDado('exercicio') . "'
+
+                      LEFT JOIN orcamento.entidade
+                        ON cod_entidade = configuracao.valor::integer
+                       AND entidade.exercicio = configuracao.exercicio
+                     WHERE sw_cgm_pessoa_juridica.numcgm = entidade.numcgm
+                ) AS cnpj_municipio,
+                
+                sw_cgm_pessoa_juridica.cnpj as cnpj_orgao,
+                
+                (   SELECT DISTINCT cod_municipio
+                      FROM tcemg.configurar_ide
+                ) AS cod_municipio,
+                
+                LPAD(configuracao_orgao.valor, 2, '0') AS cod_orgao,
+                configuracao_tipo_orgao.valor AS tipo_orgao,
+                '" . $this->getDado('exercicio') . "' AS exercicio_referencia,
+                '" . $this->getDado('mes') . "' AS mes_referencia,
+                TO_CHAR(CURRENT_DATE::timestamp, 'ddmmyyyy') as data_geracao,
+                TO_CHAR(CURRENT_DATE::timestamp, 'yyyymmdd') || '' || '" . $this->getDado('exercicio') . "' || '" . $this->getDado('mes') . "' as cod_remessa
+           FROM administracao.configuracao_entidade AS ACE
+ 
+           JOIN administracao.configuracao_entidade as configuracao_orgao
+             ON configuracao_orgao.exercicio = ACE.exercicio
+            AND configuracao_orgao.cod_entidade = ACE.cod_entidade
+            AND configuracao_orgao.parametro = 'tcemg_codigo_orgao_entidade_sicom'
+             
+           JOIN administracao.configuracao_entidade as configuracao_tipo_orgao
+             ON configuracao_tipo_orgao.exercicio = ACE.exercicio
+            AND configuracao_tipo_orgao.cod_entidade = ACE.cod_entidade
+            AND configuracao_tipo_orgao.parametro = 'tcemg_tipo_orgao_entidade_sicom'
+
+           JOIN tcemg.orgao
+             ON configuracao_orgao.valor::integer = orgao.num_orgao 
+
+           LEFT JOIN orcamento.entidade
+             ON entidade.cod_entidade = ACE.valor::integer
+            AND entidade.exercicio = ACE.exercicio 
+             
+           LEFT JOIN sw_cgm_pessoa_juridica 
+             ON sw_cgm_pessoa_juridica.numcgm = entidade.numcgm
+             
+          WHERE ACE.exercicio = '" . $this->getDado('exercicio') . "'
+            AND ACE.cod_entidade IN (" . $this->getDado('entidades') . ")
+            AND ACE.parametro = 'tcemg_codigo_orgao_entidade_sicom'
+        ";
     }
 
     public function __destruct(){}
