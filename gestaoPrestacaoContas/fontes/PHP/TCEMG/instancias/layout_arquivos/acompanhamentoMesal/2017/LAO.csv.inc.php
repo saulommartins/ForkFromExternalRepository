@@ -234,7 +234,7 @@ if (count($rsRecordSetLAO20->getElementos()) > 0) {
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_lei_alter_orcam");
                     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
-                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_ESQ");
+                    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
                     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(6);
 
                     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_autorizacao");
