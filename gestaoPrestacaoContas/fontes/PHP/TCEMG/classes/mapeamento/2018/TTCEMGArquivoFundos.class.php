@@ -14,13 +14,13 @@
             $this->obConexao = new Conexao;
         }    
 
-        public function recuperaRegistro($tipoRegistro, RecordSet &$rsRecordSet)
+        public function recuperaRegistro($tipoRegistro, RecordSet &$rsRecordSet, $stFiltro = "")
         {
             $metodo = "montaRecuperaRegistro" . $tipoRegistro;
             $stSql = $this->{$metodo}();
 
             $this->setDebug( $stSql );
-            return $this->obConexao->executaSQL( $rsRecordSet, $stSql );
+            return $this->obConexao->executaSQL( $rsRecordSet, $stSql, $stFiltro );
         }
         
         private function montaRecuperaRegistro10()

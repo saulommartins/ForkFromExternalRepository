@@ -94,8 +94,6 @@ foreach($rsRecuperaFundos11->getElementos() as $key => $arFundo) {
 
 }
 
-
-
 foreach($rsRecuperaFundos20->getElementos() as $key => $arFundo) {
 
     $exibe99 = false;

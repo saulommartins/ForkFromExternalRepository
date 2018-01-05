@@ -24,59 +24,29 @@
 ?>
 <?php
 /**
-    * Arquivo de mapeamento para a função que busca os dados da variacao patrimonial
-    * Data de Criação   : 14/10/2013
+* Arquivo de index
+* Data de Criação: 25/07/2005
 
-    * @author Analista
-    * @author Desenvolvedor    Carolina Schwaab Marcal
+* @author Analista: Cassiano
+* @author Desenvolvedor: Cassiano
 
-    * @package URBEM
-    * @subpackage
+$Revision: 62872 $
+$Name$
+$Author: franver $
+$Date: 2015-07-01 17:16:55 -0300 (Qua, 01 Jul 2015) $
 
-    $Id: TTCEMGVariacaoPatrimonial.class.php 62801 2015-06-19 16:37:08Z evandro $
+Casos de uso: uc-06.00.00
 */
 
-include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
-include_once ( CLA_PERSISTENTE );
+/*
+$Log$
+Revision 1.8  2006/07/06 13:52:24  diego
+Retirada tag de log com erro.
 
-class TTCEMGVariacaoPatrimonial extends Persistente
-{
-/**
-    * Método Construtor
-    * @access Private
+Revision 1.7  2006/07/06 12:42:06  diego
+
 */
-function TTCEMGVariacaoPatrimonial()
-{
-    parent::Persistente();
-}
 
-function recuperaValores(&$rsRecordSet)
-{
-    $obErro      = new Erro;
-    $obConexao   = new Conexao;
-    $rsRecordSet = new RecordSet;
-    $stSql = $this->montaRecuperaValores().$stFiltro.$stOrdem;
-    $this->stDebug = $stSql;
+header("Location: ../index.php");
 
-    $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
-
-    return $obErro;
-}
-
-function montaRecuperaValores()
-{
-    $stSql = "   SELECT mes
-                      , ABS(deficit) as deficit
-                      , ABS(superavit) as superavit
-                   FROM tcemg.fn_variacao_patrimonial('".$this->getDado("stExercicio")."', '".$this->getDado("stEntidade")."', ".$this->getDado("mes").")
-                     AS retorno( mes       INTEGER
-                               , deficit   NUMERIC
-                               , superavit NUMERIC )";
-
-    return $stSql;
-}
-
-public function __destruct(){}
-
-
-}
+?>
