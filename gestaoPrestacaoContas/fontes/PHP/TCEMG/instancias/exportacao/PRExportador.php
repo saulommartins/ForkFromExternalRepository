@@ -98,7 +98,9 @@ $obFormulario->addHidden ( $obHdnAcao );
 $obFormulario->addHidden ( $obHdnCtrl );
 $obFormulario->addHidden ( $obHdnMes );
 $obFormulario->show();
+
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/rodape.inc.php';
+
 if ($_POST['hdnPaginaExportacao']) {
     echo '<script>';
     echo "document.frm.submit(); ";

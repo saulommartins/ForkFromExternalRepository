@@ -135,16 +135,16 @@
 		font-weight:bold;
     }
 
-/* formulario*/
-.campo_bloco { width:100%; }
-.campo_bloco label { width:120px; float:left; text-align:right;}
+	/* formulario*/
+	.campo_bloco { width:100%; }
+	.campo_bloco label { width:120px; float:left; text-align:right;}
 
-/**
-* Espelho
-*/
-span.legenda{ 
-    font: 30% Courier Monospace;
-} 
-span.campo  {
-    font: 7px Helvetica;
-} 
+	/**
+	* Espelho
+	*/
+	span.legenda{ 
+	    font: 30% Courier Monospace;
+	} 
+	span.campo  {
+	    font: 7px Helvetica;
+	} 

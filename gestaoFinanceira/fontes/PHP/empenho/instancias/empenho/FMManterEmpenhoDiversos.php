@@ -125,13 +125,16 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
     $obREmpenhoAutorizacaoEmpenho->obRUsuario->obRCGM->setNumCGM(Sessao::read('numCgm'));
     $obREmpenhoAutorizacaoEmpenho->obREmpenhoPermissaoAutorizacao->listarOrgaoDespesaEntidadeUsuario($rsOrgao, $stOrder);
     $obREmpenhoAutorizacaoEmpenho->listarUnidadeMedida($rsUnidade);
+
     while (!$rsUnidade->eof()) {
         if ($rsUnidade->getCampo("nom_unidade" ) == 'Unidade') {
             $inCodUnidade = $rsUnidade->getCampo('cod_unidade').'-'.$rsUnidade->getCampo('cod_grandeza').'-'.$rsUnidade->getCampo('nom_unidade');
             $inCodUnidadePadrao = $rsUnidade->getCampo('cod_unidade').'-'.$rsUnidade->getCampo('cod_grandeza').'-'.$rsUnidade->getCampo('nom_unidade');
         }
+        
         $rsUnidade->proximo();
     }
+
     $rsUnidade->setPrimeiroElemento();
 
     $obREmpenhoAutorizacaoEmpenho->checarFormaExecucaoOrcamento($stFormaExecucao);

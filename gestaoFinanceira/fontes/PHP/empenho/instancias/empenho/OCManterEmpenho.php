@@ -41,6 +41,9 @@
 
 header ("Content-Type: text/html; charset=utf-8");
 
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/componentes/Table/TableTree.class.php';
@@ -201,6 +204,7 @@ function montaListaDiverso(Request $request, $arRecordSet, $boExecuta = true)
 {
     $codUf = SistemaLegado::pegaConfiguracao('cod_uf', 2, Sessao::getExercicio());
     $rsLista = new RecordSet;
+
     for($i=0;$i<count($arRecordSet);$i++){
         if(isset($arRecordSet[$i]['cod_marca'])&&$arRecordSet[$i]['cod_marca']!='')
             $arRecordSet[$i]['nom_item'] .= " ( Marca: ".$arRecordSet[$i]['cod_marca']." - ".$arRecordSet[$i]['nome_marca']." )";
@@ -208,32 +212,39 @@ function montaListaDiverso(Request $request, $arRecordSet, $boExecuta = true)
 
     $rsLista->preenche( $arRecordSet );
     $rsLista->addFormatacao('vl_total', 'NUMERIC_BR');
+
     if (!$rsLista->eof()) {
         $obLista = new Lista;
         $obLista->setMostraPaginacao(false);
         $obLista->setRecordSet($rsLista);
+
         $obLista->addCabecalho();
         $obLista->ultimoCabecalho->addConteudo('&nbsp;');
         $obLista->ultimoCabecalho->setWidth(3);
         $obLista->commitCabecalho();
+
         if ($request->get('stTipoItem')=='Catalogo') {
             $obLista->addCabecalho();
             $obLista->ultimoCabecalho->addConteudo('Código ');
             $obLista->ultimoCabecalho->setWidth(4);
             $obLista->commitCabecalho(); 
         }
+
         $obLista->addCabecalho();
         $obLista->ultimoCabecalho->addConteudo('Descrição ');
         $obLista->ultimoCabecalho->setWidth(50);
         $obLista->commitCabecalho();
+
         $obLista->addCabecalho();
         $obLista->ultimoCabecalho->addConteudo('Valor Unitário ');
         $obLista->ultimoCabecalho->setWidth(10);
         $obLista->commitCabecalho();
+
         $obLista->addCabecalho();
         $obLista->ultimoCabecalho->addConteudo('Quantidade ');
         $obLista->ultimoCabecalho->setWidth(10);
         $obLista->commitCabecalho();
+
         $obLista->addCabecalho();
         $obLista->ultimoCabecalho->addConteudo('Valor Total');
         $obLista->ultimoCabecalho->setWidth(10);
@@ -269,6 +280,7 @@ function montaListaDiverso(Request $request, $arRecordSet, $boExecuta = true)
         $obLista->ultimoDado->setCampo('vl_total');
         $obLista->ultimoDado->setAlinhamento('DIREITA');
         $obLista->commitDado();
+
         if ($request->get('stAcao') != 'anular') {
             $obLista->addAcao();
             $obLista->ultimaAcao->setAcao('ALTERAR');
@@ -575,13 +587,189 @@ function LiberaDataEmpenho($boLibera = 'true'){
     return $js;
 }
 
+function montaListaConvenios($convenios, $stExercicioConvenio, $inCodEntidade)
+{
+    include_once ( CAM_GPC_TCEMG_MAPEAMENTO.'TTCEMGConvenio.class.php' );
+
+    $stFiltro  = " WHERE convenio.exercicio = '".  $stExercicioConvenio ."'";
+    $stFiltro .= " AND convenio.cod_entidade = ".$inCodEntidade."\n";
+    $stFiltro .= " AND convenio.nro_convenio IN (".implode(", ", $convenios).")\n";
+    $stOrdem = "ORDER BY convenio.nro_convenio ASC";
+
+    $obTTCEMGConvenio = new TTCEMGConvenio;
+    $obTTCEMGConvenio->recuperaConvenioFiltro ( $rsLista, $stFiltro, $stOrdem );
+
+    $obLista = new Lista;
+    $obLista->setRecordSet       ( $rsLista               );
+    $obLista->setTitulo          ( "Convênios do Empenho" );
+    $obLista->setMostraPaginacao ( false                  );
+    
+    $obLista->addCabecalho ();
+    $obLista->ultimoCabecalho->addConteudo  ( "&nbsp;" );
+    $obLista->ultimoCabecalho->setWidth     ( 5 );
+    $obLista->commitCabecalho ();
+    
+    $obLista->addCabecalho ();
+    $obLista->ultimoCabecalho->addConteudo  ( "Número do Convênio" );
+    $obLista->ultimoCabecalho->setWidth     ( 15 );
+    $obLista->commitCabecalho ();
+    
+    $obLista->addCabecalho ();
+    $obLista->ultimoCabecalho->addConteudo  ( "Entidade" );
+    $obLista->ultimoCabecalho->setWidth     ( 5 );
+    $obLista->commitCabecalho ();
+    
+    $obLista->addCabecalho ();
+    $obLista->ultimoCabecalho->addConteudo  ( "Objeto do Convênio" );
+    $obLista->ultimoCabecalho->setWidth     ( 40 );
+    $obLista->commitCabecalho ();
+    
+    $obLista->addCabecalho ();
+    $obLista->ultimoCabecalho->addConteudo  ( "Valor" );
+    $obLista->ultimoCabecalho->setWidth     ( 15 );
+    $obLista->commitCabecalho ();
+    
+    $obLista->addCabecalho ();
+    $obLista->ultimoCabecalho->addConteudo  ( "&nbsp;" );
+    $obLista->ultimoCabecalho->setWidth     ( 5 );
+    $obLista->commitCabecalho ();
+    
+    $obLista->addDado ();
+    $obLista->ultimoDado->setAlinhamento    ( "DIREITA" );
+    $obLista->ultimoDado->setCampo          ( "[nro_convenio]/[exercicio]" );
+    $obLista->commitDado ();
+    
+    $obLista->addDado ();
+    $obLista->ultimoDado->setAlinhamento    ( "ESQUERDA" );
+    $obLista->ultimoDado->setCampo          ( "cod_entidade" );
+    $obLista->commitDado ();
+    
+    $obLista->addDado ();
+    $obLista->ultimoDado->setAlinhamento    ( "ESQUERDA" );
+    $obLista->ultimoDado->setCampo          ( "objeto" );
+    $obLista->commitDado ();
+    
+    $obLista->addDado ();
+    $obLista->ultimoDado->setAlinhamento    ( "DIREITA" );
+    $obLista->ultimoDado->setCampo          ( "vl_convenio" );
+    $obLista->commitDado ();
+
+    $stAcao = "EXCLUIR";
+    $obLista->addAcao();
+    $obLista->ultimaAcao->setAcao ( $stAcao );
+    $obLista->ultimaAcao->setFuncao( true );
+    $obLista->ultimaAcao->setLink( "JavaScript:montaParametrosGET('removerConvenioLista','inCodConvenio,inCodEntidade,stExercicioConvenio');" );
+    $obLista->commitAcao();
+    
+    $obLista->montaHTML();
+
+    $stHTML = $obLista->getHTML();
+    $stHTML = str_replace( "\r\n" ,"" ,$stHTML );
+    $stHTML = str_replace( "\n" ,"" ,$stHTML );
+    $stHTML = str_replace( "  " ,"" ,$stHTML );
+    $stHTML = str_replace( "'","\\'",$stHTML );
+    $stHTML = str_replace( "\\\'","\\'",$stHTML );
+ 
+    return "jQuery('#spnListaConvenios').html('".$stHTML."');  \n";
+}
+
+function incluirConvenioLista($inCodEntidade, $request)
+{
+    $stExercicioConvenio = $request->get('stExercicioConvenio');
+    $inCodConvenio = intval($request->get('inCodConvenio'));
+
+    if ($inCodConvenio == 0) {
+        $retornoJS = " alertaAviso('@Convênio inválido!.','form','erro','".Sessao::getId()."'); ";
+        $retornoJS .= "jQuery('#inCodConvenio').val('');";
+        $retornoJS .= "jQuery('#txtConvenio').html('');";
+
+        return $retornoJS;
+    }
+
+    $convenios = Sessao::read( 'convenios' );
+    $convenios[$inCodConvenio] = $inCodConvenio;
+    Sessao::write( 'convenios', $convenios );
+
+    $retornoJS  = montaListaConvenios($convenios, $stExercicioConvenio, $inCodEntidade);
+    $retornoJS .= "jQuery('#inCodConvenio').val('');";
+    $retornoJS .= "jQuery('#txtConvenio').html('');";
+
+    return $retornoJS;
+}
+
+function removerConvenioLista($inCodEntidade, $request)
+{
+    $inCodConvenio = $request->get('inCodConvenio');
+    $stExercicioConvenio = $request->get('stExercicioConvenio');
+
+    $convenios = Sessao::read( 'convenios' );
+    unset($convenios[$inCodConvenio]);
+    Sessao::write( 'convenios', $convenios );
+
+    if (count($convenios) == 0) {
+        return limparConveniosLista();
+    }
+
+    return montaListaConvenios($convenios, $stExercicioConvenio, $inCodEntidade);
+}
+
+function limparConveniosLista()
+{
+    Sessao::write( 'convenios', array() );
+    return "jQuery('#spnListaConvenios').html('')";
+}
+
+function validaConvenio($inCodEntidade, $request)
+{
+    include_once ( CAM_GPC_TCEMG_MAPEAMENTO.'TTCEMGConvenio.class.php' );
+    $inCodConvenio = $request->get('inCodConvenio');
+    $stExercicioConvenio = $request->get('stExercicioConvenio');
+
+    $stFiltro  = " WHERE convenio.exercicio = '".  $stExercicioConvenio ."'";
+    $stFiltro .= " AND convenio.cod_entidade = ".$inCodEntidade."\n";
+    $stFiltro .= " AND convenio.nro_convenio = ".$inCodConvenio."\n";
+    $stFiltro .= " LIMIT 1";
+
+    $obTTCEMGConvenio = new TTCEMGConvenio;
+    $obTTCEMGConvenio->recuperaConvenioFiltro ( $rsLista, $stFiltro, "" );
+
+    if ($rsLista->getNumLinhas() < 1) {
+        $retornoJS = " alertaAviso('@Convênio inválido!.','form','erro','".Sessao::getId()."'); ";
+        $retornoJS .= "jQuery('#inCodConvenio').val('');";
+        $retornoJS .= "jQuery('#txtConvenio').html('');";
+
+        return $retornoJS;
+    }
+
+    $convenio = $rsLista->getObjeto();
+
+    return "jQuery('#txtConvenio').html('".$convenio['objeto']."')";
+}
+
 $inCodEntidade = $request->get('inCodEntidade');
 
 switch ($stCtrl) {
+    case 'incluirConvenioLista':
+        echo incluirConvenioLista($inCodEntidade, $request);
+    break;
+
+    case 'removerConvenioLista':
+        echo removerConvenioLista($inCodEntidade, $request);
+    break;
+
+    case 'limparConveniosLista':
+        echo limparConveniosLista();
+    break;
+
+    case 'validaConvenio':
+        echo validaConvenio($inCodEntidade, $request);
+    break;
+
     case 'montaListaItemPreEmpenho':
         montaLista(Sessao::read('arItens'),true);
     break;
-     case 'verificaFornecedor':
+
+    case 'verificaFornecedor':
         if ($request->get('inCodFornecedor', '') != "") {
             validaDataFornecedor($request->get('inCodFornecedor'));
             if ($request->get('inCodFornecedor') && $request->get('inCodContrapartida') && ( $request->get('inCodCategoria') == 2 || $request->get('inCodCategoria') == 3)) {

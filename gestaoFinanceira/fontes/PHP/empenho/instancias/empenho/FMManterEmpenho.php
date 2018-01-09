@@ -39,6 +39,9 @@
                     uc-02.03.04
 */
 
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
 include_once CAM_GF_EMP_NEGOCIO."REmpenhoEmpenhoAutorizacao.class.php";
@@ -49,6 +52,7 @@ include_once CAM_GPC_TCERN_MAPEAMENTO.'TTCERNRoyalties.class.php';
 include_once CAM_FW_HTML."MontaAtributos.class.php";
 include_once CAM_GF_EMP_MAPEAMENTO."TEmpenhoContrapartidaAutorizacao.class.php";
 include_once CAM_GP_LIC_COMPONENTES.'IPopUpContrato.class.php';
+include_once CAM_GP_LIC_COMPONENTES.'IPopUpConvenio.class.php';
 
 //Define o nome dos arquivos PHP
 $stPrograma = "ManterEmpenho";
@@ -119,14 +123,17 @@ $inCodDespesa       = $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenh
 $stNomDespesa       = $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obROrcamentoDespesa->obROrcamentoClassificacaoDespesa->getDescricao();
 $stCodClassificacao = $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obROrcamentoClassificacaoDespesa->getMascClassificacao();
 $stNomClassificacao = $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obROrcamentoClassificacaoDespesa->getDescricao();
+
 $inCodFornecedor    = $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obRCGM->getNumCGM();
 $stNomFornecedor    = $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obRCGM->getnomCGM();
+
 $inCodHistorico     = $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obREmpenhoHistorico->getCodHistorico();
 $stNomHistorico     = $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obREmpenhoHistorico->getNomHistorico();
 $stDtValidadeInicial= $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obROrcamentoReservaSaldos->getDtValidadeInicial();
 $stDtValidadeFinal  = $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obROrcamentoReservaSaldos->getDtValidadeFinal();
 $stDtInclusao       = $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obROrcamentoReservaSaldos->getDtInclusao();
 $nuVlReserva        = number_format($obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obROrcamentoReservaSaldos->getVlReserva(),2,',','.');
+
 $arItemPreEmpenho   = $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->getItemPreEmpenho();
 $inCodCategoria     = $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->getCodCategoria();
 $stNomCategoria     = $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->getNomCategoria();
@@ -150,8 +157,9 @@ foreach ($arItemPreEmpenho as $inCount => $obItemPreEmpenho) {
 
     $inCodMarca = $obItemPreEmpenho->getCodigoMarca();
     $stDescrisaoItemMarca = '';
+    
     if(!empty($inCodMarca)){
-        $stDescrisaoItemMarca = SistemaLegado::pegaDado('descricao', 'almoxarifado.marca', " WHERE cod_marca = ".$inCodMarca, $boTransacao);
+        $stDescrisaoItemMarca = SistemaLegado::pegaDado('descricao', 'almoxarifado.marca', " WHERE cod_marca = ".$inCodMarca, true);
     }
 
     $arItens[$inCount]['num_item']     = $obItemPreEmpenho->getNumItem();
@@ -169,6 +177,7 @@ foreach ($arItemPreEmpenho as $inCount => $obItemPreEmpenho) {
         $arItens[$inCount]['cod_item']     = $obItemPreEmpenho->getCodItemPreEmp();
     Sessao::write('arItens', $arItens);
 }
+
 $arChaveAtributo =  array( "cod_pre_empenho" => $request->get('inCodPreEmpenho'),
                            "exercicio"       => Sessao::getExercicio()         );
 $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obRCadastroDinamico->setChavePersistenteValores( $arChaveAtributo );
@@ -350,7 +359,7 @@ $obDtEmpenho->obEvento->setOnChange( "montaParametrosGET('verificaFornecedor'); 
 $obDtEmpenho->setLabel    ( TRUE );
 $obDtEmpenho->setValue    ( ''   );
 
-$jsOnLoad .= "ajaxJavaScript('".$pgOcul."?".Sessao::getId()."','LiberaDataEmpenho');";
+$jsOnLoad = "ajaxJavaScript('".$pgOcul."?".Sessao::getId()."','LiberaDataEmpenho');";
 
 // Define objeto Data para Data de Vencimento
 $obDtVencimento = new Data;
@@ -458,7 +467,7 @@ $obLblHistorico->setRotulo    ( "Histórico"      );
 $obLblHistorico->setId        ( "stNomHistorico" );
 $obLblHistorico->setValue     ( $inCodHistorico.' - '.$stNomHistorico  );
 
-if ($inCodUf == 20) {
+if (isset($inCodUf) && $inCodUf == 20) {
     $obCmbFundeb = new Select;
     $obCmbFundeb->setName      ('inCodFundeb');
     $obCmbFundeb->setRotulo    ('Fundeb');
@@ -526,6 +535,7 @@ while (!$rsAtributos->EOF()) {
 
     $rsAtributos->proximo();
 }
+
 $rsAtributos->setPrimeiroElemento();
 
 // Atributos Dinamicos
@@ -596,6 +606,42 @@ $obContrato->obBuscaInner->obCampoCod->obEvento->setOnBlur("montaParametrosGET('
 $obContrato->obBuscaInner->setValoresBusca('', '', '');
 $obContrato->obBuscaInner->setFuncaoBusca("montaParametrosGET('montaBuscaContrato', 'inCodContrato,inCodEntidade,inCodFornecedor,stExercicioContrato');".$obContrato->obBuscaInner->getFuncaoBusca());
 
+$obConvenio = new IPopUpConvenio( $obForm );
+$obConvenio->obBuscaInner->obCampoCod->obEvento->setOnBlur(
+    "montaParametrosGET('validaConvenio', 'inCodConvenio,inCodEntidade,stExercicioConvenio');"
+);
+
+$obConvenio->obBuscaInner->setValoresBusca('', '', '');
+$obConvenio->obBuscaInner->setFuncaoBusca(
+    "montaParametrosGET('montaBuscaConvenio', 'inCodConvenio,inCodEntidade,stExercicioContrato');"
+    .$obConvenio->obBuscaInner->getFuncaoBusca()
+);
+
+Sessao::write( 'convenios', array() );
+
+//BOTÕES CONVENIO
+/* Botão Incluir */
+$obBtnIncluir = new Button;
+$obBtnIncluir->setValue             ( "Incluir"         );
+$obBtnIncluir->setName              ( "btnIncluirEmp"   );
+$obBtnIncluir->setId                ( "btnIncluirEmp"   );
+$obBtnIncluir->setDisabled          ( false             );
+$obBtnIncluir->obEvento->setOnClick ( "montaParametrosGET('incluirConvenioLista','inCodConvenio,inCodEntidade,stExercicioConvenio');" );
+
+/* Botão Limpar */
+$obBtnLimpar = new Button;
+$obBtnLimpar->setName              ( "btnLimparEmp" );
+$obBtnLimpar->setId                ( "limparEmp"    );
+$obBtnLimpar->setValue             ( "Limpar"       );
+$obBtnLimpar->setDisabled          ( false          );
+$obBtnLimpar->obEvento->setOnClick ( "montaParametrosGET('limparConveniosLista');" );
+
+/**
+ * Lista Convenio(s)
+ */
+$spnLista = new Span;
+$spnLista->setId( 'spnListaConvenios' );
+
 //****************************************//
 // Monta FORMULARIO
 //****************************************//
@@ -624,6 +670,7 @@ $obFormulario->addHidden( $obHdnBoAutorizacao     );
 $obFormulario->addHidden( $obHdnEmitirEmpenhoAutorizacao );
 
 $obFormulario->addComponente( $obLblEntidade      );
+
 if ($inCodDespesa) {
     $obFormulario->addHidden( $obHdnCodDespesa       );
     $obFormulario->addHidden( $obHdnCodClassificacao );
@@ -633,6 +680,7 @@ if ($inCodDespesa) {
     $obFormulario->addComponente( $obBscDespesa       );
     $obFormulario->addComponente( $obCmbClassificacao );
 }
+
 $obFormulario->addComponente( $obLblSaldoAnterior );
 $obFormulario->addComponente( $obLblOrgao         );
 $obFormulario->addComponente( $obLblUnidade       );
@@ -653,7 +701,7 @@ if ($inCodUf == 20) {
     $obFormulario->addComponente($obCmbRoyalties);
 }
 
-if ($inCodUF == 9 && Sessao::getExercicio() >= 2012) {
+if (isset($inCodUF) && $inCodUF == 9 && Sessao::getExercicio() >= 2012) {
     //informações sobre a licitação
     $obFormulario->addComponente($obTxtProcessoLicitacao);
     $obFormulario->addComponente($obTxtExercicioLicitacao);
@@ -670,6 +718,13 @@ $obFormulario->addTitulo('Contrato');
 $obFormulario->addHidden( $obHdnDtContrato );
 $obContrato->geraFormulario($obFormulario);
 
+
+$obFormulario->addTitulo( 'Convênios' );
+$obConvenio->geraFormulario($obFormulario);
+$obFormulario->agrupaComponentes( array( $obBtnIncluir, $obBtnLimpar ), "", "" );
+$obFormulario->addSpan( $spnLista );
+
+
 $obFormulario->addTitulo( "Itens do empenho" );
 $obFormulario->addSpan( $obSpan );
 $obFormulario->addComponente( $obLblVlTotal             );
@@ -681,11 +736,12 @@ $stLocation = $pgList.'?'.Sessao::getId().'&stAcao='.$stAcao;
 $obFormulario->Cancelar( $stLocation );
 $obFormulario->show();
 
-$jsOnload .= "montaParametrosGET('montaListaItemPreEmpenho');montaParametrosGET('buscaDtEmpenho');";
+$jsOnload = "montaParametrosGET('montaListaItemPreEmpenho');montaParametrosGET('buscaDtEmpenho');";
 
 if ( $obMontaAssinaturas->getOpcaoAssinaturas() ) {
     echo $obMontaAssinaturas->disparaLista();
 }
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/rodape.inc.php';
+
 ?>

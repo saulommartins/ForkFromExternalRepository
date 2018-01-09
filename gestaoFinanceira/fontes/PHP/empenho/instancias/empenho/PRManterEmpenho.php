@@ -53,6 +53,7 @@ $pgForm    = "FM".$stPrograma.".php";
 $pgProc    = "PR".$stPrograma.".php";
 $pgOcul    = "OC".$stPrograma.".php";
 $pgJS      = "JS".$stPrograma.".js";
+
 include( $pgJS );
 
 $obTransacao = new Transacao();
@@ -66,16 +67,20 @@ $stFiltro = '';
 if ( Sessao::read('filtro') ) {
     $arFiltro = Sessao::read('filtro');
     $stFiltro = '';
+
     foreach ($arFiltro as $stCampo => $stValor) {
         $stFiltro .= "&".$stCampo."=".@urlencode( $stValor );
     }
+
     $stFiltro .= '&pg='.Sessao::read('pg').'&pos='.Sessao::read('pos').'&paginando'.Sessao::read('paginando');
 }
 
 //valida a utilização da rotina de encerramento do mês contábil
 $arDtAutorizacao = explode('/', $request->get('stDtEmpenho'));
 $boUtilizarEncerramentoMes = SistemaLegado::pegaConfiguracao('utilizar_encerramento_mes', 9, "", $boTransacao);
+
 include_once CAM_GF_CONT_MAPEAMENTO."TContabilidadeEncerramentoMes.class.php";
+
 $obTContabilidadeEncerramentoMes = new TContabilidadeEncerramentoMes;
 $obTContabilidadeEncerramentoMes->setDado('exercicio', Sessao::getExercicio());
 $obTContabilidadeEncerramentoMes->setDado('situacao', 'F');
@@ -136,31 +141,38 @@ switch ($stAcao) {
     foreach ($arChave as $key=>$value) {
         $arChaves = preg_split( "/[^a-zA-Z0-9]/", $key );
         $inCodAtributo = $arChaves[0];
+        
         if ( is_array($value) ) {
             $value = implode(",",$value);
         }
+
         $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->obRCadastroDinamico->addAtributosDinamicos( $inCodAtributo , $value );
     }
 
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->setCodAutorizacao( $request->get('inCodAutorizacao') );
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obROrcamentoReservaSaldos->setCodReserva( $request->get('inCodReserva') );
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obREmpenhoTipoEmpenho->setCodTipo( $request->get('inCodTipo') );
+    $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obROrcamentoReservaSaldos->obROrcamentoDespesa->setCodDespesa( $request->get('inCodDespesa') );
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obROrcamentoReservaSaldos->setVlReserva( $request->get('nuVlReserva') );
+
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->obROrcamentoReservaSaldos->setVlReserva( $request->get('nuVlReserva') );
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->obROrcamentoClassificacaoDespesa->setMascClassificacao( $request->get('stCodClassificacao') );
-    $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->setDescricao( $request->get('stNomEmpenho') );
-    $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->obREmpenhoHistorico->setCodHistorico( $request->get('inCodHistorico') );
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->obROrcamentoDespesa->setCodDespesa( $request->get('inCodDespesa') );
-    $obREmpenhoEmpenhoAutorizacao->obREmpenhoAutorizacaoEmpenho->obROrcamentoReservaSaldos->obROrcamentoDespesa->setCodDespesa( $request->get('inCodDespesa') );
+    $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->obROrcamentoEntidade->setCodigoEntidade( $request->get('inCodEntidade') );
+    
+    $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->obREmpenhoHistorico->setCodHistorico( $request->get('inCodHistorico') );
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->obRCGM->setNumCGM( $request->get('inCodFornecedor') );
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->obREmpenhoTipoEmpenho->setCodTipo( $request->get('inCodTipo') );
+    
+    $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->setDescricao( $request->get('stNomEmpenho') );
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->setCodPreEmpenho( $request->get('inCodPreEmpenho') );
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->setCodCategoria( $request->get('inCodCategoria') );
-    $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->obROrcamentoEntidade->setCodigoEntidade( $request->get('inCodEntidade') );
+
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->setDtEmpenho( $request->get('stDtEmpenho') );
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->setDtVencimento( $request->get('stDtVencimento') );
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->setExercicio( Sessao::getExercicio() );
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->setCodCategoria( $request->get('inCodCategoria'));
+    
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->setdataEmpenho($request->get('stDtEmpenho'));
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->setCodEntidade($request->get('inCodEntidade') );
     $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->setTipoEmissao('R');
@@ -243,6 +255,21 @@ switch ($stAcao) {
     }
 
     if ( !$obErro->ocorreu() ) {
+
+        //Relaciona o empenho aos convênios
+        /*$obTTTCEMGConvenioEmpenho = new TTCEMGConvenioEmpenho();
+        
+        $obTTTCEMGConvenioEmpenho->setDado( 'cod_convenio'  , $inCodConvenio            );
+        $obTTTCEMGConvenioEmpenho->setDado( 'cod_entidade'  , $_REQUEST['cod_entidade'] );
+        $obTTTCEMGConvenioEmpenho->setDado( 'exercicio'     , $_REQUEST['stExercicio']  );
+        
+        foreach ($arEmpenhos as $arTemp) {
+            $obTTTCEMGConvenioEmpenho->setDado( 'cod_empenho'       , $arTemp['cod_empenho']    );
+            $obTTTCEMGConvenioEmpenho->setDado( 'exercicio_empenho' , $arTemp['exercicio']      );
+            
+            $obTTTCEMGConvenioEmpenho->inclusao();
+        }*/
+
         // Relaciona o empenho a contrato
         if($request->get('inCodContrato') && $request->get('stExercicioContrato')){
             include_once CAM_GF_EMP_MAPEAMENTO.'TEmpenhoEmpenhoContrato.class.php';
