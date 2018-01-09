@@ -68,28 +68,61 @@ $obHdnCtrl->setId("");
 $obSpnCodigos = new Span();
 $obSpnCodigos->setId('spnCodigos');
 
-$obITextBoxSelectEntidadeGeral = new ITextBoxSelectEntidadeGeral();
-$obITextBoxSelectEntidadeGeral->setNull(false);
-$obITextBoxSelectEntidadeGeral->obSelect->obEvento->setOnChange("limpaSpan();");
-$obITextBoxSelectEntidadeGeral->obTextBox->obEvento->setOnChange("limpaSpan();");
+$obNomeArquivo = new Select();
+$obNomeArquivo->setRotulo("Nome do Arquivo");
+$obNomeArquivo->setId('stTipoExportacao');
+$obNomeArquivo->setNull(false);
+$obNomeArquivo->setName('stTipoExportacao');
+$obNomeArquivo->addOption('BO', 'BO');
+$obNomeArquivo->addOption('BF', 'BF');
+$obNomeArquivo->addOption('BP', 'BP');
+$obNomeArquivo->addOption('DVP', 'DVP');
+$obNomeArquivo->addOption('DFC', 'DFC');
+$obNomeArquivo->addOption('RPSD', 'RPSD');
+$obNomeArquivo->obEvento->setOnChange("document.getElementById('inMes').value = '';");
 
-$obSlcTipoExportacao = new Select();
-$obSlcTipoExportacao->setRotulo("Módulo de exportação");
-$obSlcTipoExportacao->setId('stTipoExportacao');
-$obSlcTipoExportacao->setNull(false);
-$obSlcTipoExportacao->setName('stTipoExportacao');
-$obSlcTipoExportacao->addOption('mensal', 'Acompanhamento Mesal');
-$obSlcTipoExportacao->addOption('planejamento', 'Arquivos Planejamento');
-$obSlcTipoExportacao->addOption('balancete', 'Balancete Contabil');
-$obSlcTipoExportacao->addOption('inclusao', ' Inclusão Programas');
-$obSlcTipoExportacao->addOption('folha', ' Folha de Pagamento');
-$obSlcTipoExportacao->obEvento->setOnChange("document.getElementById('inMes').value = '';");
+$obNomeCampo = new BuscaInner;
+$obNomeCampo->setRotulo("Nome do Campo");
+$obNomeCampo->setTitle("Informe o nome do campo para alterar suas contas");
+$obNomeCampo->setId("stCampo");
+$obNomeCampo->setName("stCampo");
+$obNomeCampo->setValue($stCampo);
+$obNomeCampo->setNull(false);
+$obNomeCampo->obCampoCod->setName("inCodCampo");
+$obNomeCampo->obCampoCod->setId("inCodCampo");
+$obNomeCampo->obCampoCod->setNull(true);
+$obNomeCampo->obCampoCod->setValue($inCodCampo);
+$obNomeCampo->obCampoCod->setAlign("left");
+$obNomeCampo->obCampoCod->obEvento->setOnChange("montaParametrosGET('buscaEstrutural', 'inClassificacao,inCodCampo', 'true');");
+$obNomeCampo->setFuncaoBusca("abrePopUp('" . CAM_GF_CONT_POPUPS . "camposDcasp/FLCampos.php', 'frm', 'inCodCampo', 'stCampo', 'conta_analitica_estrutural', '" . Sessao::getId() . "&inCodIniEstrutural=1,2,5,6&tipoBusca2=extmmaa', '800', '550');");
 
-$obPeriodoMes = new Mes;
-$obPeriodoMes->obMes->setId('inMes');
-$obPeriodoMes->setExercicio(Sessao::getExercicio());
-$obPeriodoMes->setNull(false);
-$obPeriodoMes->obMes->obEvento->setOnChange ("if (validaCampos()) {montaParametrosGET('montaSpanCodigos');}");
+$obTxtDescGrupo = new TextBox;
+$obTxtDescGrupo->setRotulo("Grupo");
+$obTxtDescGrupo->setTitle("Informe apenas os 2 primeiros números da conta. Ex.: (1.2)");
+$obTxtDescGrupo->setName("inDescGrupo");
+$obTxtDescGrupo->setSize(5);
+$obTxtDescGrupo->setMaxLength(5);
+$obTxtDescGrupo->setMascara('9.9.');
+$obTxtDescGrupo->setNull(false);
+// $obTxtDescGrupo->setValue($inDescGrupo);
+
+$obBtnBuscar = new Button();
+$obBtnBuscar->setId('btnBuscar');
+$obBtnBuscar->setValue('Buscar');
+// $obBtnOk->obEvento->setOnClick("montaParametrosGET('incluirConta','inClassificacao,inCodConta','true');");
+
+
+// $obITextBoxSelectEntidadeGeral = new ITextBoxSelectEntidadeGeral();
+// $obITextBoxSelectEntidadeGeral->setNull(false);
+// $obITextBoxSelectEntidadeGeral->obSelect->obEvento->setOnChange("limpaSpan();");
+// $obITextBoxSelectEntidadeGeral->obTextBox->obEvento->setOnChange("limpaSpan();");
+//
+// $obPeriodoMes = new Mes;
+// $obPeriodoMes->obMes->setId('inMes');
+// $obPeriodoMes->setExercicio(Sessao::getExercicio());
+// $obPeriodoMes->setNull(false);
+// $obPeriodoMes->obMes->obEvento->setOnChange ("if (validaCampos()) {montaParametrosGET('montaSpanCodigos');}");
+
 
 //****************************************//
 //Monta FORMULARIO
@@ -99,9 +132,13 @@ $obFormulario->addForm($obForm);
 $obFormulario->addTitulo("Considerações por arquivo");
 $obFormulario->addHidden($obHdnCtrl);
 $obFormulario->addHidden($obHdnAcao);
-$obFormulario->addComponente($obITextBoxSelectEntidadeGeral);
-$obFormulario->addComponente($obSlcTipoExportacao);
-$obFormulario->addComponente($obPeriodoMes);
+$obFormulario->addComponente($obNomeArquivo);
+$obFormulario->addComponente($obNomeCampo);
+$obFormulario->addComponente($obTxtDescGrupo);
+$obFormulario->addComponente($obBtnBuscar);
+
+// $obFormulario->addComponente($obITextBoxSelectEntidadeGeral);
+// $obFormulario->addComponente($obPeriodoMes);
 $obFormulario->addSpan($obSpnCodigos);
 
 $obFormulario->OK();
