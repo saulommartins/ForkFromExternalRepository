@@ -64,6 +64,7 @@ setAjuda("UC-01.03.93");
     }
 </script>
 <?php
+    $pagina = '';
     switch ($_REQUEST['controle']) {
 
         case 0:
@@ -197,7 +198,7 @@ setAjuda("UC-01.03.93");
         $conectaBD->abreBD();
         $conectaBD->abreSelecao($sSQL);
         $conectaBD->vaiPrimeiro();
-        
+
         if($conectaBD->numeroDeLinhas  == 0 ){
             $boPaginacao = false;
 ?>
@@ -252,10 +253,10 @@ setAjuda("UC-01.03.93");
                             <font size='2'> ".$paginacao->mostraLinks()." </font>
                         </td>
                     </tr>
-                </table>";           
+                </table>";
             echo " <script> zebra('tabelas','zb'); </script> ";
         }
-        
+
         break;
 
     case 2:
@@ -680,7 +681,7 @@ setAjuda("UC-01.03.93");
                 $moduloProx = $conectaBD->pegaCampo("cod_modulo");
                 $funcProx = $conectaBD->pegaCampo("cod_funcionalidade");
             }
-            
+
         ?>
             <tr>
                 <td  colspan="2" class='field' style='width: 60px;'>
