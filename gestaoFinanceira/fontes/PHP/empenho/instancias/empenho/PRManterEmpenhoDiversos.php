@@ -40,10 +40,14 @@
                     uc-02.03.04
 */
 
+ini_set("display_errors", 1);
+error_reporting(E_ALL ^ E_NOTICE);
+
 include '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
 include CAM_GF_EMP_NEGOCIO."REmpenhoEmpenho.class.php";
 include CAM_GP_LIC_MAPEAMENTO."TLicitacaoParticipanteDocumentos.class.php";
+include_once CAM_GPC_TCEMG_MAPEAMENTO.'TTCEMGConvenioEmpenho.class.php';
 
 //Define o nome dos arquivos PHP
 $stPrograma    = "ManterEmpenho";
@@ -220,6 +224,7 @@ switch ($stAcao) {
         $nuVlReserva = str_replace(",", ".", $nuVlReserva                   );
 
         $obErro = $obREmpenhoEmpenho->emitirEmpenhoDiverso( $boTransacao );
+        
 
         $inCodUF = SistemaLegado::pegaConfiguracao('cod_uf', 2, Sessao::getExercicio(),$boTransacao);
         if ( !$obErro->ocorreu() && $inCodUF == 9 && Sessao::getExercicio() >= 2012) {
@@ -250,6 +255,7 @@ switch ($stAcao) {
             //Informações sobre a licitação
             if ($request->get('stProcessoLicitacao') || $request->get('stExercicioLicitacao') || $request->get('stProcessoAdministrativo')) {
                 include_once CAM_GPC_TGO_MAPEAMENTO.'TTCMGOProcessos.class.php';
+                
                 $obTTCMGOProcessos = new TTCMGOProcessos();
                 $obTTCMGOProcessos->setDado( 'cod_empenho', $obREmpenhoEmpenho->getCodEmpenho() );
                 $obTTCMGOProcessos->setDado( 'cod_entidade', $obREmpenhoEmpenho->obROrcamentoEntidade->getCodigoEntidade() );
@@ -257,6 +263,7 @@ switch ($stAcao) {
                 $obTTCMGOProcessos->setDado( 'numero_processo', $request->get('stProcessoLicitacao') );
                 $obTTCMGOProcessos->setDado( 'exercicio_processo', $request->get('stExercicioLicitacao') );
                 $obTTCMGOProcessos->setDado( 'processo_administrativo', $request->get('stProcessoAdministrativo') );
+                
                 $obErro = $obTTCMGOProcessos->inclusao($boTransacao);
             }
         }
@@ -264,13 +271,15 @@ switch ($stAcao) {
         if ( !$obErro->ocorreu() ) {
             // Adiantamentos: Faz inclusao em empenho.contrapartida_empenho
             if ($request->get('inCodCategoria') == 2 || $request->get('inCodCategoria') == 3) {
-                 include_once TEMP."TEmpenhoContrapartidaEmpenho.class.php";
-                 $obTEmpenhoContrapartidaEmpenho = new TEmpenhoContrapartidaEmpenho();
-                 $obTEmpenhoContrapartidaEmpenho->setDado( 'cod_empenho'         , $obREmpenhoEmpenho->getCodEmpenho() );
-                 $obTEmpenhoContrapartidaEmpenho->setDado( 'cod_entidade'        , $request->get('inCodEntidade')      );
-                 $obTEmpenhoContrapartidaEmpenho->setDado( 'exercicio'           , Sessao::getExercicio()              );
-                 $obTEmpenhoContrapartidaEmpenho->setDado( 'conta_contrapartida' , $request->get('inCodContrapartida') );
-                 $obErro = $obTEmpenhoContrapartidaEmpenho->inclusao($boTransacao);
+                include_once TEMP."TEmpenhoContrapartidaEmpenho.class.php";
+                
+                $obTEmpenhoContrapartidaEmpenho = new TEmpenhoContrapartidaEmpenho();
+                $obTEmpenhoContrapartidaEmpenho->setDado( 'cod_empenho'         , $obREmpenhoEmpenho->getCodEmpenho() );
+                $obTEmpenhoContrapartidaEmpenho->setDado( 'cod_entidade'        , $request->get('inCodEntidade')      );
+                $obTEmpenhoContrapartidaEmpenho->setDado( 'exercicio'           , Sessao::getExercicio()              );
+                $obTEmpenhoContrapartidaEmpenho->setDado( 'conta_contrapartida' , $request->get('inCodContrapartida') );
+                
+                $obErro = $obTEmpenhoContrapartidaEmpenho->inclusao($boTransacao);
             }
         }
 
@@ -339,6 +348,23 @@ switch ($stAcao) {
                         $obErro = $obTEmpenhoEmpenhoContratoAditivo->inclusao($boTransacao);
                     }
                 }
+            }
+
+            //Relaciona o empenho aos convênios
+            $obTTTCEMGConvenioEmpenho = new TTCEMGConvenioEmpenho();
+            $obTTTCEMGConvenioEmpenho->encerraTransaction($boTransacao);
+            $arConvenios = Sessao::read('convenios');
+
+            foreach ($arConvenios as $arTemp) {
+                $convenio = $obTTTCEMGConvenioEmpenho->recuperaConvenioPorNumero($arTemp['exercicio'], $arTemp['nro_convenio'] );
+                
+                $obTTTCEMGConvenioEmpenho->setDado( 'cod_entidade', $_POST['inCodEntidade'] );
+                $obTTTCEMGConvenioEmpenho->setDado( 'cod_empenho', $obREmpenhoEmpenho->getCodEmpenho() );
+                $obTTTCEMGConvenioEmpenho->setDado( 'exercicio', Sessao::getExercicio() );
+                $obTTTCEMGConvenioEmpenho->setDado( 'exercicio_empenho', $arTemp['exercicio'] );
+                $obTTTCEMGConvenioEmpenho->setDado( 'cod_convenio', $convenio['cod_convenio'] );
+                
+                $obErro = $obTTTCEMGConvenioEmpenho->inclusao($boTransacao);
             }
         }
 
@@ -413,11 +439,13 @@ switch ($stAcao) {
             $stFiltroLiquidacao .= "&stAcaoEmpenho=".$stAcao;
             $stFiltroLiquidacao .= "&pgProxEmpenho=".$pgFormDiverso;
             $stFiltroLiquidacao .= "&acao=812&modulo=10&funcionalidade=202&nivel=1&cod_gestao_pass=2&stNomeGestao=Financeira&modulos=Empenho";
+
             if ($request->get('obHdnBoComplementar') == 1) {
                 $stFiltroLiquidacao .= "&acaoEmpenho=1856&moduloEmpenho=10&funcionalidadeEmpenho=82";
             } else {
                 $stFiltroLiquidacao .= "&acaoEmpenho=822&moduloEmpenho=10&funcionalidadeEmpenho=82";
             }
+
             print '<script type="text/javascript">
                         mudaMenu         ( "Liquidação","202" );
                    </script>';

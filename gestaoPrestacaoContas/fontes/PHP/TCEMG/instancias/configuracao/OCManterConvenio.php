@@ -36,6 +36,7 @@
 	*Casos de uso:
 */
 
+
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 require_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/componentes/Table/TableTree.class.php';
@@ -500,6 +501,7 @@ switch ($request->get('stCtrl')) {
 
                 $where = " WHERE cod_objeto=".$rsConvenio->arElementos[0]['cod_objeto'];
                 $desc_objeto = SistemaLegado::pegaDado('descricao', 'compras.objeto', $where);
+                $desc_objeto = preg_replace( "/\r|\n/", "", $desc_objeto );
                 $stJs .= "d.getElementById('txtObjeto').innerHTML   = '".$desc_objeto."';\n";
 
                 limpaParticipante();
@@ -639,25 +641,36 @@ switch ($request->get('stCtrl')) {
 
         $arEmpenhos = Sessao::read('arEmpenhos');
 
-        if( $_REQUEST['stExercicioEmpenho'] and $arRequest[0] != "" and isset($_REQUEST['inCodEntidade']) and $_REQUEST['inCodEntidade']>0 ){
-            include_once( CAM_GPC_TCEMG_MAPEAMENTO.'TTCEMGConvenioEmpenho.class.php' );
+        $stExercicioEmpenho = $request->get("stExercicioEmpenho");
+        $inCodEntidade = $request->get("inCodEntidade");
+        $numEmpenho = $request->get("numEmpenho");
+        $dtInicioExecucao = $request->get("dtInicioExecucao");
+
+        if (empty($dtInicioExecucao)) {
+            echo "alertaAviso('Preencha a Data de Início de Execução!.','form','erro','".Sessao::getId()."');";
+            break;
+        }
+
+        if ( !empty($stExercicioEmpenho) && intval($numEmpenho) > 0 && intval($inCodEntidade) > 0 ) {
+            /*include_once( CAM_GPC_TCEMG_MAPEAMENTO.'TTCEMGConvenioEmpenho.class.php' );
             $obTTCEMGConvenioEmpenho = new TTCEMGConvenioEmpenho;
             $stFiltro  = " WHERE cod_empenho	=  ".$arRequest[0];
             $stFiltro .= " AND cod_entidade		=  ".$_REQUEST['inCodEntidade'];
             $stFiltro .= " AND exercicio_empenho= '".$_REQUEST['stExercicioEmpenho']."'";
             $obTTCEMGConvenioEmpenho->recuperaTodos($rsEmpenhoConvenio, $stFiltro);
 
-            if($rsEmpenhoConvenio->getNumLinhas() == -1){
+            if($rsEmpenhoConvenio->getNumLinhas() == -1){*/
                 include_once( CAM_GF_EMP_MAPEAMENTO.'TEmpenhoEmpenho.class.php' );
+
                 $obTEmpenhoEmpenho = new TEmpenhoEmpenho;
-                $stFiltro  = " AND e.exercicio    = '".$_REQUEST['stExercicioEmpenho']."'";
-                $stFiltro .= " AND e.cod_entidade =  ".$_REQUEST['inCodEntidade'];
-                $stFiltro .= " AND e.cod_empenho  =  ".$arRequest[0];
+                $stFiltro  = " AND e.exercicio    = '".$stExercicioEmpenho."'";
+                $stFiltro .= " AND e.cod_entidade =  ".$inCodEntidade;
+                $stFiltro .= " AND e.cod_empenho  =  ".$numEmpenho;
                 $obTEmpenhoEmpenho->recuperaEmpenhoPreEmpenhoCgm($rsRecordSet, $stFiltro);
 
-                if( $rsRecordSet->getNumLinhas() > 0 ){
-                    if( !SistemaLegado::comparaDatas($_REQUEST['dtInicioExecucao'],$rsRecordSet->getCampo('dt_empenho') )){
-                        if( count( $arEmpenhos ) > 0 ){
+                if ( $rsRecordSet->getNumLinhas() > 0 ) {
+                    if ( !SistemaLegado::comparaDatas($dtInicioExecucao, $rsRecordSet->getCampo('dt_empenho') )) {
+                        if ( count( $arEmpenhos ) > 0 ) {
                             foreach( $arEmpenhos as $key => $array ){
                                 $stCod = $array['cod_empenho'];
                                 $stEnt = $array['cod_entidade'];
@@ -669,6 +682,7 @@ switch ($request->get('stCtrl')) {
                                 }
                             }
                         }
+
                         if( $boIncluir ){
                             $arRegistro['cod_entidade'] = $rsRecordSet->getCampo('cod_entidade'	);
                             $arRegistro['cod_empenho' ] = $rsRecordSet->getCampo('cod_empenho'	);
@@ -696,13 +710,13 @@ switch ($request->get('stCtrl')) {
                     $stJs .= "f.numEmpenho.focus();";
                     $stJs .= "alertaAviso('Empenho informado inválido.','form','erro','".Sessao::getId()."');";
                 }
-            }else{
+            /*}else{
                 $stJs .= 'd.getElementById("stEmpenho").innerHTML = "&nbsp;";';
                 $stJs .= "f.stEmpenho.value = '';";
                 $stJs .= "f.numEmpenho.value = '';";
                 $stJs .= "f.numEmpenho.focus();";
                 $stJs .= "alertaAviso('Empenho já vinculado a um convênio.','form','erro','".Sessao::getId()."');";
-            }
+            }*/
         }else{
             $stJs .= "alertaAviso('Informe a Entidade, o Número do Empenho e o Exercício.','form','erro','".Sessao::getId()."');";
         }

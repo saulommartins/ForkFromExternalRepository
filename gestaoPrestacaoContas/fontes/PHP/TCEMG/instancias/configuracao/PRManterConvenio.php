@@ -68,10 +68,12 @@ switch ($stAcao) {
             exit;
         }
 
+        /*
         if ( count($arEmpenhos) < 1 ) {
             SistemaLegado::exibeAviso( "Deve haver ao menos 1 Empenho.", "n_incluir", "erro" );
             exit;
         }
+        */
 
         // preparar datas
         $dtAssinatura		= $_REQUEST[ 'dtAssinatura'		];
@@ -98,6 +100,7 @@ switch ($stAcao) {
         $stFiltro  = " WHERE nro_convenio	= ".$_REQUEST['inNumConvenio'];
         $stFiltro .= " AND exercicio		= '".$_REQUEST['stExercicio']."'";
         $stFiltro .= " AND cod_entidade		= ".$_REQUEST['cod_entidade'];
+        
         $obTTCEMGConvenio->recuperaTodos ( $rsConvenio, $stFiltro );
 
         if ( $rsConvenio->getNumLinhas() > 0 ) {

@@ -282,10 +282,10 @@ $obSpanParticipantes->setId ( 'spnParticipantes' );
 $obTxtExercicioEmpenho = new TextBox;
 $obTxtExercicioEmpenho->setName     ( "stExercicioEmpenho"      );
 $obTxtExercicioEmpenho->setValue    ( Sessao::getExercicio()    );
-$obTxtExercicioEmpenho->setRotulo   ( "*Exercício"              );
+$obTxtExercicioEmpenho->setRotulo   ( "Exercício"               );
 $obTxtExercicioEmpenho->setTitle    ( "Informe o exercício."	);
 $obTxtExercicioEmpenho->setInteiro  ( false                     );
-$obTxtExercicioEmpenho->setNull     ( false                     );
+$obTxtExercicioEmpenho->setNull     ( true                      );
 $obTxtExercicioEmpenho->setMaxLength( 4                         );
 $obTxtExercicioEmpenho->setSize     ( 5                         );
 $obTxtExercicioEmpenho->obEvento->setOnClick("montaParametrosGET('limpaCampoEmpenho')");
@@ -293,10 +293,11 @@ $obTxtExercicioEmpenho->obEvento->setOnClick("montaParametrosGET('limpaCampoEmpe
 /* Número Empenho */
 $obBscEmpenho = new BuscaInner;
 $obBscEmpenho->setTitle               ( "Informe o número do empenho.");
-$obBscEmpenho->setRotulo              ( "**Número do Empenho"         );
+$obBscEmpenho->setRotulo              ( "Número do Empenho"           );
 $obBscEmpenho->setId                  ( "stEmpenho"                   );
 $obBscEmpenho->setValue               ( $stEmpenho                    );
 $obBscEmpenho->setMostrarDescricao    ( true                          );
+$obBscEmpenho->setNull                ( true                          );
 $obBscEmpenho->obCampoCod->setName    ( "numEmpenho"                  );
 $obBscEmpenho->obCampoCod->setValue   (  $numEmpenho                  );
 $obBscEmpenho->obCampoCod->obEvento->setOnChange("montaParametrosGET('preencheInner','numEmpenho, inCodEntidade, stExercicioEmpenho');");

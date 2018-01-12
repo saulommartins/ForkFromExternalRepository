@@ -400,9 +400,11 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
     $obBscEmpenho->setTitle                 ( "Informe o número do empenho.");
     $obBscEmpenho->setRotulo                ( "*Número do Empenho"          );
     $obBscEmpenho->setId                    ( "stDescEmpenho"               );
+
     if (isset($stDescEmpenho)) {
-        $obBscEmpenho->setValue                 ( $stDescEmpenho                );
+        $obBscEmpenho->setValue             ( $stDescEmpenho                );
     }
+
     $obBscEmpenho->setNull                  ( true                          );
     $obBscEmpenho->obCampoCod->setName      ( "inCodigoEmpenho"             );
     $obBscEmpenho->obCampoCod->setValue     ( $request->get('inCodEmpenho') );

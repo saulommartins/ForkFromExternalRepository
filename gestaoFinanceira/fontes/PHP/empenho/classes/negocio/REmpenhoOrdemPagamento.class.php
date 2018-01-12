@@ -599,32 +599,40 @@ function incluir($boTransacao = "", $boFlagTransacao = true)
     include_once ( CAM_GF_EMP_MAPEAMENTO."TEmpenhoOrdemPagamento.class.php"        );
     include_once ( CAM_GF_EMP_MAPEAMENTO."TEmpenhoPagamentoLiquidacao.class.php"   );
     include_once ( CAM_GF_EMP_MAPEAMENTO."TEmpenhoOrdemPagamentoRetencao.class.php"   );
+    
     $obTEmpenhoPagamentoLiquidacao   = new TEmpenhoPagamentoLiquidacao;
     $obTEmpenhoOrdemPagamento        = new TEmpenhoOrdemPagamento;
     $obTEmpenhoOrdemPagamentoRetencao = new TEmpenhoOrdemPagamentoRetencao;
+    
     $obErro = new Erro;
     $obErro = $this->obTransacao->abreTransacao( $boFlagTransacao, $boTransacao );
+
     if ( !$obErro->ocorreu() ) {
         if ( count( $this->arNotaLiquidacao ) < 1  ) {
             $obErro->setDescricao( "Deve ser informado ao menos uma Nota de Liquidação!" );
         }
+
         if (!$obErro->ocorreu()) {
             $obErro = $this->listarMaiorData( $rsMaiorData, "",$boTransacao);
+
             if (!$obErro->ocorreu()) {
                 $stMaiorData = $this->retornaMaiorDataLiquidacao( $this->arNotaLiquidacao );
                 if (SistemaLegado::comparaDatas($stMaiorData,$this->dtDataEmissao)) {
                     $obErro->setDescricao( "Data da OP deve ser maior ou igual a '".$stMaiorData."'!" );
                 }
+
                 if ( !$obErro->ocorreu() ) {
                     if ( !$obErro->ocorreu() ) {
                         if ( (!$obErro->ocorreu() ) && ( SistemaLegado::comparaDatas($this->dtDataEmissao,$this->getDataVencimento()) ) ) {
                             $obErro->setDescricao("A data de vencimento deve ser maior ou igual a data da OP!");
                         }
+
                         if ( !$obErro->ocorreu() ) {
                             // Verifica configuração do empenho
                             $obREmpenhoNotaLiquidacao = new REmpenhoNotaLiquidacao( new REmpenhoEmpenho() );
                             $obTEmpenhoOrdemPagamento->setDado( "exercicio", $this->stExercicio );
                             $obErro = $obREmpenhoNotaLiquidacao->roREmpenhoEmpenho->obREmpenhoConfiguracao->consultar( $boTransacao );
+                            
                             if ( !$obErro->ocorreu() ) {
                                 if ( $obREmpenhoNotaLiquidacao->roREmpenhoEmpenho->obREmpenhoConfiguracao->getNumeracao() == 'P' ) {
                                     $obTEmpenhoOrdemPagamento->setComplementoChave( "cod_entidade,exercicio" );
@@ -633,8 +641,10 @@ function incluir($boTransacao = "", $boFlagTransacao = true)
                                     $obTEmpenhoOrdemPagamento->setComplementoChave( "exercicio" );
                                     $obTEmpenhoOrdemPagamento->setDado( "cod_entidade", null );
                                 }
+                                
                                 $obErro = $obTEmpenhoOrdemPagamento->proximoCod( $this->inCodigoOrdem, $boTransacao );
                             }
+
                             if ( !$obErro->ocorreu() ) {
                                 $obTEmpenhoOrdemPagamento->setDado( "cod_entidade", $this->obROrcamentoEntidade->getCodigoEntidade() );
                                 $obTEmpenhoOrdemPagamento->setDado( "cod_ordem"     , $this->inCodigoOrdem    );
@@ -645,12 +655,14 @@ function incluir($boTransacao = "", $boFlagTransacao = true)
                                 $obErro = $obTEmpenhoOrdemPagamento->inclusao( $boTransacao );
                                 if ( !$obErro->ocorreu() ) {
                                     if ($this->getRetencao()) {
-                                            $obTEmpenhoOrdemPagamentoRetencao->setDado( "exercicio",    $this->stExercicio      );
-                                            $obTEmpenhoOrdemPagamentoRetencao->setDado( "cod_entidade", $this->obROrcamentoEntidade->getCodigoEntidade() );
-                                            $obTEmpenhoOrdemPagamentoRetencao->setDado( "cod_ordem",    $this->inCodigoOrdem    );
-                                            if ( Sessao::getExercicio() > '2012' ) {
-                                                $obTEmpenhoOrdemPagamentoRetencao->setDado( "estorno", 'f' );
-                                            }
+                                        $obTEmpenhoOrdemPagamentoRetencao->setDado( "exercicio",    $this->stExercicio      );
+                                        $obTEmpenhoOrdemPagamentoRetencao->setDado( "cod_entidade", $this->obROrcamentoEntidade->getCodigoEntidade() );
+                                        $obTEmpenhoOrdemPagamentoRetencao->setDado( "cod_ordem",    $this->inCodigoOrdem    );
+
+                                        if ( Sessao::getExercicio() > '2012' ) {
+                                            $obTEmpenhoOrdemPagamentoRetencao->setDado( "estorno", 'f' );
+                                        }
+                                        
                                         foreach ($this->arRetencoes as $arRetencao => $item) {
 
                                             if ($item['stTipo'] == 'O') {
@@ -664,6 +676,12 @@ function incluir($boTransacao = "", $boFlagTransacao = true)
                                             
                                             $obTEmpenhoOrdemPagamentoRetencao->setDado( "cod_plano", $stCodPlano );
                                             $obTEmpenhoOrdemPagamentoRetencao->setDado( "vl_retencao", str_replace(',','.',str_replace('.','',$item['nuValor'])) );
+                                            
+                                            if (intval($item['inCodRecurso']) > 0) {
+                                                $obTEmpenhoOrdemPagamentoRetencao->setDado( "cod_recurso", intval($item['inCodRecurso']) );
+                                            }
+
+
                                             $obTEmpenhoOrdemPagamentoRetencao->proximoSequencial($inSequencial, $boTransacao);
                                             $obTEmpenhoOrdemPagamentoRetencao->setDado("sequencial", $inSequencial);
 

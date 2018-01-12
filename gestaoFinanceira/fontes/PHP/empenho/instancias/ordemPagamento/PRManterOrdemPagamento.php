@@ -84,11 +84,14 @@ case "incluir":
         SistemaLegado::exibeAviso(urlencode("Mês da Ordem encerrado!"),"n_incluir","erro");
         exit;
     }
+    
     if ( strlen($_REQUEST["stDescricaoOrdem"]) > 600 ){
         $obErro->setDescricao(" A descrição da ordem ultrapassou 600 caracteres!");
     }
+
     $arItens = Sessao::read('itemOrdem');
     $arItensRetencao = Sessao::read('itemRetencao');
+
     if (SistemaLegado::ComparaDatas($_REQUEST['stDtOrdem'],'01/01/'.Sessao::getExercicio())) {
         $obREmpenhoOrdemPagamento->setExercicio(Sessao::getExercicio());
         $obREmpenhoOrdemPagamento->obROrcamentoEntidade->setCodigoEntidade($_REQUEST["inCodEntidade"]);
@@ -96,10 +99,12 @@ case "incluir":
         $obREmpenhoOrdemPagamento->setDataEmissao($_REQUEST["stDtOrdem"]);
         $obREmpenhoOrdemPagamento->setDataVencimento($_REQUEST["dtDataVencimento"]);
         $obREmpenhoOrdemPagamento->setNotaLiquidacao($arItens);
+        
         if (count($arItensRetencao) > 0) {
             $obREmpenhoOrdemPagamento->setRetencao(true);
             $obREmpenhoOrdemPagamento->setRetencoes($arItensRetencao);
         }
+
         $cmbLiquidacao = explode('||', $_REQUEST['cmbLiquidacao']);
     } else {
         $obErro->setDescricao("A data da OP deve ser maior que '01/01/".Sessao::getExercicio()."'");
@@ -107,8 +112,10 @@ case "incluir":
     
     $arAssinaturas = Sessao::read('assinaturas');
     $arAssinatura = $arAssinaturas['selecionadas'];
+
     if (is_array($arAssinatura)) {
-    $arAssinaturaTemp = array_reverse($arAssinatura);
+        $arAssinaturaTemp = array_reverse($arAssinatura);
+
         foreach ($arAssinaturaTemp as $arAssina) {
             if (!isset($arAssina['papel'])) {
                 $obErro->setDescricao("Selecione um papel para cada nome selecionado");
@@ -405,6 +412,11 @@ function incluirReciboExtra($obREmpenhoOrdemPagamento, $boTransacao = "")
             }
 
             $inCodRecurso = SistemaLegado::pegaDado('cod_recurso', 'contabilidade.plano_recurso', 'WHERE exercicio = \''.Sessao::getExercicio().'\' AND cod_plano = '.$arDadosRetencao['cod_reduzido']);
+            
+            if (isset($_POST['inCodRecurso']) && !empty($_POST['inCodRecurso'])) {
+                $inCodRecurso = $_POST['inCodRecurso'];
+            }
+            
             if (!$obErro->ocorreu() && $inCodRecurso != "") {
                 $obRecurso = new TTesourariaReciboExtraRecurso;
                 $obRecurso->obTTesourariaReciboExtra = $obTReciboExtra;

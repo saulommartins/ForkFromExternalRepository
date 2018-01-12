@@ -40,10 +40,14 @@
                     uc-02.03.04
 */
 
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+
 include '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
 include CAM_GF_EMP_NEGOCIO."REmpenhoEmpenhoAutorizacao.class.php";
 include CAM_GP_LIC_MAPEAMENTO.'TLicitacaoParticipanteDocumentos.class.php';
+include_once CAM_GPC_TCEMG_MAPEAMENTO.'TTCEMGConvenioEmpenho.class.php';
 
 //Define o nome dos arquivos PHP
 $stPrograma = "ManterEmpenho";
@@ -257,18 +261,18 @@ switch ($stAcao) {
     if ( !$obErro->ocorreu() ) {
 
         //Relaciona o empenho aos convênios
-        /*$obTTTCEMGConvenioEmpenho = new TTCEMGConvenioEmpenho();
-        
-        $obTTTCEMGConvenioEmpenho->setDado( 'cod_convenio'  , $inCodConvenio            );
-        $obTTTCEMGConvenioEmpenho->setDado( 'cod_entidade'  , $_REQUEST['cod_entidade'] );
-        $obTTTCEMGConvenioEmpenho->setDado( 'exercicio'     , $_REQUEST['stExercicio']  );
-        
-        foreach ($arEmpenhos as $arTemp) {
-            $obTTTCEMGConvenioEmpenho->setDado( 'cod_empenho'       , $arTemp['cod_empenho']    );
-            $obTTTCEMGConvenioEmpenho->setDado( 'exercicio_empenho' , $arTemp['exercicio']      );
-            
-            $obTTTCEMGConvenioEmpenho->inclusao();
-        }*/
+        $obTTTCEMGConvenioEmpenho = new TTCEMGConvenioEmpenho();
+        $arConvenios = Sessao::read('convenios');
+
+        foreach ($arConvenios as $arTemp) {
+            $obTTTCEMGConvenioEmpenho->setDado( 'cod_entidade', $_POST['inCodEntidade'] );
+            $obTTTCEMGConvenioEmpenho->setDado( 'cod_empenho', $obREmpenhoEmpenhoAutorizacao->obREmpenhoEmpenho->getCodEmpenho() );
+            $obTTTCEMGConvenioEmpenho->setDado( 'exercicio_empenho', Sessao::getExercicio() );
+            $obTTTCEMGConvenioEmpenho->setDado( 'exercicio', $arTemp['exercicio'] );
+            $obTTTCEMGConvenioEmpenho->setDado( 'cod_convenio', $arTemp['cod_convenio'] );
+                        
+            $obTTTCEMGConvenioEmpenho->inclusao($boTransacao);
+        }
 
         // Relaciona o empenho a contrato
         if($request->get('inCodContrato') && $request->get('stExercicioContrato')){

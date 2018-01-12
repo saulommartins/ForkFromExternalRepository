@@ -58,9 +58,9 @@
     
 
     $obTxtExercicio = new TextBox;
-    $obTxtExercicio->setName   ('stExercicio');
-    $obTxtExercicio->setId     ('stExercicio');
-    $obTxtExercicio->setValue  (Sessao::getExercicio());
+    $obTxtExercicio->setName   ('stExercicioConvenio');
+    $obTxtExercicio->setId     ('stExercicioConvenio');
+    $obTxtExercicio->setValue  ($request->get('stExercicioConvenio'));
     $obTxtExercicio->setRotulo ('Exercício');
 
 

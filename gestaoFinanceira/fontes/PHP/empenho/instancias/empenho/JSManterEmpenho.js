@@ -75,9 +75,9 @@ function validaVencimento() {
     }
 }
 
-  function alterarEmpenho(stControle,inIndice){
+function alterarEmpenho(stControle,inIndice){
     ajaxJavaScript('<?=$pgOcul."?".Sessao::getExercicio()?>&num_item='+inIndice,stControle);
-  }
+}
 
 function validaDataEmpenho(prm){
    var dtUltimoEmpenho   = new Number();
@@ -538,6 +538,7 @@ function habilitaCampos(ent) {
         document.getElementById('inCodUnidade').disabled = false;
     }
 }
+
 function limparOrdem(){
     var stTarget = document.frm.target;
     var stAction = document.frm.action; 

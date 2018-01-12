@@ -26,21 +26,22 @@
 	        $this->obBuscaInner->obForm = &$obForm;
 	        $this->obBuscaInner->setRotulo           ( 'Número do Convênio'                     );
 	        $this->obBuscaInner->setTitle            ( 'Selecione o convênio na PopUp de busca' );
-	        $this->obBuscaInner->obCampoCod->setName ( 'inCodConvenio'                          );
-	        $this->obBuscaInner->obCampoCod->setId   ( 'inCodConvenio'                          );
+	        $this->obBuscaInner->obCampoCod->setName ( 'inNroConvenio'                          );
+	        $this->obBuscaInner->obCampoCod->setId   ( 'inNroConvenio'                          );
 	        $this->obBuscaInner->obCampoCod->setAlign( "left"                                   );
 	        $this->obBuscaInner->setId               ( 'txtConvenio'                            );
 	        $this->obBuscaInner->setNull             ( true );
 	        $this->obBuscaInner->stTipoBusca = 'popup';
 
 	        $this->obBuscaInner->setFuncaoBusca(
-	        	"abrePopUp('".CAM_GP_LIC_POPUPS."convenio/FLProcurarConvenio.php','".$this->obBuscaInner->obForm->getName()."','"
+	        	"abrePopUp('".CAM_GPC_TCEMG_POPUPS."convenio/FLProcurarConvenio.php','".$this->obBuscaInner->obForm->getName()."','"
 	        	.$this->obBuscaInner->obCampoCod->getName()."','".$this->obBuscaInner->getId()."','"
-	        	.$this->obBuscaInner->stTipoBusca."','".Sessao::getId()."&inCodEntidade='+jQuery('#inCodEntidade').val(),'800','550');"
+	        	.$this->obBuscaInner->stTipoBusca."','".Sessao::getId()
+	        	."&inCodEntidade='+jQuery('#inCodEntidade').val()+'&stExercicioConvenio='+jQuery('#stExercicioConvenio').val(),'800','550');"
 	        );
 
 	        $this->obBuscaInner->setValoresBusca(
-	        	CAM_GP_LIC_POPUPS.'convenio/OCProcuraConvenio.php?'.Sessao::getId(), $this->obBuscaInner->obForm->getName()
+	        	CAM_GPC_TCEMG_POPUPS.'convenio/OCProcuraConvenio.php?'.Sessao::getId(), $this->obBuscaInner->obForm->getName()
 	        );
 
 	        $this->obSpanInfoAdicional = new Span;

@@ -23,76 +23,99 @@
 */
 ?>
 <?php
-/**
-	* Classe de mapeamento da tabela tcemg.convenio_empenho
-	* Data de Criação   : 11/03/2014
+    /**
+	 * Classe de mapeamento da tabela tcemg.convenio_empenho
+	 * Data de Criação   : 11/03/2014
+     *
+	 * @author Analista      Sergio Luiz dos Santos
+	 * @author Desenvolvedor Michel Teixeira
+     *
+	 * @package URBEM
+	 * @subpackage
+     *
+	 * @ignore
+     *
+	 * $Id: TTCEMGConvenioEmpenho.class.php 59719 2014-09-08 15:00:53Z franver $
+     */
 
-	* @author Analista      Sergio Luiz dos Santos
-	* @author Desenvolvedor Michel Teixeira
+    include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
+    include_once ( CLA_PERSISTENTE );
 
-	* @package URBEM
-	* @subpackage
+    class TTCEMGConvenioEmpenho extends Persistente
+    {
+        /**
+         * Método Construtor
+         *
+         * @access private
+         */
+        public function TTCEMGConvenioEmpenho()
+        {
+        	parent::Persistente();
+        	$this->setTabela('tcemg'.Sessao::getEntidade().'.convenio_empenho');
 
-	* @ignore
+        	$this->setCampoCod('cod_convenio');
+        	$this->setComplementoChave('cod_entidade, exercicio, cod_empenho');
 
-	$Id: TTCEMGConvenioEmpenho.class.php 59719 2014-09-08 15:00:53Z franver $
-*/
+        	$this->AddCampo( 'cod_convenio'         , 'integer' , true  , ''    , true , true);
+        	$this->AddCampo( 'cod_entidade'         , 'integer' , true  , ''    , true , true);
+        	$this->AddCampo( 'exercicio'            , 'char'    , true  , '4'   , true , true);
+        	$this->AddCampo( 'cod_empenho'          , 'integer' , true  , ''    , true , true);
+        	$this->AddCampo( 'exercicio_empenho'    , 'char'    , true  , '4'   , true , true);
+        }
 
-include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
-include_once ( CLA_PERSISTENTE );
+        public function recuperaConvenioEmpenho(&$rsRecordSet, $stFiltro = "")
+        {
+        	$obErro      = new Erro;
+        	$obConexao   = new Conexao;
+        	$rsRecordSet = new RecordSet;
 
-class TTCEMGConvenioEmpenho extends Persistente
-{
-/**
-    * Método Construtor
-    * @access Private
-*/
-function TTCEMGConvenioEmpenho()
-{
-	parent::Persistente();
-	$this->setTabela('tcemg'.Sessao::getEntidade().'.convenio_empenho');
+        	$stSql = $this->montaConvenioEmpenho().$stFiltro;
+        	$this->setDebug( $stSql );
+        	$obErro = $obConexao->executaSQL( $rsRecordSet, $stSql );
 
-	$this->setCampoCod('cod_convenio');
-	$this->setComplementoChave('cod_entidade, exercicio, cod_empenho');
+        	return $obErro;
+        }
 
-	$this->AddCampo( 'cod_convenio'         , 'integer' , true  , ''    , true , true);
-	$this->AddCampo( 'cod_entidade'         , 'integer' , true  , ''    , true , true);
-	$this->AddCampo( 'exercicio'            , 'char'    , true  , '4'   , true , true);
-	$this->AddCampo( 'cod_empenho'          , 'integer' , true  , ''    , true , true);
-	$this->AddCampo( 'exercicio_empenho'    , 'char'    , true  , '4'   , true , true);
+        public function montaConvenioEmpenho()
+        {
+            $stSql  = " SELECT CE.cod_convenio, CE.cod_entidade, CE.exercicio, CE.cod_empenho, CE.exercicio_empenho, sw_cgm.nom_cgm     \n";
+            $stSql .= " FROM tcemg.convenio_empenho AS CE                                                                               \n";
+            $stSql .= " INNER JOIN empenho.empenho                                                                                      \n";
+            $stSql .= " ON empenho.exercicio=CE.exercicio                                                                               \n";
+            $stSql .= " AND empenho.cod_empenho=CE.cod_empenho                                                                          \n";
+            $stSql .= " AND empenho.cod_entidade=CE.cod_entidade                                                                        \n";
+            $stSql .= " INNER JOIN empenho.pre_empenho                                                                                  \n";
+            $stSql .= " ON pre_empenho.cod_pre_empenho=empenho.cod_pre_empenho                                                          \n";
+            $stSql .= " AND pre_empenho.exercicio=empenho.exercicio                                                                     \n";
+            $stSql .= " INNER JOIN sw_cgm                                                                                               \n";
+            $stSql .= " ON sw_cgm.numcgm=pre_empenho.cgm_beneficiario                                                                   \n";
+            
+            return $stSql;
+        }
+
+        public function recuperaConvenioPorNumero($exercicio, $nroConvenio)
+        {
+            $obErro      = new Erro;
+            $obConexao   = new Conexao;
+            $rsRecordSet = new RecordSet;
+
+            $stSql = "
+                SELECT *
+                  FROM tcemg.convenio
+                 WHERE exercicio = '".$exercicio."' and nro_convenio = " . intval($nroConvenio);
+
+            $this->setDebug( $stSql );
+            $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql );
+
+            if (!$obErro->ocorreu()) {
+                return $rsRecordSet->getObjeto();
+            }
+
+            return false;
+        }
+
+        public function __destruct() {
+
+        }
+
 }
-
-function recuperaConvenioEmpenho(&$rsRecordSet, $stFiltro = "")
-{
-	$obErro      = new Erro;
-	$obConexao   = new Conexao;
-	$rsRecordSet = new RecordSet;
-
-	$stSql = $this->montaConvenioEmpenho().$stFiltro;
-	$this->setDebug( $stSql );
-	$obErro = $obConexao->executaSQL( $rsRecordSet, $stSql );
-
-	return $obErro;
-}
-
-function montaConvenioEmpenho()
-{
-    $stSql  = " SELECT CE.cod_convenio, CE.cod_entidade, CE.exercicio, CE.cod_empenho, CE.exercicio_empenho, sw_cgm.nom_cgm     \n";
-    $stSql .= " FROM tcemg.convenio_empenho AS CE                                                                               \n";
-    $stSql .= " INNER JOIN empenho.empenho                                                                                      \n";
-    $stSql .= " ON empenho.exercicio=CE.exercicio                                                                               \n";
-    $stSql .= " AND empenho.cod_empenho=CE.cod_empenho                                                                          \n";
-    $stSql .= " AND empenho.cod_entidade=CE.cod_entidade                                                                        \n";
-    $stSql .= " INNER JOIN empenho.pre_empenho                                                                                  \n";
-    $stSql .= " ON pre_empenho.cod_pre_empenho=empenho.cod_pre_empenho                                                          \n";
-    $stSql .= " AND pre_empenho.exercicio=empenho.exercicio                                                                     \n";
-    $stSql .= " INNER JOIN sw_cgm                                                                                               \n";
-    $stSql .= " ON sw_cgm.numcgm=pre_empenho.cgm_beneficiario                                                                   \n";
-    
-    return $stSql;
-}
-
-public function __destruct(){}
-
-}
-?>

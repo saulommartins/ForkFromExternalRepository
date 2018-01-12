@@ -39,29 +39,38 @@
                     uc-02.03.28
                     uc-02.03.31
 */
-include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
-include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
-include_once CAM_GF_EMP_NEGOCIO."REmpenhoOrdemPagamento.class.php";
-include_once CAM_GF_EMP_NEGOCIO."REmpenhoNotaLiquidacao.class.php";
 
-$stPrograma      = "ManterOrdemPagamento";
-$pgJs            = "JS".$stPrograma.".js";
 
-if(empty($js))
-    $js = "";
+    ini_set("display_errors", 1);
+    error_reporting(E_ALL);
 
-if (Sessao::read('stEmitirCarneOp') == '') {
-    $stEmitirCarneOp = SistemaLegado::pegaDado('valor', 'administracao.configuracao', "WHERE exercicio='".Sessao::getExercicio()."' AND cod_modulo=".Sessao::getModulo()." AND parametro='emitir_carne_op'");
-    Sessao::write('stEmitirCarneOp', $stEmitirCarneOp);
-}
 
-if ($_REQUEST['stCtrl'] != "buscaReceitas") {
-    include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
-    include_once $pgJs;
-}
+    include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
+    include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
+    include_once CAM_GF_EMP_NEGOCIO."REmpenhoOrdemPagamento.class.php";
+    include_once CAM_GF_EMP_NEGOCIO."REmpenhoNotaLiquidacao.class.php";
 
-function montaRetencoes($boRetorna = false)
-{
+    $stPrograma      = "ManterOrdemPagamento";
+    $pgJs            = "JS".$stPrograma.".js";
+    $pgOcul          = "OC".$stPrograma.".js";
+    $pgProc          = "PR".$stPrograma.".js";
+    $pgList          = "LS".$stPrograma.".js";
+
+    if(empty($js))
+        $js = "";
+
+    if (Sessao::read('stEmitirCarneOp') == '') {
+        $stEmitirCarneOp = SistemaLegado::pegaDado('valor', 'administracao.configuracao', "WHERE exercicio='".Sessao::getExercicio()."' AND cod_modulo=".Sessao::getModulo()." AND parametro='emitir_carne_op'");
+        Sessao::write('stEmitirCarneOp', $stEmitirCarneOp);
+    }
+
+    if ($_REQUEST['stCtrl'] != "buscaReceitas") {
+        include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
+        include_once $pgJs;
+    }
+
+    function montaRetencoes($boRetorna = false)
+    {
         $obFormulario = new Formulario;
 
         $obNao = new Radio;
@@ -107,20 +116,21 @@ function montaRetencoes($boRetorna = false)
         $obFormulario->montaInnerHTML();
         $js = "d.getElementById('spnRetencoes').innerHTML = '".$obFormulario->getHTML()."';";
 
-    if ($boRetorna) {
-        return $js;
-    } else {
-        SistemaLegado::executaiFrameOculto($js);
+        if ($boRetorna) {
+            return $js;
+        } else {
+            SistemaLegado::executaiFrameOculto($js);
+        }
+
     }
 
-}
-
-function montaListaRetencao($arListaRetencao)
-{
+    function montaListaRetencao($arListaRetencao)
+    {
         $inCountExt = 0;
         $inCountOrc = 0;
         $stHtmlListaOrc = '';
         $stHtmlListaExt = '';
+
         foreach ($arListaRetencao as $item) {
             if ($item['stTipo'] == 'O') {
                 $arTmpRetOrc[$inCountOrc] = $item;
@@ -131,6 +141,7 @@ function montaListaRetencao($arListaRetencao)
                 $inCountExt++;
             }
         }
+
         if ($arTmpRetOrc) {
             $rsListaRetencaoOrc = new RecordSet;
             $rsListaRetencaoOrc->preenche( $arTmpRetOrc );
@@ -152,12 +163,14 @@ function montaListaRetencao($arListaRetencao)
             $obLista->ultimoCabecalho->setWidth    ( 59                   );
             $obLista->commitCabecalho              (                      );
             $obLista->addCabecalho                 (                      );
+
             if (Sessao::read('stEmitirCarneOp') == 'true') {
                 $obLista->ultimoCabecalho->addConteudo ( "Crédito"            );
                 $obLista->ultimoCabecalho->setWidth    ( 59                   );
                 $obLista->commitCabecalho              (                      );
                 $obLista->addCabecalho                 (                      );
             }
+
             $obLista->ultimoCabecalho->addConteudo ( "Valor Retenção"     );
             $obLista->ultimoCabecalho->setWidth    ( 14                   );
             $obLista->commitCabecalho              (                      );
@@ -174,12 +187,14 @@ function montaListaRetencao($arListaRetencao)
             $obLista->ultimoDado->setAlinhamento   ( "ESQUERDA"           );
             $obLista->commitDado                   (                      );
             $obLista->addDado                      (                      );
+
             if (Sessao::read('stEmitirCarneOp') == 'true') {
                 $obLista->ultimoDado->setCampo         ( "creditoDesc"        );
                 $obLista->ultimoDado->setAlinhamento   ( "ESQUERDA"           );
                 $obLista->commitDado                   (                      );
                 $obLista->addDado                      (                      );
             }
+            
             $obLista->ultimoDado->setCampo         ( "nuValor"            );
             $obLista->ultimoDado->setAlinhamento   ( "DIREITA"            );
             $obLista->commitDado                   (                      );
@@ -262,156 +277,156 @@ function montaListaRetencao($arListaRetencao)
         $stJs = "d.getElementById('spnListaRetencao').innerHTML = '".$stHtmlListaOrc."".$stHtmlListaExt."".$obFormulario->getHTML()."'; ";
 
         return $stJs;
-}
+    }
 
-function montaListaLiquidacao($rsListaLiquidacao , $newValorTotal , $newValorAnulado , $valorParaAnular , $cgmFornecedor , $boRetorna = false)
-{
-    global $boRetencao;
-    if ( $rsListaLiquidacao->getNumLinhas() != 0 ) {
+    function montaListaLiquidacao($rsListaLiquidacao , $newValorTotal , $newValorAnulado , $valorParaAnular , $cgmFornecedor , $boRetorna = false)
+    {
+        global $boRetencao;
+        if ( $rsListaLiquidacao->getNumLinhas() != 0 ) {
 
-        $obLista3 = new Lista;
-        $obLista3->setRecordSet                 ( $rsListaLiquidacao   );
-        $obLista3->setTitulo                    ( "Registros"          );
-        $obLista3->setMostraPaginacao           ( false                );
-        $obLista3->addCabecalho                 (                      );
-        $obLista3->ultimoCabecalho->addConteudo ( "&nbsp;"             );
-        $obLista3->ultimoCabecalho->setWidth    ( 5                    );
-        $obLista3->commitCabecalho              (                      );
-        $obLista3->addCabecalho                 (                      );
-        $obLista3->ultimoCabecalho->addConteudo ( "Empenho"            );
-        $obLista3->ultimoCabecalho->setWidth    ( 15                   );
-        $obLista3->commitCabecalho              (                      );
-        $obLista3->addCabecalho                 (                      );
-        $obLista3->ultimoCabecalho->addConteudo ( "Data do Empenho"    );
-        $obLista3->ultimoCabecalho->setWidth    ( 15                   );
-        $obLista3->commitCabecalho              (                      );
-        $obLista3->addCabecalho                 (                      );
-        $obLista3->ultimoCabecalho->addConteudo ( "Liquidação"         );
-        $obLista3->ultimoCabecalho->setWidth    ( 15                   );
-        $obLista3->commitCabecalho              (                      );
-        $obLista3->addCabecalho                 (                      );
-        $obLista3->ultimoCabecalho->addConteudo ( "Data da Liquidação" );
-        $obLista3->ultimoCabecalho->setWidth    ( 15                   );
-        $obLista3->commitCabecalho              (                      );
-        if ($_REQUEST["stAcao"] == "anular") {
+            $obLista3 = new Lista;
+            $obLista3->setRecordSet                 ( $rsListaLiquidacao   );
+            $obLista3->setTitulo                    ( "Registros"          );
+            $obLista3->setMostraPaginacao           ( false                );
             $obLista3->addCabecalho                 (                      );
-            $obLista3->ultimoCabecalho->addConteudo ( "Valor da O.P."      );
-            $obLista3->ultimoCabecalho->setWidth    ( 20                   );
+            $obLista3->ultimoCabecalho->addConteudo ( "&nbsp;"             );
+            $obLista3->ultimoCabecalho->setWidth    ( 5                    );
             $obLista3->commitCabecalho              (                      );
-
             $obLista3->addCabecalho                 (                      );
-            $obLista3->ultimoCabecalho->addConteudo ( "Valor a Anular"      );
-            $obLista3->ultimoCabecalho->setWidth    ( 20                   );
+            $obLista3->ultimoCabecalho->addConteudo ( "Empenho"            );
+            $obLista3->ultimoCabecalho->setWidth    ( 15                   );
             $obLista3->commitCabecalho              (                      );
-
-        } else {
             $obLista3->addCabecalho                 (                      );
-            $obLista3->ultimoCabecalho->addConteudo ( "Valor a Pagar"      );
-            $obLista3->ultimoCabecalho->setWidth    ( 30                   );
+            $obLista3->ultimoCabecalho->addConteudo ( "Data do Empenho"    );
+            $obLista3->ultimoCabecalho->setWidth    ( 15                   );
             $obLista3->commitCabecalho              (                      );
-        }
-        if ($_REQUEST["stAcao"] == "incluir") {
-            $obLista3->addCabecalho                 (                  );
-            $obLista3->ultimoCabecalho->addConteudo ( "&nbsp;"         );
-            $obLista3->ultimoCabecalho->setWidth    ( 5                );
-            $obLista3->commitCabecalho              (                  );
-        }
+            $obLista3->addCabecalho                 (                      );
+            $obLista3->ultimoCabecalho->addConteudo ( "Liquidação"         );
+            $obLista3->ultimoCabecalho->setWidth    ( 15                   );
+            $obLista3->commitCabecalho              (                      );
+            $obLista3->addCabecalho                 (                      );
+            $obLista3->ultimoCabecalho->addConteudo ( "Data da Liquidação" );
+            $obLista3->ultimoCabecalho->setWidth    ( 15                   );
+            $obLista3->commitCabecalho              (                      );
+            if ($_REQUEST["stAcao"] == "anular") {
+                $obLista3->addCabecalho                 (                      );
+                $obLista3->ultimoCabecalho->addConteudo ( "Valor da O.P."      );
+                $obLista3->ultimoCabecalho->setWidth    ( 20                   );
+                $obLista3->commitCabecalho              (                      );
 
-        $obLista3->addDado                      (                      );
-        $obLista3->ultimoDado->setCampo         ( "[cod_empenho]/[ex_empenho]" );
-        $obLista3->ultimoDado->setAlinhamento   ( "DIREITA"            );
-        $obLista3->commitDado                   (                      );
-        $obLista3->addDado                      (                      );
-        $obLista3->ultimoDado->setCampo         ( "dt_empenho"         );
-        $obLista3->ultimoDado->setAlinhamento   ( "CENTRO"             );
-        $obLista3->commitDado                   (                      );
-        $obLista3->addDado                      (                      );
-        $obLista3->ultimoDado->setCampo         ( "[cod_nota]/[ex_nota]" );
-        $obLista3->ultimoDado->setAlinhamento   ( "DIREITA"            );
-        $obLista3->commitDado                   (                      );
-        $obLista3->addDado                      (                      );
-        $obLista3->ultimoDado->setCampo         ( "dt_nota"            );
-        $obLista3->ultimoDado->setAlinhamento   ( "CENTRO"             );
-        $obLista3->commitDado                   (                      );
+                $obLista3->addCabecalho                 (                      );
+                $obLista3->ultimoCabecalho->addConteudo ( "Valor a Anular"      );
+                $obLista3->ultimoCabecalho->setWidth    ( 20                   );
+                $obLista3->commitCabecalho              (                      );
 
-        if ($_REQUEST['stAcao'] == 'anular') {
+            } else {
+                $obLista3->addCabecalho                 (                      );
+                $obLista3->ultimoCabecalho->addConteudo ( "Valor a Pagar"      );
+                $obLista3->ultimoCabecalho->setWidth    ( 30                   );
+                $obLista3->commitCabecalho              (                      );
+            }
+            if ($_REQUEST["stAcao"] == "incluir") {
+                $obLista3->addCabecalho                 (                  );
+                $obLista3->ultimoCabecalho->addConteudo ( "&nbsp;"         );
+                $obLista3->ultimoCabecalho->setWidth    ( 5                );
+                $obLista3->commitCabecalho              (                  );
+            }
 
             $obLista3->addDado                      (                      );
-            $obLista3->ultimoDado->setCampo         ( "valor_pagar"        );
+            $obLista3->ultimoDado->setCampo         ( "[cod_empenho]/[ex_empenho]" );
             $obLista3->ultimoDado->setAlinhamento   ( "DIREITA"            );
             $obLista3->commitDado                   (                      );
-
-            // Define Objeto Numerico para Valor
-            $obTxtValor = new Numerico;
-            $obTxtValor->setName     ( "nuValor_[cod_nota]_" );
-            $obTxtValor->setId       ( "nuValor" );
-            $obTxtValor->setAlign    ( 'RIGHT');
-            $obTxtValor->setTitle    ( "" );
-            $obTxtValor->setMaxLength( 19 );
-            $obTxtValor->setSize     ( 21 );
-            $obTxtValor->setValue    ( "valor_pagar" );
-            if($boRetencao)
-              $obTxtValor->setReadOnly ( true );
-
-            $obLista3->addDadoComponente( $obTxtValor );
-            $obLista3->ultimoDado->setAlinhamento( 'CSS' );
-            $obLista3->ultimoDado->setClass( 'show_dados_center' );
-            $obLista3->commitDadoComponente();
-
-        } else {
             $obLista3->addDado                      (                      );
-            $obLista3->ultimoDado->setCampo         ( "valor_pagar"        );
+            $obLista3->ultimoDado->setCampo         ( "dt_empenho"         );
+            $obLista3->ultimoDado->setAlinhamento   ( "CENTRO"             );
+            $obLista3->commitDado                   (                      );
+            $obLista3->addDado                      (                      );
+            $obLista3->ultimoDado->setCampo         ( "[cod_nota]/[ex_nota]" );
             $obLista3->ultimoDado->setAlinhamento   ( "DIREITA"            );
             $obLista3->commitDado                   (                      );
+            $obLista3->addDado                      (                      );
+            $obLista3->ultimoDado->setCampo         ( "dt_nota"            );
+            $obLista3->ultimoDado->setAlinhamento   ( "CENTRO"             );
+            $obLista3->commitDado                   (                      );
+
+            if ($_REQUEST['stAcao'] == 'anular') {
+
+                $obLista3->addDado                      (                      );
+                $obLista3->ultimoDado->setCampo         ( "valor_pagar"        );
+                $obLista3->ultimoDado->setAlinhamento   ( "DIREITA"            );
+                $obLista3->commitDado                   (                      );
+
+                // Define Objeto Numerico para Valor
+                $obTxtValor = new Numerico;
+                $obTxtValor->setName     ( "nuValor_[cod_nota]_" );
+                $obTxtValor->setId       ( "nuValor" );
+                $obTxtValor->setAlign    ( 'RIGHT');
+                $obTxtValor->setTitle    ( "" );
+                $obTxtValor->setMaxLength( 19 );
+                $obTxtValor->setSize     ( 21 );
+                $obTxtValor->setValue    ( "valor_pagar" );
+                if($boRetencao)
+                  $obTxtValor->setReadOnly ( true );
+
+                $obLista3->addDadoComponente( $obTxtValor );
+                $obLista3->ultimoDado->setAlinhamento( 'CSS' );
+                $obLista3->ultimoDado->setClass( 'show_dados_center' );
+                $obLista3->commitDadoComponente();
+
+            } else {
+                $obLista3->addDado                      (                      );
+                $obLista3->ultimoDado->setCampo         ( "valor_pagar"        );
+                $obLista3->ultimoDado->setAlinhamento   ( "DIREITA"            );
+                $obLista3->commitDado                   (                      );
+            }
+
+            if ($_REQUEST["stAcao"] == "incluir") {
+                $obLista3->addAcao                      (                      );
+                $obLista3->ultimaAcao->setAcao          ( "EXCLUIR"            );
+                $obLista3->ultimaAcao->setFuncao        ( true                 );
+                $obLista3->ultimaAcao->setLink   ( "JavaScript:excluirItem();" );
+                $obLista3->ultimaAcao->addCampo        ( "inIndice","cod_nota" );
+                $obLista3->commitAcao                   (                      );
+            }
+
+            $obLista3->montaHTML                     (                      );
+            $stHTML =  $obLista3->getHtml            (                      );
+            $stHTML = str_replace                   ( "\n","",$stHTML      );
+            $stHTML = str_replace                   ( chr(13),"<br>",$stHTML      );
+            $stHTML = str_replace                   ( "  ","",$stHTML      );
+            $stHTML = str_replace                   ( "'","\\'",$stHTML    );
+        } else {
+            $stHTML = "&nbsp";
         }
 
+        while ( !$rsListaLiquidacao->eof() ) {
+            $data = $rsListaLiquidacao->getCampo("dt_nota");
+            if (SistemaLegado::comparaDatas($rsListaLiquidacao->getCampo("dt_nota"),$stDtUltimaLiquidacao)) {
+                $stDtUltimaLiquidacao = $rsListaLiquidacao->getCampo("dt_nota");
+            }
+            $rsListaLiquidacao->proximo();
+        }
+
+        Sessao::write('dtUltimaLiquidacao', $stDtUltimaLiquidacao);
+
+        $js .= "d.getElementById('spnListaItem').innerHTML = '".$stHTML."';\n";
+        $js .= "if( d.frm.flValorTotal ) d.frm.flValorTotal.value = '$newValorTotal';";
         if ($_REQUEST["stAcao"] == "incluir") {
-            $obLista3->addAcao                      (                      );
-            $obLista3->ultimaAcao->setAcao          ( "EXCLUIR"            );
-            $obLista3->ultimaAcao->setFuncao        ( true                 );
-            $obLista3->ultimaAcao->setLink   ( "JavaScript:excluirItem();" );
-            $obLista3->ultimaAcao->addCampo        ( "inIndice","cod_nota" );
-            $obLista3->commitAcao                   (                      );
+            $js .= "d.frm.stFornecedor.value = '".$cgmFornecedor."';";
+        } else {
+            $js .= "if( d.frm.flValorAnulado ) d.frm.flValorAnulado.value = '$newValorAnulado';";
         }
 
-        $obLista3->montaHTML                     (                      );
-        $stHTML =  $obLista3->getHtml            (                      );
-        $stHTML = str_replace                   ( "\n","",$stHTML      );
-        $stHTML = str_replace                   ( chr(13),"<br>",$stHTML      );
-        $stHTML = str_replace                   ( "  ","",$stHTML      );
-        $stHTML = str_replace                   ( "'","\\'",$stHTML    );
-    } else {
-        $stHTML = "&nbsp";
-    }
-
-    while ( !$rsListaLiquidacao->eof() ) {
-        $data = $rsListaLiquidacao->getCampo("dt_nota");
-        if (SistemaLegado::comparaDatas($rsListaLiquidacao->getCampo("dt_nota"),$stDtUltimaLiquidacao)) {
-            $stDtUltimaLiquidacao = $rsListaLiquidacao->getCampo("dt_nota");
+        if ($boRetencao) {
+            if($_REQUEST['stAcao'] == 'anular') SistemaLegado::exibeAvisoTelaPrincipal('Esta OP possui retenções: A Anulação não poderá ser parcial.','','');
         }
-        $rsListaLiquidacao->proximo();
-    }
 
-    Sessao::write('dtUltimaLiquidacao', $stDtUltimaLiquidacao);
-
-    $js .= "d.getElementById('spnListaItem').innerHTML = '".$stHTML."';\n";
-    $js .= "if( d.frm.flValorTotal ) d.frm.flValorTotal.value = '$newValorTotal';";
-    if ($_REQUEST["stAcao"] == "incluir") {
-        $js .= "d.frm.stFornecedor.value = '".$cgmFornecedor."';";
-    } else {
-        $js .= "if( d.frm.flValorAnulado ) d.frm.flValorAnulado.value = '$newValorAnulado';";
+        if ($boRetorna) {
+            return $js;
+        } else {
+            SistemaLegado::executaiFrameOculto($js);
+        }
     }
-
-    if ($boRetencao) {
-        if($_REQUEST['stAcao'] == 'anular') SistemaLegado::exibeAvisoTelaPrincipal('Esta OP possui retenções: A Anulação não poderá ser parcial.','','');
-    }
-
-    if ($boRetorna) {
-        return $js;
-    } else {
-        SistemaLegado::executaiFrameOculto($js);
-    }
-}
 
 $stCtrl = $_REQUEST['stCtrl'];
 
@@ -1171,6 +1186,12 @@ switch ($_REQUEST ["stCtrl"]) {
             $obTxtValorRetencao->setNull     ( false     );
             $obTxtValorRetencao->setMaxLength( 12        );
 
+            /// Busca de recurso
+            include_once(CAM_GF_ORC_COMPONENTES."IMontaRecursoDestinacao.class.php");
+            $obIMontaRecursoDestinacao = new IMontaRecursoDestinacao;
+            $obIMontaRecursoDestinacao->setFiltro ( true );
+            $obIMontaRecursoDestinacao->setNull ( true );
+
             $obBtnIncluirItem = new Button;
             $obBtnIncluirItem->setName              ( "btnIncluirRetencao" );
             $obBtnIncluirItem->setValue             ( "Incluir"        );
@@ -1189,6 +1210,9 @@ switch ($_REQUEST ["stCtrl"]) {
                 $obFormulario->addComponente($obCmbCodCredito);
             }
             $obFormulario->addComponente($obTxtValorRetencao);
+            // $obFormulario->addComponente($obIMontaRecursoDestinacao);
+
+            $obIMontaRecursoDestinacao->geraFormulario (  $obFormulario );
             $obFormulario->defineBarra(array($obBtnIncluirItem, $obBtnLimparItem));
             $obFormulario->montaInnerHTML();
 
@@ -1215,6 +1239,7 @@ switch ($_REQUEST ["stCtrl"]) {
     case 'incluirRetencao':
         $nuValorRetencao = str_replace(',','.',str_replace('.','',$_REQUEST['nuValorRetencao']));
         $arTlValorRetencao = Sessao::read('nuTlValorRetencao');
+
         if ((int) ($arTlValorRetencao + $nuValorRetencao) > (int) Sessao::read('valorTotalOrdem')) {
             echo "<script> avisoRetencao('O Valor das Retenções não pode ser maior que o valor da OP.'); </script>";
             $stJs .= "d.frm.Ok.disabled = false;";
@@ -1228,6 +1253,7 @@ switch ($_REQUEST ["stCtrl"]) {
                 $arItemRetencao[0]['stTipo']       = $_REQUEST['rdRetencao'];
                 $arItemRetencao[0]['inCodCredito'] = $_REQUEST['inCodCredito'];
                 $arItemRetencao[0]['creditoDesc']  = $_REQUEST['creditoDesc'];
+                $arItemRetencao[0]['inCodRecurso']  = $_REQUEST['inCodRecurso'];
                 $arTlValorRetencao += $nuValorRetencao;
                 Sessao::write('nuTlValorRetencao', $arTlValorRetencao);
             } else {
@@ -1249,8 +1275,10 @@ switch ($_REQUEST ["stCtrl"]) {
                     $arItemRetencao[$inCount]['stTipo']       = $_REQUEST['rdRetencao'];
                     $arItemRetencao[$inCount]['inCodCredito'] = $_REQUEST['inCodCredito'];
                     $arItemRetencao[$inCount]['creditoDesc']  = $_REQUEST['creditoDesc'];
+                    $arItemRetencao[$inCount]['inCodRecurso']  = $_REQUEST['inCodRecurso'];
                 }
             }
+
             Sessao::write('itemRetencao', $arItemRetencao);
 
             if ($boIncluir) {
@@ -1262,9 +1290,13 @@ switch ($_REQUEST ["stCtrl"]) {
             $stJs .= "d.getElementById('inCodPlanoRetencao').value = '';";
             $stJs .= "d.getElementById('stNomContaRetencao').innerHTML = '&nbsp;';";
             $stJs .= "d.getElementById('nuValorRetencao').value = '';";
+            $stJs .= "d.getElementById('inCodRecurso').value = '';";
+            $stJs .= "d.getElementById('stDescricaoRecurso').innerHTML = '&nbsp;';";
+
             if (Sessao::read('stEmitirCarneOp') == 'true') {
                 $stJs .= "limpaSelect(f.inCodCredito, 1);";
             }
+
             $stJs .= "d.frm.Ok.disabled = false;";
         }
         SistemaLegado::executaiFrameOculto( $stJs );

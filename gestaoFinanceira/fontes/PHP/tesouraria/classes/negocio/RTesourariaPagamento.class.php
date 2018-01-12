@@ -179,22 +179,26 @@ function pagar($boTransacao = "")
 {
     include_once ( CAM_FW_BANCO_DADOS    ."Transacao.class.php"            );
     include_once ( CAM_GF_TES_MAPEAMENTO ."TTesourariaPagamento.class.php" );
+
     $obErro = new Erro;
-    $this->obTransacao                     = new Transacao();
+    $this->obTransacao = new Transacao();
     $arNotasPagas = $this->obREmpenhoPagamentoLiquidacao->getValoresPagos();
     $obErro = $this->obTransacao->abreTransacao( $boFlagTransacao, $boTransacao );
+
     if ( !$obErro->ocorreu() ) {
         $obErro = $this->roRTesourariaBoletim->incluir( $boTransacao );
         if ( !$obErro->ocorreu() ) {
             $this->obRContabilidadePlanoBanco->setCodPlano ( $this->obREmpenhoPagamentoLiquidacao->obRContabilidadePlanoContaAnalitica->getCodPlano()  );
             $this->obRContabilidadePlanoBanco->setExercicio( $this->obREmpenhoPagamentoLiquidacao->obRContabilidadePlanoContaAnalitica->getExercicio() );
             $this->obRContabilidadePlanoBanco->consultar( $boTransacao );
+
             if ( !$obErro->ocorreu() ) {
                 $inCodEntidade = $this->obREmpenhoPagamentoLiquidacao->obREmpenhoOrdemPagamento->obROrcamentoEntidade->getCodigoEntidade();
                 if ( $inCodEntidade != $this->obRContabilidadePlanoBanco->obROrcamentoEntidade->getCodigoEntidade() and $this->obRContabilidadePlanoBanco->obROrcamentoEntidade->getCodigoEntidade()>0) {
                     $obErro->setDescricao( 'A entidade da conta é diferente da entidade do pagamento!' );
                 }
             }
+
             if ( !$obErro->ocorreu() ) {
                 foreach ( $this->obREmpenhoPagamentoLiquidacao->obREmpenhoOrdemPagamento->getNotaLiquidacao() as $arNota ) {
                     $nuValor = str_replace( '.', '' , $arNota['valor_pagar'] );
@@ -203,26 +207,32 @@ function pagar($boTransacao = "")
                 }
             }
         }
+
         if ( !$obErro->ocorreu() ) {
             $this->obREmpenhoPagamentoLiquidacao->obREmpenhoOrdemPagamento->setDataEmissao( $this->roRTesourariaBoletim->getDataBoletim() );
             $this->obREmpenhoPagamentoLiquidacao->setDataPagamento( $this->roRTesourariaBoletim->getDataBoletim() );
             $this->obREmpenhoPagamentoLiquidacao->setTimestamp( $this->stTimestamp );
+
             if ( !trim($this->obREmpenhoPagamentoLiquidacao->obREmpenhoOrdemPagamento->getCodigoOrdem()) ) {
                 $this->obREmpenhoPagamentoLiquidacao->obREmpenhoOrdemPagamento->setExercicio($this->roRTesourariaBoletim->getExercicio());
                 $this->obREmpenhoPagamentoLiquidacao->obREmpenhoOrdemPagamento->setTipo('A');
                 $obErro = $this->obREmpenhoPagamentoLiquidacao->obREmpenhoOrdemPagamento->incluir( $boTransacao, false );
             }
+
             $this->obREmpenhoPagamentoLiquidacao->obREmpenhoOrdemPagamento->setNotaLiquidacao( array() );
             $this->obREmpenhoPagamentoLiquidacao->setTesouraria ( true );
+
             if ( !$obErro->ocorreu() ) {
                 $obErro = $this->obREmpenhoPagamentoLiquidacao->pagarOP( $boTransacao );
             }
+
             if ( !$obErro->ocorreu() ) {
                 $this->obRTesourariaAutenticacao->setTipo("P");
                 $this->obRTesourariaAutenticacao->setDataAutenticacao( $this->roRTesourariaBoletim->getDataBoletim() );
                 $this->obRTesourariaAutenticacao->obRTesourariaConfiguracao->setExercicio($this->roRTesourariaBoletim->getExercicio());
                 $obErro = $this->obRTesourariaAutenticacao->autenticar($boTransacao);
                 $inCodAutenticacao = $this->obRTesourariaAutenticacao->getCodAutenticacao();
+
                 if ( !$obErro->ocorreu() ) {
                     foreach ($arNotasPagas as $arNota) {
                         if ($arNota['vl_pago'] > 0.00) {
@@ -256,8 +266,8 @@ function pagar($boTransacao = "")
             if (!$obErro->ocorreu() && $boRetencao && !$this->obREmpenhoPagamentoLiquidacao->obREmpenhoOrdemPagamento->boRetencaoExecutada) {
                 include_once(CAM_GA_ADM_MAPEAMENTO.'TAdministracaoConfiguracaoEntidade.class.php');
                 include_once(CAM_GF_CONT_MAPEAMENTO."TContabilidadeLancamentoRetencao.class.php" );
+                
                 $obTAdministracaoConfiguracaoEntidade = new TAdministracaoConfiguracaoEntidade;
-            
                 $stExercicio = $this->roRTesourariaBoletim->getExercicio();
                 $inCodOrdem = $this->obREmpenhoPagamentoLiquidacao->obREmpenhoOrdemPagamento->getCodigoOrdem();
                 $inCodEntidade = $this->obREmpenhoPagamentoLiquidacao->obREmpenhoOrdemPagamento->obROrcamentoEntidade->getCodigoEntidade();
@@ -266,7 +276,7 @@ function pagar($boTransacao = "")
                 $obErro = $obTAdministracaoConfiguracaoEntidade->recuperaTodos($rsContas, $stFiltroConta, '', $boTransacao);
             
                 if (!$obErro->ocorreu() && !$rsContas->EOF() && $rsContas->getNumLinhas() == 1) {
-                    include_once ( CAM_GF_CONT_NEGOCIO."RContabilidadePlanoContaAnalitica.class.php"     );
+                    include_once ( CAM_GF_CONT_NEGOCIO."RContabilidadePlanoContaAnalitica.class.php" );
                     $obContaAnalitica = new RContabilidadePlanoContaAnalitica;
                     $obContaAnalitica->setCodPlano( $rsContas->getCampo('valor') );
                     $obContaAnalitica->setExercicio( $stExercicio );
@@ -278,6 +288,7 @@ function pagar($boTransacao = "")
                 if ($inCodPlanoCaixa && $stCodEstruturalCaixa && !$obErro->ocorreu()) {
                     include_once(CAM_GF_TES_MAPEAMENTO."TTesourariaTransferenciaOrdemPagamentoRetencao.class.php" );
                     include_once(CAM_GF_TES_MAPEAMENTO."TTesourariaArrecadacaoOrdemPagamentoRetencao.class.php" );
+
                     $obTTesourariaArrecadacaoOPRetencao   = new TTesourariaArrecadacaoOrdemPagamentoRetencao;
                     $obTTesourariaTransferenciaOPRetencao = new TTesourariaTransferenciaOrdemPagamentoRetencao;
                     $obTContabilidadeLancamentoRetencao = new TContabilidadeLancamentoRetencao;
@@ -306,6 +317,7 @@ function pagar($boTransacao = "")
                         }
                     }
                 }
+
                 $inCount = 1;
                 /* Realiza as Arrecadações das Retenções */
                 
@@ -326,9 +338,10 @@ function pagar($boTransacao = "")
                     $this->montaDescricaoAutenticacao(number_format($arRetencao['vl_retencao'],4,',','.'),$boTransacao);
                     
                     array_unshift($arDescricao,array(
-                        'stDescricao' => array( 'texto' => $this->obRTesourariaAutenticacao->getDescricao(),
-                                                'acao'  => "OP ".$inCodEntidade."-".$inCodOrdem."/".substr($stExercicio,2,2) . ' RET ' . $inCount++ . ' ' . number_format($arRetencao['vl_retencao'],2,',','.'))
-                                                    )
+                        'stDescricao' => array( 
+                            'texto' => $this->obRTesourariaAutenticacao->getDescricao(),
+                            'acao'  => "OP ".$inCodEntidade."-".$inCodOrdem."/".substr($stExercicio,2,2) . ' RET ' . $inCount++ . ' ' . number_format($arRetencao['vl_retencao'],2,',','.'))
+                        )
                     );
                     
                     if(!$obErro->ocorreu()&&($arRetencao['exercicio']!=$stExercicio))
@@ -401,6 +414,7 @@ function pagar($boTransacao = "")
                                     $obTContabilidadeLancamentoRetencao->setDado('cod_plano'         , $arRetencao['cod_plano'] );
                                     $obTContabilidadeLancamentoRetencao->setDado('exercicio_retencao', $arRetencao['exercicio'] );
                                     $obTContabilidadeLancamentoRetencao->setDado('sequencial'        , $arRetencao['sequencial'] );
+                                    
                                     $obErro = $obTContabilidadeLancamentoRetencao->inclusao( $boTransacao );
                                
                                     if (!$obErro->ocorreu()) {
@@ -411,13 +425,24 @@ function pagar($boTransacao = "")
                                         $obTTesourariaTransferenciaOPRetencao->setDado('cod_plano', $arRetencao['cod_plano'] );
                                         $obTTesourariaTransferenciaOPRetencao->setDado('cod_ordem', $inCodOrdem );
                                         $obTTesourariaTransferenciaOPRetencao->setDado('sequencial', $arRetencao['sequencial'] );
+                                        
                                         $obErro = $obTTesourariaTransferenciaOPRetencao->inclusao( $boTransacao );
+                                    
+                                        $this->inserirValorLancamentoRecurso($arRetencao, $boTransacao);
                                     }
+                                
                                 }
                             }
         
                             if ($this->roRTesourariaBoletim->roUltimaTransferencia->obRTesourariaAutenticacao->getDescricao()) {
-                                array_push($arDescricao,array('stDescricao' => array( 'texto' => $this->roRTesourariaBoletim->roUltimaTransferencia->obRTesourariaAutenticacao->getDescricao(), 'acao'  => "ARR_EXT ".$inCodPlanoCaixa."/".substr(Sessao::getExercicio(),2,2)." ".$arRetencao['cod_plano']."/".substr($arRetencao['exercicio'],2,2))));
+                                array_push(
+                                    $arDescricao, array(
+                                        'stDescricao' => array(
+                                            'texto' => $this->roRTesourariaBoletim->roUltimaTransferencia->obRTesourariaAutenticacao->getDescricao(), 
+                                            'acao'  => "ARR_EXT ".$inCodPlanoCaixa."/".substr(Sessao::getExercicio(),2,2)." ".$arRetencao['cod_plano']."/".substr($arRetencao['exercicio'],2,2)
+                                        )
+                                    )
+                                );
                             }
                             
                         break;
@@ -444,6 +469,13 @@ function pagar($boTransacao = "")
 
     return $obErro;
 }
+
+    public function inserirValorLancamentoRecurso($dadosRetencao, $boTransacao)
+    {
+        include_once CAM_GF_CONT_MAPEAMENTO . "TContabilidadeValorLancamentoRecurso.class.php";
+        $obTContabilidadeValorLancamentoRecurso = new TContabilidadeValorLancamentoRecurso();
+        $obTContabilidadeValorLancamentoRecurso->gerarValoresPorRecurso($dadosRetencao, $boTransacao);
+    }
 
 /**
     * Estorna Transferencia

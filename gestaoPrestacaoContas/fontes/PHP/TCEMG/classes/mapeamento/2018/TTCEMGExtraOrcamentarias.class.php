@@ -223,23 +223,23 @@ class TTCEMGExtraOrcamentarias extends TOrcamentoContaReceita
                           --      THEN 'D'
                           --      ELSE 'C'
                           --END
-                     	  ELSE CASE 
-	             	  			WHEN natureza_conta = 'D' AND vl_saldo_ant < 0.00 THEN 'C'
-	                            WHEN vl_saldo_ant < 0.00 THEN 'D'
-	             	   			ELSE 'C'
-	                      END
-			               END AS nat_saldo_anterior_fonte
+                        ELSE CASE 
+                        WHEN natureza_conta = 'D' AND vl_saldo_ant < 0.00 THEN 'C'
+                              WHEN vl_saldo_ant < 0.00 THEN 'D'
+                        ELSE 'C'
+                        END
+                     END AS nat_saldo_anterior_fonte
                    , CASE WHEN natureza_atual != ' '
                           THEN natureza_atual
                           --ELSE CASE WHEN vl_saldo_atual < 0.00
                           --      THEN 'D'
                           --      ELSE 'C'
                           -- END
-						          ELSE CASE 
-						          WHEN natureza_conta = 'D' and vl_saldo_atual < 0.00 THEN 'C'
-	                            WHEN vl_saldo_atual < 0.00 THEN 'D'
-	             	   			ELSE 'C'
-	                      END
+                      ELSE CASE 
+                      WHEN natureza_conta = 'D' and vl_saldo_atual < 0.00 THEN 'C'
+                              WHEN vl_saldo_atual < 0.00 THEN 'D'
+                        ELSE 'C'
+                        END
                       END AS nat_saldo_atual_fonte
                    , ABS(vl_saldo_debitos) AS total_debitos
                    , ABS(vl_saldo_creditos) AS total_creditos
@@ -250,9 +250,9 @@ class TTCEMGExtraOrcamentarias extends TOrcamentoContaReceita
                            , cod_unidade
                            , tipo_lancamento
                            , sub_tipo
-                           , (                           	
-                           		select pla.natureza_saldo from contabilidade.plano_analitica pla where pla.exercicio = '".$this->getDado('exercicio')."' and pla.cod_plano = cod_ext::numeric
-                           	 ) as natureza_conta
+                           , (                            
+                              select pla.natureza_saldo from contabilidade.plano_analitica pla where pla.exercicio = '".$this->getDado('exercicio')."' and pla.cod_plano = cod_ext::numeric
+                             ) as natureza_conta
                            , cod_recurso AS cod_font_recurso
                            , SUM(vl_saldo_anterior) AS vl_saldo_ant
                            , SUM(vl_saldo_atual) AS vl_saldo_atual
@@ -325,7 +325,7 @@ class TTCEMGExtraOrcamentarias extends TOrcamentoContaReceita
                               ELSE plano_analitica.cod_plano::VARCHAR
                           END AS cod_ext
                        , CASE WHEN transferencia.cod_tipo = 1 AND transferencia.cod_plano_credito = 3274
-                                   THEN COALESCE( lote.cod_recurso, (
+                                   THEN COALESCE((
                                          SELECT plano_recurso.cod_recurso
                                            FROM contabilidade.plano_conta     
                                      INNER JOIN contabilidade.plano_analitica 
@@ -367,16 +367,12 @@ class TTCEMGExtraOrcamentarias extends TOrcamentoContaReceita
                                , lote.tipo
                                , lote.cod_entidade
                                , valor_lancamento.vl_lancamento
-                               , valor_lancamento_recurso.cod_recurso
-
                             FROM contabilidade.lote
-
                       INNER JOIN contabilidade.lancamento
                               ON lancamento.exercicio    = lote.exercicio
                              AND lancamento.cod_entidade = lote.cod_entidade
                              AND lancamento.tipo         = lote.tipo
                              AND lancamento.cod_lote     = lote.cod_lote
-
                       INNER JOIN contabilidade.valor_lancamento
                               ON valor_lancamento.exercicio    = lancamento.exercicio
                              AND valor_lancamento.cod_entidade = lancamento.cod_entidade
@@ -384,15 +380,6 @@ class TTCEMGExtraOrcamentarias extends TOrcamentoContaReceita
                              AND valor_lancamento.cod_lote     = lancamento.cod_lote
                              AND valor_lancamento.sequencia    = lancamento.sequencia
                              AND valor_lancamento.tipo_valor = 'D'
-
-                       LEFT JOIN contabilidade.valor_lancamento_recurso
-                              ON valor_lancamento_recurso.exercicio = valor_lancamento.exercicio
-                             AND valor_lancamento_recurso.cod_entidade = valor_lancamento.cod_entidade
-                             AND valor_lancamento_recurso.tipo = valor_lancamento.tipo
-                             AND valor_lancamento_recurso.cod_lote = valor_lancamento.cod_lote
-                             AND valor_lancamento_recurso.sequencia = valor_lancamento.sequencia
-                             AND valor_lancamento_recurso.tipo_valor = valor_lancamento.tipo_valor
-
                       INNER JOIN contabilidade.conta_debito
                               ON conta_debito.exercicio = valor_lancamento.exercicio
                              AND conta_debito.cod_entidade = valor_lancamento.cod_entidade
@@ -401,7 +388,6 @@ class TTCEMGExtraOrcamentarias extends TOrcamentoContaReceita
                              AND conta_debito.sequencia = valor_lancamento.sequencia
                              AND conta_debito.tipo_valor = valor_lancamento.tipo_valor
                              AND valor_lancamento.tipo = 'T'
-
                            WHERE lote.exercicio = '".$this->getDado('exercicio')."'
                              AND lote.tipo = 'T'
                              AND lote.cod_entidade IN (".$this->getDado('entidades').")
@@ -492,7 +478,7 @@ class TTCEMGExtraOrcamentarias extends TOrcamentoContaReceita
                      AND de_para_lote.tipo_debito         = cod_ctb_caixa.tipo
                      AND de_para_lote.cod_lote_debito     = cod_ctb_caixa.cod_lote
               INNER JOIN administracao.configuracao_entidade
-                      ON configuracao_entidade.cod_entidade in (".$this->getDado('entidades').")
+                      ON configuracao_entidade.cod_entidade = ".$this->getDado('entidades')."
                      AND configuracao_entidade.exercicio = '".$this->getDado('exercicio')."'
                      AND configuracao_entidade.cod_modulo = 55
                      AND configuracao_entidade.parametro = 'tcemg_codigo_orgao_entidade_sicom'
@@ -549,7 +535,6 @@ class TTCEMGExtraOrcamentarias extends TOrcamentoContaReceita
                 GROUP BY tipo_registro
                        , cod_unidade_sub 
                        , cod_ext
-                       , lote.cod_recurso
                        , cod_font_recurso
                        , vl_op
                        , cod_reduzido_op
@@ -562,7 +547,6 @@ class TTCEMGExtraOrcamentarias extends TOrcamentoContaReceita
                        , lote.cod_lote
                 ORDER BY cod_ext
             ";
-
         return $stSql;
     }
 

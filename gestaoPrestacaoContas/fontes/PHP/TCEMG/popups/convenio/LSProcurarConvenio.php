@@ -52,8 +52,7 @@
     }
     Sessao::write('filtro', $filtro);
 
-
-    $stFiltro = " WHERE convenio.exercicio = '". Sessao::getExercicio() ."'";
+    $stFiltro = " WHERE convenio.exercicio = '". $request->get('stExercicioConvenio') ."'";
 
     $inCodEntidade = $request->get('inCodEntidade');
     if ($inCodEntidade != '') {

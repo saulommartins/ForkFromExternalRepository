@@ -602,9 +602,14 @@ $obHdnDtContrato->setValue('');
 
 $obContrato = new IPopUpContrato( $obForm );
 $obContrato->obHdnBoFornecedor->setValue(TRUE);
-$obContrato->obBuscaInner->obCampoCod->obEvento->setOnBlur("montaParametrosGET('validaContrato', 'inCodContrato,inCodEntidade,inCodFornecedor,stExercicioContrato');");
+$obContrato->obBuscaInner->obCampoCod->obEvento->setOnBlur(
+    "montaParametrosGET('validaContrato', 'inCodContrato,inCodEntidade,inCodFornecedor,stExercicioContrato');"
+);
+
 $obContrato->obBuscaInner->setValoresBusca('', '', '');
-$obContrato->obBuscaInner->setFuncaoBusca("montaParametrosGET('montaBuscaContrato', 'inCodContrato,inCodEntidade,inCodFornecedor,stExercicioContrato');".$obContrato->obBuscaInner->getFuncaoBusca());
+$obContrato->obBuscaInner->setFuncaoBusca(
+    "montaParametrosGET('montaBuscaContrato', 'inCodContrato,inCodEntidade,inCodFornecedor,stExercicioContrato');".$obContrato->obBuscaInner->getFuncaoBusca()
+);
 
 $obConvenio = new IPopUpConvenio( $obForm );
 $obConvenio->obBuscaInner->obCampoCod->obEvento->setOnBlur(

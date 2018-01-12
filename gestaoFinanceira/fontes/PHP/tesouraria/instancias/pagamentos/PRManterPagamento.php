@@ -37,61 +37,64 @@
     * Casos de uso: uc-02.04.05
 */
 
-require_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
-require_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
-require_once CAM_GF_TES_NEGOCIO."RTesourariaBoletim.class.php";
-require_once CAM_GF_TES_NEGOCIO."RTesourariaConfiguracao.class.php";
-require_once CAM_GF_TES_MAPEAMENTO."TTesourariaPagamento.class.php";
-require_once CAM_GA_ADM_MAPEAMENTO."TAdministracaoConfiguracao.class.php";
-include_once CAM_GF_CONT_MAPEAMENTO."TContabilidadeEncerramentoMes.class.php";
+    ini_set("display_errors", 1);
+    error_reporting(E_ALL ^ E_NOTICE);
 
-$stAcao = $request->get('stAcao');
+    require_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
+    require_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
+    require_once CAM_GF_TES_NEGOCIO."RTesourariaBoletim.class.php";
+    require_once CAM_GF_TES_NEGOCIO."RTesourariaConfiguracao.class.php";
+    require_once CAM_GF_TES_MAPEAMENTO."TTesourariaPagamento.class.php";
+    require_once CAM_GA_ADM_MAPEAMENTO."TAdministracaoConfiguracao.class.php";
+    include_once CAM_GF_CONT_MAPEAMENTO."TContabilidadeEncerramentoMes.class.php";
 
-$obTransacao = new Transacao();
-$obErro = $obTransacao->abreTransacao( $boFlagTransacao, $boTransacao );
+    $stAcao = $request->get('stAcao');
 
-//Define o nome dos arquivos PHP
-$stPrograma = "ManterPagamento";
-$pgFilt = "FL".$stPrograma.".php";
-$pgList = "LS".$stPrograma.".php";
-$pgForm = "FM".$stPrograma.".php";
-$pgProc = "PR".$stPrograma.".php";
-$pgOcul = "OC".$stPrograma.".php";
-$pgAutenticacao = "../autenticacao/FMManterAutenticacao.php";
+    $obTransacao = new Transacao();
+    $obErro = $obTransacao->abreTransacao( $boFlagTransacao, $boTransacao );
 
-$obAdministracaoConfiguracao = new TAdministracaoConfiguracao();
+    //Define o nome dos arquivos PHP
+    $stPrograma = "ManterPagamento";
+    $pgFilt = "FL".$stPrograma.".php";
+    $pgList = "LS".$stPrograma.".php";
+    $pgForm = "FM".$stPrograma.".php";
+    $pgProc = "PR".$stPrograma.".php";
+    $pgOcul = "OC".$stPrograma.".php";
+    $pgAutenticacao = "../autenticacao/FMManterAutenticacao.php";
 
-list( $inCodBoletim , $stDtBoletim ) = explode ( ':' , $request->get('inCodBoletim') );
-list($stDia, $stMes, $stAno) = explode( '/', $stDtBoletim );
+    $obAdministracaoConfiguracao = new TAdministracaoConfiguracao();
 
-//valida a utilização da rotina de encerramento do mês contábil
-$boUtilizarEncerramentoMes = SistemaLegado::pegaConfiguracao('utilizar_encerramento_mes', 9, '', $boTransacao);
+    list( $inCodBoletim , $stDtBoletim ) = explode ( ':' , $request->get('inCodBoletim') );
+    list($stDia, $stMes, $stAno) = explode( '/', $stDtBoletim );
 
-$obTContabilidadeEncerramentoMes = new TContabilidadeEncerramentoMes;
-$obTContabilidadeEncerramentoMes->setDado('exercicio', Sessao::getExercicio());
-$obTContabilidadeEncerramentoMes->setDado('situacao', 'F');
-$obTContabilidadeEncerramentoMes->recuperaEncerramentoMes($rsUltimoMesEncerrado, '', ' ORDER BY mes DESC LIMIT 1 ', $boTransacao);
+    //valida a utilização da rotina de encerramento do mês contábil
+    $boUtilizarEncerramentoMes = SistemaLegado::pegaConfiguracao('utilizar_encerramento_mes', 9, '', $boTransacao);
 
-if ($boUtilizarEncerramentoMes == 'true' AND $rsUltimoMesEncerrado->getCampo('mes') >= $stMes) {
-    SistemaLegado::exibeAviso(urlencode("Mês do Boletim encerrado!"),"n_incluir","erro");
-    SistemaLegado::LiberaFrames();
-    exit;
-}
+    $obTContabilidadeEncerramentoMes = new TContabilidadeEncerramentoMes;
+    $obTContabilidadeEncerramentoMes->setDado('exercicio', Sessao::getExercicio());
+    $obTContabilidadeEncerramentoMes->setDado('situacao', 'F');
+    $obTContabilidadeEncerramentoMes->recuperaEncerramentoMes($rsUltimoMesEncerrado, '', ' ORDER BY mes DESC LIMIT 1 ', $boTransacao);
 
-$obRTesourariaBoletim = new RTesourariaBoletim();
-$obRTesourariaBoletim->setExercicio  ( Sessao::getExercicio() );
-$obRTesourariaBoletim->setCodBoletim ( $inCodBoletim );
-$obRTesourariaBoletim->setDataBoletim( $stDtBoletim  );
-$obRTesourariaBoletim->obROrcamentoEntidade->setCodigoEntidade ( $request->get('inCodEntidade') );
-$obRTesourariaBoletim->obRTesourariaUsuarioTerminal->obRCGM->setNumCGM( Sessao::read('numCgm') );
-$obRTesourariaBoletim->obRTesourariaUsuarioTerminal->setTimestampUsuario( $request->get('stTimestampUsuario') );
-$obRTesourariaBoletim->obRTesourariaUsuarioTerminal->roRTesourariaTerminal->setCodTerminal( $request->get('inCodTerminal') );
-$obRTesourariaBoletim->obRTesourariaUsuarioTerminal->roRTesourariaTerminal->setTimestampTerminal( $request->get('stTimestampTerminal') );
-$obRTesourariaBoletim->addPagamento();
+    if ($boUtilizarEncerramentoMes == 'true' AND $rsUltimoMesEncerrado->getCampo('mes') >= $stMes) {
+        SistemaLegado::exibeAviso(urlencode("Mês do Boletim encerrado!"),"n_incluir","erro");
+        SistemaLegado::LiberaFrames();
+        exit;
+    }
 
-$obRTesourariaConfiguracao = new RTesourariaConfiguracao();
-$obRTesourariaConfiguracao->setExercicio( Sessao::getExercicio() );
-$obRTesourariaConfiguracao->consultarTesouraria($boTransacao);
+    $obRTesourariaBoletim = new RTesourariaBoletim();
+    $obRTesourariaBoletim->setExercicio  ( Sessao::getExercicio() );
+    $obRTesourariaBoletim->setCodBoletim ( $inCodBoletim );
+    $obRTesourariaBoletim->setDataBoletim( $stDtBoletim  );
+    $obRTesourariaBoletim->obROrcamentoEntidade->setCodigoEntidade ( $request->get('inCodEntidade') );
+    $obRTesourariaBoletim->obRTesourariaUsuarioTerminal->obRCGM->setNumCGM( Sessao::read('numCgm') );
+    $obRTesourariaBoletim->obRTesourariaUsuarioTerminal->setTimestampUsuario( $request->get('stTimestampUsuario') );
+    $obRTesourariaBoletim->obRTesourariaUsuarioTerminal->roRTesourariaTerminal->setCodTerminal( $request->get('inCodTerminal') );
+    $obRTesourariaBoletim->obRTesourariaUsuarioTerminal->roRTesourariaTerminal->setTimestampTerminal( $request->get('stTimestampTerminal') );
+    $obRTesourariaBoletim->addPagamento();
+
+    $obRTesourariaConfiguracao = new RTesourariaConfiguracao();
+    $obRTesourariaConfiguracao->setExercicio( Sessao::getExercicio() );
+    $obRTesourariaConfiguracao->consultarTesouraria($boTransacao);
 
 switch ($stAcao) {
     case 'incluir':
@@ -100,17 +103,26 @@ switch ($stAcao) {
         $stTimestamp = date( 'Y-m-d H:i:s.ms' );
     } else {
         list( $stDia, $stMes, $stAno ) = explode( '/', $stDtBoletim );
-        $stTimestamp = substr($stAno.'-'.$stMes.'-'.$stDia.' '.date('H:i:s.ms'),0,-1);
+        $stTimestamp = substr($stAno.'-'.$stMes.'-'.$stDia.' '.date('H:i:s.ms'), 0, -1);
     }
-    $obRTesourariaBoletim->roUltimoPagamento->setTimestamp( $stTimestamp );
     
-    $obAdministracaoConfiguracao->recuperaTodos($rsAdministracaoConfiguracao, " WHERE exercicio = '".Sessao::getExercicio()."' and cod_modulo = 2 and parametro = 'cod_uf'","",$boTransacao);
+    $obRTesourariaBoletim->roUltimoPagamento->setTimestamp( $stTimestamp );
+    $obRTesourariaBoletim->setPostData($_POST);
+    
+    $obAdministracaoConfiguracao->recuperaTodos(
+        $rsAdministracaoConfiguracao, 
+        " WHERE exercicio = '".Sessao::getExercicio()."' and cod_modulo = 2 and parametro = 'cod_uf'",
+        "",
+        $boTransacao
+    );
+
     $inCodUf = $rsAdministracaoConfiguracao->getCampo('valor');
     $stSiglaUf = SistemaLegado::pegaDado("sigla_uf","sw_uf","where cod_uf = ".$inCodUf."", $boTransacao);
 
     $obErro = new Erro;
-    if( $stSiglaUf != "BA" ){
-        if ($request->get('inDocTipo')) {
+
+    if ( $stSiglaUf != "BA" ) {
+        if ( $request->get('inDocTipo') ) {
             switch ($request->get('inDocTipo')) {
                 case 1 :
                 case 2 :
@@ -122,16 +134,19 @@ switch ($stAcao) {
             }
         }
     }
+
     if ($request->get('inCodOrdem')) {
         if (SistemaLegado::comparaDatas($request->get('stDtEmissaoOrdem'),$stDtBoletim)) {
             $obErro->setDescricao("A data do pagamento é anterior à data de emissão da OP");
         }
     }
-    if($stSiglaUf == "BA" && $inCodUf==5 && !$obErro->ocorreu()){
-        if($request->get('inCodTipoPagamento')==''){
+    
+    if ( $stSiglaUf == "BA" && $inCodUf==5 && !$obErro->ocorreu() ) {
+        if ( $request->get('inCodTipoPagamento') == '' ) {
             $obErro->setDescricao("Informe o Tipo de Pagamento TCM-BA");
         }
-        if($request->get('numDocPagamento')==''){
+
+        if ( $request->get('numDocPagamento') =='' ) {
             $obErro->setDescricao("Informe o Número de Detalhe do Tipo Pagamento TCM-BA");
         }
     }
@@ -209,6 +224,7 @@ switch ($stAcao) {
     if ($obRTesourariaBoletim->roUltimoPagamento->obRTesourariaAutenticacao->getDescricao()) {
         Sessao::write('pagamento',true);
     }
+
     if ( !$obErro->ocorreu() ) {
         if ($request->get('inCodOrdem')) { // Se não estiver pagando uma op...
            $inCodOrdemPagarOutra = $obRTesourariaBoletim->roUltimoPagamento->obREmpenhoPagamentoLiquidacao->obREmpenhoOrdemPagamento->getCodigoOrdem();

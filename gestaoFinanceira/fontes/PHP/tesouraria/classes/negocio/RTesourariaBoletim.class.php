@@ -71,7 +71,9 @@ var $obROrcamentoEntidade;
     * @access Private
 */
 var $inCodBoletim;
+
 var $inCodBoletimInicial;
+
 var $inCodBoletimFinal;
 /*
     * @var String
@@ -83,7 +85,9 @@ var $stExercicio;
     * @access Private
 */
 var $stDataBoletim;
+
 var $stDataBoletimInicial;
+
 var $stDataBoletimFinal;
 
 /*
@@ -136,6 +140,8 @@ var $roUltimoBordero;
     * @access Private
 */
 var $inLoteTributario;
+
+var $postData;
 
 /*
     * @access Public
@@ -191,11 +197,24 @@ function setTransferencia($valor) { $this->arTransferencia                   = $
     * @param Array $valor
 */
 function setPagamento($valor) { $this->arPagamento                       = $valor; }
-/*
-    * @access Public
-    * @param Array $valor
-*/
-function setBordero($valor) { $this->arBordero                       = $valor; }
+
+    /**
+     * @access public
+     * @param Array $valor
+     */
+    public function setBordero($valor) {
+        $this->arBordero = $valor; 
+    }
+
+    /**
+     * @access public
+     * @param Array $valor
+     */
+    public function setPostData($valor)
+    {
+        $this->postData = $valor;
+    }
+
 /*
     * @access Public
     * @return Object
@@ -235,146 +254,175 @@ function getDataFechamento() { return $this->stDataFechamento;                  
     * @return Array
 */
 function getArrecadacao() { return $this->arArrecadacao;                     }
-/*
-    * @access Public
-    * @return Array
-*/
-function getTransferencia() { return $this->arTransferencia;                   }
-/*
-    * @access Public
-    * @return Array
-*/
-function getPagamento() { return $this->arPgamento;                        }
 
-/*
-    * @access Public
-    * @return Array
-*/
-function getBordero() { return $this->arBordero;                        }
-
-/**
-    * Método Construtor
-    * @access Private
-*/
-function RTesourariaBoletim()
-{
-    $this->obRTesourariaUsuarioTerminal = new RTesourariaUsuarioTerminal( new RTesourariaTerminal() );
-    $this->obRTesourariaConfiguracao    = new RTesourariaConfiguracao();
-    $this->obROrcamentoEntidade         = new ROrcamentoEntidade();
-}
-
-/**
-    * Método para adicionar uma arrecadacao ao boletim
-    * @access Private
-*/
-function addArrecadacao()
-{
-    $this->arArrecadacao[] = new RTesourariaArrecadacao( $this );
-    $this->roUltimaArrecadacao = &$this->arArrecadacao[ count( $this->arArrecadacao )-1 ];
-}
-
-/**
-    * Método para adicionar uma transferencia ao boletim
-    * @access Private
-*/
-function addTransferencia()
-{
-    $this->arTransferencia[] = new RTesourariaTransferencia( $this );
-    $this->roUltimaTransferencia = &$this->arTransferencia[ count( $this->arTransferencia)-1 ];
-}
-
-/**
-    * Método para adicionar uma pagamento ao boletim
-    * @access Private
-*/
-function addPagamento()
-{
-    $this->arPagamento[] = new RTesourariaPagamento( $this );
-    $this->roUltimoPagamento = &$this->arPagamento[ count( $this->arPagamento )-1 ];
-}
-/**
-    * Método para adicionar um bordero ao boletim
-    * @access Private
-*/
-function addBordero()
-{
-    $this->arBordero[] = new RTesourariaBordero( $this );
-    $this->roUltimoBordero = &$this->arBordero[ count( $this->arBordero )-1 ];
-}
-/**
-    * Executa um proximoCodigo na Persistente
-    * @access Public
-    * @param Object $boTransacao
-    * @return Object Objeto Erro
-*/
-function buscaProximoCodigo($boTransacao = "")
-{
-    include_once ( CAM_FW_BANCO_DADOS   ."Transacao.class.php"           );
-    include_once ( CAM_GF_TES_MAPEAMENTO."TTesourariaBoletim.class.php" );
-     $obTransacao               =  new Transacao;
-     $obTTesourariaBoletim      =  new TTesourariaBoletim;
-     $obTTesourariaBoletim->setDado( "exercicio", $this->stExercicio );
-     $obTTesourariaBoletim->setDado( "cod_entidade", $this->obROrcamentoEntidade->getCodigoEntidade() );
-     $obErro = $obTTesourariaBoletim->proximoCod( $inCodBoletim, $obTransacao );
-     $this->inCodBoletim = $inCodBoletim;
-
-     return $obErro;
-}
-/**
-    * Salva os dados no banco de dados
-    * @access Public
-    * @param  Object $boTransacao Parâmetro Transação
-    * @return Object Objeto Erro
-*/
-function incluir($boTransacao = "")
-{
-    include_once ( CAM_FW_BANCO_DADOS."Transacao.class.php"              );
-    include_once ( CAM_GF_TES_MAPEAMENTO ."TTesourariaBoletim.class.php" );
-    $obTransacao                  = new Transacao();
-    $obTTesourariaBoletim         = new TTesourariaBoletim();
-    $obErro = $obTransacao->abreTransacao( $boFlagTransacao, $boTransacao );
-    if ( !$obErro->ocorreu() ) {
-
-        $obErro = $this->listarBoletimAberto( $rsBoletimAberto, '', $boTransacao );
-        if ( !$obErro->ocorreu() ) {
-            if ( !$rsBoletimAberto->eof() ) {
-                if( $rsBoletimAberto->getCampo( 'cod_boletim') != $this->inCodBoletim )
-                    $obErro->setDescricao( 'Boletim incorreto' );
-
-            } else {
-                $obErro = $this->listar( $rsRecordSet, $stFiltro, '', $boTransacao );
-                if ( !$obErro->ocorreu() and !$rsRecordSet->eof() ) {
-                    $obErro->setDescricao( 'Não há boletins abertos!' );
-                } elseif ( !$obErro->ocorreu() ) {
-                    $obTTesourariaBoletim->setDado( "cod_boletim"       , $this->inCodBoletim                                                                );
-                    $obTTesourariaBoletim->setDado( "exercicio"         , $this->stExercicio                                                                 );
-                    $obTTesourariaBoletim->setDado( "cod_entidade"      , $this->obROrcamentoEntidade->getCodigoEntidade()                                   );
-                    $obTTesourariaBoletim->setDado( "cod_terminal"      , $this->obRTesourariaUsuarioTerminal->roRTesourariaTerminal->getCodTerminal()       );
-                    $obTTesourariaBoletim->setDado( "timestamp_terminal", $this->obRTesourariaUsuarioTerminal->roRTesourariaTerminal->getTimestampTerminal() );
-                    $obTTesourariaBoletim->setDado( "cgm_usuario"       , $this->obRTesourariaUsuarioTerminal->obRCGM->getNumCgm()                           );
-                    $obTTesourariaBoletim->setDado( "timestamp_usuario" , $this->obRTesourariaUsuarioTerminal->getTimestampUsuario()                         );
-                    $obTTesourariaBoletim->setDado( "dt_boletim"        , $this->stDataBoletim                                                               );
-                    $obErro = $obTTesourariaBoletim->inclusao( $boTransacao );
-                }
-            }
-        }
-        // Abre terminal
-        if ( !$obErro->ocorreu() ) {
-            $obErro = $this->obRTesourariaUsuarioTerminal->roRTesourariaTerminal->listarSituacaoPorBoletim( $rsTerminais , $this, '', '', $boTransacao );
-            if ( !$obErro->ocorreu() ) {
-                if ( !$rsTerminais->eof() ) {
-                    if( $rsTerminais->getCampo( "situacao" ) == 'fechado' or $rsTerminais->getCampo( "situacao" ) == 'liberado' )
-                        $obErro->setDescricao( "Este terminal está fechado!" );
-                } else {
-                    $obErro = $this->obRTesourariaUsuarioTerminal->roRTesourariaTerminal->abrirTerminal( $this, $boTransacao );
-                }
-            }
-        }
+    /**
+     * @access public
+     * @return Array
+     */
+    public function getTransferencia() {
+        return $this->arTransferencia;
     }
-    $obTransacao->fechaTransacao( $boFlagTransacao, $boTransacao, $obErro, $obTTesourariaBoletim );
+    
+    /**
+     * @access public
+     * @return Array
+     */
+    public function getPagamento() {
+        return $this->arPgamento;
+    }
 
-    return $obErro;
-}
+    /**
+     * @access public
+     * @return Array
+     */
+    public function getBordero() {
+        return $this->arBordero;
+    }
+
+    /**
+     * @access public
+     * @return Array
+     */
+    public function getPostData()
+    {
+        return $this->postData;
+    }
+
+    /**
+     * Método Construtor
+     * @access private
+     */
+    public function RTesourariaBoletim()
+    {
+        $this->obRTesourariaUsuarioTerminal = new RTesourariaUsuarioTerminal( new RTesourariaTerminal() );
+        $this->obRTesourariaConfiguracao    = new RTesourariaConfiguracao();
+        $this->obROrcamentoEntidade         = new ROrcamentoEntidade();
+    }
+
+    /**
+     * Método para adicionar uma arrecadacao ao boletim
+     * @access public
+     */
+    public function addArrecadacao()
+    {
+        $this->arArrecadacao[] = new RTesourariaArrecadacao( $this );
+        $this->roUltimaArrecadacao = &$this->arArrecadacao[ count( $this->arArrecadacao )-1 ];
+    }
+
+    /**
+     * Método para adicionar uma transferencia ao boletim
+     * @access public
+     */
+    public function addTransferencia()
+    {
+        $this->arTransferencia[] = new RTesourariaTransferencia( $this );
+        $this->roUltimaTransferencia = &$this->arTransferencia[ count( $this->arTransferencia)-1 ];
+    }
+
+    /**
+     * Método para adicionar uma pagamento ao boletim
+     * @access private
+     */
+    public function addPagamento()
+    {
+        $this->arPagamento[] = new RTesourariaPagamento( $this );
+        $this->roUltimoPagamento = &$this->arPagamento[ count( $this->arPagamento )-1 ];
+    }
+
+    /**
+     * Método para adicionar um bordero ao boletim
+     * @access private
+     */
+    public function addBordero()
+    {
+        $this->arBordero[] = new RTesourariaBordero( $this );
+        $this->roUltimoBordero = &$this->arBordero[ count( $this->arBordero )-1 ];
+    }
+
+    /**
+     * Executa um proximoCodigo na Persistente
+     * @access public
+     * @param Object $boTransacao
+     *
+     * @return Object Objeto Erro
+     */
+    public function buscaProximoCodigo($boTransacao = "")
+    {
+        include_once ( CAM_FW_BANCO_DADOS   ."Transacao.class.php"           );
+        include_once ( CAM_GF_TES_MAPEAMENTO."TTesourariaBoletim.class.php" );
+        
+        $obTransacao               =  new Transacao;
+        $obTTesourariaBoletim      =  new TTesourariaBoletim;
+        $obTTesourariaBoletim->setDado( "exercicio", $this->stExercicio );
+        $obTTesourariaBoletim->setDado( "cod_entidade", $this->obROrcamentoEntidade->getCodigoEntidade() );
+        $obErro = $obTTesourariaBoletim->proximoCod( $inCodBoletim, $obTransacao );
+        
+        $this->inCodBoletim = $inCodBoletim;
+
+        return $obErro;
+    }
+
+    /**
+     * Salva os dados no banco de dados
+     *
+     * @access public
+     * @param  Object $boTransacao Parâmetro Transação
+     *
+     * @return Object Objeto Erro
+     */
+    public function incluir($boTransacao = "")
+    {
+        include_once ( CAM_FW_BANCO_DADOS."Transacao.class.php"              );
+        include_once ( CAM_GF_TES_MAPEAMENTO ."TTesourariaBoletim.class.php" );
+
+        $obTransacao                  = new Transacao();
+        $obTTesourariaBoletim         = new TTesourariaBoletim();
+        $obErro = $obTransacao->abreTransacao( $boFlagTransacao, $boTransacao );
+
+        if ( !$obErro->ocorreu() ) {
+
+            $obErro = $this->listarBoletimAberto( $rsBoletimAberto, '', $boTransacao );
+            if ( !$obErro->ocorreu() ) {
+                if ( !$rsBoletimAberto->eof() ) {
+                    if( $rsBoletimAberto->getCampo( 'cod_boletim') != $this->inCodBoletim )
+                        $obErro->setDescricao( 'Boletim incorreto' );
+
+                } else {
+                    $obErro = $this->listar( $rsRecordSet, $stFiltro, '', $boTransacao );
+                    if ( !$obErro->ocorreu() and !$rsRecordSet->eof() ) {
+                        $obErro->setDescricao( 'Não há boletins abertos!' );
+                    } elseif ( !$obErro->ocorreu() ) {
+                        $obTTesourariaBoletim->setDado( "cod_boletim"       , $this->inCodBoletim                                                                );
+                        $obTTesourariaBoletim->setDado( "exercicio"         , $this->stExercicio                                                                 );
+                        $obTTesourariaBoletim->setDado( "cod_entidade"      , $this->obROrcamentoEntidade->getCodigoEntidade()                                   );
+                        $obTTesourariaBoletim->setDado( "cod_terminal"      , $this->obRTesourariaUsuarioTerminal->roRTesourariaTerminal->getCodTerminal()       );
+                        $obTTesourariaBoletim->setDado( "timestamp_terminal", $this->obRTesourariaUsuarioTerminal->roRTesourariaTerminal->getTimestampTerminal() );
+                        $obTTesourariaBoletim->setDado( "cgm_usuario"       , $this->obRTesourariaUsuarioTerminal->obRCGM->getNumCgm()                           );
+                        $obTTesourariaBoletim->setDado( "timestamp_usuario" , $this->obRTesourariaUsuarioTerminal->getTimestampUsuario()                         );
+                        $obTTesourariaBoletim->setDado( "dt_boletim"        , $this->stDataBoletim                                                               );
+                        $obErro = $obTTesourariaBoletim->inclusao( $boTransacao );
+                    }
+                }
+            }
+
+            // Abre terminal
+            if ( !$obErro->ocorreu() ) {
+                $obErro = $this->obRTesourariaUsuarioTerminal->roRTesourariaTerminal->listarSituacaoPorBoletim( $rsTerminais , $this, '', '', $boTransacao );
+                if ( !$obErro->ocorreu() ) {
+                    if ( !$rsTerminais->eof() ) {
+                        if( $rsTerminais->getCampo( "situacao" ) == 'fechado' or $rsTerminais->getCampo( "situacao" ) == 'liberado' )
+                            $obErro->setDescricao( "Este terminal está fechado!" );
+                    } else {
+                        $obErro = $this->obRTesourariaUsuarioTerminal->roRTesourariaTerminal->abrirTerminal( $this, $boTransacao );
+                    }
+                }
+            }
+        }
+
+        $obTransacao->fechaTransacao( $boFlagTransacao, $boTransacao, $obErro, $obTTesourariaBoletim );
+
+        return $obErro;
+    }
 
 /**
     * Realiza lançamentos de arrecadação

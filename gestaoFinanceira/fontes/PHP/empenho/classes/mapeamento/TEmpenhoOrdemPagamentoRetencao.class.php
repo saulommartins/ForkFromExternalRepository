@@ -85,6 +85,7 @@ function TEmpenhoOrdemPagamentoRetencao()
     $this->AddCampo('vl_retencao' ,'integer',true  ,''   ,false,false);
     $this->AddCampo('cod_receita' ,'integer',false ,''   ,true,'TOrcamentoReceita');
     $this->AddCampo('sequencial'  ,'integer',true  ,''   ,true,false);
+    $this->AddCampo('cod_recurso' ,'integer',true  ,''   ,true,false);
 
 }
 

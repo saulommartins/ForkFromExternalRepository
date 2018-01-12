@@ -44,14 +44,14 @@
 */
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
-include_once ( CAM_FW_BANCO_DADOS."Transacao.class.php"                                      );
-include_once ( CAM_GF_EMP_NEGOCIO.        "REmpenhoNotaLiquidacao.class.php"                         );
-include_once ( CAM_GF_EMP_NEGOCIO.        "REmpenhoOrdemPagamento.class.php"                         );
-include_once ( CAM_GF_CONT_NEGOCIO.        "RContabilidadePlanoContaAnalitica.class.php"              );
-include_once ( CAM_GF_CONT_NEGOCIO.        "RContabilidadeLancamento.class.php"              );
-include_once ( CAM_GF_EMP_MAPEAMENTO.      "TEmpenhoPagamentoLiquidacao.class.php"                         );
-include_once ( CAM_GF_CONT_MAPEAMENTO.      "TContabilidadeLancamento.class.php"                         );
-include_once ( CAM_GF_CONT_MAPEAMENTO.      "TContabilidadePlanoConta.class.php"                         );
+include_once ( CAM_FW_BANCO_DADOS     . "Transacao.class.php"                         );
+include_once ( CAM_GF_EMP_NEGOCIO     . "REmpenhoNotaLiquidacao.class.php"            );
+include_once ( CAM_GF_EMP_NEGOCIO     . "REmpenhoOrdemPagamento.class.php"            );
+include_once ( CAM_GF_CONT_NEGOCIO    . "RContabilidadePlanoContaAnalitica.class.php" );
+include_once ( CAM_GF_CONT_NEGOCIO    . "RContabilidadeLancamento.class.php"          );
+include_once ( CAM_GF_EMP_MAPEAMENTO  . "TEmpenhoPagamentoLiquidacao.class.php"       );
+include_once ( CAM_GF_CONT_MAPEAMENTO . "TContabilidadeLancamento.class.php"          );
+include_once ( CAM_GF_CONT_MAPEAMENTO . "TContabilidadePlanoConta.class.php"          );
 
 set_time_limit(0);
 
@@ -519,6 +519,7 @@ function listarLiquidacaoNaoPaga(&$rsRecordSet, $boTransacao = "")
 
     return $obErro;
 }
+
 function listarLiquidacaoNaoPagaTesouraria(&$rsRecordSet, $boTransacao = "")
 {
     include_once ( CAM_GF_EMP_MAPEAMENTO."TEmpenhoPagamentoLiquidacao.class.php" );
