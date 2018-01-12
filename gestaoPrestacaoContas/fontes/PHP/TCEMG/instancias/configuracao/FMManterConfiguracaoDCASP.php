@@ -24,7 +24,8 @@
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
-include_once ( CAM_GF_ORC_COMPONENTES . "ITextBoxSelectEntidadeGeral.class.php" );
+include_once CAM_GF_ORC_COMPONENTES . 'ITextBoxSelectEntidadeGeral.class.php';
+include_once CAM_GPC_TCEMG_MAPEAMENTO . 'TTCEMGCampoContaCorrente.class.php';
 
 //Define o nome dos arquivos PHP
 $stPrograma = "ManterConfiguracaoDCASP";
@@ -43,7 +44,7 @@ $boTransacao = new Transacao();
 $stAcao = $request->get('stAcao');
 
 if (empty($stAcao)) {
-    $stAcao = "alterar";
+  $stAcao = "alterar";
 }
 
 //****************************************//
@@ -65,21 +66,37 @@ $obHdnCtrl = new Hidden;
 $obHdnCtrl->setName("stCtrl");
 $obHdnCtrl->setId("");
 
-$obSpnCodigos = new Span();
-$obSpnCodigos->setId('spnCodigos');
+$obTipoRegistro= new Hidden;
+$obTipoRegistro->setName("tipoRegistro");
+$obTipoRegistro->setId("tipoRegistro");
+
+$obCodArquivo = new Hidden;
+$obCodArquivo->setName("codArquivo");
+$obCodArquivo->setId("codArquivo");
+
+$obSeqArquivo = new Hidden;
+$obSeqArquivo->setName("seqArquivo");
+$obSeqArquivo->setId("seqArquivo");
+
+$obSpnContas = new Span();
+$obSpnContas->setId('spnContas');
+
+$obSpnContas2 = new Span();
+$obSpnContas2->setId('spnContas2');
 
 $obNomeArquivo = new Select();
 $obNomeArquivo->setRotulo("Nome do Arquivo");
-$obNomeArquivo->setId('stTipoExportacao');
+$obNomeArquivo->setTitle("Informe o nome do arquivo a qual o campo pertence");
+$obNomeArquivo->setId('stNomeArquivo');
 $obNomeArquivo->setNull(false);
-$obNomeArquivo->setName('stTipoExportacao');
+$obNomeArquivo->setName('stNomeArquivo');
 $obNomeArquivo->addOption('BO', 'BO');
 $obNomeArquivo->addOption('BF', 'BF');
 $obNomeArquivo->addOption('BP', 'BP');
 $obNomeArquivo->addOption('DVP', 'DVP');
 $obNomeArquivo->addOption('DFC', 'DFC');
 $obNomeArquivo->addOption('RPSD', 'RPSD');
-$obNomeArquivo->obEvento->setOnChange("document.getElementById('inMes').value = '';");
+$obNomeArquivo->obEvento->setOnChange("limpaCampos(); limpaSpan();");
 
 $obNomeCampo = new BuscaInner;
 $obNomeCampo->setRotulo("Nome do Campo");
@@ -88,61 +105,50 @@ $obNomeCampo->setId("stCampo");
 $obNomeCampo->setName("stCampo");
 $obNomeCampo->setValue($stCampo);
 $obNomeCampo->setNull(false);
+$obNomeCampo->obCampoCod->setSize(30);
 $obNomeCampo->obCampoCod->setName("inCodCampo");
 $obNomeCampo->obCampoCod->setId("inCodCampo");
 $obNomeCampo->obCampoCod->setNull(true);
 $obNomeCampo->obCampoCod->setValue($inCodCampo);
 $obNomeCampo->obCampoCod->setAlign("left");
-$obNomeCampo->obCampoCod->obEvento->setOnChange("montaParametrosGET('buscaEstrutural', 'inClassificacao,inCodCampo', 'true');");
-$obNomeCampo->setFuncaoBusca("abrePopUp('" . CAM_GF_CONT_POPUPS . "camposDcasp/FLCampos.php', 'frm', 'inCodCampo', 'stCampo', 'conta_analitica_estrutural', '" . Sessao::getId() . "&inCodIniEstrutural=1,2,5,6&tipoBusca2=extmmaa', '800', '550');");
+$obNomeCampo->obCampoCod->obEvento->setOnBlur("1");
+$obNomeCampo->setFuncaoBusca("abrePopUpDcasp('" . CAM_GF_CONT_POPUPS . "camposDcasp/FLCampos.php', 'frm', 'inCodCampo', 'stCampo', 'tipoRegistro', 'codArquivo', 'seqArquivo', jQuery('#stNomeArquivo').val(), '" . Sessao::getId() . "&inCodIniEstrutural=1,2,5,6&tipoBusca2=extmmaa', '800', '550');");
 
 $obTxtDescGrupo = new TextBox;
 $obTxtDescGrupo->setRotulo("Grupo");
 $obTxtDescGrupo->setTitle("Informe apenas os 2 primeiros números da conta. Ex.: (1.2)");
+$obTxtDescGrupo->setId("inDescGrupo");
 $obTxtDescGrupo->setName("inDescGrupo");
 $obTxtDescGrupo->setSize(5);
 $obTxtDescGrupo->setMaxLength(5);
 $obTxtDescGrupo->setMascara('9.9.');
 $obTxtDescGrupo->setNull(false);
-// $obTxtDescGrupo->setValue($inDescGrupo);
 
 $obBtnBuscar = new Button();
 $obBtnBuscar->setId('btnBuscar');
 $obBtnBuscar->setValue('Buscar');
-// $obBtnOk->obEvento->setOnClick("montaParametrosGET('incluirConta','inClassificacao,inCodConta','true');");
-
-
-// $obITextBoxSelectEntidadeGeral = new ITextBoxSelectEntidadeGeral();
-// $obITextBoxSelectEntidadeGeral->setNull(false);
-// $obITextBoxSelectEntidadeGeral->obSelect->obEvento->setOnChange("limpaSpan();");
-// $obITextBoxSelectEntidadeGeral->obTextBox->obEvento->setOnChange("limpaSpan();");
-//
-// $obPeriodoMes = new Mes;
-// $obPeriodoMes->obMes->setId('inMes');
-// $obPeriodoMes->setExercicio(Sessao::getExercicio());
-// $obPeriodoMes->setNull(false);
-// $obPeriodoMes->obMes->obEvento->setOnChange ("if (validaCampos()) {montaParametrosGET('montaSpanCodigos');}");
-
+$obBtnBuscar->obEvento->setOnClick("if (validaCampos()) {montaParametrosGET('montaListagem');}");
 
 //****************************************//
 //Monta FORMULARIO
 //****************************************//
 $obFormulario = new Formulario;
 $obFormulario->addForm($obForm);
-$obFormulario->addTitulo("Considerações por arquivo");
+$obFormulario->addTitulo("Configuração DCASP por campo");
 $obFormulario->addHidden($obHdnCtrl);
 $obFormulario->addHidden($obHdnAcao);
+$obFormulario->addHidden($obTipoRegistro);
+$obFormulario->addHidden($obCodArquivo);
+$obFormulario->addHidden($obSeqArquivo);
 $obFormulario->addComponente($obNomeArquivo);
 $obFormulario->addComponente($obNomeCampo);
 $obFormulario->addComponente($obTxtDescGrupo);
 $obFormulario->addComponente($obBtnBuscar);
-
-// $obFormulario->addComponente($obITextBoxSelectEntidadeGeral);
-// $obFormulario->addComponente($obPeriodoMes);
-$obFormulario->addSpan($obSpnCodigos);
-
+$obFormulario->addSpan($obSpnContas);
+$obFormulario->addSpan($obSpnContas2);
 $obFormulario->OK();
 $obFormulario->show();
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/rodape.inc.php';
+
 ?>

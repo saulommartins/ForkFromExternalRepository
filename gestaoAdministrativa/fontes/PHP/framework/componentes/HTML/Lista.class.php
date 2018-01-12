@@ -714,6 +714,7 @@ function montaHTML()
         }
     }
 
+    $boSomatorio = false;
     //GERA A LISTA
     if ( !$obRecordSet->eof() ) {
 
@@ -1246,7 +1247,7 @@ function montaHTML()
             $this->ultimaLinha->ultimaCelula->setClass   ( "show_dados_".$arOpcoes[2]);
             $this->ultimaLinha->ultimaCelula->addConteudo( "<b>".$nuSoma."</b>" );
             $this->ultimaLinha->commitCelula();
-            
+
             if ($inNumDados > $arOpcoes[3]) {
                 $this->ultimaLinha->addCelula();
                 $this->ultimaLinha->ultimaCelula->setColSpan ( $inNumCel - $arOpcoes[3] );
@@ -1486,7 +1487,8 @@ function montaHTML()
             $stHTML .= $obTabelaPaginacao->getHTML();
         }
 
-    } else {
+    }
+    else {
         $onNunhumRegistro = new Dado;
         $onNunhumRegistro->setAlinhamento( "CENTER" );
         $onNunhumRegistro->addConteudo( "Nenhum registro encontrado!" );

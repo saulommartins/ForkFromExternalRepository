@@ -24,7 +24,7 @@
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
-include_once CAM_GPC_TCEMG_MAPEAMENTO . 'TTCEMGConsideracaoArquivoDescricao.class.php';
+include_once CAM_GPC_TCEMG_MAPEAMENTO . 'TTCEMGCampoContaCorrente.class.php';
 
 //Define o nome dos arquivos PHP
 $stPrograma = "ManterConfiguracaoDCASP";
@@ -37,32 +37,38 @@ $pgOcul = "OC" . $stPrograma . ".php";
 $stAcao = $request->get('stAcao');
 Sessao::setTrataExcecao(true);
 
-switch ($stAcao) {
-  case 'manter' :
-    $TTCEMGConsideracaoArquivoDescricao = new TTCEMGConsideracaoArquivoDescricao();
-    foreach ($_REQUEST as $stKey => $stValue) {
-      $arCodigo = explode('_',$stKey);
-      if ($arCodigo[0] == 'stConsideracao') {
-        $stConsideracao = $_REQUEST['stConsideracao_' . $arCodigo[1] . "_" . $arCodigo[2]];
-        $TTCEMGConsideracaoArquivoDescricao->setDado('cod_arquivo', $arCodigo[1]);
-        $TTCEMGConsideracaoArquivoDescricao->setDado('periodo', (int) $request->get('inMes'));
-        $TTCEMGConsideracaoArquivoDescricao->setDado('cod_entidade', $request->get('inCodEntidade'));
-        $TTCEMGConsideracaoArquivoDescricao->setDado('exercicio', Sessao::getExercicio());
-        $TTCEMGConsideracaoArquivoDescricao->setDado('modulo_sicom', $request->get('stTipoExportacao'));
-        $TTCEMGConsideracaoArquivoDescricao->setDado('descricao', $stConsideracao);
+$tipoRegistro = Sessao::read('tipoRegistro');
+$codSequencial = Sessao::read('codSequencialCampo');
+$contas = Sessao::read('contasContabeis');
 
-        $TTCEMGConsideracaoArquivoDescricao->recuperaPorChave($rsRecordSet);
+/*
+- ESTÁ SALVANDO APENAS O ULTIMO REGISTRO QUANDO EXISTEM MUITAS CONTAS (EX 2.1)
+- IMPLEMENTAR A EXCLUSÃO QUANDO FOR INSERIR O REGISTRO, ELA NÃO ESTÁ FUNCIONANDO
+- IMPLEMENTAR O SALVAMENTO DE CONTAS ORÇAMENTARIAS PARA OS OUTROS ARQUIVOS
+*/
 
-        if ($rsRecordSet->eof()) {
-          $TTCEMGConsideracaoArquivoDescricao->inclusao($boTransacao);
-        } else {
-          $TTCEMGConsideracaoArquivoDescricao->alteracao($boTransacao);
-        }
-      }
-    }
+$TTCEMGCampoContaCorrente = new TTCEMGCampoContaCorrente();
+foreach ($contas as $key => $value) {
+  // $TTCEMGCampoContaCorrente->exclusao($boTransacao);
 
-    SistemaLegado::alertaAviso($pgForm . "?" . Sessao::getId() . "&stAcao=$stAcao", "Configuração ", "incluir", "incluir_n", Sessao::getId(), "../");
-  break;
+  $TTCEMGCampoContaCorrente->setDado('exercicio', $value['exercicio']);
+  $TTCEMGCampoContaCorrente->setDado('tipo_registro', $_REQUEST['tipoRegistro']);
+  $TTCEMGCampoContaCorrente->setDado('cod_arquivo', $_REQUEST['codArquivo']);
+  $TTCEMGCampoContaCorrente->setDado('seq_arquivo', $_REQUEST['seqArquivo']);
+  if ($_REQUEST['stNomeArquivo'] == 'BO' || $_REQUEST['stNomeArquivo'] == 'BF') {
+    $TTCEMGCampoContaCorrente->setDado('conta_orc_despesa', $value['conta_contabil_despesa']);
+    $TTCEMGCampoContaCorrente->setDado('cont_orc_receita', $value['conta_contabil_receita']);
+    $TTCEMGCampoContaCorrente->setDado('conta_contabil', NULL);
+  }
+  else {
+    $TTCEMGCampoContaCorrente->setDado('conta_orc_despesa', NULL);
+    $TTCEMGCampoContaCorrente->setDado('cont_orc_receita', NULL);
+    $TTCEMGCampoContaCorrente->setDado('conta_contabil', $value['conta_contabil']);
+  }
+
+  $TTCEMGCampoContaCorrente->inclusao($boTransacao);
 }
+
+SistemaLegado::alertaAviso($pgForm . "?" . Sessao::getId() . "&stAcao=$stAcao", "Configuração ", "incluir", "incluir_n", Sessao::getId(), "../");
 
 Sessao::encerraExcecao();

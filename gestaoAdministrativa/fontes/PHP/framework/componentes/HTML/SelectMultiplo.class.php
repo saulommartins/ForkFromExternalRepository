@@ -536,6 +536,17 @@ function montaHtml()
     $this->setHtml( $this->obTabela->getHtml() );
 }
 
+function montaInnerHtml()
+{
+    $this->montaHTML();
+    $stHtml = str_replace("\n","",$this->getHTML());
+    $stHtml = str_replace("  ","",$stHtml);
+    $stHtml = str_replace("'","\\'",$stHtml);
+    $stHtml = str_replace(chr(13),"",$stHtml);
+    $stHtml = str_replace(chr(13).chr(10),"",$stHtml);
+    $this->setHTML( $stHtml );
+}
+
 /**
     * Imprime o HTML do Objeto Label na tela (echo)
     * @access Public
