@@ -76,7 +76,17 @@ var $arEstrutura;
     * @access Private
 */
 var $arEstruturaAuxiliar;
+/**
+    * @var String
+    * @access Private
+*/
+var $customWhere;
 
+/**
+    * @access Public
+    * @param String $valor
+*/
+function setCustomWhere($valor) { $this->customWhere = $valor; }
 /**
     * @access Public
     * @param String $valor
@@ -108,6 +118,11 @@ function setEstrutura($valor) { $this->arEstrutura        = $valor; }
 */
 function setEstruturaAuxiliar($valor) { $this->arEstruturaAuxiliar= $valor; }
 
+/**
+    * @access Public
+    * @return String
+*/
+function getCustomWhere() { return $this->customWhere; }
 /**
     * @access Public
     * @return String
@@ -441,7 +456,7 @@ function exclusao($boTransacao = "")
         $stSql = $this->montaExclusao();
         $stChave = $this->montaChave();
         if ($stChave) {
-            $stSql .= " WHERE ".$stChave;
+            $stSql .= ($this->getCustomWhere() != '' ? $this->getCustomWhere() : " WHERE " . $stChave);
             $obErro = $obConexao->executaDML( $stSql, $boTransacao );
             //Caso não ocorra erro, inclui um detalhe da Auditoria. TESTE
             if (!$obErro->ocorreu() && !in_array(get_class($this), array("TAuditoriaDetalhe", "TAuditoria"))) {
@@ -1306,12 +1321,12 @@ public function validaExclusao($stFiltro = "" , $boTransacao = "")
     $obErro      = new Erro;
     $obConexao   = new Conexao;
     $rsRecordSet = new RecordSet;
-    
-    $stTabelaPrincipal = $this->getTabela();    
+
+    $stTabelaPrincipal = $this->getTabela();
     //Busca as tabelas que são referenciadas pela tabela principal
     $stSql = $this->buscaForeingKeys( $stTabelaPrincipal );
     $obErro = $obConexao->executaSQL($rsRecordSet, $stSql, $boTransacao, $obConexao);
-    
+
     if ( !$obErro->ocorreu() ) {
         foreach ($rsRecordSet->getElementos() as $chave => $valor) {
             //Bucar chaves das tabela mae e fk
@@ -1333,16 +1348,16 @@ public function validaExclusao($stFiltro = "" , $boTransacao = "")
             //Monta Select de cada tabela verificando se existe dados vinculados
             $stSelect = "SELECT 1 \n FROM ".$valor['nome_tabela_mae']." , ".$valor['nome_tabela_fk'];
             for($i=0;$i<count($arChaveTabelaMae);$i++){
-                if($i == 0 ) {                    
+                if($i == 0 ) {
                     $stWhere = "\n WHERE ".$valor['schema_mae'].".".$valor['tabela_mae'].".".$arChaveTabelaMae[$i]." = ".$valor['schema_fk'].".".$valor['tabela_fk'].".".$arChaveTabelaFK[$i];
                 } else {
-                    $stWhere .= "\n AND ".$valor['schema_mae'].".".$valor['tabela_mae'].".".$arChaveTabelaMae[$i]." = ".$valor['schema_fk'].".".$valor['tabela_fk'].".".$arChaveTabelaFK[$i];                    
+                    $stWhere .= "\n AND ".$valor['schema_mae'].".".$valor['tabela_mae'].".".$arChaveTabelaMae[$i]." = ".$valor['schema_fk'].".".$valor['tabela_fk'].".".$arChaveTabelaFK[$i];
                 }
             }
             //Monta filtro com os campos de chaves
             $chaveFiltro = $this->montaFiltro();
             $stSelect .= $stWhere."\n AND ".$chaveFiltro;
-            
+
             //Executa o select com a relacao da tabela fk
             $this->setDebug($stSelect);
             $obErro = $obConexao->executaSQL($rsValidaRelacao, $stSelect, $boTransacao, $obConexao);
@@ -1505,7 +1520,7 @@ private function buscaForeingKeys($stTabela)
 {
 
     list($stSchema,$stTable) = explode('.',$stTabela);
-    
+
     if (preg_match('/sw_/', $stSchema)){
         $stTable = $stSchema;
         $stSchema = 'public';

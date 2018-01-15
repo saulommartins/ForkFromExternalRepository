@@ -1,25 +1,25 @@
 <?php
 /*
-    **********************************************************************************
-    *                                                                                *
-    * @package URBEM CNM - Soluções em Gestão Pública                                *
-    * @copyright (c) 2013 Confederação Nacional de Municípos                         *
-    * @author Confederação Nacional de Municípios                                    *
-    *                                                                                *
-    * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
-    * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
-    * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
-    *                                                                                *
-    * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
-    * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
-    * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
-    * para mais detalhes.                                                            *
-    *                                                                                *
-    * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
-    * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
-    * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
-    *                                                                                *
-    **********************************************************************************
+  **********************************************************************************
+  *                                                                                *
+  * @package URBEM CNM - Soluções em Gestão Pública                                *
+  * @copyright (c) 2013 Confederação Nacional de Municípos                         *
+  * @author Confederação Nacional de Municípios                                    *
+  *                                                                                *
+  * O URBEM CNM é um software livre; você pode redistribuí-lo e/ou modificá-lo sob *
+  * os  termos  da Licença Pública Geral GNU conforme  publicada  pela Fundação do *
+  * Software Livre (FSF - Free Software Foundation); na versão 2 da Licença.       *
+  *                                                                                *
+  * Este  programa  é  distribuído  na  expectativa  de  que  seja  útil,   porém, *
+  * SEM NENHUMA GARANTIA; nem mesmo a garantia implícita  de  COMERCIABILIDADE  OU *
+  * ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral do GNU *
+  * para mais detalhes.                                                            *
+  *                                                                                *
+  * Você deve ter recebido uma cópia da Licença Pública Geral do GNU "LICENCA.txt" *
+  * com  este  programa; se não, escreva para  a  Free  Software Foundation  Inc., *
+  * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
+  *                                                                                *
+  **********************************************************************************
 */
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
@@ -47,9 +47,6 @@ if (empty($stAcao)) {
   $stAcao = "alterar";
 }
 
-//****************************************//
-//Define COMPONENTES DO FORMULARIO
-//****************************************//
 //Instancia o formulário
 $obForm = new Form;
 $obForm->setAction($pgProc);
@@ -103,13 +100,11 @@ $obNomeCampo->setRotulo("Nome do Campo");
 $obNomeCampo->setTitle("Informe o nome do campo para alterar suas contas");
 $obNomeCampo->setId("stCampo");
 $obNomeCampo->setName("stCampo");
-$obNomeCampo->setValue($stCampo);
 $obNomeCampo->setNull(false);
 $obNomeCampo->obCampoCod->setSize(30);
 $obNomeCampo->obCampoCod->setName("inCodCampo");
 $obNomeCampo->obCampoCod->setId("inCodCampo");
 $obNomeCampo->obCampoCod->setNull(true);
-$obNomeCampo->obCampoCod->setValue($inCodCampo);
 $obNomeCampo->obCampoCod->setAlign("left");
 $obNomeCampo->obCampoCod->obEvento->setOnBlur("1");
 $obNomeCampo->setFuncaoBusca("abrePopUpDcasp('" . CAM_GF_CONT_POPUPS . "camposDcasp/FLCampos.php', 'frm', 'inCodCampo', 'stCampo', 'tipoRegistro', 'codArquivo', 'seqArquivo', jQuery('#stNomeArquivo').val(), '" . Sessao::getId() . "&inCodIniEstrutural=1,2,5,6&tipoBusca2=extmmaa', '800', '550');");
@@ -129,9 +124,6 @@ $obBtnBuscar->setId('btnBuscar');
 $obBtnBuscar->setValue('Buscar');
 $obBtnBuscar->obEvento->setOnClick("if (validaCampos()) {montaParametrosGET('montaListagem');}");
 
-//****************************************//
-//Monta FORMULARIO
-//****************************************//
 $obFormulario = new Formulario;
 $obFormulario->addForm($obForm);
 $obFormulario->addTitulo("Configuração DCASP por campo");
@@ -150,5 +142,3 @@ $obFormulario->OK();
 $obFormulario->show();
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/rodape.inc.php';
-
-?>

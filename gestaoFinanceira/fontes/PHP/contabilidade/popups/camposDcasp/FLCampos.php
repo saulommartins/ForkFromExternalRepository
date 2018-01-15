@@ -112,5 +112,3 @@ $obFormulario->OK();
 $obFormulario->show();
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/rodape.inc.php';
-
-?>

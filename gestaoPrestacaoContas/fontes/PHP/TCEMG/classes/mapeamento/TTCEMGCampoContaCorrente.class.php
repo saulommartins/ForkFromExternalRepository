@@ -30,9 +30,10 @@ class TTCEMGCampoContaCorrente extends Persistente {
     parent::Persistente();
     $this->setTabela("tcemg.configuracao_dcasp_registros");
 
-    $this->setCampoCod('seq_arquivo');
-    $this->setComplementoChave('exercicio,tipo_registro,cod_arquivo');
+    $this->setCampoCod('cod_registro');
+    $this->setComplementoChave('seq_arquivo,exercicio,tipo_registro,cod_arquivo');
 
+    $this->AddCampo('cod_registro', 'integer', true, '', true, true);
     $this->AddCampo('exercicio', 'varchar', true, '4', true, true);
     $this->AddCampo('tipo_registro', 'integer', true, '', true, true);
     $this->AddCampo('cod_arquivo', 'integer', true, '', true, true);
@@ -132,4 +133,3 @@ class TTCEMGCampoContaCorrente extends Persistente {
   public function __destruct(){}
 
 }
-?>

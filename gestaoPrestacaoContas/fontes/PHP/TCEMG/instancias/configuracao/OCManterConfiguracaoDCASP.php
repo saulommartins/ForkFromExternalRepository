@@ -44,8 +44,8 @@ function montaListagem() {
   Sessao::write('codSequencialCampo', $request->get('c­o­d­A­r­q­u­i­v­o­'));
 
   Sessao::write('contasContabeis', array());
-  // Sessao::write('contasOrcDespesa', array());
-  // Sessao::write('contasOrcReceita', array());
+  Sessao::write('contasOrcDespesa', array());
+  Sessao::write('contasOrcReceita', array());
 
   Sessao::write('contasContabeisExcluidas', array());
   Sessao::write('contasOrcDespesaExcluidas', array());
@@ -87,6 +87,18 @@ function montaListagemContas() {
     $obListaReceita->setRecordSet($rsContaOrcReceita);
 
     if (!empty($rsContaOrcDespesa->getElementos())) {
+      $arrConta = array();
+      foreach ($rsContaOrcDespesa->getElementos() as $key => $dado) {
+        $arrConta[$dado['cod_conta']]['cod_conta'] = $dado['cod_conta'];
+        $arrConta[$dado['cod_conta']]['conta_orc_despesa'] = $dado['cod_estrutural'];
+        $arrConta[$dado['cod_conta']]['nom_conta'] = $dado['descricao'];
+        $arrConta[$dado['cod_conta']]['exercicio'] = $dado['exercicio'];
+        $arrConta[$dado['cod_conta']]['grupo'] = $dado['grupo'];
+        $arrConta[$dado['cod_conta']]['nome_arquivo'] = $dado['nome_arquivo'];
+        $arrConta[$dado['cod_conta']]['tipo_conta'] = 'Despesa';
+      }
+      Sessao::write('contasOrcDespesa', $arrConta);
+
       $obListaDespesa->addCabecalho('', 1);
       $obListaDespesa->addCabecalho($nomeCampo, 10);
       $obListaDespesa->addCabecalho('Excluir', 1);
@@ -109,6 +121,18 @@ function montaListagemContas() {
     }
 
     if (!empty($rsContaOrcReceita->getElementos())) {
+      $arrConta = array();
+      foreach ($rsContaOrcReceita->getElementos() as $key => $dado) {
+        $arrConta[$dado['cod_conta']]['cod_conta'] = $dado['cod_conta'];
+        $arrConta[$dado['cod_conta']]['conta_orc_receita'] = $dado['cod_estrutural'];
+        $arrConta[$dado['cod_conta']]['nom_conta'] = $dado['descricao'];
+        $arrConta[$dado['cod_conta']]['exercicio'] = $dado['exercicio'];
+        $arrConta[$dado['cod_conta']]['grupo'] = $dado['grupo'];
+        $arrConta[$dado['cod_conta']]['nome_arquivo'] = $dado['nome_arquivo'];
+        $arrConta[$dado['cod_conta']]['tipo_conta'] = 'Receita';
+      }
+      Sessao::write('contasOrcReceita', $arrConta);
+
       $obListaReceita->addCabecalho('', 1);
       $obListaReceita->addCabecalho($nomeCampo, 10);
       $obListaReceita->addCabecalho('Excluir', 1);
@@ -145,6 +169,7 @@ function montaListagemContas() {
 
     $TTCEMGCampoContaCorrente->recuperaContasContabeis($rsContaContabil, $exercicio, $grupo, $nomeArquivo, $excluidas, $boTransacao);
 
+    $arrConta = array();
     foreach ($rsContaContabil->getElementos() as $key => $dado) {
       $arrConta[$dado['cod_conta']]['cod_conta'] = $dado['cod_conta'];
       $arrConta[$dado['cod_conta']]['conta_contabil'] = $dado['cod_estrutural'];
@@ -244,5 +269,3 @@ switch ($stCtrl) {
 if ($stJs) {
   echo $stJs;
 }
-
-?>

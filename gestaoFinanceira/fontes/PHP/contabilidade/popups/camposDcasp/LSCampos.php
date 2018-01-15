@@ -26,6 +26,7 @@ include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/Framewor
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
 include_once CAM_GF_CONT_NEGOCIO . "RContabilidadePlanoContaAnalitica.class.php";
 include_once CAM_GF_CONT_NEGOCIO . "RContabilidadePlanoBanco.class.php";
+include_once CAM_GF_CONT_MAPEAMENTO . "TCampos.class.php";
 
 //Define o nome dos arquivos PHP
 $stPrograma = "Campos";
@@ -51,7 +52,6 @@ if (is_array(Sessao::read('linkPopUp'))) {
 }
 
 $arRequest = $request->getAll();
-// echo '<pre>'; print_r($arRequest); exit();
 
 $stLink = '';
 if ($arRequest['stNomeCampo']) {
@@ -70,7 +70,6 @@ $stLink.= "&campoTpReg=" . $arRequest['campoTpReg'];
 $stLink.= "&campoCod=" . $arRequest['campoCod'];
 $stLink.= "&campoSeq=" . $arRequest['campoSeq'];
 
-include_once CAM_GF_CONT_MAPEAMENTO . "TCampos.class.php";
 $obTCampos = new Tcampos;
 $obErro = $obTCampos->recuperaRegistros($rsLista, Sessao::getExercicio(), $arRequest['stNomeCampo'], $arRequest['stNomeTag'], $arRequest['stNomeArquivo']);
 
@@ -133,5 +132,3 @@ $obLista->ultimaAcao->addCampo("5", "seq_arquivo");
 
 $obLista->commitAcao();
 $obLista->show();
-
-?>

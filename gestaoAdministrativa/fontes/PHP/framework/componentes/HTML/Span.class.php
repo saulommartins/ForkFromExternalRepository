@@ -218,7 +218,7 @@ function montaHTML()
     if ($this->getDestaque()) {
         $stHTML .= ' class="spanDestaque" ';
     }
-    
+
     if ($this->getClass()) {
         $stHTML .= " class=\"".$this->getClass()."\" ";
     }
