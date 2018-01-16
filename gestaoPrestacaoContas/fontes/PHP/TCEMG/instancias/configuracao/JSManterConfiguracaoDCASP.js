@@ -8,7 +8,6 @@
 
   function limpaSpan() {
     jQuery("#spnContas").html("");
-    jQuery("#spnContas2").html("");
   }
 
   function validaCampos() {
@@ -20,9 +19,25 @@
   }
 
   function limpaCampos() {
+    if (jQuery("#stNomeArquivo").val() == 'BO' || jQuery("#stNomeArquivo").val() == 'BF') {
+      jQuery("#stTipoConta").val("OrcamentariaDespesa");
+    } else {
+      jQuery("#stTipoConta").val("Contabil");
+    }
+
     jQuery("#stCampo").html("");
     jQuery("#inCodCampo").val("");
     jQuery("#inDescGrupo").val("");
+  }
+
+  function validaTipoArquivo(idSessao) {
+    if (jQuery("#stTipoConta").val() == 'Contabil' && (jQuery("#stNomeArquivo").val() == 'BO' || jQuery("#stNomeArquivo").val() == 'BF')) {
+      alertaAviso('Esse tipo de arquivo aceita apenas contas orçamentárias!', 'aviso', 'aviso', idSessao, '../');
+      jQuery("#stTipoConta").val('OrcamentariaDespesa');
+    } else if ((jQuery("#stTipoConta").val() == 'OrcamentariaDespesa' || jQuery("#stTipoConta").val() == 'OrcamentariaReceita') && (jQuery("#stNomeArquivo").val() != 'BO' && jQuery("#stNomeArquivo").val() != 'BF')) {
+      alertaAviso('Esse tipo de arquivo aceita apenas contas contábeis!', 'aviso', 'aviso', idSessao, '../');
+      jQuery("#stTipoConta").val('Contabil');
+    }
   }
 
   function abrePopUpDcasp(arquivo,nomeform,camponum,camponom,campotpreg,campocod,seqarquivo,tipodebusca,sessao,width,height,namepopup){

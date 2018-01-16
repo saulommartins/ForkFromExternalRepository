@@ -61,7 +61,8 @@ class TTCEMGCampoContaCorrente extends Persistente {
                    conta_despesa.descricao,
                    '" . $exercicio . "' AS exercicio,
                    '" . $grupo . "' AS grupo,
-                   '" . $nomeArquivo . "' AS nome_arquivo
+                   '" . $nomeArquivo . "' AS nome_arquivo,
+                   'OrcamentariaDespesa' AS tipo_conta
             FROM orcamento.conta_despesa
             WHERE conta_despesa.exercicio = '" . $exercicio . "'
                   AND conta_despesa.cod_estrutural LIKE('" . $grupo . "%') ";
@@ -90,7 +91,8 @@ class TTCEMGCampoContaCorrente extends Persistente {
                    conta_receita.descricao,
                    '" . $exercicio . "' AS exercicio,
                    '" . $grupo . "' AS grupo,
-                   '" . $nomeArquivo . "' AS nome_arquivo
+                   '" . $nomeArquivo . "' AS nome_arquivo,
+                   'OrcamentariaReceita' AS tipo_conta
             FROM orcamento.conta_receita
             WHERE conta_receita.exercicio = '" . $exercicio . "'
                   AND conta_receita.cod_estrutural LIKE('" . $grupo . "%') ";
@@ -119,7 +121,8 @@ class TTCEMGCampoContaCorrente extends Persistente {
                    plano_conta.nom_conta,
                    '" . $exercicio . "' AS exercicio,
                    '" . $grupo . "' AS grupo,
-                   '" . $nomeArquivo . "' AS nome_arquivo
+                   '" . $nomeArquivo . "' AS nome_arquivo,
+                   'Contabil' AS tipo_conta
             FROM contabilidade.plano_conta
             WHERE plano_conta.exercicio = '" . $exercicio . "'
                   AND plano_conta.cod_estrutural LIKE('" . $grupo . "%') ";

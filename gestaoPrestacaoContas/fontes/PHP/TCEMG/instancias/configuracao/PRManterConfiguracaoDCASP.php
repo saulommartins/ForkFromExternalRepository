@@ -35,36 +35,20 @@ $pgProc = "PR" . $stPrograma . ".php";
 $pgOcul = "OC" . $stPrograma . ".php";
 
 $stAcao = $request->get('stAcao');
+$tipoConta = $request->get('stTipoConta');
 $boTransacao = new Transacao();
 
 $tipoRegistro = Sessao::read('tipoRegistro');
 $codSequencial = Sessao::read('codSequencialCampo');
-$contasContabeis = Sessao::read('contasContabeis');
-$contasOrcamentarias = array_merge(Sessao::read('contasOrcDespesa'), Sessao::read('contasOrcReceita'));
+$contas = Sessao::read('contas');
 
+$customWhere = ' WHERE seq_arquivo = ' . $request->get('seqArquivo');
 $TTCEMGCampoContaCorrente = new TTCEMGCampoContaCorrente();
-$TTCEMGCampoContaCorrente->setCustomWhere(' WHERE seq_arquivo = ' . $_REQUEST['seqArquivo']);
+$TTCEMGCampoContaCorrente->setCustomWhere($customWhere);
 $TTCEMGCampoContaCorrente->exclusao($boTransacao);
 
-if (!empty($contasContabeis)) {
-  foreach ($contasContabeis as $key => $value) {
-    $TTCEMGCampoContaCorrente->proximoCod($cod);
-
-    $TTCEMGCampoContaCorrente->setDado('cod_registro', $cod);
-    $TTCEMGCampoContaCorrente->setDado('exercicio', $value['exercicio']);
-    $TTCEMGCampoContaCorrente->setDado('tipo_registro', $_REQUEST['tipoRegistro']);
-    $TTCEMGCampoContaCorrente->setDado('cod_arquivo', $_REQUEST['codArquivo']);
-    $TTCEMGCampoContaCorrente->setDado('seq_arquivo', $_REQUEST['seqArquivo']);
-    $TTCEMGCampoContaCorrente->setDado('conta_orc_despesa', NULL);
-    $TTCEMGCampoContaCorrente->setDado('conta_orc_receita', NULL);
-    $TTCEMGCampoContaCorrente->setDado('conta_contabil', $value['conta_contabil']);
-
-    $TTCEMGCampoContaCorrente->inclusao($boTransacao);
-  }
-}
-
-if (!empty($contasOrcamentarias)) {
-  foreach ($contasOrcamentarias as $key => $value) {
+if (!empty($contas)) {
+  foreach ($contas as $key => $value) {
     $TTCEMGCampoContaCorrente->proximoCod($cod);
 
     $TTCEMGCampoContaCorrente->setDado('cod_registro', $cod);
@@ -75,14 +59,19 @@ if (!empty($contasOrcamentarias)) {
     if ($value['tipo_conta'] == 'Despesa') {
       $TTCEMGCampoContaCorrente->setDado('conta_orc_despesa', $value['conta_orc_despesa']);
       $TTCEMGCampoContaCorrente->setDado('conta_orc_receita', NULL);
-    } else {
+      $TTCEMGCampoContaCorrente->setDado('conta_contabil', NULL);
+    } elseif ($value['tipo_conta'] == 'Receita') {
       $TTCEMGCampoContaCorrente->setDado('conta_orc_despesa', NULL);
       $TTCEMGCampoContaCorrente->setDado('conta_orc_receita', $value['conta_orc_receita']);
+      $TTCEMGCampoContaCorrente->setDado('conta_contabil', NULL);
+    } else {
+      $TTCEMGCampoContaCorrente->setDado('conta_orc_despesa', NULL);
+      $TTCEMGCampoContaCorrente->setDado('conta_orc_receita', NULL);
+      $TTCEMGCampoContaCorrente->setDado('conta_contabil', $value['conta_contabil']);
     }
-    $TTCEMGCampoContaCorrente->setDado('conta_contabil', NULL);
 
     $TTCEMGCampoContaCorrente->inclusao($boTransacao);
   }
 }
 
-SistemaLegado::alertaAviso($pgForm . "?" . Sessao::getId() . "&stAcao=$stAcao", "Configuração ", "incluir", "incluir_n", Sessao::getId(), "../");
+SistemaLegado::alertaAviso($pgForm . "?" . Sessao::getId() . "&stAcao=$stAcao", "Dados Salvos com Sucesso", "incluir", "incluir_n", Sessao::getId(), "../");

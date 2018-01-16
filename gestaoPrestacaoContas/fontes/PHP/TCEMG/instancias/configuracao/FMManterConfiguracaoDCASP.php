@@ -78,9 +78,6 @@ $obSeqArquivo->setId("seqArquivo");
 $obSpnContas = new Span();
 $obSpnContas->setId('spnContas');
 
-$obSpnContas2 = new Span();
-$obSpnContas2->setId('spnContas2');
-
 $obNomeArquivo = new Select();
 $obNomeArquivo->setRotulo("Nome do Arquivo");
 $obNomeArquivo->setTitle("Informe o nome do arquivo a qual o campo pertence");
@@ -94,6 +91,17 @@ $obNomeArquivo->addOption('DVP', 'DVP');
 $obNomeArquivo->addOption('DFC', 'DFC');
 $obNomeArquivo->addOption('RPSD', 'RPSD');
 $obNomeArquivo->obEvento->setOnChange("limpaCampos(); limpaSpan();");
+
+$obTipoConta = new Select();
+$obTipoConta->setRotulo("Tipo de Conta");
+$obTipoConta->setTitle("Informe o tipo de conta");
+$obTipoConta->setId('stTipoConta');
+$obTipoConta->setNull(false);
+$obTipoConta->setName('stTipoConta');
+$obTipoConta->addOption('OrcamentariaDespesa', 'Orçamentária de Despesa');
+$obTipoConta->addOption('OrcamentariaReceita', 'Orçamentária de Receita');
+$obTipoConta->addOption('Contabil', 'Contábil');
+$obTipoConta->obEvento->setOnChange("validaTipoArquivo('" . Sessao::getId()."');");
 
 $obNomeCampo = new BuscaInner;
 $obNomeCampo->setRotulo("Nome do Campo");
@@ -133,11 +141,11 @@ $obFormulario->addHidden($obTipoRegistro);
 $obFormulario->addHidden($obCodArquivo);
 $obFormulario->addHidden($obSeqArquivo);
 $obFormulario->addComponente($obNomeArquivo);
+$obFormulario->addComponente($obTipoConta);
 $obFormulario->addComponente($obNomeCampo);
 $obFormulario->addComponente($obTxtDescGrupo);
 $obFormulario->addComponente($obBtnBuscar);
 $obFormulario->addSpan($obSpnContas);
-$obFormulario->addSpan($obSpnContas2);
 $obFormulario->OK();
 $obFormulario->show();
 

@@ -43,13 +43,8 @@ function montaListagem() {
   Sessao::write('tipoRegistro', $request->get('t­i­p­o­R­e­g­i­s­t­r­o­'));
   Sessao::write('codSequencialCampo', $request->get('c­o­d­A­r­q­u­i­v­o­'));
 
-  Sessao::write('contasContabeis', array());
-  Sessao::write('contasOrcDespesa', array());
-  Sessao::write('contasOrcReceita', array());
-
-  Sessao::write('contasContabeisExcluidas', array());
-  Sessao::write('contasOrcDespesaExcluidas', array());
-  Sessao::write('contasOrcReceitaExcluidas', array());
+  Sessao::write('contas', array());
+  Sessao::write('contasExcluidas', array());
 
   return montaListagemContas();
 }
@@ -57,34 +52,25 @@ function montaListagem() {
 function montaListagemContas() {
   global $request;
   $stJs = "jQuery('#spnContas').html('');";
-  $stJs = "jQuery('#spnContas2').html('');";
 
   $nomeArquivo = (!empty($request->get('stNomeArquivo')) && $request->get('stNomeArquivo') != NULL ? $request->get('stNomeArquivo') : $request->get('nome_arquivo'));
   $grupo = (!empty($request->get('inDescGrupo')) && $request->get('inDescGrupo') != NULL ? $request->get('inDescGrupo') : $request->get('grupo'));
   $exercicio = Sessao::getExercicio();
   $boTransacao = new Transacao();
+  $tipoConta = (!empty($request->get('stTipoConta')) && $request->get('stTipoConta') != NULL ? $request->get('stTipoConta') : $request->get('tipo_conta'));
 
   //Lista de códigos cadastrados para cada entidade
   $TTCEMGCampoContaCorrente = new TTCEMGCampoContaCorrente;
-  if ($nomeArquivo == 'BO' || $nomeArquivo == 'BF') {
-    $contasOrcDespesaExcluidas = Sessao::read('contasOrcDespesaExcluidas');
+  if ($tipoConta == 'OrcamentariaDespesa') {
+    $contasOrcDespesaExcluidas = Sessao::read('contasExcluidas');
     $excluidasDespesa = (!empty($contasOrcDespesaExcluidas) ? $contasOrcDespesaExcluidas : '');
-    $contasOrcReceitaExcluidas = Sessao::read('contasOrcReceitaExcluidas');
-    $excluidasReceita = (!empty($contasOrcReceitaExcluidas) ? $contasOrcReceitaExcluidas : '');
-    $nomeCampo = 'Contas Orçamentárias';
 
     $TTCEMGCampoContaCorrente->recuperaContasOrcamentariasDespesa($rsContaOrcDespesa, $exercicio, $grupo, $nomeArquivo, $excluidasDespesa, $boTransacao);
-    $TTCEMGCampoContaCorrente->recuperaContasOrcamentariasReceita($rsContaOrcReceita, $exercicio, $grupo, $nomeArquivo, $excluidasReceita, $boTransacao);
 
     $obListaDespesa = new Lista();
     $obListaDespesa->setMostraPaginacao(false);
-    $obListaDespesa->setTitulo('Lista de ' . $nomeCampo . ' de Despesas');
+    $obListaDespesa->setTitulo('Lista de Contas Orçamentárias de Despesas');
     $obListaDespesa->setRecordSet($rsContaOrcDespesa);
-
-    $obListaReceita = new Lista();
-    $obListaReceita->setMostraPaginacao(false);
-    $obListaReceita->setTitulo('Lista de ' . $nomeCampo . ' de Receitas');
-    $obListaReceita->setRecordSet($rsContaOrcReceita);
 
     if (!empty($rsContaOrcDespesa->getElementos())) {
       $arrConta = array();
@@ -97,10 +83,10 @@ function montaListagemContas() {
         $arrConta[$dado['cod_conta']]['nome_arquivo'] = $dado['nome_arquivo'];
         $arrConta[$dado['cod_conta']]['tipo_conta'] = 'Despesa';
       }
-      Sessao::write('contasOrcDespesa', $arrConta);
+      Sessao::write('contas', $arrConta);
 
       $obListaDespesa->addCabecalho('', 1);
-      $obListaDespesa->addCabecalho($nomeCampo, 10);
+      $obListaDespesa->addCabecalho('Contas Orçamentárias', 10);
       $obListaDespesa->addCabecalho('Excluir', 1);
 
       $obListaDespesa->addDado();
@@ -111,14 +97,30 @@ function montaListagemContas() {
       $obListaDespesa->addAcao();
       $obListaDespesa->ultimaAcao->setAcao("EXCLUIR");
       $obListaDespesa->ultimaAcao->setFuncaoAjax(true);
-      $obListaDespesa->ultimaAcao->setLink("JavaScript:executaFuncaoAjax('removerContaOrcamentariaDespesa')");
+      $obListaDespesa->ultimaAcao->setLink("JavaScript:executaFuncaoAjax('removerConta')");
       $obListaDespesa->ultimaAcao->addCampo("1", "cod_conta");
       $obListaDespesa->commitAcao();
 
       $obListaDespesa->ultimaAcao->addCampo('&exercicio', 'exercicio');
       $obListaDespesa->ultimaAcao->addCampo("&grupo", 'grupo');
       $obListaDespesa->ultimaAcao->addCampo('&nome_arquivo', 'nome_arquivo');
+      $obListaDespesa->ultimaAcao->addCampo('&tipo_conta', 'tipo_conta');
     }
+
+    $obListaDespesa->montaInnerHTML();
+    $stHTML = $obListaDespesa->getHTML();
+    $stJs.= "jQuery('#spnContas').html('" . $stHTML . "');";
+  }
+  elseif ($tipoConta == 'OrcamentariaReceita') {
+    $contasOrcReceitaExcluidas = Sessao::read('contasExcluidas');
+    $excluidasReceita = (!empty($contasOrcReceitaExcluidas) ? $contasOrcReceitaExcluidas : '');
+
+    $TTCEMGCampoContaCorrente->recuperaContasOrcamentariasReceita($rsContaOrcReceita, $exercicio, $grupo, $nomeArquivo, $excluidasReceita, $boTransacao);
+
+    $obListaReceita = new Lista();
+    $obListaReceita->setMostraPaginacao(false);
+    $obListaReceita->setTitulo('Lista de Contas Orçamentárias de Receitas');
+    $obListaReceita->setRecordSet($rsContaOrcReceita);
 
     if (!empty($rsContaOrcReceita->getElementos())) {
       $arrConta = array();
@@ -131,10 +133,10 @@ function montaListagemContas() {
         $arrConta[$dado['cod_conta']]['nome_arquivo'] = $dado['nome_arquivo'];
         $arrConta[$dado['cod_conta']]['tipo_conta'] = 'Receita';
       }
-      Sessao::write('contasOrcReceita', $arrConta);
+      Sessao::write('contas', $arrConta);
 
       $obListaReceita->addCabecalho('', 1);
-      $obListaReceita->addCabecalho($nomeCampo, 10);
+      $obListaReceita->addCabecalho('Contas Orçamentárias', 10);
       $obListaReceita->addCabecalho('Excluir', 1);
 
       $obListaReceita->addDado();
@@ -145,66 +147,65 @@ function montaListagemContas() {
       $obListaReceita->addAcao();
       $obListaReceita->ultimaAcao->setAcao("EXCLUIR");
       $obListaReceita->ultimaAcao->setFuncaoAjax(true);
-      $obListaReceita->ultimaAcao->setLink("JavaScript:executaFuncaoAjax('removerContaOrcamentariaReceita')");
+      $obListaReceita->ultimaAcao->setLink("JavaScript:executaFuncaoAjax('removerConta')");
       $obListaReceita->ultimaAcao->addCampo("1", "cod_conta");
       $obListaReceita->commitAcao();
 
       $obListaReceita->ultimaAcao->addCampo('&exercicio', 'exercicio');
       $obListaReceita->ultimaAcao->addCampo("&grupo", 'grupo');
       $obListaReceita->ultimaAcao->addCampo('&nome_arquivo', 'nome_arquivo');
+      $obListaReceita->ultimaAcao->addCampo('&tipo_conta', 'tipo_conta');
     }
-
-    $obListaDespesa->montaInnerHTML();
-    $stHTML = $obListaDespesa->getHTML();
-    $stJs.= "jQuery('#spnContas').html('" . $stHTML . "');";
 
     $obListaReceita->montaInnerHTML();
     $stHTML = $obListaReceita->getHTML();
-    $stJs.= "jQuery('#spnContas2').html('" . $stHTML . "');";
+    $stJs.= "jQuery('#spnContas').html('" . $stHTML . "');";
   }
   else {
-    $contasContabeisExcluidas = Sessao::read('contasContabeisExcluidas');
+    $contasContabeisExcluidas = Sessao::read('contasExcluidas');
     $excluidas = (!empty($contasContabeisExcluidas) ? $contasContabeisExcluidas : '');
-    $nomeCampo = 'Contas Contábeis';
 
     $TTCEMGCampoContaCorrente->recuperaContasContabeis($rsContaContabil, $exercicio, $grupo, $nomeArquivo, $excluidas, $boTransacao);
 
-    $arrConta = array();
-    foreach ($rsContaContabil->getElementos() as $key => $dado) {
-      $arrConta[$dado['cod_conta']]['cod_conta'] = $dado['cod_conta'];
-      $arrConta[$dado['cod_conta']]['conta_contabil'] = $dado['cod_estrutural'];
-      $arrConta[$dado['cod_conta']]['nom_conta'] = $dado['nom_conta'];
-      $arrConta[$dado['cod_conta']]['exercicio'] = $dado['exercicio'];
-      $arrConta[$dado['cod_conta']]['grupo'] = $dado['grupo'];
-      $arrConta[$dado['cod_conta']]['nome_arquivo'] = $dado['nome_arquivo'];
-    }
-
-    Sessao::write('contasContabeis', $arrConta);
-
     $obLista = new Lista();
     $obLista->setMostraPaginacao(false);
-    $obLista->setTitulo('Lista de ' . $nomeCampo);
+    $obLista->setTitulo('Lista de Contas Contábeis');
     $obLista->setRecordSet($rsContaContabil);
 
-    $obLista->addCabecalho('', 1);
-    $obLista->addCabecalho($nomeCampo, 10);
-    $obLista->addCabecalho('Excluir', 1);
+    if (!empty($rsContaContabil->getElementos())) {
+      $arrConta = array();
+      foreach ($rsContaContabil->getElementos() as $key => $dado) {
+        $arrConta[$dado['cod_conta']]['cod_conta'] = $dado['cod_conta'];
+        $arrConta[$dado['cod_conta']]['conta_contabil'] = $dado['cod_estrutural'];
+        $arrConta[$dado['cod_conta']]['nom_conta'] = $dado['nom_conta'];
+        $arrConta[$dado['cod_conta']]['exercicio'] = $dado['exercicio'];
+        $arrConta[$dado['cod_conta']]['grupo'] = $dado['grupo'];
+        $arrConta[$dado['cod_conta']]['nome_arquivo'] = $dado['nome_arquivo'];
+        $arrConta[$dado['cod_conta']]['tipo_conta'] = 'Contábil';
+      }
+      Sessao::write('contas', $arrConta);
 
-    $obLista->addDado();
-    $obLista->ultimoDado->setAlinhamento('ESQUERDA');
-    $obLista->ultimoDado->setCampo('[cod_estrutural] - [nom_conta]');
-    $obLista->commitDadoComponente();
+      $obLista->addCabecalho('', 1);
+      $obLista->addCabecalho('Contas Contábeis', 10);
+      $obLista->addCabecalho('Excluir', 1);
 
-    $obLista->addAcao();
-    $obLista->ultimaAcao->setAcao("EXCLUIR");
-    $obLista->ultimaAcao->setFuncaoAjax(true);
-    $obLista->ultimaAcao->setLink("JavaScript:executaFuncaoAjax('removerContaContabil')");
-    $obLista->ultimaAcao->addCampo("1", "cod_conta");
-    $obLista->commitAcao();
+      $obLista->addDado();
+      $obLista->ultimoDado->setAlinhamento('ESQUERDA');
+      $obLista->ultimoDado->setCampo('[cod_estrutural] - [nom_conta]');
+      $obLista->commitDadoComponente();
 
-    $obLista->ultimaAcao->addCampo('&exercicio', 'exercicio');
-    $obLista->ultimaAcao->addCampo("&grupo", 'grupo');
-    $obLista->ultimaAcao->addCampo('&nome_arquivo', 'nome_arquivo');
+      $obLista->addAcao();
+      $obLista->ultimaAcao->setAcao("EXCLUIR");
+      $obLista->ultimaAcao->setFuncaoAjax(true);
+      $obLista->ultimaAcao->setLink("JavaScript:executaFuncaoAjax('removerConta')");
+      $obLista->ultimaAcao->addCampo("1", "cod_conta");
+      $obLista->commitAcao();
+
+      $obLista->ultimaAcao->addCampo('&exercicio', 'exercicio');
+      $obLista->ultimaAcao->addCampo("&grupo", 'grupo');
+      $obLista->ultimaAcao->addCampo('&nome_arquivo', 'nome_arquivo');
+      $obLista->ultimaAcao->addCampo('&tipo_conta', 'tipo_conta');
+    }
 
     $obLista->montaInnerHTML();
     $stHTML = $obLista->getHTML();
@@ -214,35 +215,13 @@ function montaListagemContas() {
   return $stJs;
 }
 
-function removerContaContabil() {
+function removerConta() {
   global $request;
 
   $codConta = $request->get('cod_conta');
-  $contas = Sessao::read('contasContabeisExcluidas');
+  $contas = Sessao::read('contasExcluidas');
   $contas[] = $codConta;
-  Sessao::write('contasContabeisExcluidas', $contas);
-
-  return montaListagemContas();
-}
-
-function removerContaOrcamentariaDespesa() {
-  global $request;
-
-  $codConta = $request->get('cod_conta');
-  $contas = Sessao::read('contasOrcDespesaExcluidas');
-  $contas[] = $codConta;
-  Sessao::write('contasOrcDespesaExcluidas', $contas);
-
-  return montaListagemContas();
-}
-
-function removerContaOrcamentariaReceita() {
-  global $request;
-
-  $codConta = $request->get('cod_conta');
-  $contas = Sessao::read('contasOrcReceitaExcluidas');
-  $contas[] = $codConta;
-  Sessao::write('contasOrcReceitaExcluidas', $contas);
+  Sessao::write('contasExcluidas', $contas);
 
   return montaListagemContas();
 }
@@ -255,14 +234,8 @@ switch ($stCtrl) {
   case "montaListagemContas":
     $stJs = montaListagemContas();
   break;
-  case "removerContaContabil":
-    $stJs = removerContaContabil();
-  break;
-  case "removerContaOrcamentariaDespesa":
-    $stJs = removerContaOrcamentariaDespesa();
-  break;
-  case "removerContaOrcamentariaReceita":
-    $stJs = removerContaOrcamentariaReceita();
+  case "removerConta":
+    $stJs = removerConta();
   break;
 }
 
