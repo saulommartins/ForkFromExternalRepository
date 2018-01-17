@@ -1,5 +1,8 @@
 <?php
 
+	ini_set("display_errors", 1);
+	error_reporting(E_ALL);
+
 	set_time_limit(0);
 	include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 	include_once CLA_EXPORTADOR;
@@ -22,10 +25,6 @@
 
 	SistemaLegado::retornaInicialFinalMesesPeriodicidade($arDatasInicialFinal,'',$inMes,Sessao::getExercicio());
 
-	echo "<pre>";
-	var_dump($_POST, $arNomArquivo, CAM_GPC_TCEMG_INSTANCIAS."layout_arquivos/DCASP/".Sessao::getExercicio()."/".$arNomArquivo[0].".inc.php");
-	die;
-
 	foreach($arFiltro['arArquivosSelecionados'] AS $stArquivo) {
 	    $obExportador->addArquivo($stArquivo);
 	    $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
@@ -47,7 +46,7 @@
 	        SistemaLegado::alertaAviso($pgFilt."?".Sessao::getId()."&stAcao=$stAcao", "É necessário configurar a IDE para gerar um arquivo compactado.", "", "aviso", Sessao::getId(), "../");
 	        die;
 	    }
-	    $obExportador->setNomeArquivoZip('BALANCETE_'.$inCodMunicipio.'_'.$inCodOrgao.'_'.$inMes.'_'.Sessao::getExercicio().'.zip');
+	    $obExportador->setNomeArquivoZip('DCASP_'.$inCodMunicipio.'_'.$inCodOrgao.'_'.$inMes.'_'.Sessao::getExercicio().'.zip');
 	}
 
 	$obExportador->show();
