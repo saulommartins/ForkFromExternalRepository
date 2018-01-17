@@ -58,7 +58,6 @@ class TCampos extends Persistente {
     $sql = "SELECT dcasp.nome_tag,
                    dcasp.nome_campo,
                    dcasp.nome_arquivo_pertencente,
-                   dcasp.grupo,
                    dcasp.tipo_registro,
                    dcasp.cod_arquivo,
                    dcasp.seq_arquivo
