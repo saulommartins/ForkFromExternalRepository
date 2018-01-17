@@ -89,7 +89,6 @@ $obNomeArquivo->addOption('BF', 'BF');
 $obNomeArquivo->addOption('BP', 'BP');
 $obNomeArquivo->addOption('DVP', 'DVP');
 $obNomeArquivo->addOption('DFC', 'DFC');
-$obNomeArquivo->addOption('RPSD', 'RPSD');
 $obNomeArquivo->obEvento->setOnChange("limpaCampos(); limpaSpan();");
 
 $obTipoConta = new Select();

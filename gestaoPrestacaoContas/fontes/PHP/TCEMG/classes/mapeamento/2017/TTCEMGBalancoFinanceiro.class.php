@@ -25,8 +25,7 @@
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 include_once (CLA_PERSISTENTE);
 
-class TTCEMGBalancoFinanceiro extends Persistente
-{
+class TTCEMGBalancoFinanceiro extends Persistente {
   public function TTCEMGBalancoFinanceiro() {
     parent::Persistente();
   }
@@ -50,7 +49,7 @@ class TTCEMGBalancoFinanceiro extends Persistente
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlRecOrcamenRecurOrdinarios'
                             THEN CASE
                                    WHEN receita_orcamentaria.cod_recurso IN (100)
-                                     THEN receita_orcamentaria.valor
+                                     THEN COALESCE(receita_orcamentaria.valor, 0)
                                    ELSE 0
                                  END
 	 	                      ELSE 0
@@ -59,7 +58,7 @@ class TTCEMGBalancoFinanceiro extends Persistente
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlRecOrcamenRecurVincuEducacao'
                             THEN CASE
                                    WHEN receita_orcamentaria.cod_recurso IN (101, 113, 118, 119, 122, 143, 144, 145, 146, 147)
-                                     THEN receita_orcamentaria.valor
+                                     THEN COALESCE(receita_orcamentaria.valor, 0)
                                    ELSE 0
                                  END
  	                        ELSE 0
@@ -68,7 +67,7 @@ class TTCEMGBalancoFinanceiro extends Persistente
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlRecOrcamenRecurVincuSaude'
                             THEN CASE
                                    WHEN receita_orcamentaria.cod_recurso IN (102, 112, 123, 148, 149, 150, 151, 152, 153, 154, 155)
-                                     THEN receita_orcamentaria.valor
+                                     THEN COALESCE(receita_orcamentaria.valor, 0)
                                    ELSE 0
                                  END
  	                        ELSE 0
@@ -77,7 +76,7 @@ class TTCEMGBalancoFinanceiro extends Persistente
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlRecOrcamenRecurVincuRPPS'
                             THEN CASE
                                    WHEN receita_orcamentaria.cod_recurso IN (102, 103)
-                                     THEN receita_orcamentaria.valor
+                                     THEN COALESCE(receita_orcamentaria.valor, 0)
                                    ELSE 0
                                  END
  	                        ELSE 0
@@ -86,7 +85,7 @@ class TTCEMGBalancoFinanceiro extends Persistente
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlRecOrcamenRecurVincuAssistSocial'
                             THEN CASE
                                    WHEN receita_orcamentaria.cod_recurso IN (129, 142, 156)
-                                     THEN receita_orcamentaria.valor
+                                     THEN COALESCE(receita_orcamentaria.valor, 0)
                                    ELSE 0
                                  END
                           ELSE 0
@@ -95,59 +94,59 @@ class TTCEMGBalancoFinanceiro extends Persistente
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlRecOrcamenOutrasDestRecursos'
                             THEN CASE
                                    WHEN receita_orcamentaria.cod_recurso IN (116, 117, 124, 157, 158, 190, 191, 192, 193)
-                                     THEN receita_orcamentaria.valor
+                                     THEN COALESCE(receita_orcamentaria.valor, 0)
                                    ELSE 0
                                  END
                           ELSE 0
                         END) AS vl_rec_orc_outra_destinac_recurso,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransFinanExecuOrcamentaria'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_trans_finan_execucao_orcamentaria,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransFinanIndepenExecuOrcamentaria'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_trans_finan_indepen_execucao_orcamentaria,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransFinanReceAportesRPPS'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_trans_finan_recebida_aporte_rec_rpps,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIncriRSPNaoProcessado'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_inscri_resto_pagar_nao_processado,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIncriRSPProcessado'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_inscri_resto_pagar_processado,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDepoRestituVinculados'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_depo_restituivel_vinculado,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrosRecExtraorcamentario'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_outr_recebimento_extraorcamentario,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlSaldoExerAnteriorCaixaEquiCaixa'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_sal_exerc_anterior_caixa_equivalente_caixa,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlSaldoExerAnteriorDepoRestVinculados'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_sal_exerc_anterior_deposito_restitui_valor_vinculado,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTotalIngresso'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_total_quadro_ingresso ";
   	$sql.= $this->montaFromValoresOrcamentarios();
@@ -177,7 +176,7 @@ class TTCEMGBalancoFinanceiro extends Persistente
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDespOrcamenRecurOrdinarios'
                             THEN CASE
                                    WHEN receita_orcamentaria.cod_recurso IN (100, 200)
-                                     THEN receita_orcamentaria.valor
+                                     THEN COALESCE(receita_orcamentaria.valor, 0)
                                    ELSE 0
                                  END
 	 	                      ELSE 0
@@ -186,7 +185,7 @@ class TTCEMGBalancoFinanceiro extends Persistente
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDespOrcamenRecurVincuEducacao'
                             THEN CASE
                                    WHEN receita_orcamentaria.cod_recurso IN (101, 201, 113, 213, 118, 218, 119, 219, 122, 222, 143, 243, 144, 244, 145, 245, 146, 246, 147, 247, 289)
-                                     THEN receita_orcamentaria.valor
+                                     THEN COALESCE(receita_orcamentaria.valor, 0)
                                    ELSE 0
                                  END
  	                        ELSE 0
@@ -195,7 +194,7 @@ class TTCEMGBalancoFinanceiro extends Persistente
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDespOrcamenRecurVincuSaude'
                             THEN CASE
                                    WHEN receita_orcamentaria.cod_recurso IN (102, 202, 112, 212, 123, 223, 148, 248, 149, 249, 150, 250, 151, 251, 152, 252, 153, 253, 154, 254, 155, 255, 288)
-                                     THEN receita_orcamentaria.valor
+                                     THEN COALESCE(receita_orcamentaria.valor, 0)
                                    ELSE 0
                                  END
  	                        ELSE 0
@@ -204,7 +203,7 @@ class TTCEMGBalancoFinanceiro extends Persistente
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDespOrcamenRecurVincuRPPS'
                             THEN CASE
                                    WHEN receita_orcamentaria.cod_recurso IN (100, 103, 200, 203)
-                                     THEN receita_orcamentaria.valor
+                                     THEN COALESCE(receita_orcamentaria.valor, 0)
                                    ELSE 0
                                  END
  	                        ELSE 0
@@ -213,7 +212,7 @@ class TTCEMGBalancoFinanceiro extends Persistente
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDespOrcamenRecurVincuAssistSocial'
                             THEN CASE
                                    WHEN receita_orcamentaria.cod_recurso IN (129, 229, 142, 242, 156, 256)
-                                     THEN receita_orcamentaria.valor
+                                     THEN COALESCE(receita_orcamentaria.valor, 0)
                                    ELSE 0
                                  END
                           ELSE 0
@@ -222,59 +221,59 @@ class TTCEMGBalancoFinanceiro extends Persistente
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasDespOrcamenDestRecursos'
                             THEN CASE
                                    WHEN receita_orcamentaria.cod_recurso IN (116, 216, 117, 217, 124, 224, 157, 257, 158, 258, 190, 290, 191, 291, 192, 292, 193, 293)
-                                     THEN receita_orcamentaria.valor
+                                     THEN COALESCE(receita_orcamentaria.valor, 0)
                                    ELSE 0
                                  END
                           ELSE 0
                         END) AS vl_desp_orc_outra_destinac_recurso,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransFinanConcExecOrcamentaria'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_trans_finan_execucao_orcamentaria,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransFinanConcIndepenExecOrcamentaria'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_trans_finan_indepen_execucao_orcamentaria,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransFinanConcAportesRecuRPPS'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_trans_finan_concedida_aporte_rec_rpps,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPagRSPNaoProcessado'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_pag_restos_pagar_nao_processado,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPagRSPProcessado'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_pag_restos_pagar_processado,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDeposRestVinculados'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_depo_restituivel_vinculado,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrosPagExtraorcamentarios'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_outr_pagamento_extraorcamentario,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlSaldoExerAtualCaixaEquiCaixa'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_sal_exerc_atual_caixa_equivalente_caixa,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlSaldoExerAtualDepoRestVinculados'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_sal_exerc_atual_deposito_restitui_valor_vinculado,
                    SUM (CASE
                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTotalDispendios'
-                            THEN receita_orcamentaria.valor
+                            THEN COALESCE(receita_orcamentaria.valor, 0)
                           ELSE 0
                         END) AS vl_total_dispendio ";
   	$sql.= $this->montaFromValoresOrcamentarios();
