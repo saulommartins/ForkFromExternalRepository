@@ -53,11 +53,11 @@ function montaListagemContas() {
   global $request;
   $stJs = "jQuery('#spnContas').html('');";
 
-  $nomeArquivo = (!empty($request->get('stNomeArquivo')) && $request->get('stNomeArquivo') != NULL ? $request->get('stNomeArquivo') : $request->get('nome_arquivo'));
-  $grupo = (!empty($request->get('inDescGrupo')) && $request->get('inDescGrupo') != NULL ? $request->get('inDescGrupo') : $request->get('grupo'));
+  $nomeArquivo = ($request->get('stNomeArquivo') != "" && $request->get('stNomeArquivo') != NULL ? $request->get('stNomeArquivo') : $request->get('nome_arquivo'));
+  $grupo = ($request->get('inDescGrupo') != "" && $request->get('inDescGrupo') != NULL ? $request->get('inDescGrupo') : $request->get('grupo'));
   $exercicio = Sessao::getExercicio();
   $boTransacao = new Transacao();
-  $tipoConta = (!empty($request->get('stTipoConta')) && $request->get('stTipoConta') != NULL ? $request->get('stTipoConta') : $request->get('tipo_conta'));
+  $tipoConta = ($request->get('stTipoConta') != "" && $request->get('stTipoConta') != NULL ? $request->get('stTipoConta') : $request->get('tipo_conta'));
 
   //Lista de códigos cadastrados para cada entidade
   $TTCEMGCampoContaCorrente = new TTCEMGCampoContaCorrente;
@@ -72,7 +72,7 @@ function montaListagemContas() {
     $obListaDespesa->setTitulo('Lista de Contas Orçamentárias de Despesas');
     $obListaDespesa->setRecordSet($rsContaOrcDespesa);
 
-    if (!empty($rsContaOrcDespesa->getElementos())) {
+    if ($rsContaOrcDespesa->getElementos() != "") {
       $arrConta = array();
       foreach ($rsContaOrcDespesa->getElementos() as $key => $dado) {
         $arrConta[$dado['cod_conta']]['cod_conta'] = $dado['cod_conta'];
@@ -122,7 +122,7 @@ function montaListagemContas() {
     $obListaReceita->setTitulo('Lista de Contas Orçamentárias de Receitas');
     $obListaReceita->setRecordSet($rsContaOrcReceita);
 
-    if (!empty($rsContaOrcReceita->getElementos())) {
+    if ($rsContaOrcReceita->getElementos() != "") {
       $arrConta = array();
       foreach ($rsContaOrcReceita->getElementos() as $key => $dado) {
         $arrConta[$dado['cod_conta']]['cod_conta'] = $dado['cod_conta'];
@@ -172,7 +172,7 @@ function montaListagemContas() {
     $obLista->setTitulo('Lista de Contas Contábeis');
     $obLista->setRecordSet($rsContaContabil);
 
-    if (!empty($rsContaContabil->getElementos())) {
+    if ($rsContaContabil->getElementos() != "") {
       $arrConta = array();
       foreach ($rsContaContabil->getElementos() as $key => $dado) {
         $arrConta[$dado['cod_conta']]['cod_conta'] = $dado['cod_conta'];

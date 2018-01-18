@@ -1,8 +1,5 @@
 <?php
 
-	ini_set("display_errors", 1);
-	error_reporting(E_ALL);
-
 	include_once CAM_GPC_TCEMG_MAPEAMENTO.Sessao::getExercicio()."/TTCEMGArquivoMensalIDE.class.php";
 
 	$rsRecordSetIDE = new RecordSet();

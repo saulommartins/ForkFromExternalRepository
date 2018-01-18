@@ -122,8 +122,8 @@ $obTxtDescGrupo->setTitle("Informe apenas os 2 primeiros números da conta. Ex.:
 $obTxtDescGrupo->setId("inDescGrupo");
 $obTxtDescGrupo->setName("inDescGrupo");
 $obTxtDescGrupo->setSize(5);
-$obTxtDescGrupo->setMaxLength(5);
-$obTxtDescGrupo->setMascara('9.9.');
+$obTxtDescGrupo->setMaxLength(10);
+$obTxtDescGrupo->setMascara('9.9.9.9.9.');
 $obTxtDescGrupo->setNull(false);
 
 $obBtnBuscar = new Button();

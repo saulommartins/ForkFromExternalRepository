@@ -101,13 +101,13 @@ if (count($rsRecordSetDVP20->getElementos()) > 0) {
   foreach ($rsRecordSetDVP20->getElementos() as $arDVP20) {
     $inCount++;
 
-    $rsBloco10 = 'rsBloco10_' . $inCount;
-    unset($rsBloco10);
-    $rsBloco10 = new RecordSet();
-    $rsBloco10->preenche(array($arDVP20));
+    $rsBloco20 = 'rsBloco20_' . $inCount;
+    unset($rsBloco20);
+    $rsBloco20 = new RecordSet();
+    $rsBloco20->preenche(array($arDVP20));
 
     $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
-    $obExportador->roUltimoArquivo->addBloco($rsBloco10);
+    $obExportador->roUltimoArquivo->addBloco($rsBloco20);
 
     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
@@ -170,13 +170,13 @@ if (count($rsRecordSetDVP30->getElementos()) > 0) {
   foreach ($rsRecordSetDVP30->getElementos() as $arDVP30) {
     $inCount++;
 
-    $rsBloco10 = 'rsBloco10_' . $inCount;
-    unset($rsBloco10);
-    $rsBloco10 = new RecordSet();
-    $rsBloco10->preenche(array($arDVP30));
+    $rsBloco30 = 'rsBloco30_' . $inCount;
+    unset($rsBloco30);
+    $rsBloco30 = new RecordSet();
+    $rsBloco30->preenche(array($arDVP30));
 
     $obExportador->roUltimoArquivo->setTipoDocumento('TCE_MG');
-    $obExportador->roUltimoArquivo->addBloco($rsBloco10);
+    $obExportador->roUltimoArquivo->addBloco($rsBloco30);
 
     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
