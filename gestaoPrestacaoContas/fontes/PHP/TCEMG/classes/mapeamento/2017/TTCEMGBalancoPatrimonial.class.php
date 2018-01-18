@@ -498,40 +498,48 @@ class TTCEMGBalancoPatrimonial extends Persistente {
             FROM tcemg.configuracao_dcasp_registros
 				         INNER JOIN tcemg.configuracao_dcasp_arquivo USING (seq_arquivo)
 		             LEFT JOIN (SELECT CASE
-				                             WHEN valor_lancamento_recurso.tipo_valor = 'C'
+				                             WHEN valor_lancamento.tipo_valor = 'C'
 		                                   THEN replace(plano_conta_credito.cod_estrutural, '.', '')
 	                                   ELSE replace(plano_conta_debito.cod_estrutural, '.', '')
                                    END as conta,
 		                               lancamento.exercicio,
                                    lancamento.cod_entidade,
-	                                 valor_lancamento_recurso.vl_recurso,
-                                   valor_lancamento_recurso.cod_recurso
+	                                 valor_lancamento.vl_lancamento AS vl_recurso,
+                                   CASE
+				                             WHEN valor_lancamento.tipo_valor = 'C'
+		                                   THEN plano_conta_recurso_credito.cod_recurso
+	                                   ELSE plano_conta_recurso_debito.cod_recurso
+                                   END AS cod_recurso
                             FROM contabilidade.lancamento
-                                 INNER JOIN contabilidade.valor_lancamento_recurso ON valor_lancamento_recurso.exercicio = lancamento.exercicio
-                                       AND valor_lancamento_recurso.cod_entidade = lancamento.cod_entidade
-                                       AND valor_lancamento_recurso.tipo = lancamento.tipo
-                                       AND valor_lancamento_recurso.cod_lote = lancamento.cod_lote
-                                       AND valor_lancamento_recurso.sequencia = lancamento.sequencia
-                                 LEFT JOIN contabilidade.conta_credito ON conta_credito.cod_lote = valor_lancamento_recurso.cod_lote
-                    				          AND conta_credito.tipo = valor_lancamento_recurso.tipo
-                    				          AND conta_credito.sequencia = valor_lancamento_recurso.sequencia
-                    				          AND conta_credito.exercicio = valor_lancamento_recurso.exercicio
-                    				          AND conta_credito.tipo_valor = valor_lancamento_recurso.tipo_valor
-                    				          AND conta_credito.cod_entidade = valor_lancamento_recurso.cod_entidade
-                                 LEFT JOIN contabilidade.conta_debito ON conta_debito.cod_lote = valor_lancamento_recurso.cod_lote
-                    				          AND conta_debito.tipo = valor_lancamento_recurso.tipo
-                    				          AND conta_debito.sequencia = valor_lancamento_recurso.sequencia
-                    				          AND conta_debito.exercicio = valor_lancamento_recurso.exercicio
-                    				          AND conta_debito.tipo_valor = valor_lancamento_recurso.tipo_valor
-                    				          AND conta_debito.cod_entidade = valor_lancamento_recurso.cod_entidade
+                                 INNER JOIN contabilidade.valor_lancamento ON valor_lancamento.exercicio = lancamento.exercicio
+                                       AND valor_lancamento.cod_entidade = lancamento.cod_entidade
+                                       AND valor_lancamento.tipo = lancamento.tipo
+                                       AND valor_lancamento.cod_lote = lancamento.cod_lote
+                                       AND valor_lancamento.sequencia = lancamento.sequencia
+                                 LEFT JOIN contabilidade.conta_credito ON conta_credito.cod_lote = valor_lancamento.cod_lote
+                    				          AND conta_credito.tipo = valor_lancamento.tipo
+                    				          AND conta_credito.sequencia = valor_lancamento.sequencia
+                    				          AND conta_credito.exercicio = valor_lancamento.exercicio
+                    				          AND conta_credito.tipo_valor = valor_lancamento.tipo_valor
+                    				          AND conta_credito.cod_entidade = valor_lancamento.cod_entidade
+                                 LEFT JOIN contabilidade.conta_debito ON conta_debito.cod_lote = valor_lancamento.cod_lote
+                    				          AND conta_debito.tipo = valor_lancamento.tipo
+                    				          AND conta_debito.sequencia = valor_lancamento.sequencia
+                    				          AND conta_debito.exercicio = valor_lancamento.exercicio
+                    				          AND conta_debito.tipo_valor = valor_lancamento.tipo_valor
+                    				          AND conta_debito.cod_entidade = valor_lancamento.cod_entidade
 		                             LEFT JOIN contabilidade.plano_analitica AS plano_analitica_credito ON plano_analitica_credito.exercicio = conta_credito.exercicio
 				                              AND plano_analitica_credito.cod_plano = conta_credito.cod_plano
                                  LEFT JOIN contabilidade.plano_conta AS plano_conta_credito ON plano_conta_credito.exercicio = plano_analitica_credito.exercicio
 				                              AND plano_conta_credito.cod_conta = plano_analitica_credito.cod_conta
+                                 LEFT JOIN contabilidade.plano_conta_recurso AS plano_conta_recurso_credito ON plano_conta_recurso_credito.exercicio = plano_analitica_credito.exercicio
+                                      AND plano_conta_recurso_credito.cod_plano = plano_conta_recurso_credito.cod_plano
                                  LEFT JOIN contabilidade.plano_analitica AS plano_analitica_debito ON plano_analitica_debito.exercicio = conta_debito.exercicio
 				                              AND plano_analitica_debito.cod_plano = conta_debito.cod_plano
                                  LEFT JOIN contabilidade.plano_conta AS plano_conta_debito ON plano_conta_debito.exercicio = plano_analitica_debito.exercicio
 				                              AND plano_conta_debito.cod_conta = plano_analitica_debito.cod_conta
+                                  LEFT JOIN contabilidade.plano_conta_recurso AS plano_conta_recurso_debito ON plano_conta_recurso_debito.exercicio = plano_analitica_debito.exercicio
+                                       AND plano_conta_recurso_debito.cod_plano = plano_conta_recurso_debito.cod_plano
                            ) AS contabil ON configuracao_dcasp_registros.exercicio = contabil.exercicio
                       AND replace(configuracao_dcasp_registros.conta_contabil, '.', '') = contabil.conta
                       AND contabil.cod_entidade IN (" . $this->getDado('entidade') . ")

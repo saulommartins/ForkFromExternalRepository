@@ -24,8 +24,9 @@
 
 include_once CAM_GPC_TCEMG_MAPEAMENTO . Sessao::getExercicio() . "/TTCEMGDemonstracaoVariacaoPatrimonial.class.php";
 
-$rsRecordSetBF10 = new RecordSet();
-$rsRecordSetBF20 = new RecordSet();
+$rsRecordSetDVP10 = new RecordSet();
+$rsRecordSetDVP20 = new RecordSet();
+$rsRecordSetDVP30 = new RecordSet();
 
 $TTCEMGDemonstracaoVariacaoPatrimonial = new TTCEMGDemonstracaoVariacaoPatrimonial();
 $TTCEMGDemonstracaoVariacaoPatrimonial->setDado('exercicio', Sessao::getExercicio());

@@ -24,8 +24,14 @@
 
 include_once CAM_GPC_TCEMG_MAPEAMENTO . Sessao::getExercicio() . "/TTCEMGBalancoPatrimonial.class.php";
 
-$rsRecordSetBF10 = new RecordSet();
-$rsRecordSetBF20 = new RecordSet();
+$rsRecordSetBP10 = new RecordSet();
+$rsRecordSetBP20 = new RecordSet();
+$rsRecordSetBP30 = new RecordSet();
+$rsRecordSetBP40 = new RecordSet();
+$rsRecordSetBP50 = new RecordSet();
+$rsRecordSetBP60 = new RecordSet();
+$rsRecordSetBP70 = new RecordSet();
+$rsRecordSetBP71 = new RecordSet();
 
 $TTCEMGBalancoPatrimonial = new TTCEMGBalancoPatrimonial();
 $TTCEMGBalancoPatrimonial->setDado('exercicio', Sessao::getExercicio());
