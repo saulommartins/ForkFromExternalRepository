@@ -41,27 +41,27 @@ $TTCEMGDemonstracaoFluxoCaixa->setDado('exercicio', Sessao::getExercicio());
 $TTCEMGDemonstracaoFluxoCaixa->setDado('entidade', $stEntidades);
 
 //Tipo Registro 10
-$TTCEMGBalancoPatrimonial->recuperaDadosDFC10($rsRecordSetDFC10);
+$TTCEMGDemonstracaoFluxoCaixa->recuperaDadosDFC10($rsRecordSetDFC10);
 //Tipo Registro 20
-$TTCEMGBalancoPatrimonial->recuperaDadosDFC20($rsRecordSetDFC20);
+$TTCEMGDemonstracaoFluxoCaixa->recuperaDadosDFC20($rsRecordSetDFC20);
 //Tipo Registro 30
-$TTCEMGBalancoPatrimonial->recuperaDadosDFC30($rsRecordSetDFC30);
+$TTCEMGDemonstracaoFluxoCaixa->recuperaDadosDFC30($rsRecordSetDFC30);
 //Tipo Registro 40
-$TTCEMGBalancoPatrimonial->recuperaDadosDFC40($rsRecordSetDFC40);
+$TTCEMGDemonstracaoFluxoCaixa->recuperaDadosDFC40($rsRecordSetDFC40);
 //Tipo Registro 50
-$TTCEMGBalancoPatrimonial->recuperaDadosDFC50($rsRecordSetDFC50);
+$TTCEMGDemonstracaoFluxoCaixa->recuperaDadosDFC50($rsRecordSetDFC50);
 //Tipo Registro 60
-$TTCEMGBalancoPatrimonial->recuperaDadosDFC60($rsRecordSetDFC60);
+$TTCEMGDemonstracaoFluxoCaixa->recuperaDadosDFC60($rsRecordSetDFC60);
 //Tipo Registro 70
-$TTCEMGBalancoPatrimonial->recuperaDadosDFC70($rsRecordSetDFC70);
+$TTCEMGDemonstracaoFluxoCaixa->recuperaDadosDFC70($rsRecordSetDFC70);
 //Tipo Registro 80
-$TTCEMGBalancoPatrimonial->recuperaDadosDFC80($rsRecordSetDFC80);
+$TTCEMGDemonstracaoFluxoCaixa->recuperaDadosDFC80($rsRecordSetDFC80);
 //Tipo Registro 90
-$TTCEMGBalancoPatrimonial->recuperaDadosDFC90($rsRecordSetDFC90);
+$TTCEMGDemonstracaoFluxoCaixa->recuperaDadosDFC90($rsRecordSetDFC90);
 //Tipo Registro 100
-$TTCEMGBalancoPatrimonial->recuperaDadosDFC100($rsRecordSetDFC100);
+$TTCEMGDemonstracaoFluxoCaixa->recuperaDadosDFC100($rsRecordSetDFC100);
 //Tipo Registro 110
-$TTCEMGBalancoPatrimonial->recuperaDadosDFC110($rsRecordSetDFC110);
+$TTCEMGDemonstracaoFluxoCaixa->recuperaDadosDFC110($rsRecordSetDFC110);
 
 if (count($rsRecordSetDFC10->getElementos()) > 0) {
   foreach ($rsRecordSetDFC10->getElementos() as $arDFC10) {
