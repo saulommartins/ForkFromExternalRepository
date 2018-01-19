@@ -40,11 +40,6 @@
                     uc-02.03.31
 */
 
-
-    ini_set("display_errors", 1);
-    error_reporting(E_ALL);
-
-
     include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
     include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
     include_once CAM_GF_EMP_NEGOCIO."REmpenhoOrdemPagamento.class.php";

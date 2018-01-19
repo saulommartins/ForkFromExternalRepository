@@ -39,9 +39,6 @@
                     uc-02.03.04
 */
 
-ini_set("display_errors", 1);
-error_reporting(E_ALL);
-
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
 include_once CAM_GF_EMP_NEGOCIO."REmpenhoEmpenhoAutorizacao.class.php";
@@ -613,12 +610,12 @@ $obContrato->obBuscaInner->setFuncaoBusca(
 
 $obConvenio = new IPopUpConvenio( $obForm );
 $obConvenio->obBuscaInner->obCampoCod->obEvento->setOnBlur(
-    "montaParametrosGET('validaConvenio', 'inCodConvenio,inCodEntidade,stExercicioConvenio');"
+    "montaParametrosGET('validaConvenio', 'inNroConvenio,inCodEntidade,stExercicioConvenio');"
 );
 
 $obConvenio->obBuscaInner->setValoresBusca('', '', '');
 $obConvenio->obBuscaInner->setFuncaoBusca(
-    "montaParametrosGET('montaBuscaConvenio', 'inCodConvenio,inCodEntidade,stExercicioContrato');"
+    "montaParametrosGET('montaBuscaConvenio', 'inNroConvenio,inCodEntidade,stExercicioContrato');"
     .$obConvenio->obBuscaInner->getFuncaoBusca()
 );
 
@@ -631,7 +628,7 @@ $obBtnIncluir->setValue             ( "Incluir"         );
 $obBtnIncluir->setName              ( "btnIncluirEmp"   );
 $obBtnIncluir->setId                ( "btnIncluirEmp"   );
 $obBtnIncluir->setDisabled          ( false             );
-$obBtnIncluir->obEvento->setOnClick ( "montaParametrosGET('incluirConvenioLista','inCodConvenio,inCodEntidade,stExercicioConvenio');" );
+$obBtnIncluir->obEvento->setOnClick ( "montaParametrosGET('incluirConvenioLista','inNroConvenio,inCodEntidade,stExercicioConvenio');" );
 
 /* Botão Limpar */
 $obBtnLimpar = new Button;

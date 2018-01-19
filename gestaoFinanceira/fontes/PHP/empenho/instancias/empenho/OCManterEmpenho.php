@@ -41,9 +41,6 @@
 
 header ("Content-Type: text/html; charset=utf-8");
 
-ini_set("display_errors", 1);
-error_reporting(E_ALL);
-
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/componentes/Table/TableTree.class.php';

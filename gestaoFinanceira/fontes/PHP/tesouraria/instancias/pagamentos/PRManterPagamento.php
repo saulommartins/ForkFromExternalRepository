@@ -37,9 +37,6 @@
     * Casos de uso: uc-02.04.05
 */
 
-    ini_set("display_errors", 1);
-    error_reporting(E_ALL ^ E_NOTICE);
-
     require_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
     require_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
     require_once CAM_GF_TES_NEGOCIO."RTesourariaBoletim.class.php";

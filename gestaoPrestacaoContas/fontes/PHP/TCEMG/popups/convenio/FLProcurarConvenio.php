@@ -4,9 +4,6 @@
 	include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
 	include_once CAM_GF_ORC_COMPONENTES.'ITextBoxSelectEntidadeGeral.class.php';
 
-	ini_set("display_errors", 1);
-	error_reporting(E_ALL);
-
 	//Define o nome dos arquivos PHP
 	$stPrograma = "ProcurarConvenio";
 	$pgFilt = "FL".$stPrograma.".php";
