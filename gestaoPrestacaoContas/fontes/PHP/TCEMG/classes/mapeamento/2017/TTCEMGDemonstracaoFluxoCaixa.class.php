@@ -56,7 +56,7 @@ class TTCEMGDemonstracaoFluxoCaixa extends Persistente {
                           ELSE 0
                         END) AS vl_transf_corrente_recebida,
                    SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrosIngressosOperacionais'
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransCorrenteRecebida'
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
                         END) AS vl_outro_ingresso_operacional,
@@ -104,15 +104,33 @@ class TTCEMGDemonstracaoFluxoCaixa extends Persistente {
                           ELSE 0
                         END) AS vl_desembolso_transferencia_concedida,
                    SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrosDesembolsos'
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesembolsoTransfConcedidas'
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
                         END) AS vl_outro_desembolso_operacional,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTotalDesembolsosAtivOperacionais'
+                   (SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesembolsoPessoalDespesas'
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
-                        END) AS vl_tot_desembolso_atividade_operacional ";
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesembolsoJurosEncargDivida'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesembolsoTransfConcedidas'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesembolsoTransfConcedidas'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)) AS vl_tot_desembolso_atividade_operacional ";
   	$sql.= $this->montaFromValoresContabeis();
   	$sql.= "WHERE configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'DFC'
 			            AND configuracao_dcasp_registros.exercicio = '" . $this->getDado('exercicio') . "'
@@ -137,14 +155,37 @@ class TTCEMGDemonstracaoFluxoCaixa extends Persistente {
   private function montaRecuperaDadosDFC30() {
     $sql = "SELECT 30 as tipo_registro,
                    SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlFluxoCaixaLiquidoOperacional'
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTotalIngressosAtivOperacionais'
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
-                        END) AS vl_fluxo_caixa_liq_atividade_operacional ";
+                        END)
+                   -
+                   (SUM (CASE
+                            WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesembolsoPessoalDespesas'
+                              THEN COALESCE(contabil.valor, 0)
+                            ELSE 0
+                          END)
+                     +
+                     SUM (CASE
+                            WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesembolsoJurosEncargDivida'
+                              THEN COALESCE(contabil.valor, 0)
+                            ELSE 0
+                          END)
+                     +
+                     SUM (CASE
+                            WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesembolsoTransfConcedidas'
+                              THEN COALESCE(contabil.valor, 0)
+                            ELSE 0
+                          END)
+                     +
+                     SUM (CASE
+                            WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesembolsoTransfConcedidas'
+                              THEN COALESCE(contabil.valor, 0)
+                            ELSE 0
+                          END)) AS vl_fluxo_caixa_liq_atividade_operacional ";
   	$sql.= $this->montaFromValoresContabeis();
   	$sql.= "WHERE configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'DFC'
 			            AND configuracao_dcasp_registros.exercicio = '" . $this->getDado('exercicio') . "'
-                  AND configuracao_dcasp_registros.tipo_registro = 30
             GROUP BY configuracao_dcasp_arquivo.nome_arquivo_pertencente";
   	return $sql;
   }
@@ -179,11 +220,24 @@ class TTCEMGDemonstracaoFluxoCaixa extends Persistente {
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
                         END) AS vl_outro_ingresso_investimento,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTotalIngressosAtividaInvestimento'
+
+                   (SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAlienacaoBens'
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
-                        END) AS vl_total_ingresso_atividade_investimento ";
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAmortizacaoEmprestimoConcedido'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrosIngressos'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)) AS vl_total_ingresso_atividade_investimento ";
   	$sql.= $this->montaFromValoresContabeis();
   	$sql.= "WHERE configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'DFC'
 			            AND configuracao_dcasp_registros.exercicio = '" . $this->getDado('exercicio') . "'
@@ -222,11 +276,23 @@ class TTCEMGDemonstracaoFluxoCaixa extends Persistente {
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
                         END) AS vl_outro_desembolso_investimento,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTotalDesembolsoAtividaInvestimento'
+                   (SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAquisicaoAtivoNaoCirculante'
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
-                        END) AS vl_tot_desembolso_atividade_investimento ";
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlConcessaoEmpresFinanciamento'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrosDesembolsos'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)) AS vl_tot_desembolso_atividade_investimento ";
   	$sql.= $this->montaFromValoresContabeis();
   	$sql.= "WHERE configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'DFC'
 			            AND configuracao_dcasp_registros.exercicio = '" . $this->getDado('exercicio') . "'
@@ -250,15 +316,44 @@ class TTCEMGDemonstracaoFluxoCaixa extends Persistente {
 
   private function montaRecuperaDadosDFC60() {
     $sql = "SELECT 60 as tipo_registro,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlFluxoCaixaLiquidoInvestimento'
+                   (SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAlienacaoBens'
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
-                        END) AS vl_fluxo_caixa_liq_atividade_investimento ";
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAmortizacaoEmprestimoConcedido'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrosIngressos'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END))
+                   -
+                   (SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAquisicaoAtivoNaoCirculante'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlConcessaoEmpresFinanciamento'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrosDesembolsos'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)) AS vl_fluxo_caixa_liq_atividade_investimento ";
   	$sql.= $this->montaFromValoresContabeis();
   	$sql.= "WHERE configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'DFC'
 			            AND configuracao_dcasp_registros.exercicio = '" . $this->getDado('exercicio') . "'
-                  AND configuracao_dcasp_registros.tipo_registro = 60
             GROUP BY configuracao_dcasp_arquivo.nome_arquivo_pertencente";
   	return $sql;
   }
@@ -289,20 +384,38 @@ class TTCEMGDemonstracaoFluxoCaixa extends Persistente {
                           ELSE 0
                         END) AS vl_integra_capital_social_empresa_dependente,
                    SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransCapitalRecebida'
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIntegralizacaoDependentes'
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
                         END) AS vl_transferencia_capital_recebida,
                    SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrosIngressosFinanciamento'
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIntegralizacaoDependentes'
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
                         END) AS vl_outro_ingresso_financiamento,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTotalIngressoAtividaFinanciamento'
+                   (SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOperacoesCredito'
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
-                        END) AS vl_tot_ingresso_atividade_financiamento ";
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIntegralizacaoDependentes'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIntegralizacaoDependentes'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIntegralizacaoDependentes'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)) AS vl_tot_ingresso_atividade_financiamento ";
   	$sql.= $this->montaFromValoresContabeis();
   	$sql.= "WHERE configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'DFC'
 			            AND configuracao_dcasp_registros.exercicio = '" . $this->getDado('exercicio') . "'
@@ -332,15 +445,21 @@ class TTCEMGDemonstracaoFluxoCaixa extends Persistente {
                           ELSE 0
                         END) AS vl_amortizacao_refinanciamento_divida,
                    SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrosDesembolsosFinanciamento'
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAmortizacaoRefinanciamento'
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
                         END) AS vl_outro_desembolso_financiamento,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTotalDesembolsoAtividaFinanciamento'
+                   (SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAmortizacaoRefinanciamento'
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
-                        END) AS vl_tot_desembolso_atividade_financiamento ";
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAmortizacaoRefinanciamento'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)) AS vl_tot_desembolso_atividade_financiamento ";
   	$sql.= $this->montaFromValoresContabeis();
   	$sql.= "WHERE configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'DFC'
 			            AND configuracao_dcasp_registros.exercicio = '" . $this->getDado('exercicio') . "'
@@ -364,15 +483,44 @@ class TTCEMGDemonstracaoFluxoCaixa extends Persistente {
 
   private function montaRecuperaDadosDFC90() {
     $sql = "SELECT 90 as tipo_registro,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlFluxoCaixaFinanciamento'
+                   (SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOperacoesCredito'
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
-                        END) AS vl_fluxo_caixa_liq_atividade_financiamento ";
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIntegralizacaoDependentes'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIntegralizacaoDependentes'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIntegralizacaoDependentes'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END))
+                   -
+                   (SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAmortizacaoRefinanciamento'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)
+                   +
+                   SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAmortizacaoRefinanciamento'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)) AS vl_fluxo_caixa_liq_atividade_financiamento ";
   	$sql.= $this->montaFromValoresContabeis();
   	$sql.= "WHERE configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'DFC'
 			            AND configuracao_dcasp_registros.exercicio = '" . $this->getDado('exercicio') . "'
-                  AND configuracao_dcasp_registros.tipo_registro = 90
             GROUP BY configuracao_dcasp_arquivo.nome_arquivo_pertencente";
   	return $sql;
   }
@@ -392,15 +540,113 @@ class TTCEMGDemonstracaoFluxoCaixa extends Persistente {
 
   private function montaRecuperaDadosDFC100() {
     $sql = "SELECT 100 as tipo_registro,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlGeracaoLiquidaEquivalenteCaixa'
+                   -- TIPO 30 CAMPO 2
+                   (SUM (CASE
+                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTotalIngressosAtivOperacionais'
+                             THEN COALESCE(contabil.valor, 0)
+                           ELSE 0
+                         END)
+                   -
+                   (SUM (CASE
+                            WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesembolsoPessoalDespesas'
+                              THEN COALESCE(contabil.valor, 0)
+                            ELSE 0
+                          END)
+                    +
+                    SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesembolsoJurosEncargDivida'
                             THEN COALESCE(contabil.valor, 0)
                           ELSE 0
-                        END) AS vl_geracao_liq_caixa_equivalente_caixa ";
+                        END)
+                    +
+                    SUM (CASE
+                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesembolsoTransfConcedidas'
+                             THEN COALESCE(contabil.valor, 0)
+                           ELSE 0
+                         END)
+                    +
+                    SUM (CASE
+                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesembolsoTransfConcedidas'
+                             THEN COALESCE(contabil.valor, 0)
+                           ELSE 0
+                         END)))
+                   +
+                   -- TIPO 60 CAMPO 2
+                   ((SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAlienacaoBens'
+                            THEN COALESCE(contabil.valor, 0)
+                          ELSE 0
+                        END)
+                    +
+                    SUM (CASE
+                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAmortizacaoEmprestimoConcedido'
+                             THEN COALESCE(contabil.valor, 0)
+                           ELSE 0
+                         END)
+                    +
+                    SUM (CASE
+                           WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrosIngressos'
+                             THEN COALESCE(contabil.valor, 0)
+                           ELSE 0
+                         END))
+                   -
+                    (SUM (CASE
+                            WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAquisicaoAtivoNaoCirculante'
+                              THEN COALESCE(contabil.valor, 0)
+                            ELSE 0
+                          END)
+                     +
+                     SUM (CASE
+                            WHEN configuracao_dcasp_arquivo.nome_tag = 'vlConcessaoEmpresFinanciamento'
+                              THEN COALESCE(contabil.valor, 0)
+                            ELSE 0
+                          END)
+                     +
+                     SUM (CASE
+                            WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrosDesembolsos'
+                              THEN COALESCE(contabil.valor, 0)
+                            ELSE 0
+                          END)))
+                   +
+                   -- TIPO 90 CAMPO 2
+                   ((SUM (CASE
+                            WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOperacoesCredito'
+                              THEN COALESCE(contabil.valor, 0)
+                            ELSE 0
+                          END)
+                     +
+                     SUM (CASE
+                            WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIntegralizacaoDependentes'
+                              THEN COALESCE(contabil.valor, 0)
+                            ELSE 0
+                          END)
+                     +
+                     SUM (CASE
+                            WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIntegralizacaoDependentes'
+                              THEN COALESCE(contabil.valor, 0)
+                            ELSE 0
+                          END)
+                     +
+                     SUM (CASE
+                            WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIntegralizacaoDependentes'
+                              THEN COALESCE(contabil.valor, 0)
+                            ELSE 0
+                          END))
+                    -
+                     (SUM (CASE
+                             WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAmortizacaoRefinanciamento'
+                               THEN COALESCE(contabil.valor, 0)
+                             ELSE 0
+                           END)
+                      +
+                      SUM (CASE
+                             WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAmortizacaoRefinanciamento'
+                               THEN COALESCE(contabil.valor, 0)
+                             ELSE 0
+                           END))) AS vl_geracao_liq_caixa_equivalente_caixa ";
   	$sql.= $this->montaFromValoresContabeis();
   	$sql.= "WHERE configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'DFC'
 			            AND configuracao_dcasp_registros.exercicio = '" . $this->getDado('exercicio') . "'
-                  AND configuracao_dcasp_registros.tipo_registro = 100
             GROUP BY configuracao_dcasp_arquivo.nome_arquivo_pertencente";
   	return $sql;
   }

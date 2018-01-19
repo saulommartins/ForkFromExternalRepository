@@ -118,12 +118,11 @@ $obNomeCampo->setFuncaoBusca("abrePopUpDcasp('" . CAM_GF_CONT_POPUPS . "camposDc
 
 $obTxtDescGrupo = new TextBox;
 $obTxtDescGrupo->setRotulo("Grupo");
-$obTxtDescGrupo->setTitle("Informe apenas os 2 primeiros números da conta. Ex.: (1.2)");
+$obTxtDescGrupo->setTitle("Informe os números da conta com pontuação. Ex.: (1.2.3.44.55.6.7.)");
 $obTxtDescGrupo->setId("inDescGrupo");
 $obTxtDescGrupo->setName("inDescGrupo");
-$obTxtDescGrupo->setSize(5);
-$obTxtDescGrupo->setMaxLength(10);
-$obTxtDescGrupo->setMascara('9.9.9.9.9.');
+$obTxtDescGrupo->setSize(10);
+$obTxtDescGrupo->setMaxLength(15);
 $obTxtDescGrupo->setNull(false);
 
 $obBtnBuscar = new Button();
