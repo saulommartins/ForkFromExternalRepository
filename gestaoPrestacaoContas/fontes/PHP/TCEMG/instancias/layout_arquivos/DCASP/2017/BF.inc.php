@@ -22,6 +22,9 @@
   **********************************************************************************
 */
 
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+
 include_once CAM_GPC_TCEMG_MAPEAMENTO . Sessao::getExercicio() . "/TTCEMGBalancoFinanceiro.class.php";
 
 $rsRecordSetBF10 = new RecordSet();
@@ -39,6 +42,14 @@ $TTCEMGBalancoFinanceiro->recuperaDadosBF20($rsRecordSetBF20);
 if (count($rsRecordSetBF10->getElementos()) > 0) {
   foreach ($rsRecordSetBF10->getElementos() as $arBF10) {
     $inCount++;
+
+    $total = ($arBF10['vl_rec_orc_recurso_ordinario'] + $arBF10['vl_rec_orc_recursos_vinculado_educacao'] + $arBF10['vl_rec_orc_recursos_vinculado_saude']
+ + $arBF10['vl_rec_orc_recursos_vinculado_rpps'] + $arBF10['vl_rec_orc_recursos_vinculado_assist_social'] + $arBF10['vl_rec_orc_outra_destinac_recurso']
+ + $arBF10['vl_trans_finan_execucao_orcamentaria'] + $arBF10['vl_trans_finan_indepen_execucao_orcamentaria'] + $arBF10['vl_trans_finan_recebida_aporte_rec_rpps']
+ + $arBF10['vl_inscri_resto_pagar_nao_processado'] + $arBF10['vl_inscri_resto_pagar_processado'] + $arBF10['vl_depo_restituivel_vinculado']
+ + $arBF10['vl_outr_recebimento_extraorcamentario'] + $arBF10['vl_sal_exerc_anterior_caixa_equivalente_caixa'] + $arBF10['vl_sal_exerc_anterior_deposito_restitui_valor_vinculado']);
+
+    $arBF10['vl_total_quadro_ingresso'] = $total;
 
     $rsBloco10 = 'rsBloco10_' . $inCount;
     unset($rsBloco10);

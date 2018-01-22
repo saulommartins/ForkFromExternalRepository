@@ -44,117 +44,180 @@ class TTCEMGBalancoFinanceiro extends Persistente {
   }
 
   private function montaRecuperaDadosBF10() {
-  	$sql = "SELECT 10 as tipo_registro,
-    				       SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlRecOrcamenRecurOrdinarios'
-                            THEN CASE
-                                   WHEN receita_orcamentaria.cod_recurso IN (100)
-                                     THEN COALESCE(receita_orcamentaria.valor, 0)
-                                   ELSE 0
-                                 END
-	 	                      ELSE 0
-                        END) AS vl_rec_orc_recurso_ordinario,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlRecOrcamenRecurVincuEducacao'
-                            THEN CASE
-                                   WHEN receita_orcamentaria.cod_recurso IN (101, 113, 118, 119, 122, 143, 144, 145, 146, 147)
-                                     THEN COALESCE(receita_orcamentaria.valor, 0)
-                                   ELSE 0
-                                 END
- 	                        ELSE 0
-                        END) AS vl_rec_orc_recursos_vinculado_educacao,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlRecOrcamenRecurVincuSaude'
-                            THEN CASE
-                                   WHEN receita_orcamentaria.cod_recurso IN (102, 112, 123, 148, 149, 150, 151, 152, 153, 154, 155)
-                                     THEN COALESCE(receita_orcamentaria.valor, 0)
-                                   ELSE 0
-                                 END
- 	                        ELSE 0
-                        END) AS vl_rec_orc_recursos_vinculado_saude,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlRecOrcamenRecurVincuRPPS'
-                            THEN CASE
-                                   WHEN receita_orcamentaria.cod_recurso IN (102, 103)
-                                     THEN COALESCE(receita_orcamentaria.valor, 0)
-                                   ELSE 0
-                                 END
- 	                        ELSE 0
-                        END) AS vl_rec_orc_recursos_vinculado_rpps,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlRecOrcamenRecurVincuAssistSocial'
-                            THEN CASE
-                                   WHEN receita_orcamentaria.cod_recurso IN (129, 142, 156)
-                                     THEN COALESCE(receita_orcamentaria.valor, 0)
-                                   ELSE 0
-                                 END
-                          ELSE 0
-                        END) AS vl_rec_orc_recursos_vinculado_assist_social,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlRecOrcamenOutrasDestRecursos'
-                            THEN CASE
-                                   WHEN receita_orcamentaria.cod_recurso IN (116, 117, 124, 157, 158, 190, 191, 192, 193)
-                                     THEN COALESCE(receita_orcamentaria.valor, 0)
-                                   ELSE 0
-                                 END
-                          ELSE 0
-                        END) AS vl_rec_orc_outra_destinac_recurso,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransFinanExecuOrcamentaria'
-                            THEN COALESCE(receita_orcamentaria.valor, 0)
-                          ELSE 0
-                        END) AS vl_trans_finan_execucao_orcamentaria,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransFinanIndepenExecuOrcamentaria'
-                            THEN COALESCE(receita_orcamentaria.valor, 0)
-                          ELSE 0
-                        END) AS vl_trans_finan_indepen_execucao_orcamentaria,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransFinanReceAportesRPPS'
-                            THEN COALESCE(receita_orcamentaria.valor, 0)
-                          ELSE 0
-                        END) AS vl_trans_finan_recebida_aporte_rec_rpps,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIncriRSPNaoProcessado'
-                            THEN COALESCE(receita_orcamentaria.valor, 0)
-                          ELSE 0
-                        END) AS vl_inscri_resto_pagar_nao_processado,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlIncriRSPProcessado'
-                            THEN COALESCE(receita_orcamentaria.valor, 0)
-                          ELSE 0
-                        END) AS vl_inscri_resto_pagar_processado,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDepoRestituVinculados'
-                            THEN COALESCE(receita_orcamentaria.valor, 0)
-                          ELSE 0
-                        END) AS vl_depo_restituivel_vinculado,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrosRecExtraorcamentario'
-                            THEN COALESCE(receita_orcamentaria.valor, 0)
-                          ELSE 0
-                        END) AS vl_outr_recebimento_extraorcamentario,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlSaldoExerAnteriorCaixaEquiCaixa'
-                            THEN COALESCE(receita_orcamentaria.valor, 0)
-                          ELSE 0
-                        END) AS vl_sal_exerc_anterior_caixa_equivalente_caixa,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlSaldoExerAnteriorDepoRestVinculados'
-                            THEN COALESCE(receita_orcamentaria.valor, 0)
-                          ELSE 0
-                        END) AS vl_sal_exerc_anterior_deposito_restitui_valor_vinculado,
-                   SUM (CASE
-                          WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTotalIngresso'
-                            THEN COALESCE(receita_orcamentaria.valor, 0)
-                          ELSE 0
-                        END) AS vl_total_quadro_ingresso ";
-  	$sql.= $this->montaFromValoresOrcamentarios();
-  	$sql.= "WHERE configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'BF'
-			            AND configuracao_dcasp_registros.exercicio = '" . $this->getDado('exercicio') . "'
-                  AND configuracao_dcasp_registros.tipo_registro = 10
-            GROUP BY configuracao_dcasp_arquivo.nome_arquivo_pertencente";
+  	$sql = "
+        SELECT  10 as tipo_registro,
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlRecOrcamenRecurOrdinarios'
+                     AND campos.cod_recurso IN (100)
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                   END
+                ) AS vl_rec_orc_recurso_ordinario,
+                
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlRecOrcamenRecurVincuEducacao'
+                     AND campos.cod_recurso IN (101, 113, 118, 119, 122, 143, 144, 145, 146, 147)
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                  END
+                ) AS vl_rec_orc_recursos_vinculado_educacao,
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlRecOrcamenRecurVincuSaude'
+                     AND campos.cod_recurso IN (102, 112, 123, 148, 149, 150, 151, 152, 153, 154, 155)
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                  END
+                ) AS vl_rec_orc_recursos_vinculado_saude,
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlRecOrcamenRecurVincuRPPS'
+                     AND campos.cod_recurso IN (102, 103)
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                  END
+                ) AS vl_rec_orc_recursos_vinculado_rpps,
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlRecOrcamenRecurVincuAssistSocial'
+                     AND campos.cod_recurso IN (129, 142, 156)
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                  END
+                ) AS vl_rec_orc_recursos_vinculado_assist_social,
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlRecOrcamenOutrasDestRecursos'
+                     AND campos.cod_recurso IN (116, 117, 124, 157, 158, 190, 191, 192, 193)
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                  END
+                ) AS vl_rec_orc_outra_destinac_recurso,
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlTransFinanExecuOrcamentaria'
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                  END
+                ) AS vl_trans_finan_execucao_orcamentaria,
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlTransFinanIndepenExecuOrcamentaria'
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                  END
+                ) AS vl_trans_finan_indepen_execucao_orcamentaria,
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlTransFinanReceAportesRPPS'
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                  END
+                ) AS vl_trans_finan_recebida_aporte_rec_rpps,
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlIncriRSPNaoProcessado'
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                  END
+                ) AS vl_inscri_resto_pagar_nao_processado,
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlIncriRSPProcessado'
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                  END
+                ) AS vl_inscri_resto_pagar_processado,
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlDepoRestituVinculados'
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                  END
+                ) AS vl_depo_restituivel_vinculado,
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlOutrosRecExtraorcamentario'
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                  END
+                ) AS vl_outr_recebimento_extraorcamentario,
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlSaldoExerAnteriorCaixaEquiCaixa'
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                  END
+                ) AS vl_sal_exerc_anterior_caixa_equivalente_caixa,
+                SUM (
+                  CASE
+                    WHEN campos.nome_tag = 'vlSaldoExerAnteriorDepoRestVinculados'
+                    THEN COALESCE(campos.valor, 0)
+                    ELSE 0
+                  END
+                ) AS vl_sal_exerc_anterior_deposito_restitui_valor_vinculado,
+                0 AS vl_total_quadro_ingresso
+          FROM  (
+    ";
+  	
+    $sql.= $this->montaRecuperaValoresReceitasOrcamentarias();
+
+  	$sql.= "
+            ) AS campos
+
+            WHERE  campos.nome_arquivo_pertencente = 'BF'
+              AND  campos.tipo_registro = 10 
+            GROUP  BY campos.nome_arquivo_pertencente";
+
   	return $sql;
+  }
+
+  public function montaRecuperaValoresReceitasOrcamentarias()
+  {
+    return "
+          SELECT  configuracao_dcasp_arquivo.nome_tag,
+                  configuracao_dcasp_arquivo.nome_arquivo_pertencente,
+                  configuracao_dcasp_arquivo.tipo_registro,
+                  totais_receitas.*,
+                  CASE WHEN totais_receitas.valor > totais_receitas.vl_original
+                       THEN 2
+                       ELSE 1
+                   END AS fase
+            FROM  (
+                    SELECT  conta_receita.cod_estrutural,
+                            arrecadacao_receita.exercicio,
+                            receita.vl_original,
+                            receita.cod_recurso,
+                            SUM(arrecadacao_receita.vl_arrecadacao) AS valor
+
+                      FROM  tesouraria.arrecadacao_receita
+
+                      JOIN  orcamento.receita
+                        ON  arrecadacao_receita.cod_receita = receita.cod_receita
+                       AND  arrecadacao_receita.exercicio = receita.exercicio
+
+                      JOIN  orcamento.conta_receita
+                        ON  conta_receita.cod_conta = receita.cod_conta
+                       AND  conta_receita.exercicio = receita.exercicio
+
+                     WHERE  arrecadacao_receita.exercicio = '".$this->getDado('exercicio')."'
+                       AND  receita.cod_entidade IN (".$this->getDado('entidade').")
+
+                     GROUP  BY conta_receita.cod_estrutural,
+                               arrecadacao_receita.exercicio,
+                               receita.vl_original,
+                               receita.cod_recurso
+
+                  )  AS totais_receitas
+
+            JOIN  tcemg.configuracao_dcasp_registros
+              ON  configuracao_dcasp_registros.exercicio = '".$this->getDado('exercicio')."'
+             AND  replace(configuracao_dcasp_registros.conta_orc_receita, '.', '') = replace(totais_receitas.cod_estrutural, '.', '')
+
+            JOIN  tcemg.configuracao_dcasp_arquivo using (seq_arquivo)
+    ";
   }
 
   public function recuperaDadosBF20(&$rsRecordSet) {
