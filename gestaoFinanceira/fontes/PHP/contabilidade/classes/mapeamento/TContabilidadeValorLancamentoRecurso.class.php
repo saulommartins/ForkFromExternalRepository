@@ -101,7 +101,7 @@
 				    ON valor_lancamento.tipo = lancamento.tipo
 				   AND valor_lancamento.cod_lote = lancamento.cod_lote
 				   AND valor_lancamento.exercicio = lancamento.exercicio
-				   AND valor_lancamento.sequencia = lancamento.sequencia
+				   -- AND valor_lancamento.sequencia = lancamento.sequencia
 				   AND valor_lancamento.cod_entidade = lancamento.cod_entidade
 			     WHERE " . $stFiltro;
 		}
