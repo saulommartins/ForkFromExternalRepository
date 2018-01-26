@@ -37,6 +37,12 @@
     * Casos de uso: uc-02.02.02
 */
 
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+
+$boTransacao = null;
+$inCodFundo = null;
+
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 include_once CAM_GF_CONT_NEGOCIO."RContabilidadePlanoBanco.class.php";
@@ -74,6 +80,50 @@ function desbloqueiaAbas($boExecuta = false)
     } else {
         return $stJs;
     }
+}
+
+function montaFundos($inCodFundo)
+{
+    include_once( CAM_GF_CONT_NEGOCIO."RContabilidadeFundo.class.php");
+
+    $rsFundo = new RecordSet;
+    $obRContabilidadeFundo = new RContabilidadeFundo();
+    $obRContabilidadeFundo->listar($rsFundo);
+
+    $obCmbFundo = new Select;
+    $obCmbFundo->setRotulo        ( "Fundo" );
+    $obCmbFundo->setName          ( "inCodFundo" );
+    $obCmbFundo->setStyle         ( "width: 500px");
+    $obCmbFundo->setCampoID       ( "cod_fundo" );
+    $obCmbFundo->setCampoDesc     ( "descricao" );
+    $obCmbFundo->addOption        ( "", "Selecione" );
+    $obCmbFundo->setValue         ( $inCodFundo );
+    $obCmbFundo->setNull          ( false );
+    $obCmbFundo->preencheCombo    ( $rsFundo );
+
+    $obFormulario = new Formulario;
+    $obFormulario->addComponente( $obCmbFundo );
+
+    $obFormulario->montaInnerHTML();
+    $stHTML = $obFormulario->getHTML();
+    // $obCmbFundo->montaHtml();
+    // $stHTML = $obCmbFundo->getHTML();
+
+    $stHTML = str_replace( "\n" ,"" ,$stHTML );
+    $stHTML = str_replace( chr(13) ,"<br>" ,$stHTML );
+    $stHTML = str_replace( "  " ,"" ,$stHTML );
+    $stHTML = str_replace( "'","\\'",$stHTML );
+    $stHTML = str_replace( "\\\\'","\\'",$stHTML );
+    $stHTML = str_replace( "\\\\'","'",$stHTML );
+
+    echo "d.getElementById('spnFundos').innerHTML = '".$stHTML."';";
+
+    // SistemaLegado::executaFrameOculto( "d.getElementById('spnFundos').innerHTML = '".$stHTML."';" );
+}
+
+function removerFundos()
+{
+    echo "d.getElementById('spnFundos').innerHTML = '';";    
 }
 
 $stFiltroEntidade = " AND entidade.cod_entidade = ".Sessao::getCodEntidade($boTransacao)." AND entidade.exercicio = '".Sessao::getExercicio()."'";
@@ -572,6 +622,14 @@ switch ($stCtrl) {
              
                 }
                 echo $stJs;
+        break;
+
+        case "montaFundos":
+            montaFundos($_REQUEST['inCodFundoSelecionado']);
+        break;
+
+        case "removerFundos":
+            removerFundos();
         break;
 }
 ?>

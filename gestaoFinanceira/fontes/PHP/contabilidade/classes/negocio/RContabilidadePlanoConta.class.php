@@ -333,6 +333,7 @@ function RContabilidadePlanoConta()
     $this->obRContabilidadeSistemaContabil       = new RContabilidadeSistemaContabil;
     $this->obROrcamentoEntidade                  = new ROrcamentoEntidade;
     $this->obTransacao                           = new Transacao;
+    $this->inCodFundo                            = 'null';
 }
 
 /**
@@ -388,9 +389,11 @@ function consultar($boTransacao = "")
             return $obErro;
         }
     }
+
     if ( !$obErro->ocorreu() ) {
         $this->stNomConta = $rsRecordSet->getCampo( "nom_conta" );
         $this->stCodEstrutural = $rsRecordSet->getCampo( "cod_estrutural" );
+
         if ( Sessao::getExercicio() > '2012' ) {
             $this->stIndicadorSuperavit = trim($rsRecordSet->getCampo( "indicador_superavit" ));
             $this->stEscrituracao = trim($rsRecordSet->getCampo( "escrituracao" ));
@@ -399,10 +402,14 @@ function consultar($boTransacao = "")
             $this->inTipoContaCorrenteTCEPE = $rsRecordSet->getCampo( "atributo_tcepe" );
             $this->inTipoContaCorrenteTCEMG = $rsRecordSet->getCampo( "atributo_tcemg" );
         }       
+        
         $this->obRContabilidadeClassificacaoContabil->setCodClassificacao( $rsRecordSet->getCampo( "cod_classificacao" ) );
         $this->obRContabilidadeSistemaContabil->setCodSistema( $rsRecordSet->getCampo( "cod_sistema" ) );
         $this->obRContabilidadeSistemaContabil->setExercicio ( $this->stExercicio );
+        $this->inCodFundo = $rsRecordSet->getCampo("cod_fundo");
+        
         $obErro = $this->obRContabilidadeSistemaContabil->consultar( $boTransacao );
+        
         if ( !$obErro->ocorreu() ) {
             $this->obRContabilidadeClassificacaoContabil->setExercicio       ( $this->stExercicio );
             $obErro = $this->obRContabilidadeClassificacaoContabil->consultar( $boTransacao );

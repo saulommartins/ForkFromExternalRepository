@@ -233,32 +233,38 @@ if ($inCodUF == 11) {
             SistemaLegado::liberaFrames(true,true);
             die;
         }
+        
         if (empty($arRequest['dtEmissaoNF'])) {
             SistemaLegado::exibeAviso('Campo Data de Emissão inválido!',"n_incluir","erro");
             SistemaLegado::liberaFrames(true,true);
             die;
         }
+
         if (empty($arRequest['stExercicioNF'])) {
             SistemaLegado::exibeAviso('Campo Exercício inválido!',"n_incluir","erro");
             SistemaLegado::liberaFrames(true,true);
             die;
         }
-        if(($request->get('inCodTipoNota') == 1 || $request->get('inCodTipoNota') == 4) && empty($arRequest['inChave'])){
+        
+        if (($request->get('inCodTipoNota') == 1 || $request->get('inCodTipoNota') == 4) && empty($arRequest['inChave'])) {
             SistemaLegado::exibeAviso('Campo Chave de Acesso inválido!',"n_incluir","erro");
             SistemaLegado::liberaFrames(true,true);
             die;
         }
-        if($request->get('inCodTipoNota') == 2 || $request->get('inCodTipoNota') == 3){
+
+        if ($request->get('inCodTipoNota') == 2 || $request->get('inCodTipoNota') == 3) {
             if ($arRequest['inNumeroNF'] == "") {
                 SistemaLegado::exibeAviso('Campo Número do Docto Fiscal inválido!',"n_incluir","erro");
                 SistemaLegado::liberaFrames(true,true);
                 die;
             }
+            
             if (empty($arRequest['inNumSerie'])) {
                 SistemaLegado::exibeAviso('Campo Série do Docto Fiscal inválido!',"n_incluir","erro");
                 SistemaLegado::liberaFrames(true,true);
                 die;
             }
+
             if ($request->get('inCodTipoNota') == 2 && empty($arRequest['inChaveMunicipal'])) {
                 SistemaLegado::exibeAviso('Campo Chave de Acesso Municipal inválido!',"n_incluir","erro");
                 SistemaLegado::liberaFrames(true,true);

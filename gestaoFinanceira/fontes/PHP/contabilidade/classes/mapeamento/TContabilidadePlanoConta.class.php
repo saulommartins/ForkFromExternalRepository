@@ -65,7 +65,7 @@ function TContabilidadePlanoConta()
     $this->AddCampo('atributo_tcemg'     ,'integer',false,   '',false, true);
     $this->AddCampo('escrituracao_pcasp' ,'   char', true,  '1',false,false);
     $this->AddCampo('obrigatorio_tcmgo'  ,'boolean', true,   '',false,false);
-    $this->AddCampo('cod_fundo'          ,'integer', true,   '',false,false);
+    $this->AddCampo('cod_fundo'          ,'integer',false,   '',false,false);
 }
 
 function montaRecuperaGrupos()

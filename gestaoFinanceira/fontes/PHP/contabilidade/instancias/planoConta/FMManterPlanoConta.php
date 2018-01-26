@@ -34,6 +34,9 @@
     * Casos de uso: uc-02.02.02
 */
 
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+
 include_once( '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php');
 include_once( '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php');
 include_once( CAM_FRAMEWORK."legado/funcoesLegado.lib.php");
@@ -126,6 +129,16 @@ $boDesdobrada = false;
 $boDesabilitaClassificacao = false;
 $boDesabilitaRecurso = false;
 $boPossuiMovimentacao = false;
+$inCodClassContabil = null;
+$stNomConta = null;
+$stFuncao = null;
+$boTemMovimentacao = null;
+$boContaSintetica = null;
+$stNatSaldo = null;
+$inCodRecurso = null;
+$inCodFundo = null;
+$inCodRecursoContraPartida = null;
+$boContaBanco = null;
 
 if ($stAcao == 'alterar') {
     $inCodConta = $_GET['inCodConta'];
@@ -138,8 +151,11 @@ if ($stAcao == 'alterar') {
 
     $inCodClassContabil = $obRContabilidadePlanoBanco->obRContabilidadeClassificacaoContabil->getCodClassificacao();
     $stCodClassificacao = $obRContabilidadePlanoBanco->getCodEstrutural();
+
     $stNomConta = $obRContabilidadePlanoBanco->getNomConta();
     $stNatSaldo = $obRContabilidadePlanoBanco->getNaturezaSaldo();
+    $inCodFundo = $obRContabilidadePlanoBanco->getCodFundo();
+
 
     if ($stNatSaldo == 'devedor') {
         $stNatSaldo = 'D';
@@ -227,6 +243,8 @@ $obHdnCtrl = new Hidden;
 $obHdnCtrl->setName ( "stCtrl" );
 $obHdnCtrl->setValue( "" );
 
+$jsOnload = "";
+
 if ($stAcao == 'alterar') {
 
     // Verifica se a conta tem movimentacao
@@ -261,7 +279,7 @@ if ($stAcao == 'alterar') {
         $boDesabilitaRecurso = true;
         $boDesabilitaClassificacao = true;
     } else {
-        $jsOnload = "montaParametrosGET('HabilitaCampos');";
+        $jsOnload .= "montaParametrosGET('HabilitaCampos');";
     }
 
     //Define Objeto Hidden para Código da Conta
@@ -307,6 +325,7 @@ $obHdnCodClassContabil->setValue( $inCodClassContabil );
 
 $obSpanSistemaContabil = new Span;
 $obSpanSistemaContabil->setId( "spnSistemaContabil" );
+$obSpanSistemaContabil->setClass( "span" );
 
 if ( !Sessao::getExercicio() > '2012' ) {
     // Define Objeto TextBox para Codigo da Classificacao Contabil
@@ -336,7 +355,7 @@ if ( !Sessao::getExercicio() > '2012' ) {
 }
 
 //Campo Fundo
-$rsFundo = new RecordSet;
+/*$rsFundo = new RecordSet;
 $obRContabilidadeFundo = new RContabilidadeFundo();
 $obRContabilidadeFundo->listar($rsFundo);
 
@@ -350,6 +369,42 @@ $obCmbFundo->addOption        ( "", "Selecione" );
 $obCmbFundo->setValue         ( $inCodFundo );
 $obCmbFundo->setNull          ( false );
 $obCmbFundo->preencheCombo    ( $rsFundo );
+*/
+
+//Radio para definicao de Inclusão de Documento Fiscal
+$obRdIncluirFundoSim = new Radio;
+$obRdIncluirFundoSim->setRotulo  ( "*Conta Vinculada a um Fundo" );
+$obRdIncluirFundoSim->setName    ( "stIncluirFundo"  );
+$obRdIncluirFundoSim->setId      ( "stIncluirFundo1" );
+$obRdIncluirFundoSim->setValue   ( "Sim" );
+$obRdIncluirFundoSim->setLabel   ( "Sim" );
+$obRdIncluirFundoSim->obEvento->setOnClick( "montaParametrosGET('montaFundos', 'inCodFundoSelecionado');" );
+$obRdIncluirFundoSim->setChecked ( ($inCodFundo != null) );
+
+$obRdIncluirFundoNao = new Radio;
+$obRdIncluirFundoNao->setRotulo  ( "*Conta Vinculada a um Fundo" );
+$obRdIncluirFundoNao->setName    ( "stIncluirFundo"    );
+$obRdIncluirFundoNao->setId      ( "stIncluirFundo2"   );
+$obRdIncluirFundoNao->setValue   ( "Não" );
+$obRdIncluirFundoNao->setLabel   ( "Não" );
+$obRdIncluirFundoNao->obEvento->setOnClick( "montaParametrosGET('removerFundos', 'stIncluirFundo');" );
+$obRdIncluirFundoNao->setChecked ( ($inCodFundo == null) );
+
+$arRadiosFundos = array( $obRdIncluirFundoSim, $obRdIncluirFundoNao );
+
+$obHdnCodFundo = new Hidden;
+$obHdnCodFundo->setName ( "inCodFundoSelecionado" );
+$obHdnCodFundo->setId   ( "inCodFundoSelecionado" );
+$obHdnCodFundo->setValue( $inCodFundo );
+
+if ($inCodFundo != null) {
+    $jsOnload .= "montaParametrosGET('montaFundos', 'inCodFundoSelecionado');";
+}
+
+
+$obSpanFundos = new Span;
+$obSpanFundos->setId( "spnFundos" );
+$obSpanFundos->setClass( "span" );
 
 if ($stAcao == 'incluir') {
 
@@ -842,8 +897,11 @@ if($rsContaEncerrada->getNumLinhas() > 0 && $stAcao == 'alterar'){
     $obFormulario->addHidden    ( $obHdnAcao               );
     $obFormulario->addComponente( $obLblTipoContaAnalitica );
     $obFormulario->addComponente( $obLblNaturezaSaldo      );
-    $obFormulario->addComponente( $obCmbFundo              );
-
+    // $obFormulario->addComponente( $obCmbFundo              );
+    $obFormulario->agrupaComponentes( $arRadiosFundos );
+    $obFormulario->addComponente( $obSpanFundos      );
+    $obFormulario->addHidden( $obHdnCodFundo );
+    
     if($boContaAnalitica){
         $obFormulario->addComponente( $obLblSistemaContabil );
         if ( Sessao::getExercicio() > '2012' ) {
@@ -947,8 +1005,12 @@ if($rsContaEncerrada->getNumLinhas() > 0 && $stAcao == 'alterar'){
     } else {
         $obFormulario->agrupaComponentes( array($obRdTipoContaAnalitica, $obRdTipoContaSintetica) );
     }
+
     $obFormulario->addComponente($obCmbNaturezaDoSaldo);
-    $obFormulario->addComponente($obCmbFundo);
+    // $obFormulario->addComponente($obCmbFundo);
+    $obFormulario->agrupaComponentes( $arRadiosFundos );
+    $obFormulario->addSpan( $obSpanFundos );
+    $obFormulario->addHidden( $obHdnCodFundo );
     
     $obFormulario->addSpan( $obSpanSistemaContabil );
     

@@ -34,6 +34,9 @@
     * Casos de uso: uc-02.02.02
 */
 
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+
 include '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
 include CAM_GF_CONT_NEGOCIO."RContabilidadePlanoBanco.class.php";
@@ -144,7 +147,9 @@ switch ($stAcao) {
                 $obRContabilidadePlanoBanco->setTipoContaCorrenteTCEMG($_REQUEST['inTipoContaCorrenteTCEMG']);
             }
             
-            $obRContabilidadePlanoBanco->setCodFundo( $_POST['inCodFundo'] );
+            /*if ($_POST['inCodFundo'] != null) {
+                $obRContabilidadePlanoBanco->setCodFundo( $_POST['inCodFundo'] );
+            }*/
 
             if ( Sessao::getExercicio() > '2012' ) {
                 $stNaturezaSaldo = '';
@@ -317,7 +322,11 @@ switch ($stAcao) {
                 */
             }
             
-            $obRContabilidadePlanoBanco->setCodFundo($_POST['inCodFundo']);
+            // $obRContabilidadePlanoBanco->setCodFundo(null);
+
+            if ($_POST['inCodFundo'] != null) {
+                $obRContabilidadePlanoBanco->setCodFundo($_POST['inCodFundo']);
+            }
 
             if( !$obErro->ocorreu() ) {
                 $obErro = $obRContabilidadePlanoBanco->salvar($boTransacao);
@@ -397,7 +406,10 @@ switch ($stAcao) {
                 $obRContabilidadePlanoBanco->setEscrituracao( $_POST['stTipoConta'] == 'A' ? 'analitica' : 'sintetica' );
                 $obRContabilidadePlanoBanco->setIndicadorSuperavit( trim($_POST['stIndicadorSuperavit']) );
                 $obRContabilidadePlanoBanco->setFuncao( $_POST['stFuncao'] );
-                $obRContabilidadePlanoBanco->setCodFundo( $_POST['inCodFundo'] );
+
+                if ($_POST['inCodFundo'] != null) {
+                    $obRContabilidadePlanoBanco->setCodFundo( $_POST['inCodFundo'] );
+                }               
             }
             //if( $_POST['inTipoConta'] == 'Analitica' )
             if ($_POST['stTipoConta'] == 'A') {
