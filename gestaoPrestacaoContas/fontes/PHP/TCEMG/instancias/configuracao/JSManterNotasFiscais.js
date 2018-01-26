@@ -45,48 +45,48 @@
 
 
 function ValidaNF(){
-     var erro = false;
-     var mensagem = "";
+    var erro = false;
+    var mensagem = "";
+    
+    if (document.getElementById('stTipoDocto')) {
+    	stCampo = document.getElementById('stTipoDocto');
+    	if( trim( stCampo.value ) == "" ){
+    	    erro = true;
+    	    mensagem += "@Campo Tipo Docto Fiscal não selecionado!().";
+    	}
+    }
      
-     if (document.getElementById('stTipoDocto')) {
-	stCampo = document.getElementById('stTipoDocto');
-	if( trim( stCampo.value ) == "" ){
-	    erro = true;
-	    mensagem += "@Campo Tipo Docto Fiscal não selecionado!().";
-	}
-     }
+    if (document.getElementById('inCodEntidade')) {
+    	stCampo = document.getElementById('inCodEntidade');
+    	if( trim( stCampo.value ) == "" ){
+    	    erro = true;
+    	    mensagem += "@Campo Entidade não selecionado!().";
+    	}
+    }
      
-     if (document.getElementById('inCodEntidade')) {
-	stCampo = document.getElementById('inCodEntidade');
-	if( trim( stCampo.value ) == "" ){
-	    erro = true;
-	    mensagem += "@Campo Entidade não selecionado!().";
-	}
-     }
+    if (document.getElementById('dtEmissao')) {
+    	stCampo = document.getElementById('dtEmissao');
+    	if( trim( stCampo.value ) == "" ){
+    	    erro = true;
+    	    mensagem += "@Campo Data de Emissão inválido!().";
+    	}
+    }
      
-     if (document.getElementById('dtEmissao')) {
-	stCampo = document.getElementById('dtEmissao');
-	if( trim( stCampo.value ) == "" ){
-	    erro = true;
-	    mensagem += "@Campo Data de Emissão inválido!().";
-	}
-     }
-     
-     if (document.getElementById('inNumeroNF') && !document.getElementById('inChave')) {
-	stCampo = document.getElementById('inNumeroNF');
-	if( trim( stCampo.value ) == "" ){
-	    erro = true;
-	    mensagem += "@Campo Número do Docto Fiscal inválido!().";
-	}
-     }
+    if (document.getElementById('inNumeroNF') && !document.getElementById('inChave')) {
+    	stCampo = document.getElementById('inNumeroNF');
+    	if( trim( stCampo.value ) == "" ){
+    	    erro = true;
+    	    mensagem += "@Campo Número do Docto Fiscal inválido!().";
+    	}
+    }
           
-     if (document.getElementById('inNumSerie') && !document.getElementById('inChave')) {
-	stCampo = document.getElementById('inNumSerie');
-	if( trim( stCampo.value ) == "" ){
-	    erro = true;
-	    mensagem += "@Campo Série do Docto Fiscal inválido!().";
-	}
-     }
+    if (document.getElementById('inNumSerie') && !document.getElementById('inChave')) {
+    	stCampo = document.getElementById('inNumSerie');
+    	if( trim( stCampo.value ) == "" ){
+    	    erro = true;
+    	    mensagem += "@Campo Série do Docto Fiscal inválido!().";
+    	}
+    }
      
     if (document.getElementById('inChave')) {
         stCampo = document.getElementById('inChave');
@@ -94,20 +94,15 @@ function ValidaNF(){
     	    erro = true;
     	    mensagem += "O @Campo Chave de Acesso é obrigatório!().";
     	}
-
-        if (!ValidaChaveNF(stCampo.value)) {
-            erro = true;
-            mensagem += "Chave de Acesso inválida!().";   
-        }
     }
      
-     if (document.getElementById('inChaveMunicipal')) {
-	stCampo = document.getElementById('inChaveMunicipal');
-	if( trim( stCampo.value ) == "" ){
-	    erro = true;
-	    mensagem += "@Campo Chave de Acesso Municipal inválido!().";
-	}
-     }
+    if (document.getElementById('inChaveMunicipal')) {
+    	stCampo = document.getElementById('inChaveMunicipal');
+    	if( trim( stCampo.value ) == "" ){
+    	    erro = true;
+    	    mensagem += "@Campo Chave de Acesso Municipal inválido!().";
+    	}
+    }
 
     if (jQuery('#hdnVlAssociadoTotal').val() != '') {
         var nuTotalNf = jQuery('#nuTotalNf').val().replace(".", "").replace(",", ".");
@@ -132,22 +127,6 @@ function ValidaNF(){
     } else {
 	   Salvar();
     }
-}
-
-function ValidaChaveNF(chave) {
-    var multiplicadores = [2, 3, 4, 5, 6, 7, 8, 9];
-    var i = 42;
-    var soma_ponderada = 0;
-
-    while (i >= 0) {
-        for (var m = 0; m < multiplicadores.length && i >= 0; m++) {
-            soma_ponderada += chave[i] * multiplicadores[m];
-            i--;
-        }
-    }
-
-    var resto = soma_ponderada % 11;
-    return (resto == chave[chave.length - 1]);
 }
 
 </script>
