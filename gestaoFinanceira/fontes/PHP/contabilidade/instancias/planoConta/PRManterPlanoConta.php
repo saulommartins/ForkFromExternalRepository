@@ -102,6 +102,11 @@ if ( $stAcao == 'incluir' || $stAcao == 'alterar') {
     }
 }
 
+if ($_POST['stIncluirFundo'] == "Sim" && ($_POST['inCodFundo'] == null || $_POST['inCodFundo'] == "")) {
+    SistemaLegado::exibeAviso("Atenção: preencha o campo Fundo!", 'aviso', 'aviso');
+    die;
+}
+
 switch ($stAcao) {
     case "incluir":
         $obErro = new Erro;
