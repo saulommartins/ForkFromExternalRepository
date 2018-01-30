@@ -91,6 +91,12 @@ var $stName;
 var $stStyle;
 
 /**
+  * @access Private
+  * @var String
+  */
+var $stClass;
+
+/**
  * @access Private
  * @var Boolean
  */

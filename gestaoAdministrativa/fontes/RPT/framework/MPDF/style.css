@@ -268,3 +268,38 @@ body table tfoot tr td {
     background-color: #FFFFFF;
     font-weight: normal;
 }
+
+table.separated {
+    border-collapse: separate !important;
+    border-spacing: 20px 5px !important;
+}
+
+.width-200 {
+    position: relative;
+    display: block !important;
+    width: 200px;
+}
+
+.height-10 {
+    height: 10px;
+}
+
+.height-20 {
+    height: 20px;
+}
+
+.height-30 {
+    height: 30px;
+}
+
+.margin-bottom-30 {
+    margin-bottom: 30px;
+}
+
+.padding-left-30 {
+    padding-left: 30px;
+}
+
+.padding-left-60 {
+    padding-left: 60px;
+}
