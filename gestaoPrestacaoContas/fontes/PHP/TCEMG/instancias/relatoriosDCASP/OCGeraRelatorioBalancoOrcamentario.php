@@ -249,15 +249,15 @@
     $_data[30]['vl_superavit_despesas_pagas'] = 0;
     $_data[30]['vl_superavit_saldo'] = 0;
 
-    $superavitDotacaoInicial = $_data[10]['total_previsao_inicial'] - $_data[30]['vl_subtotal_com_refinanciamento_dotacao_inicial'];
-    $superavitDotacaoAtualizada = $_data[10]['total_previsao_atualizada'] - $_data[30]['vl_subtotal_com_refinanciamento_dotacao_atualizada'];
+    // $superavitDotacaoInicial = $_data[10]['total_previsao_inicial'] - $_data[30]['vl_subtotal_com_refinanciamento_dotacao_inicial'];
+    $superavitDotacaoAtualizada = $_data[10]['total_previsao_atualizada'] - $_data[30]['total_previsao_inicial'];
     $superavitDespesasEmpenhadas = $_data[10]['total_previsao_atualizada'] - $_data[30]['vl_subtotal_com_refinanciamento_despesas_empenhadas'];
     $superavitDespesasLiquidadas = $_data[10]['total_previsao_atualizada'] - $_data[30]['vl_subtotal_com_refinanciamento_despesas_liquidadas'];
     $superavitDespesasPagas = $_data[10]['total_realizado'] - $_data[30]['vl_subtotal_com_refinanciamento_despesas_pagas'];
 
-    if ($superavitDotacaoInicial > 0) {
-        $_data[30]['vl_superavit_dotacao_inicial'] = $superavitDotacaoInicial;
-    }
+    // if ($superavitDotacaoInicial > 0) {
+        // $_data[30]['vl_superavit_dotacao_inicial'] = $superavitDotacaoInicial;
+    // }
 
     if ($superavitDotacaoAtualizada > 0) {
         $_data[30]['vl_superavit_dotacao_atualizada'] = $superavitDotacaoAtualizada;
@@ -287,6 +287,201 @@
     $_data[30]['total_despesas_pagas'] = ($_data[30]['vl_subtotal_com_refinanciamento_despesas_pagas'] + $_data[30]['vl_superavit_despesas_pagas']);
     $_data[30]['total_saldo_dotacao'] = ($_data[30]['vl_subtotal_com_refinanciamento_saldo'] + $_data[30]['vl_superavit_saldo']);
 
+
+
+    $rsRecordSet40 = new RecordSet;
+    $obTTCEMGRelatorioBalancoOrcamentario->recuperaDadosBalancoOrcamentario("montaRecuperaDadosBalancoOrcamentario40", $rsRecordSet40);
+    $_data[40] = $rsRecordSet40->getObjeto();
+
+    $_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_saldo'] = (
+        $_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_exercicios_anteriores']
+        + $_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_ultimo_dia_exercicio_anterior']
+        + $_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_pagos']
+        + $_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_cancelados']
+    );
+
+    $_data[40]['vl_rsp_nao_proces_juros_encar_dividas_saldo'] = (
+        $_data[40]['vl_rsp_nao_proces_juros_encar_dividas_exercicios_anteriores']
+        + $_data[40]['vl_rsp_nao_proces_juros_encar_dividas_ultimo_dia_exercicio_anterior']
+        + $_data[40]['vl_rsp_nao_proces_juros_encar_dividas_pagos']
+        + $_data[40]['vl_rsp_nao_proces_juros_encar_dividas_cancelados']
+    );
+
+    $_data[40]['vl_rsp_nao_proces_outras_desp_correntes_saldo'] = (
+        $_data[40]['vl_rsp_nao_proces_outras_desp_correntes_exercicios_anteriores']
+        + $_data[40]['vl_rsp_nao_proces_outras_desp_correntes_ultimo_dia_exercicio_anterior']
+        + $_data[40]['vl_rsp_nao_proces_outras_desp_correntes_pagos']
+        + $_data[40]['vl_rsp_nao_proces_outras_desp_correntes_cancelados']
+    );
+
+    $_data[40]['vl_rsp_nao_proces_investimentos_saldo'] = (
+        $_data[40]['vl_rsp_nao_proces_investimentos_exercicios_anteriores']
+        + $_data[40]['vl_rsp_nao_proces_investimentos_ultimo_dia_exercicio_anterior']
+        + $_data[40]['vl_rsp_nao_proces_investimentos_pagos']
+        + $_data[40]['vl_rsp_nao_proces_investimentos_cancelados']
+    );
+
+    $_data[40]['vl_rsp_nao_proces_inver_financeira_saldo'] = (
+        $_data[40]['vl_rsp_nao_proces_inver_financeira_exercicios_anteriores']
+        + $_data[40]['vl_rsp_nao_proces_inver_financeira_ultimo_dia_exercicio_anterior']
+        + $_data[40]['vl_rsp_nao_proces_inver_financeira_pagos']
+        + $_data[40]['vl_rsp_nao_proces_inver_financeira_cancelados']
+    );
+
+    $_data[40]['vl_rsp_nao_proces_amortiza_divida_exercicios_saldo'] = (
+        $_data[40]['vl_rsp_nao_proces_amortiza_divida_exercicios_exercicios_anteriores']
+        + $_data[40]['vl_rsp_nao_proces_amortiza_divida_exercicios_ultimo_dia_exercicio_anterior']
+        + $_data[40]['vl_rsp_nao_proces_amortiza_divida_exercicios_pagos']
+        + $_data[40]['vl_rsp_nao_proces_amortiza_divida_exercicios_cancelados']
+    );
+
+
+    $_data[40]['total_exercicios_anteriores'] = (
+        $_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_exercicios_anteriores']
+        + $_data[40]['vl_rsp_nao_proces_juros_encar_dividas_exercicios_anteriores']
+        + $_data[40]['vl_rsp_nao_proces_outras_desp_correntes_exercicios_anteriores']
+        + $_data[40]['vl_rsp_nao_proces_investimentos_exercicios_anteriores']
+        + $_data[40]['vl_rsp_nao_proces_inver_financeira_exercicios_anteriores']
+        + $_data[40]['vl_rsp_nao_proces_amortiza_divida_exercicios_exercicios_anteriores']
+    );
+
+    $_data[40]['total_ultimo_dia_exercicio_anterior'] = (
+        $_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_ultimo_dia_exercicio_anterior']
+        + $_data[40]['vl_rsp_nao_proces_juros_encar_dividas_ultimo_dia_exercicio_anterior']
+        + $_data[40]['vl_rsp_nao_proces_outras_desp_correntes_ultimo_dia_exercicio_anterior']
+        + $_data[40]['vl_rsp_nao_proces_investimentos_ultimo_dia_exercicio_anterior']
+        + $_data[40]['vl_rsp_nao_proces_inver_financeira_ultimo_dia_exercicio_anterior']
+        + $_data[40]['vl_rsp_nao_proces_amortiza_divida_exercicios_ultimo_dia_exercicio_anterior']
+    );
+
+    $_data[40]['total_liquidados'] = (
+        $_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_liquidados']
+        + $_data[40]['vl_rsp_nao_proces_juros_encar_dividas_liquidados']
+        + $_data[40]['vl_rsp_nao_proces_outras_desp_correntes_liquidados']
+        + $_data[40]['vl_rsp_nao_proces_investimentos_liquidados']
+        + $_data[40]['vl_rsp_nao_proces_inver_financeira_liquidados']
+        + $_data[40]['vl_rsp_nao_proces_amortiza_divida_exercicios_liquidados']
+    );
+
+    $_data[40]['total_pagos'] = (
+        $_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_pagos']
+        + $_data[40]['vl_rsp_nao_proces_juros_encar_dividas_pagos']
+        + $_data[40]['vl_rsp_nao_proces_outras_desp_correntes_pagos']
+        + $_data[40]['vl_rsp_nao_proces_investimentos_pagos']
+        + $_data[40]['vl_rsp_nao_proces_inver_financeira_pagos']
+        + $_data[40]['vl_rsp_nao_proces_amortiza_divida_exercicios_pagos']
+    );
+
+    $_data[40]['total_cancelados'] = (
+        $_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_cancelados']
+        + $_data[40]['vl_rsp_nao_proces_juros_encar_dividas_cancelados']
+        + $_data[40]['vl_rsp_nao_proces_outras_desp_correntes_cancelados']
+        + $_data[40]['vl_rsp_nao_proces_investimentos_cancelados']
+        + $_data[40]['vl_rsp_nao_proces_inver_financeira_cancelados']
+        + $_data[40]['vl_rsp_nao_proces_amortiza_divida_exercicios_cancelados']
+    );
+
+    $_data[40]['total_saldo'] = (
+        $_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_saldo']
+        + $_data[40]['vl_rsp_nao_proces_juros_encar_dividas_saldo']
+        + $_data[40]['vl_rsp_nao_proces_outras_desp_correntes_saldo']
+        + $_data[40]['vl_rsp_nao_proces_investimentos_saldo']
+        + $_data[40]['vl_rsp_nao_proces_inver_financeira_saldo']
+        + $_data[40]['vl_rsp_nao_proces_amortiza_divida_exercicios_saldo']
+    );
+
+    $rsRecordSet50 = new RecordSet;
+    $obTTCEMGRelatorioBalancoOrcamentario->recuperaDadosBalancoOrcamentario("montaRecuperaDadosBalancoOrcamentario50", $rsRecordSet50);
+    $_data[50] = $rsRecordSet50->getObjeto();
+
+
+    $_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_saldo'] = (
+        $_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_exercicios_anteriores']
+        + $_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_ultimo_dia_exercicio_anterior']
+        + $_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_pagos']
+        + $_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_cancelados']
+    );
+
+    $_data[50]['vl_rspprocess_liq_juros_encar_dividas_saldo'] = (
+        $_data[50]['vl_rspprocess_liq_juros_encar_dividas_exercicios_anteriores']
+        + $_data[50]['vl_rspprocess_liq_juros_encar_dividas_ultimo_dia_exercicio_anterior']
+        + $_data[50]['vl_rspprocess_liq_juros_encar_dividas_pagos']
+        + $_data[50]['vl_rspprocess_liq_juros_encar_dividas_cancelados']
+    );
+
+    $_data[50]['vl_rspprocess_liq_outras_desp_correntes_saldo'] = (
+        $_data[50]['vl_rspprocess_liq_outras_desp_correntes_exercicios_anteriores']
+        + $_data[50]['vl_rspprocess_liq_outras_desp_correntes_ultimo_dia_exercicio_anterior']
+        + $_data[50]['vl_rspprocess_liq_outras_desp_correntes_pagos']
+        + $_data[50]['vl_rspprocess_liq_outras_desp_correntes_cancelados']
+    );
+
+    $_data[50]['vl_rspprocess_liq_investimentos_saldo'] = (
+        $_data[50]['vl_rspprocess_liq_investimentos_exercicios_anteriores']
+        + $_data[50]['vl_rspprocess_liq_investimentos_ultimo_dia_exercicio_anterior']
+        + $_data[50]['vl_rspprocess_liq_investimentos_pagos']
+        + $_data[50]['vl_rspprocess_liq_investimentos_cancelados']
+    );
+
+    $_data[50]['vl_rspprocess_liq_inver_financeira_sociais_saldo'] = (
+        $_data[50]['vl_rspprocess_liq_inver_financeira_sociais_exercicios_anteriores']
+        + $_data[50]['vl_rspprocess_liq_inver_financeira_sociais_ultimo_dia_exercicio_anterior']
+        + $_data[50]['vl_rspprocess_liq_inver_financeira_sociais_pagos']
+        + $_data[50]['vl_rspprocess_liq_inver_financeira_sociais_cancelados']
+    );
+
+    $_data[50]['vl_rspprocess_liq_amortiza_divida_saldo'] = (
+        $_data[50]['vl_rspprocess_liq_amortiza_divida_exercicios_anteriores']
+        + $_data[50]['vl_rspprocess_liq_amortiza_divida_ultimo_dia_exercicio_anterior']
+        + $_data[50]['vl_rspprocess_liq_amortiza_divida_pagos']
+        + $_data[50]['vl_rspprocess_liq_amortiza_divida_cancelados']
+    );
+
+
+    $_data[50]['total_exercicios_anteriores'] = (
+        $_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_exercicios_anteriores']
+        + $_data[50]['vl_rspprocess_liq_juros_encar_dividas_exercicios_anteriores']
+        + $_data[50]['vl_rspprocess_liq_outras_desp_correntes_exercicios_anteriores']
+        + $_data[50]['vl_rspprocess_liq_investimentos_exercicios_anteriores']
+        + $_data[50]['vl_rspprocess_liq_inver_financeira_sociais_exercicios_anteriores']
+        + $_data[50]['vl_rspprocess_liq_amortiza_divida_exercicios_anteriores']
+    );
+
+    $_data[50]['total_ultimo_dia_exercicio_anterior'] = (
+        $_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_ultimo_dia_exercicio_anterior']
+        + $_data[50]['vl_rspprocess_liq_juros_encar_dividas_ultimo_dia_exercicio_anterior']
+        + $_data[50]['vl_rspprocess_liq_outras_desp_correntes_ultimo_dia_exercicio_anterior']
+        + $_data[50]['vl_rspprocess_liq_investimentos_ultimo_dia_exercicio_anterior']
+        + $_data[50]['vl_rspprocess_liq_inver_financeira_sociais_ultimo_dia_exercicio_anterior']
+        + $_data[50]['vl_rspprocess_liq_amortiza_divida_ultimo_dia_exercicio_anterior']
+    );
+
+    $_data[50]['total_pagos'] = (
+        $_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_pagos']
+        + $_data[50]['vl_rspprocess_liq_juros_encar_dividas_pagos']
+        + $_data[50]['vl_rspprocess_liq_outras_desp_correntes_pagos']
+        + $_data[50]['vl_rspprocess_liq_investimentos_pagos']
+        + $_data[50]['vl_rspprocess_liq_inver_financeira_sociais_pagos']
+        + $_data[50]['vl_rspprocess_liq_amortiza_divida_pagos']
+    );
+
+    $_data[50]['total_cancelados'] = (
+        $_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_cancelados']
+        + $_data[50]['vl_rspprocess_liq_juros_encar_dividas_cancelados']
+        + $_data[50]['vl_rspprocess_liq_outras_desp_correntes_cancelados']
+        + $_data[50]['vl_rspprocess_liq_investimentos_cancelados']
+        + $_data[50]['vl_rspprocess_liq_inver_financeira_sociais_cancelados']
+        + $_data[50]['vl_rspprocess_liq_amortiza_divida_cancelados']
+    );
+
+    $_data[50]['total_saldo'] = (
+        $_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_saldo']
+        + $_data[50]['vl_rspprocess_liq_juros_encar_dividas_saldo']
+        + $_data[50]['vl_rspprocess_liq_outras_desp_correntes_saldo']
+        + $_data[50]['vl_rspprocess_liq_investimentos_saldo']
+        + $_data[50]['vl_rspprocess_liq_inver_financeira_sociais_saldo']
+        + $_data[50]['vl_rspprocess_liq_amortiza_divida_saldo']
+    );
 
     $obMPDF->setConteudo($_data);
     $obMPDF->gerarRelatorio();

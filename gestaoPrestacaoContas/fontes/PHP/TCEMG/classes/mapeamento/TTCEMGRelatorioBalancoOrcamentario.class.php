@@ -513,9 +513,9 @@
                                               receita.vl_original,
                                               SUM(arrecadacao_receita.vl_arrecadacao) AS valor
 
-                                          FROM  tesouraria.arrecadacao_receita
+                                        FROM  tesouraria.arrecadacao_receita
 
-                                           JOIN  orcamento.receita
+                                        JOIN  orcamento.receita
                                           ON  arrecadacao_receita.cod_receita = receita.cod_receita
                                          AND  arrecadacao_receita.exercicio = receita.exercicio
 
@@ -523,8 +523,21 @@
                                           ON  conta_receita.cod_conta = receita.cod_conta
                                          AND  conta_receita.exercicio = receita.exercicio
 
+                                        LEFT  JOIN tesouraria.arrecadacao_estornada
+                                          ON  arrecadacao_estornada.cod_arrecadacao = arrecadacao_receita.cod_arrecadacao
+                                         AND  arrecadacao_estornada.exercicio = arrecadacao_receita.exercicio
+                                         AND  arrecadacao_estornada.timestamp_arrecadacao = arrecadacao_receita.timestamp_arrecadacao
+
+                                        LEFT  JOIN tesouraria.arrecadacao_receita_dedutora
+                                          ON  arrecadacao_receita_dedutora.cod_arrecadacao = arrecadacao_receita.cod_arrecadacao
+                                         AND  arrecadacao_receita_dedutora.timestamp_arrecadacao = arrecadacao_receita.timestamp_arrecadacao
+                                         AND  arrecadacao_receita_dedutora.cod_receita = arrecadacao_receita.cod_receita
+                                         AND  arrecadacao_receita_dedutora.exercicio = arrecadacao_receita.exercicio
+
                                        WHERE  arrecadacao_receita.exercicio = '".$this->getDado('exercicio')."'
                                          AND  receita.cod_entidade IN (".$this->getDado('entidades').")
+                                         AND  arrecadacao_estornada.cod_arrecadacao IS NULL
+                                         AND  arrecadacao_receita_dedutora.cod_arrecadacao IS NULL
 
                                         GROUP  BY conta_receita.cod_estrutural,
                                                     arrecadacao_receita.exercicio,
@@ -544,69 +557,64 @@
             return "
                 SELECT  COALESCE(vlSaldoExercicioAnteriorSuperavitFinan.valor, 0.00) AS vl_saldo_exercicio_anterior_superavit_finan, 
                         COALESCE(vlSaldoExercicioAnteriorReaberturaCreditoAdicio.valor, 0.00) AS vl_saldo_exercicio_anterior_reabertura_credito_adicio
-                 FROM  (
-                          SELECT  SUM(valor_lancamento.vl_lancamento) AS valor
-                            FROM  contabilidade.lancamento
+                  FROM  (
+                          SELECT SUM(superavit.valor - superavit.vl_original) as valor
+                            FROM (
+                                SELECT  receita.exercicio, receita.cod_receita, receita.vl_original, 
+                                        COALESCE(
+                                          SUM(
+                                              arrecadacao_receita.vl_arrecadacao - arrecadacao_receita_dedutora.vl_deducao
+                                          ), 
+                                        0.00) AS valor
+                                  
+                                  FROM  orcamento.receita
 
-                            JOIN  contabilidade.valor_lancamento
-                              ON  valor_lancamento.exercicio = lancamento.exercicio
-                             AND  valor_lancamento.cod_entidade = lancamento.cod_entidade
-                             AND  valor_lancamento.tipo = lancamento.tipo
-                             AND  valor_lancamento.cod_lote = lancamento.cod_lote
-                             AND  valor_lancamento.sequencia = lancamento.sequencia
+                                  JOIN  tesouraria.arrecadacao_receita
+                                    ON  arrecadacao_receita.cod_receita = receita.cod_receita
+                                   AND  arrecadacao_receita.exercicio = receita.exercicio
 
-                            LEFT  JOIN contabilidade.conta_credito
-                              ON  conta_credito.cod_lote = valor_lancamento.cod_lote
-                             AND  conta_credito.tipo = valor_lancamento.tipo
-                             AND  conta_credito.sequencia = valor_lancamento.sequencia
-                             AND  conta_credito.exercicio = valor_lancamento.exercicio
-                             AND  conta_credito.tipo_valor = valor_lancamento.tipo_valor
-                             AND  conta_credito.cod_entidade = valor_lancamento.cod_entidade
+                                  JOIN  tesouraria.arrecadacao
+                                    ON  arrecadacao.exercicio = arrecadacao_receita.exercicio
+                                   AND  arrecadacao.cod_arrecadacao = arrecadacao_receita.cod_arrecadacao
+                                   AND  arrecadacao.timestamp_arrecadacao = arrecadacao_receita.timestamp_arrecadacao
 
-                            LEFT  JOIN contabilidade.conta_debito
-                              ON  conta_debito.cod_lote = valor_lancamento.cod_lote
-                             AND  conta_debito.tipo = valor_lancamento.tipo
-                             AND  conta_debito.sequencia = valor_lancamento.sequencia
-                             AND  conta_debito.exercicio = valor_lancamento.exercicio
-                             AND  conta_debito.tipo_valor = valor_lancamento.tipo_valor
-                             AND  conta_debito.cod_entidade = valor_lancamento.cod_entidade
+                                  LEFT  JOIN tesouraria.arrecadacao_estornada
+                                    ON  arrecadacao_estornada.cod_arrecadacao = arrecadacao_receita.cod_arrecadacao
+                                   AND  arrecadacao_estornada.exercicio = arrecadacao_receita.exercicio
+                                   AND  arrecadacao_estornada.timestamp_arrecadacao = arrecadacao_receita.timestamp_arrecadacao
 
-                            -- plano de contas de crédito
-                            LEFT  JOIN contabilidade.plano_analitica AS plano_analitica_credito
-                              ON  plano_analitica_credito.exercicio = conta_credito.exercicio
-                             AND  plano_analitica_credito.cod_plano = conta_credito.cod_plano
+                                  LEFT  JOIN tesouraria.arrecadacao_receita_dedutora
+                                    ON  arrecadacao_receita_dedutora.cod_arrecadacao = arrecadacao_receita.cod_arrecadacao
+                                   AND  arrecadacao_receita_dedutora.timestamp_arrecadacao = arrecadacao_receita.timestamp_arrecadacao
+                                   AND  arrecadacao_receita_dedutora.cod_receita = arrecadacao_receita.cod_receita
+                                   AND  arrecadacao_receita_dedutora.exercicio = arrecadacao_receita.exercicio
 
-                            LEFT  JOIN contabilidade.plano_conta AS plano_conta_credito
-                              ON  plano_conta_credito.exercicio = plano_analitica_credito.exercicio
-                             AND  plano_conta_credito.cod_conta = plano_analitica_credito.cod_conta
-
-                            -- plano de contas de débito
-                            LEFT  JOIN contabilidade.plano_analitica AS plano_analitica_debito
-                              ON  plano_analitica_debito.exercicio = conta_debito.exercicio
-                             AND  plano_analitica_debito.cod_plano = conta_debito.cod_plano
-
-                            LEFT  JOIN contabilidade.plano_conta AS plano_conta_debito
-                              ON  plano_conta_debito.exercicio = plano_analitica_debito.exercicio
-                             AND  plano_conta_debito.cod_conta = plano_analitica_debito.cod_conta
-
-                           WHERE  (plano_conta_credito.cod_estrutural LIKE '1%' OR plano_conta_debito.cod_estrutural LIKE '2%')
-                             AND  lancamento.exercicio = '".$this->getDado('exercicio')."'
-                             AND  lancamento.cod_entidade IN (".$this->getDado('entidades').")
-
-                    ) AS vlSaldoExercicioAnteriorSuperavitFinan,
-                    (
-                          SELECT  SUM(suplementacao_suplementada.valor) AS valor
+                                 WHERE  receita.exercicio::numeric < ".$this->getDado('exercicio')."
+                                   AND  arrecadacao_estornada.cod_arrecadacao IS NULL
+                                   AND  arrecadacao.cod_entidade IN (".$this->getDado('entidades').")
+                          
+                                 GROUP  BY receita.exercicio, receita.cod_receita, receita.vl_original
+                               )  AS superavit
+                           WHERE  superavit.valor > superavit.vl_original
+                        ) AS vlSaldoExercicioAnteriorSuperavitFinan,
+                        (
+                            SELECT  SUM(suplementacao_suplementada.valor) AS valor
                               FROM  orcamento.suplementacao
 
-                            JOIN  orcamento.suplementacao_suplementada
-                              ON  suplementacao_suplementada.exercicio = suplementacao.exercicio
-                             AND  suplementacao_suplementada.cod_suplementacao = suplementacao.cod_suplementacao
+                              JOIN  orcamento.suplementacao_suplementada
+                                ON  suplementacao_suplementada.exercicio = suplementacao.exercicio
+                               AND  suplementacao_suplementada.cod_suplementacao = suplementacao.cod_suplementacao
 
-                           WHERE  EXTRACT(MONTH FROM suplementacao.dt_suplementacao) > 8
-                             AND  suplementacao.exercicio = '".$this->getDado('exercicio')."'
-                    ) AS vlSaldoExercicioAnteriorReaberturaCreditoAdicio
+                              JOIN  orcamento.despesa
+                                ON  despesa.exercicio = suplementacao_suplementada.exercicio
+                               AND  despesa.cod_despesa = suplementacao_suplementada.cod_despesa
 
-                    GROUP BY vlSaldoExercicioAnteriorSuperavitFinan.valor, vlSaldoExercicioAnteriorReaberturaCreditoAdicio.valor
+                             WHERE  EXTRACT(MONTH FROM suplementacao.dt_suplementacao) > 8
+                               AND  suplementacao.exercicio::numeric < ".$this->getDado('exercicio')."
+                               AND  despesa.cod_entidade IN (".$this->getDado('entidades').")
+                        ) AS vlSaldoExercicioAnteriorReaberturaCreditoAdicio
+
+                 GROUP  BY vlSaldoExercicioAnteriorSuperavitFinan.valor, vlSaldoExercicioAnteriorReaberturaCreditoAdicio.valor
             ";
         }
 
@@ -1159,4 +1167,736 @@
             ";
         }
 
+        public function montaRecuperaDadosBalancoOrcamentario40()
+        {
+          return "
+              SELECT  -- RESTOS A PAGAR NÃO PROCESSADOS -> DESPESAS CORRENTES -> PESSOAL E ENCARGOS SOCIAIS
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesPessoalEncarSociais '
+                                AND campos.fase = 1
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_pessoal_encar_sociais_exercicios_anteriores,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesPessoalEncarSociais '
+                                AND campos.fase = 2
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_pessoal_encar_sociais_ultimo_dia_exercicio_anterior,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesPessoalEncarSociais '
+                                AND campos.fase = 4
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_pessoal_encar_sociais_pagos,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesPessoalEncarSociais '
+                                AND campos.fase = 5
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_pessoal_encar_sociais_cancelados,
+                      -- RESTOS A PAGAR NÃO PROCESSADOS -> DESPESAS CORRENTES -> JUROS E ENCARGOS DA DÍVIDA
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesJurosEncarDividas '
+                                AND campos.fase = 1
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_juros_encar_dividas_exercicios_anteriores,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesJurosEncarDividas '
+                                AND campos.fase = 2
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_juros_encar_dividas_ultimo_dia_exercicio_anterior,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesJurosEncarDividas '
+                                AND campos.fase = 4
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_juros_encar_dividas_pagos,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesJurosEncarDividas '
+                                AND campos.fase = 5
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_juros_encar_dividas_cancelados,
+                      -- RESTOS A PAGAR NÃO PROCESSADOS -> DESPESAS CORRENTES -> OUTRAS DESPESAS CORRENTES
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesOutrasDespCorrentes '
+                                AND campos.fase = 1
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_outras_desp_correntes_exercicios_anteriores,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesOutrasDespCorrentes '
+                                AND campos.fase = 2
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_outras_desp_correntes_ultimo_dia_exercicio_anterior,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesOutrasDespCorrentes '
+                                AND campos.fase = 4
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_outras_desp_correntes_pagos,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesOutrasDespCorrentes '
+                                AND campos.fase = 5
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_outras_desp_correntes_cancelados,
+                      -- RESTOS A PAGAR NÃO PROCESSADOS -> DESPESAS DE CAPITAL -> INVESTIMENTOS
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesInvestimentos'
+                                AND campos.fase = 1
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_investimentos_exercicios_anteriores,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesInvestimentos '
+                                AND campos.fase = 2
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_investimentos_ultimo_dia_exercicio_anterior,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesInvestimentos '
+                                AND campos.fase = 4
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_investimentos_pagos,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesInvestimentos '
+                                AND campos.fase = 5
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_investimentos_cancelados,
+                      -- RESTOS A PAGAR NÃO PROCESSADOS -> DESPESAS DE CAPITAL -> INVERSÕES FINANCEIRAS
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesInverFinanceira '
+                                AND campos.fase = 1
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_inver_financeira_exercicios_anteriores,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesInverFinanceira '
+                                AND campos.fase = 2
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_inver_financeira_ultimo_dia_exercicio_anterior,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesInverFinanceira '
+                                AND campos.fase = 4
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_inver_financeira_pagos,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesInverFinanceira '
+                                AND campos.fase = 5
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_inver_financeira_cancelados,
+                      -- RESTOS A PAGAR NÃO PROCESSADOS -> DESPESAS DE CAPITAL -> AMORTIZAÇÃO DA DÍVIDA
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesAmortizaDivida '
+                                AND campos.fase = 1
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_amortiza_divida_exercicios_anteriores,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesAmortizaDivida '
+                                AND campos.fase = 2
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_amortiza_divida_ultimo_dia_exercicio_anterior,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesAmortizaDivida '
+                                AND campos.fase = 4
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_amortiza_divida_pagos,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPNaoProcesAmortizaDivida '
+                                AND campos.fase = 5
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rsp_nao_proces_amortiza_divida_cancelados
+                FROM  (
+                    SELECT DISTINCT
+                           totais_despesas.*,
+                           configuracao_dcasp_arquivo.nome_tag,
+                           configuracao_dcasp_arquivo.nome_arquivo_pertencente,
+                           configuracao_dcasp_arquivo.tipo_registro
+                    FROM   (
+                          SELECT  despesas.cod_estrutural, 
+                                  despesas.vl_original, 
+                                  despesas.vl_suplementar,
+                                  despesas.cod_despesa,
+                                  despesas.dt_criacao,
+                                  despesas.cod_subfuncao,
+                                  empenhos.fase,
+                                  COALESCE(SUM(empenhos.vl_empenhado), 0.00) AS vl_empenhado,
+                                  COALESCE(SUM(empenhos.vl_liquidado), 0.00) AS vl_liquidado,
+                                  COALESCE(SUM(empenhos.vl_liquidacao_paga), 0.00) AS vl_pago
+                           FROM  (
+                              SELECT  conta_despesa.cod_estrutural,
+                                      despesa.cod_despesa, 
+                                      despesa.dt_criacao,
+                                      despesa.vl_original, 
+                                      despesa.cod_subfuncao,
+                                      COALESCE(SUM(suplementacao_suplementada.valor), 0.00) AS vl_suplementar
+
+                                FROM  orcamento.despesa
+
+                                JOIN  orcamento.conta_despesa
+                                  ON  conta_despesa.exercicio = despesa.exercicio
+                                 AND  conta_despesa.cod_conta = despesa.cod_conta
+
+                                 LEFT JOIN  orcamento.suplementacao_suplementada
+                                  ON  suplementacao_suplementada.exercicio = despesa.exercicio
+                                 AND  suplementacao_suplementada.cod_despesa = despesa.cod_despesa
+
+                                 LEFT JOIN  orcamento.suplementacao
+                                  ON  suplementacao.exercicio = suplementacao_suplementada.exercicio
+                                 AND  suplementacao.cod_suplementacao = suplementacao_suplementada.cod_suplementacao
+
+                                 LEFT JOIN  orcamento.suplementacao_reducao
+                                  ON  suplementacao_reducao.exercicio = suplementacao.exercicio
+                                 AND  suplementacao_reducao.cod_suplementacao = suplementacao.cod_suplementacao
+                                 AND  suplementacao_reducao.cod_despesa = despesa.cod_despesa
+
+                                 LEFT JOIN  orcamento.suplementacao_anulada
+                                  ON  suplementacao_anulada.exercicio = suplementacao.exercicio
+                                 AND  suplementacao_anulada.cod_suplementacao = suplementacao.cod_suplementacao
+
+                               WHERE  despesa.exercicio = '2017'
+                                 AND  suplementacao_anulada.cod_suplementacao IS NULL
+                                 AND  despesa.cod_entidade IN (2)
+
+                               GROUP  BY  conta_despesa.cod_estrutural, 
+                                          despesa.cod_despesa, 
+                                          despesa.dt_criacao, 
+                                          despesa.vl_original, 
+                                          despesa.cod_subfuncao
+
+                               ORDER  BY  despesa.cod_despesa
+                            ) AS despesas
+
+                      LEFT  JOIN (
+                          SELECT  (
+                                  CASE 
+                                       WHEN  empenho.exercicio = '2017'
+                                        AND  (empenho_anulado_item.cod_empenho IS NOT NULL 
+                                         OR  nota_liquidacao_item_anulado.cod_nota IS NOT NULL)
+                                       THEN  5
+                                         
+                                       WHEN  empenho.exercicio = '2017' 
+                                        AND  nota_liquidacao_paga.vl_pago IS NOT NULL
+                                       THEN  4
+
+                                       WHEN  empenho.exercicio = '2017'
+                                        AND  nota_liquidacao.dt_liquidacao IS NOT NULL
+                                       THEN  3
+
+                                       WHEN  empenho.exercicio::integer < 2017
+                                        AND  empenho.dt_empenho = '31/12/2016'
+                                       THEN  2
+
+                                       WHEN  empenho.exercicio::integer < 2017
+                                       THEN  1
+                                  END 
+                                  ) as fase,
+                                  pre_empenho.exercicio,
+                                  pre_empenho.cod_pre_empenho, 
+                                  pre_empenho.exercicio, 
+                                  pre_empenho_despesa.cod_despesa, 
+                                    
+                                  COALESCE(SUM(item_pre_empenho.vl_total), 0.00) AS vl_empenhado,
+                                  COALESCE(SUM(nota_liquidacao_item.vl_total), 0.00) AS vl_liquidado,
+                                  COALESCE(SUM(nota_liquidacao_item_anulado.vl_anulado), 0.00) AS vl_anulado,
+                                  COALESCE(SUM(nota_liquidacao_paga.vl_pago), 0.00) AS vl_liquidacao_paga
+                          
+                            FROM  empenho.pre_empenho
+
+                            JOIN  empenho.item_pre_empenho
+                              ON  item_pre_empenho.exercicio = pre_empenho.exercicio
+                             AND  item_pre_empenho.cod_pre_empenho = pre_empenho.cod_pre_empenho
+                           
+                            JOIN  empenho.pre_empenho_despesa
+                              ON  pre_empenho_despesa.exercicio = pre_empenho.exercicio
+                             AND  pre_empenho_despesa.cod_pre_empenho = pre_empenho.cod_pre_empenho
+
+                            JOIN  empenho.empenho
+                              ON  empenho.cod_pre_empenho = pre_empenho.cod_pre_empenho
+                             AND  empenho.exercicio = pre_empenho.exercicio
+                     
+                            LEFT  JOIN empenho.restos_pre_empenho
+                              ON  restos_pre_empenho.exercicio = pre_empenho.exercicio 
+                             AND  restos_pre_empenho.cod_pre_empenho = pre_empenho.cod_pre_empenho
+                               
+                            LEFT  JOIN empenho.empenho_anulado
+                              ON  empenho_anulado.exercicio = empenho.exercicio
+                             AND  empenho_anulado.cod_entidade = empenho.cod_entidade
+                             AND  empenho_anulado.cod_empenho = empenho.cod_empenho
+
+                            LEFT  JOIN empenho.empenho_anulado_item
+                              ON  empenho_anulado_item.exercicio = empenho_anulado.exercicio
+                             AND  empenho_anulado_item.cod_entidade = empenho_anulado.cod_entidade
+                             AND  empenho_anulado_item.cod_empenho = empenho_anulado.cod_empenho
+                             AND  empenho_anulado_item.timestamp = empenho_anulado.timestamp
+
+                            LEFT  JOIN empenho.nota_liquidacao
+                              ON  empenho.exercicio = nota_liquidacao.exercicio_empenho
+                             AND  empenho.cod_entidade = nota_liquidacao.cod_entidade
+                             AND  empenho.cod_empenho  = nota_liquidacao.cod_empenho
+
+                            LEFT  JOIN empenho.nota_liquidacao_item
+                              ON  nota_liquidacao.exercicio = nota_liquidacao_item.exercicio
+                             AND  nota_liquidacao.cod_entidade = nota_liquidacao_item.cod_entidade
+                             AND  nota_liquidacao.cod_nota = nota_liquidacao_item.cod_nota
+
+                            LEFT  JOIN empenho.nota_liquidacao_item_anulado
+                              ON  nota_liquidacao_item_anulado.exercicio = nota_liquidacao_item.exercicio
+                             AND  nota_liquidacao_item_anulado.cod_nota = nota_liquidacao_item.cod_nota
+                             AND  nota_liquidacao_item_anulado.num_item = nota_liquidacao_item.num_item
+                             AND  nota_liquidacao_item_anulado.exercicio_item = nota_liquidacao_item.exercicio_item
+                             AND  nota_liquidacao_item_anulado.cod_pre_empenho = nota_liquidacao_item.cod_pre_empenho
+                             AND  nota_liquidacao_item_anulado.cod_entidade = nota_liquidacao_item.cod_entidade
+
+                            LEFT  JOIN empenho.nota_liquidacao_paga
+                              ON  nota_liquidacao_paga.exercicio = nota_liquidacao.exercicio
+                             AND  nota_liquidacao_paga.cod_entidade = nota_liquidacao.cod_entidade
+                             AND  nota_liquidacao_paga.cod_nota = nota_liquidacao.cod_nota
+
+                            LEFT  JOIN empenho.nota_liquidacao_paga_anulada
+                              ON  nota_liquidacao_paga_anulada.exercicio = nota_liquidacao_paga.exercicio
+                             AND  nota_liquidacao_paga_anulada.cod_entidade = nota_liquidacao_paga.cod_entidade
+                             AND  nota_liquidacao_paga_anulada.cod_nota = nota_liquidacao_paga.cod_nota
+
+                           WHERE  pre_empenho.exercicio = '2017'
+                             AND  empenho_anulado.cod_empenho IS NULL
+                             AND  nota_liquidacao_paga_anulada.cod_nota IS NULL
+
+                           GROUP  BY nota_liquidacao_paga.vl_pago,
+                                     empenho.exercicio,
+                                     empenho_anulado_item.cod_empenho, 
+                                     nota_liquidacao_item_anulado.cod_nota, 
+                                     pre_empenho.cod_pre_empenho, 
+                                     pre_empenho.exercicio, 
+                                     pre_empenho_despesa.cod_despesa,
+                                     nota_liquidacao.dt_liquidacao,
+                                     empenho.dt_empenho
+                          ) AS empenhos
+
+                        ON  empenhos.cod_despesa = despesas.cod_despesa
+
+                     GROUP  BY despesas.cod_estrutural, 
+                               despesas.vl_original, 
+                               despesas.vl_suplementar, 
+                               despesas.cod_despesa, 
+                               despesas.dt_criacao, 
+                               despesas.cod_subfuncao,
+                               empenhos.fase
+                      )  AS totais_despesas
+
+                      JOIN  tcemg.configuracao_dcasp_registros
+                        ON  configuracao_dcasp_registros.exercicio = '2017'
+                       AND  REPLACE(configuracao_dcasp_registros.conta_orc_despesa, '.', '') = REPLACE(totais_despesas.cod_estrutural, '.', '')
+
+                      JOIN  tcemg.configuracao_dcasp_arquivo USING (seq_arquivo)
+                     WHERE  configuracao_dcasp_arquivo.tipo_registro = 40
+                       AND  configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'BO'
+                ) AS campos
+          ";
+        }
+
+        public function montaRecuperaDadosBalancoOrcamentario50()
+        {
+          return "
+              SELECT  -- RESTOS A PAGAR PROCESSADOS E NÃO PROCESSADOS LIQUIDADOS -> DESPESAS CORRENTES -> PESSOAL E ENCARGOS SOCIAIS
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqPessoalEncarSociais'
+                                AND campos.fase = 1
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_pessoal_encar_sociais_exercicios_anteriores,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqPessoalEncarSociais'
+                                AND campos.fase = 2
+                               THEN campos.vl_empenhado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_pessoal_encar_sociais_ultimo_dia_exercicio_anterior,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqPessoalEncarSociais'
+                                AND campos.fase = 4
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_pessoal_encar_sociais_pagos,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqPessoalEncarSociais'
+                                AND campos.fase = 5
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_pessoal_encar_sociais_cancelados,
+                      -- RESTOS A PAGAR PROCESSADOS E NÃO PROCESSADOS LIQUIDADOS -> DESPESAS CORRENTES -> JUROS E ENCARGOS DA DÍVIDA
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqJurosEncarDividas'
+                                AND campos.fase = 1
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_juros_encar_dividas_exercicios_anteriores,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqJurosEncarDividas'
+                                AND campos.fase = 2
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_juros_encar_dividas_ultimo_dia_exercicio_anterior,                      
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqJurosEncarDividas'
+                                AND campos.fase = 4
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_juros_encar_dividas_pagos,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqJurosEncarDividas'
+                                AND campos.fase = 5
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_juros_encar_dividas_cancelados,
+                      -- RESTOS A PAGAR PROCESSADOS E NÃO PROCESSADOS LIQUIDADOS -> DESPESAS CORRENTES -> OUTRAS DESPESAS CORRENTES
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqOutrasDespCorrentes'
+                                AND campos.fase = 1
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_outras_desp_correntes_exercicios_anteriores,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqOutrasDespCorrentes'
+                                AND campos.fase = 2
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_outras_desp_correntes_ultimo_dia_exercicio_anterior,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqOutrasDespCorrentes'
+                                AND campos.fase = 4
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_outras_desp_correntes_pagos,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqOutrasDespCorrentes'
+                                AND campos.fase = 5
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_outras_desp_correntes_cancelados,
+                      -- RESTOS A PAGAR PROCESSADOS E NÃO PROCESSADOS LIQUIDADOS -> DESPESAS DE CAPITAL -> INVESTIMENTOS
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqInvestimentos'
+                                AND campos.fase = 1
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_investimentos_exercicios_anteriores,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqInvestimentos'
+                                AND campos.fase = 2
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_investimentos_ultimo_dia_exercicio_anterior,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqInvestimentos'
+                                AND campos.fase = 4
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_investimentos_pagos,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqInvestimentos'
+                                AND campos.fase = 5
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_investimentos_cancelados,
+                      -- RESTOS A PAGAR PROCESSADOS E NÃO PROCESSADOS LIQUIDADOS -> DESPESAS DE CAPITAL -> INVERSÕES FINANCEIRAS
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqInverFinanceira'
+                                AND campos.fase = 1
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_inver_financeira_exercicios_anteriores,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqInverFinanceira'
+                                AND campos.fase = 2
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_inver_financeira_ultimo_dia_exercicio_anterior,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqInverFinanceira'
+                                AND campos.fase = 4
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_inver_financeira_pagos,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqInverFinanceira'
+                                AND campos.fase = 5
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_inver_financeira_cancelados,
+                      -- RESTOS A PAGAR PROCESSADOS E NÃO PROCESSADOS LIQUIDADOS -> DESPESAS DE CAPITAL -> AMORTIZAÇÃO DA DÍVIDA
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqAmortizaDivida'
+                                AND campos.fase = 1
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_amortiza_divida_exercicios_anteriores,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqAmortizaDivida'
+                                AND campos.fase = 2
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_amortiza_divida_ultimo_dia_exercicio_anterior,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqAmortizaDivida'
+                                AND campos.fase = 4
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_amortiza_divida_pagos,
+                      SUM(
+                          CASE WHEN campos.nome_tag = 'vlRSPProcesLiqAmortizaDivida'
+                                AND campos.fase = 5
+                               THEN campos.vl_liquidado
+                               ELSE 0.00
+                           END
+                      ) AS vl_rspprocess_liq_amortiza_divida_cancelados
+                FROM  (
+                      SELECT DISTINCT
+                             totais_despesas.*,
+                             configuracao_dcasp_arquivo.nome_tag,
+                             configuracao_dcasp_arquivo.nome_arquivo_pertencente,
+                             configuracao_dcasp_arquivo.tipo_registro
+                        FROM (
+                            SELECT  despesas.cod_estrutural, 
+                                    despesas.vl_original, 
+                                    despesas.vl_suplementar,
+                                    despesas.cod_despesa,
+                                    despesas.dt_criacao,
+                                    despesas.cod_subfuncao,
+                                    empenhos.fase,
+                                    COALESCE(SUM(empenhos.vl_empenhado), 0.00) AS vl_empenhado,
+                                    COALESCE(SUM(empenhos.vl_liquidado), 0.00) AS vl_liquidado,
+                                    COALESCE(SUM(empenhos.vl_liquidacao_paga), 0.00) AS vl_pago
+                             FROM  (
+                                SELECT  conta_despesa.cod_estrutural,
+                                        despesa.cod_despesa, 
+                                        despesa.dt_criacao,
+                                        despesa.vl_original, 
+                                        despesa.cod_subfuncao,
+                                        COALESCE(SUM(suplementacao_suplementada.valor), 0.00) AS vl_suplementar
+
+                                  FROM  orcamento.despesa
+
+                                  JOIN  orcamento.conta_despesa
+                                    ON  conta_despesa.exercicio = despesa.exercicio
+                                   AND  conta_despesa.cod_conta = despesa.cod_conta
+
+                                   LEFT JOIN  orcamento.suplementacao_suplementada
+                                    ON  suplementacao_suplementada.exercicio = despesa.exercicio
+                                   AND  suplementacao_suplementada.cod_despesa = despesa.cod_despesa
+
+                                   LEFT JOIN  orcamento.suplementacao
+                                    ON  suplementacao.exercicio = suplementacao_suplementada.exercicio
+                                   AND  suplementacao.cod_suplementacao = suplementacao_suplementada.cod_suplementacao
+
+                                   LEFT JOIN  orcamento.suplementacao_reducao
+                                    ON  suplementacao_reducao.exercicio = suplementacao.exercicio
+                                   AND  suplementacao_reducao.cod_suplementacao = suplementacao.cod_suplementacao
+                                   AND  suplementacao_reducao.cod_despesa = despesa.cod_despesa
+
+                                   LEFT JOIN  orcamento.suplementacao_anulada
+                                    ON  suplementacao_anulada.exercicio = suplementacao.exercicio
+                                   AND  suplementacao_anulada.cod_suplementacao = suplementacao.cod_suplementacao
+
+                                 WHERE  despesa.exercicio = '".$this->getDado('exercicio')."'
+                                   AND  suplementacao_anulada.cod_suplementacao IS NULL
+                                   AND  despesa.cod_entidade IN (".$this->getDado('entidades').")
+
+                                 GROUP  BY  conta_despesa.cod_estrutural, 
+                                            despesa.cod_despesa, 
+                                            despesa.dt_criacao, 
+                                            despesa.vl_original, 
+                                            despesa.cod_subfuncao
+
+                                 ORDER  BY  despesa.cod_despesa
+                              ) AS despesas
+
+                        LEFT  JOIN (
+                            SELECT (
+                                    CASE 
+                                         WHEN  empenho.exercicio = '".$this->getDado('exercicio')."'
+                                          AND  (empenho_anulado_item.cod_empenho IS NOT NULL 
+                                           OR  nota_liquidacao_item_anulado.cod_nota IS NOT NULL)
+                                         THEN  5
+                                           
+                                         WHEN  empenho.exercicio = '".$this->getDado('exercicio')."' 
+                                          AND  nota_liquidacao_paga.vl_pago IS NOT NULL
+                                         THEN  4
+
+                                         WHEN  empenho.exercicio = '".$this->getDado('exercicio')."'
+                                          AND  nota_liquidacao.dt_liquidacao IS NOT NULL
+                                         THEN  3
+
+                                         WHEN  (empenho.exercicio::integer + 1) = ".$this->getDado('exercicio')."
+                                          AND  EXTRACT(MONTH FROM empenho.dt_empenho) = 31
+                                          AND  EXTRACT(DAY FROM empenho.dt_empenho) = 12
+                                         THEN  2
+
+                                         WHEN  empenho.exercicio::integer < ".$this->getDado('exercicio')."
+                                         THEN  1
+                                    END 
+                                    ) as fase,
+                                    pre_empenho.exercicio,
+                                    pre_empenho.cod_pre_empenho, 
+                                    pre_empenho.exercicio, 
+                                    pre_empenho_despesa.cod_despesa, 
+                                      
+                                    COALESCE(SUM(item_pre_empenho.vl_total), 0.00) AS vl_empenhado,
+                                    COALESCE(SUM(nota_liquidacao_item.vl_total), 0.00) AS vl_liquidado,
+                                    COALESCE(SUM(nota_liquidacao_item_anulado.vl_anulado), 0.00) AS vl_anulado,
+                                    COALESCE(SUM(nota_liquidacao_paga.vl_pago), 0.00) AS vl_liquidacao_paga
+                            
+                              FROM  empenho.pre_empenho
+
+                              JOIN  empenho.item_pre_empenho
+                                ON  item_pre_empenho.exercicio = pre_empenho.exercicio
+                               AND  item_pre_empenho.cod_pre_empenho = pre_empenho.cod_pre_empenho
+                             
+                              JOIN  empenho.pre_empenho_despesa
+                                ON  pre_empenho_despesa.exercicio = pre_empenho.exercicio
+                               AND  pre_empenho_despesa.cod_pre_empenho = pre_empenho.cod_pre_empenho
+
+                              JOIN  empenho.empenho
+                                ON  empenho.cod_pre_empenho = pre_empenho.cod_pre_empenho
+                               AND  empenho.exercicio = pre_empenho.exercicio
+                       
+                              LEFT  JOIN empenho.restos_pre_empenho
+                                ON  restos_pre_empenho.exercicio = pre_empenho.exercicio 
+                               AND  restos_pre_empenho.cod_pre_empenho = pre_empenho.cod_pre_empenho
+                                 
+                              LEFT  JOIN empenho.empenho_anulado
+                                ON  empenho_anulado.exercicio = empenho.exercicio
+                               AND  empenho_anulado.cod_entidade = empenho.cod_entidade
+                               AND  empenho_anulado.cod_empenho = empenho.cod_empenho
+
+                              LEFT  JOIN empenho.empenho_anulado_item
+                                ON  empenho_anulado_item.exercicio = empenho_anulado.exercicio
+                               AND  empenho_anulado_item.cod_entidade = empenho_anulado.cod_entidade
+                               AND  empenho_anulado_item.cod_empenho = empenho_anulado.cod_empenho
+                               AND  empenho_anulado_item.timestamp = empenho_anulado.timestamp
+
+                              LEFT  JOIN empenho.nota_liquidacao
+                                ON  empenho.exercicio = nota_liquidacao.exercicio_empenho
+                               AND  empenho.cod_entidade = nota_liquidacao.cod_entidade
+                               AND  empenho.cod_empenho  = nota_liquidacao.cod_empenho
+
+                              LEFT  JOIN empenho.nota_liquidacao_item
+                                ON  nota_liquidacao.exercicio = nota_liquidacao_item.exercicio
+                               AND  nota_liquidacao.cod_entidade = nota_liquidacao_item.cod_entidade
+                               AND  nota_liquidacao.cod_nota = nota_liquidacao_item.cod_nota
+
+                              LEFT  JOIN empenho.nota_liquidacao_item_anulado
+                                ON  nota_liquidacao_item_anulado.exercicio = nota_liquidacao_item.exercicio
+                               AND  nota_liquidacao_item_anulado.cod_nota = nota_liquidacao_item.cod_nota
+                               AND  nota_liquidacao_item_anulado.num_item = nota_liquidacao_item.num_item
+                               AND  nota_liquidacao_item_anulado.exercicio_item = nota_liquidacao_item.exercicio_item
+                               AND  nota_liquidacao_item_anulado.cod_pre_empenho = nota_liquidacao_item.cod_pre_empenho
+                               AND  nota_liquidacao_item_anulado.cod_entidade = nota_liquidacao_item.cod_entidade
+
+                              LEFT  JOIN empenho.nota_liquidacao_paga
+                                ON  nota_liquidacao_paga.exercicio = nota_liquidacao.exercicio
+                               AND  nota_liquidacao_paga.cod_entidade = nota_liquidacao.cod_entidade
+                               AND  nota_liquidacao_paga.cod_nota = nota_liquidacao.cod_nota
+
+                              LEFT  JOIN empenho.nota_liquidacao_paga_anulada
+                                ON  nota_liquidacao_paga_anulada.exercicio = nota_liquidacao_paga.exercicio
+                               AND  nota_liquidacao_paga_anulada.cod_entidade = nota_liquidacao_paga.cod_entidade
+                               AND  nota_liquidacao_paga_anulada.cod_nota = nota_liquidacao_paga.cod_nota
+
+                             WHERE  pre_empenho.exercicio = '".$this->getDado('exercicio')."'
+                               AND  empenho_anulado.cod_empenho IS NULL
+                               AND  nota_liquidacao_paga_anulada.cod_nota IS NULL
+
+                             GROUP  BY nota_liquidacao_paga.vl_pago,
+                                       empenho.exercicio,
+                                       empenho_anulado_item.cod_empenho, 
+                                       nota_liquidacao_item_anulado.cod_nota, 
+                                       pre_empenho.cod_pre_empenho, 
+                                       pre_empenho.exercicio, 
+                                       pre_empenho_despesa.cod_despesa,
+                                       nota_liquidacao.dt_liquidacao,
+                                       empenho.dt_empenho
+                            ) AS empenhos
+
+                          ON  empenhos.cod_despesa = despesas.cod_despesa
+
+                         GROUP  BY despesas.cod_estrutural, 
+                                 despesas.vl_original, 
+                                 despesas.vl_suplementar, 
+                                 despesas.cod_despesa, 
+                                 despesas.dt_criacao, 
+                                 despesas.cod_subfuncao,
+                                 empenhos.fase
+                        )  AS totais_despesas
+
+                        JOIN  tcemg.configuracao_dcasp_registros
+                          ON  configuracao_dcasp_registros.exercicio = '".$this->getDado('exercicio')."'
+                         AND  REPLACE(configuracao_dcasp_registros.conta_orc_despesa, '.', '') = REPLACE(totais_despesas.cod_estrutural, '.', '')
+
+                        JOIN  tcemg.configuracao_dcasp_arquivo USING (seq_arquivo)
+                       WHERE  configuracao_dcasp_arquivo.tipo_registro = 50
+                         AND  configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'BO'
+                ) AS campos
+          ";
+        }
     }

@@ -288,6 +288,8 @@
 
 <div class="height-10"> </div>
 
+<pagebreak></pagebreak>
+
 <table class="separated">
 	<thead>
 		<tr>
@@ -543,6 +545,260 @@
 			<td class="text_align_right border_bottom"> <?= number_format($_data[30]['vl_reserva_rpps_despesas_liquidadas'], 2, ',', '.') ?> </td>
 			<td class="text_align_right border_bottom"> <?= number_format($_data[30]['vl_reserva_rpps_despesas_pagas'], 2, ',', '.') ?> </td>
 			<td class="text_align_right border_bottom"> <?= number_format($_data[30]['vl_reserva_rpps_dotacao_atualizada'] - $_data[30]['vl_reserva_rpps_despesas_empenhadas'], 2, ',', '.') ?> </td>
+		</tr>
+
+	</tbody>
+</table>
+
+<div class="height-10 margin-bottom-30"></div>
+
+<pagebreak></pagebreak>
+
+<div class="text_align_center margin-bottom-30"> <b> EXECUÇÃO DE RESTOS A PAGAR NÃO PROCESSADOS </b> </div>
+
+<table class="separated">
+	<thead>
+		<tr>
+			<th style="background: none;"></th>
+			<th class="border_bottom" colspan="2" style="background: none;">
+				<p> Inscritos </p>
+			</th>
+			<th colspan="4" style="background: none;"></th>
+		</tr>
+		<tr>
+			<th width="22%" style="background: none;"> 
+			</th>
+			<th width="13%" style="background: none;"> 
+				<p> Em Exercícios </p>
+				<p> Anteriores </p>
+				(a)
+			</th>
+			<th width="13%" style="background: none;">
+				<p> Em 31 de </p>
+				<p> Dezembro do </p>
+				<p> Exercício </p>
+				<p> Anterior </p>
+				(b)
+			</th>
+			<th width="13%" style="background: none;"> 
+				<p> Liquidados </p>
+				(c) 
+			</th>
+			<th width="13%" style="background: none;"> 
+				<p> Pagos </p>
+				(d)
+			</th>
+			<th width="13%" style="background: none;"> 
+				<p> Cancelados </p>
+				(e)
+			</th>
+			<th width="13%" style="background: none;"> 
+				<p> Saldo </p>
+				(f) = (a+b-d-e)
+			</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td> <b> Despesas Correntes </b> </td>
+			<td colspan="4"></td>
+		</tr>
+		
+		<tr>
+			<td class="padding-left-30"> Pessoal e Encargos Sociais </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_exercicios_anteriores'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_ultimo_dia_exercicio_anterior'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_liquidados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_pagos'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_cancelados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_pessoal_encar_sociais_saldo'], 2, ',', '.') ?> </td>
+		</tr>
+		
+		<tr>
+			<td class="padding-left-30"> Juros e Encargos da Dívida </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_juros_encar_dividas_exercicios_anteriores'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_juros_encar_dividas_ultimo_dia_exercicio_anterior'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_juros_encar_dividas_liquidados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_juros_encar_dividas_pagos'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_juros_encar_dividas_cancelados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_juros_encar_dividas_saldo'], 2, ',', '.') ?> </td>
+		</tr>
+
+		<tr>
+			<td class="padding-left-30"> Outras Despesas Correntes </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_outras_desp_correntes_exercicios_anteriores'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_outras_desp_correntes_ultimo_dia_exercicio_anterior'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_outras_desp_correntes_liquidados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_outras_desp_correntes_pagos'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_outras_desp_correntes_cancelados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_outras_desp_correntes_saldo'], 2, ',', '.') ?> </td>
+		</tr>
+
+		<tr>
+			<td> <b> Despesas de Capital </b> </td>
+			<td colspan="4"></td>
+		</tr>
+
+		<tr>
+			<td class="padding-left-30"> Investimentos </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_investimentos_exercicios_anteriores'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_investimentos_ultimo_dia_exercicio_anterior'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_investimentos_liquidados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_investimentos_pagos'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_investimentos_cancelados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_investimentos_saldo'], 2, ',', '.') ?> </td>
+		</tr>
+
+		<tr>
+			<td class="padding-left-30"> Inversões Financeiras </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_inver_financeira_exercicios_anteriores'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_inver_financeira_ultimo_dia_exercicio_anterior'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_inver_financeira_liquidados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_inver_financeira_pagos'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_inver_financeira_cancelados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_inver_financeira_saldo'], 2, ',', '.') ?> </td>
+		</tr>
+
+		<tr>
+			<td class="padding-left-30"> Amortização da Dívida </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_amortiza_divida_exercicios_anteriores'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_amortiza_divida_ultimo_dia_exercicio_anterior'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_amortiza_divida_liquidados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_amortiza_divida_pagos'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_amortiza_divida_cancelados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[40]['vl_rsp_nao_proces_amortiza_divida_saldo'], 2, ',', '.') ?> </td>
+		</tr>
+
+		<tr>
+			<td> <b> TOTAL </b> </td>
+			<td class="text_align_right border_top"> <?= number_format($_data[40]['total_exercicios_anteriores'], 2, ',', '.') ?> </td>
+			<td class="text_align_right border_top"> <?= number_format($_data[40]['total_ultimo_dia_exercicio_anterior'], 2, ',', '.') ?> </td>
+			<td class="text_align_right border_top"> <?= number_format($_data[40]['total_liquidados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right border_top"> <?= number_format($_data[40]['total_pagos'], 2, ',', '.') ?> </td>
+			<td class="text_align_right border_top"> <?= number_format($_data[40]['total_cancelados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right border_top"> <?= number_format($_data[40]['total_saldo'], 2, ',', '.') ?> </td>
+		</tr>
+	</thead>
+</table>
+
+<div class="height-10 margin-bottom-30"></div>
+
+<pagebreak></pagebreak>
+
+<div class="text_align_center margin-bottom-30"> <b> EXECUÇÃO DE RESTOS A PAGAR PROCESSADOS E NÃO PROCESSADOS LIQUIDADOS </b> </div>
+
+<table class="separated">
+	<thead>
+		<tr>
+			<th style="background: none;"></th>
+			<th class="border_bottom" colspan="2" style="background: none;">
+				<p> Inscritos </p>
+			</th>
+			<th colspan="4" style="background: none;"></th>
+		</tr>
+		<tr>
+			<th width="25%" style="background: none;"> 
+			</th>
+			<th width="15%" style="background: none;"> 
+				<p> Em Exercícios </p>
+				<p> Anteriores </p>
+				(a)
+			</th>
+			<th width="15%" style="background: none;">
+				<p> Em 31 de </p>
+				<p> Dezembro do </p>
+				<p> Exercício </p>
+				<p> Anterior </p>
+				(b)
+			</th>
+			<th width="15%" style="background: none;"> 
+				<p> Pagos </p>
+				(c)
+			</th>
+			<th width="15%" style="background: none;"> 
+				<p> Cancelados </p>
+				(d)
+			</th>
+			<th width="15%" style="background: none;"> 
+				<p> Saldo </p>
+				(e) = (a+b-c-d)
+			</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td> <b> Despesas Correntes </b> </td>
+			<td colspan="4"></td>
+		</tr>
+		
+		<tr>
+			<td class="padding-left-30"> Pessoal e Encargos Sociais </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_exercicios_anteriores'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_ultimo_dia_exercicio_anterior'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_pagos'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_cancelados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_pessoal_encar_sociais_saldo'], 2, ',', '.') ?> </td>
+		</tr>
+		
+		<tr>
+			<td class="padding-left-30"> Juros e Encargos da Dívida </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_juros_encar_dividas_exercicios_anteriores'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_juros_encar_dividas_ultimo_dia_exercicio_anterior'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_juros_encar_dividas_pagos'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_juros_encar_dividas_cancelados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_juros_encar_dividas_saldo'], 2, ',', '.') ?> </td>
+		</tr>
+		
+		<tr>
+			<td class="padding-left-30"> Outras Despesas Correntes </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_outras_desp_correntes_exercicios_anteriores'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_outras_desp_correntes_ultimo_dia_exercicio_anterior'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_outras_desp_correntes_pagos'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_outras_desp_correntes_cancelados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_outras_desp_correntes_saldo'], 2, ',', '.') ?> </td>
+		</tr>
+
+		<tr>
+			<td> <b> Despesas de Capital </b> </td>
+			<td colspan="4"></td>
+		</tr>
+		
+		<tr>
+			<td class="padding-left-30"> Investimentos </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_investimentos_exercicios_anteriores'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_investimentos_ultimo_dia_exercicio_anterior'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_investimentos_pagos'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_investimentos_cancelados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_investimentos_saldo'], 2, ',', '.') ?> </td>
+		</tr>
+		
+		<tr>
+			<td class="padding-left-30"> Inversões Financeiras </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_inver_financeira_sociais_exercicios_anteriores'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_inver_financeira_sociais_ultimo_dia_exercicio_anterior'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_inver_financeira_sociais_pagos'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_inver_financeira_sociais_cancelados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_inver_financeira_sociais_saldo'], 2, ',', '.') ?> </td>
+		</tr>
+		
+		<tr>
+			<td class="padding-left-30"> Amortização da Dívida </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_amortiza_divida_exercicios_anteriores'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_amortiza_divida_ultimo_dia_exercicio_anterior'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_amortiza_divida_pagos'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_amortiza_divida_cancelados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right"> <?= number_format($_data[50]['vl_rspprocess_liq_amortiza_divida_saldo'], 2, ',', '.') ?> </td>
+		</tr>
+
+		<tr>
+			<td> <b> TOTAL </b> </td>
+			<td class="text_align_right border_top"> <?= number_format($_data[50]['total_exercicios_anteriores'], 2, ',', '.') ?> </td>
+			<td class="text_align_right border_top"> <?= number_format($_data[50]['total_ultimo_dia_exercicio_anterior'], 2, ',', '.') ?> </td>
+			<td class="text_align_right border_top"> <?= number_format($_data[50]['total_pagos'], 2, ',', '.') ?> </td>
+			<td class="text_align_right border_top"> <?= number_format($_data[50]['total_cancelados'], 2, ',', '.') ?> </td>
+			<td class="text_align_right border_top"> <?= number_format($_data[50]['total_saldo'], 2, ',', '.') ?> </td>
 		</tr>
 
 	</tbody>
