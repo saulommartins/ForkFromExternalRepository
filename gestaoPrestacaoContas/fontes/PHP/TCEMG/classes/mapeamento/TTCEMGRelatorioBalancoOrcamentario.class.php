@@ -1042,7 +1042,7 @@
                                                     COALESCE(SUM(empenhos.vl_empenhado), 0.00) AS vl_empenhado,
                                                     COALESCE(SUM(empenhos.vl_liquidado), 0.00) AS vl_liquidado,
                                                     COALESCE(SUM(empenhos.vl_liquidacao_paga), 0.00) AS vl_pago
-                                             FROM  (
+                                              FROM  (
                                                         SELECT  conta_despesa.cod_estrutural,
                                                                 despesa.cod_despesa, 
                                                                 despesa.dt_criacao,
