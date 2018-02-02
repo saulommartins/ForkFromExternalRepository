@@ -45,6 +45,10 @@
                     uc-02.03.30
                     uc-02.03.31
 */
+
+ini_set("display_errors", 1);
+error_reporting(E_ALL ^ E_NOTICE);
+
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 include_once CAM_GF_EMP_NEGOCIO."REmpenhoAutorizacaoEmpenho.class.php";
 include_once CAM_GF_ORC_NEGOCIO."ROrcamentoReserva.class.php";
@@ -854,6 +858,7 @@ function incluir($boTransacao = "")
             }
         }
     }
+
     $this->obTransacao->fechaTransacao( $boFlagTransacao, $boTransacao, $obErro, $obTEmpenhoEmpenho );
 
     return $obErro;
@@ -1019,6 +1024,7 @@ function emitirEmpenhoDiverso($boTransacao = "")
     $obTEmpenhoEmpenho->setDado( "cod_empenho"        , $this->inCodEmpenho      );
 
     $this->obTransacao->fechaTransacao( $boFlagTransacao, $boTransacao, $obErro, $obTEmpenhoEmpenho );
+
     return $obErro;
 }
 

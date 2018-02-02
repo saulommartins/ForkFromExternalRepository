@@ -73,7 +73,23 @@ class IPopUpContrato extends Objeto
         $this->obBuscaInner->setId               ( 'txtContrato'                            );
         $this->obBuscaInner->setNull             ( true );
         $this->obBuscaInner->stTipoBusca = 'popup';
-        $this->obBuscaInner->setFuncaoBusca("abrePopUp('".CAM_GP_LIC_POPUPS."contrato/FLProcurarContrato.php','".$this->obBuscaInner->obForm->getName()."','".$this->obBuscaInner->obCampoCod->getName()."','".$this->obBuscaInner->getId()."','".$this->obBuscaInner->stTipoBusca."','".Sessao::getId()."&boFornecedor='+jQuery('#boFornecedor').val(),'800','550');");
+        
+        $this->obBuscaInner->setFuncaoBusca(
+            "abrePopUp('".CAM_GP_LIC_POPUPS."contrato/FLProcurarContrato.php','".$this->obBuscaInner->obForm->getName()."','"
+            .$this->obBuscaInner->obCampoCod->getName()."','".$this->obBuscaInner->getId()."','"
+            .$this->obBuscaInner->stTipoBusca."','".Sessao::getId()
+            ."&inCodEntidade=2"
+            ."&boFornecedor='+jQuery('#boFornecedor').val(),'800','550');"
+        );
+
+        /*    
+        $this->obBuscaInner->setFuncaoBusca(
+            "abrePopUp('".CAM_GPC_TCEMG_POPUPS."convenio/FLProcurarConvenio.php','".$this->obBuscaInner->obForm->getName()."','"
+            .$this->obBuscaInner->obCampoCod->getName()."','".$this->obBuscaInner->getId()."','"
+            .$this->obBuscaInner->stTipoBusca."','".Sessao::getId()
+            ."&inCodEntidade='+jQuery('#inCodEntidade').val()+'&stExercicioConvenio='+jQuery('#stExercicioConvenio').val(),'800','550');"
+        );*/
+
         $this->obBuscaInner->setValoresBusca( CAM_GP_LIC_POPUPS.'contrato/OCProcuraContrato.php?'.Sessao::getId(), $this->obBuscaInner->obForm->getName() );
 
         $this->obSpanInfoAdicional = new Span;

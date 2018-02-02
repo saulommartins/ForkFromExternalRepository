@@ -21,7 +21,7 @@
                             CASE
                                 WHEN campos.nome_tag = 'vlRecOrcamenRecurOrdinarios'
                                  AND campos.cod_recurso IN (100)
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -41,7 +41,7 @@
                             CASE
                                 WHEN campos.nome_tag = 'vlRecOrcamenRecurVincuEducacao'
                                  AND campos.cod_recurso IN (101, 113, 118, 119, 122, 143, 144, 145, 146, 147)
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -60,7 +60,7 @@
                             CASE
                                 WHEN campos.nome_tag = 'vlRecOrcamenRecurVincuSaude'
                                  AND campos.cod_recurso IN (102, 112, 123, 148, 149, 150, 151, 152, 153, 154, 155)
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -79,7 +79,7 @@
                             CASE
                                 WHEN campos.nome_tag = 'vlRecOrcamenRecurVincuRPPS'
                                  AND campos.cod_recurso IN (102, 103)
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -98,7 +98,7 @@
                             CASE
                                 WHEN campos.nome_tag = 'vlRecOrcamenRecurVincuRGPS'
                                  AND campos.cod_recurso IN (102, 103)
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -117,7 +117,7 @@
                             CASE
                                 WHEN campos.nome_tag = 'vlRecOrcamenRecurVincuAssistSocial'
                                  AND campos.cod_recurso IN (129, 142, 156)
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -136,7 +136,7 @@
                             CASE
                                 WHEN campos.nome_tag = 'vlRecOrcamenOutrasDestRecursos'
                                  AND campos.cod_recurso IN (116, 117, 124, 157, 158, 190, 191, 192, 193)
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -154,7 +154,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlTransFinanExecuOrcamentaria'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -171,7 +171,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlTransFinanIndepenExecuOrcamentaria'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -188,7 +188,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlTransFinanReceAportesRPPS'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -205,7 +205,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlTransFinanReceAportesRGPS'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -222,7 +222,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlIncriRSPNaoProcessado'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -239,7 +239,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlIncriRSPProcessado'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -256,7 +256,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlDepoRestituVinculados'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -273,7 +273,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlOutrosRecExtraorcamentario'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -290,7 +290,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlSaldoExerAnteriorCaixaEquiCaixa'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -307,7 +307,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlSaldoExerAnteriorDepoRestVinculados'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -358,7 +358,7 @@
                                        AND  arrecadacao_receita_dedutora.cod_receita = arrecadacao_receita.cod_receita
                                        AND  arrecadacao_receita_dedutora.exercicio = arrecadacao_receita.exercicio
 
-                                     WHERE  (arrecadacao_receita.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                     WHERE  (arrecadacao_receita.exercicio = '".($this->getDado('exercicio') - 1)."'
                                         OR  arrecadacao_receita.timestamp_arrecadacao 
                                                 BETWEEN '".$this->getDado('dtInicial')."' AND '".$this->getDado('dtFinal')."')
                                        AND  receita.cod_entidade IN (".$this->getDado('entidades').")
@@ -393,7 +393,7 @@
                             CASE
                                 WHEN campos.nome_tag = 'vlDespOrcamenRecurOrdinarios'
                                  AND campos.cod_recurso IN (100, 200)
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -412,7 +412,7 @@
                             CASE
                                 WHEN campos.nome_tag = 'vlDespOrcamenRecurVincuEducacao'
                                  AND campos.cod_recurso IN (101, 201, 113, 213, 118, 218, 119, 219, 122, 222, 143, 243, 144, 244, 145, 245, 146, 246, 147, 247, 289)
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -431,7 +431,7 @@
                             CASE
                                 WHEN campos.nome_tag = 'vlDespOrcamenRecurVincuSaude'
                                  AND campos.cod_recurso IN (102, 202, 112, 212, 123, 223, 148, 248, 149, 249, 150, 250, 151, 251, 152, 252, 153, 253, 154, 254, 155, 255, 288)
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -450,7 +450,7 @@
                             CASE
                                 WHEN campos.nome_tag = 'vlDespOrcamenRecurVincuRPPS'
                                  AND campos.cod_recurso IN (100, 103, 200, 203)
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -468,7 +468,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlDespOrcamenRecurVincuRGPS'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -486,7 +486,7 @@
                             CASE
                                 WHEN campos.nome_tag = 'vlDespOrcamenRecurVincuAssistSocial'
                                  AND campos.cod_recurso IN (129, 229, 142, 242, 156, 256)
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -505,7 +505,7 @@
                             CASE
                                 WHEN campos.nome_tag = 'vlOutrasDespOrcamenDestRecursos'
                                  AND campos.cod_recurso IN (116, 216, 117, 217, 124, 224, 157, 257, 158, 258, 190, 290, 191, 291, 192, 292, 193, 293)
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -523,7 +523,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlTransFinanConcExecOrcamentaria'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -540,7 +540,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlTransFinanConcIndepenExecOrcamentaria'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -557,7 +557,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlTransFinanConcAportesRecuRPPS'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -574,7 +574,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlTransFinanConcAportesRecuRGPS'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -591,7 +591,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlPagRSPNaoProcessado'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -608,7 +608,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlPagRSPProcessado'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -625,7 +625,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlDeposRestVinculados'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -642,7 +642,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlOutrosPagExtraorcamentarios'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -659,7 +659,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlSaldoExerAtualCaixaEquiCaixa'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -676,7 +676,7 @@
                         SUM (
                             CASE
                                 WHEN campos.nome_tag = 'vlSaldoExerAtualDepoRestVinculados'
-                                 AND campos.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                                 AND campos.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(campos.valor, 0.00)
                                 ELSE 0.00
                              END
@@ -758,7 +758,7 @@
                                AND  nota_liquidacao_paga_anulada.cod_entidade = nota_liquidacao_paga.cod_entidade
                                AND  nota_liquidacao_paga_anulada.cod_nota = nota_liquidacao_paga.cod_nota
 
-                             WHERE  (pre_empenho.exercicio = '".(intval($_data['exercicio']) - 1)."'
+                             WHERE  (pre_empenho.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 OR  empenho.dt_empenho BETWEEN '".$this->getDado('dtInicial')."' AND '".$this->getDado('dtFinal')."')
 
                                AND  empenho_anulado.cod_empenho IS NULL

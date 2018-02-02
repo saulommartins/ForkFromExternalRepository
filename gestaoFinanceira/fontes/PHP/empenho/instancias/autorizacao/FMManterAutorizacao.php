@@ -38,6 +38,33 @@
     * Casos de uso: uc-02.03.02
                     uc-02.01.08
 */
+
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+
+$boTransacao = null;
+$stOrder = null;
+$hdnNumItem = null;
+$stDtInclusao = null;
+$inCodEntidade = null;
+$jsOnLoad = null;
+$stNomDespesa = null;
+$inCodDespesa = null;
+$stCodClassificacao = null;
+$inCodOrgao = null;
+$inCodUnidadeOrcamento = null;
+$stNomFornecedor = null;
+$inCodFornecedor = null;
+$inCodCategoria = null;
+$boItemMaterial = null;
+$stDescricao = null;
+$stNomItem = null;
+$stComplemento = null;
+$inMarca = null;
+$nuQuantidade = null;
+$nuVlUnitario = null;
+$nuVlTotal = null;
+
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once CAM_GF_INCLUDE.'validaGF.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
@@ -47,6 +74,9 @@ include_once CAM_GA_ADM_COMPONENTES.'IMontaAssinaturas.class.php';
 include_once TEMP.'TEmpenhoCategoriaEmpenho.class.php';
 include_once CAM_GP_ALM_COMPONENTES.'IPopUpCentroCustoUsuario.class.php';
 require_once CAM_GP_ALM_COMPONENTES."IPopUpMarca.class.php";
+include_once CAM_GP_LIC_COMPONENTES.'IPopUpContrato.class.php';
+include_once CAM_GP_LIC_COMPONENTES.'IPopUpConvenio.class.php';
+
 
 //Define o nome dos arquivos PHP
 $stPrograma = 'ManterAutorizacao';
@@ -369,6 +399,7 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
             $obTxtCodEntidade->setValue($inCodEntidade);
             $obTxtCodEntidade->obEvento->setOnBlur("montaParametrosGET('buscaDtAutorizacao');");
         }
+
         $obTxtCodEntidade->setRotulo ('Entidade');
         $obTxtCodEntidade->setTitle  ('Selecione a entidade.');
         $obTxtCodEntidade->setInteiro(true);
@@ -704,6 +735,80 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
     $obSpanReserva = new Span;
     $obSpanReserva->setId('spnReserva');
 
+
+    $obContrato = new IPopUpContrato( $obForm );
+    $obContrato->obHdnBoFornecedor->setValue(TRUE);
+    $obContrato->obBuscaInner->obCampoCod->obEvento->setOnBlur(
+        "montaParametrosGET('validaContrato', 'inCodContrato,inCodEntidade,inCodFornecedor,stExercicioContrato');"
+    );
+
+    $obContrato->obBuscaInner->setValoresBusca('', '', '');
+    $obContrato->obBuscaInner->setFuncaoBusca(
+        "montaParametrosGET('montaBuscaContrato', 'inCodContrato,inCodEntidade,inCodFornecedor,stExercicioContrato');"
+        .$obContrato->obBuscaInner->getFuncaoBusca()
+    );
+
+    //BOTÕES CONTRATOS
+    /* Botão Incluir */
+    $obBtnIncluirContratos = new Button;
+    $obBtnIncluirContratos->setValue             ( "Incluir"            );
+    $obBtnIncluirContratos->setName              ( "btnIncluirContrato" );
+    $obBtnIncluirContratos->setId                ( "btnIncluirContrato" );
+    $obBtnIncluirContratos->setDisabled          ( false                );
+    $obBtnIncluirContratos->obEvento->setOnClick ( "montaParametrosGET('incluirContratoLista','inCodContrato,inCodEntidade,stExercicioContrato');" );
+
+    /* Botão Limpar */
+    $obBtnLimparContratos = new Button;
+    $obBtnLimparContratos->setName              ( "btnLimparContratos" );
+    $obBtnLimparContratos->setId                ( "limparContratos"    );
+    $obBtnLimparContratos->setValue             ( "Limpar"             );
+    $obBtnLimparContratos->setDisabled          ( false                );
+    $obBtnLimparContratos->obEvento->setOnClick ( "montaParametrosGET('limparContratosLista');" );
+
+    /**
+     * Lista Convenio(s)
+     */
+    $spnListaContratos = new Span;
+    $spnListaContratos->setId( 'spnListaContratos' );
+
+    // Cria a seção de convênios com busca
+    $obConvenio = new IPopUpConvenio( $obForm );
+    $obConvenio->obBuscaInner->obCampoCod->obEvento->setOnBlur(
+        "montaParametrosGET('validaConvenio', 'inNroConvenio,inCodEntidade,stExercicioConvenio');"
+    );
+
+    $obConvenio->obBuscaInner->setValoresBusca('', '', '');
+    $obConvenio->obBuscaInner->setFuncaoBusca(
+        "montaParametrosGET('montaBuscaConvenio', 'inNroConvenio,inCodEntidade,stExercicioContrato');"
+        .$obConvenio->obBuscaInner->getFuncaoBusca()
+    );
+
+    Sessao::write( 'convenios', array() );
+    Sessao::write( 'contratos', array() );
+
+    //BOTÕES CONVENIO
+    /* Botão Incluir */
+    $obBtnIncluirConvenios = new Button;
+    $obBtnIncluirConvenios->setValue             ( "Incluir"             );
+    $obBtnIncluirConvenios->setName              ( "btnIncluirConvenios" );
+    $obBtnIncluirConvenios->setId                ( "btnIncluirConvenios" );
+    $obBtnIncluirConvenios->setDisabled          ( false                 );
+    $obBtnIncluirConvenios->obEvento->setOnClick ( "montaParametrosGET('incluirConvenioLista','inNroConvenio,inCodEntidade,stExercicioConvenio');" );
+
+    /* Botão Limpar */
+    $obBtnLimparConvenios = new Button;
+    $obBtnLimparConvenios->setName              ( "btnLimparConvenios" );
+    $obBtnLimparConvenios->setId                ( "limparConvenios"    );
+    $obBtnLimparConvenios->setValue             ( "Limpar"             );
+    $obBtnLimparConvenios->setDisabled          ( false                );
+    $obBtnLimparConvenios->obEvento->setOnClick ( "montaParametrosGET('limparConveniosLista');" );
+
+    /**
+     * Lista Convenio(s)
+     */
+    $spnListaConvenios = new Span;
+    $spnListaConvenios->setId( 'spnListaConvenios' );
+
     $obMontaAtributos = new MontaAtributos;
     $obMontaAtributos->setTitulo   ('Atributos');
     $obMontaAtributos->setName     ('Atributo_');
@@ -836,6 +941,17 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
     $obFormulario->addSpan      ($obSpanContrapartida);
     $obFormulario->addComponente($obTxtDescricao);
     $obFormulario->addComponente($obCmbHistorico);
+
+    $obFormulario->addTitulo('Contrato');
+    $obContrato->geraFormulario($obFormulario);
+    $obFormulario->agrupaComponentes( array( $obBtnIncluirContratos, $obBtnLimparContratos ), "", "" );
+    $obFormulario->addSpan( $spnListaContratos );
+
+    // Adiciona a parte de convênios ao formulário de empenhos
+    $obFormulario->addTitulo( 'Convênios' );
+    $obConvenio->geraFormulario($obFormulario);
+    $obFormulario->agrupaComponentes( array( $obBtnIncluirConvenios, $obBtnLimparConvenios ), "", "" );
+    $obFormulario->addSpan( $spnListaConvenios );
 
     $obMontaAtributos->geraFormulario($obFormulario);
 

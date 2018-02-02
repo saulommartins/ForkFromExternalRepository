@@ -28,7 +28,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoCircuCaixaEquiCaixa'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -45,7 +45,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoCircuCrediCurtoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -62,7 +62,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoCircuInvestAplicacaoCurtoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -79,7 +79,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoCircuEstoques'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -96,7 +96,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoCircuVPDAntecipada'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -113,7 +113,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoNaoCircuRealLongoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -130,7 +130,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoNaoCircuCrediLongoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -147,7 +147,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoNaoCircuInvesTempoLongoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -164,7 +164,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoNaoCircuEstoques'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -181,7 +181,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoNaoCircuVPDAntecipada'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -198,7 +198,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoNaoCircuInvestimentos'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -215,7 +215,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoNaoCircuImobilizado'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -232,7 +232,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoNaoCircuIntagivel'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -267,7 +267,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoCirculaTrabPreviCurtoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -284,7 +284,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoCirculaEmpreFinanCurtoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -301,7 +301,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoCirculaFornecedoresCurtoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -318,7 +318,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoCirculaObrigaFiscaisCurtoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -335,7 +335,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoCirculaObrigacoesOutrosEntes'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -352,7 +352,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoCirculaProvisoesCurtoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -369,7 +369,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoCirculaDemaisObrigaCurtoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -386,7 +386,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoNaoCirculaTrabPreviLongoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -403,7 +403,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoNaoCirculaEmpreFinanLongoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -420,7 +420,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoNaoCirculaFornecedoresLongoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -437,7 +437,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoNaoCirculaObrigaFiscaisLongoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -454,7 +454,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoNaoCirculaProvisoesLongoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -471,7 +471,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoNaoCirculaDemaisObrigaLongoPrazo'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -488,7 +488,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoNaoCirculaResulDiferido'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -505,7 +505,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPatriLiquidoCapitalSocial'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -522,7 +522,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPatriLiquidoAdianFuturoCapital'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -539,7 +539,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPatriLiquidoReservaCapital'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -556,7 +556,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPatriLiquidoAjustAvaliacao'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -573,7 +573,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPatriLiquidoReservaLucros'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -590,7 +590,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPatriLiquidoDemaisReservas'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -607,7 +607,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPatriLiquidoResultExercicio'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -624,7 +624,7 @@
 				    	SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPatriLiquidoAcoesCotas'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -660,7 +660,7 @@
 						SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoFinanceiro'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -677,7 +677,7 @@
 						SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtivoPermanente'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -711,7 +711,7 @@
 						SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoFinanceiro'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -728,7 +728,7 @@
 						SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPassivoPermanente'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -762,7 +762,7 @@
 						SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtosPotenAtivosGaranContragaRecebida'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -779,7 +779,7 @@
 						SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtosPotenAtivosDirConveOutrosInstrumentos'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -796,7 +796,7 @@
 						SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtosPotenAtivosDireitosContratuais'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -813,7 +813,7 @@
 						SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtosPotenAtivosOutrosAtos'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -830,7 +830,7 @@
 						SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtosPotenPassivoGaranContragaConcedida'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -847,7 +847,7 @@
 						SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtosPotenPassivoObrigConveOutrosInstrumentos'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -864,7 +864,7 @@
 						SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtosPotenPassivoObrigacoesContratuais'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -881,7 +881,7 @@
 						SUM (
 						    CASE
 								WHEN configuracao_dcasp_arquivo.nome_tag = 'vlAtosPotenPassivoOutrosAtos'
-								 AND contabil.exercicio = '".(intval($_data['exercicio']) - 1)."'
+								 AND contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
 								THEN COALESCE(contabil.valor, 0.00)
 								ELSE 0.00
 						    END
@@ -961,7 +961,7 @@
 						 ON plano_conta_debito.exercicio = plano_analitica_debito.exercicio
 						AND plano_conta_debito.cod_conta = plano_analitica_debito.cod_conta
 
-					  WHERE (lancamento.exercicio = '".(intval($_data['exercicio']) - 1)."' 
+					  WHERE (lancamento.exercicio = '".(intval($this->getDado('exercicio')) - 1)."' 
 					  	 OR lote.dt_lote BETWEEN '".$this->getDado('dtInicial')."' AND '".$this->getDado('dtFinal')."')
 					  	AND lancamento.cod_entidade IN (".$this->getDado('entidades').")
 				      ORDER BY valor_lancamento.vl_lancamento
@@ -977,14 +977,14 @@
         				TRIM(recurso.nom_recurso) AS nom_recurso, 
         				SUM(
         					CASE
-        						WHEN recurso.exercicio = '".$this->getDado('exercicio')."'
+        						WHEN contabil.exercicio = '".$this->getDado('exercicio')."'
         						THEN contabil.valor
         						ELSE 0.00
         					END
         				) AS exercicio_atual,
         				SUM(
         					CASE
-        						WHEN recurso.exercicio = '".(intval($_data['exercicio']) - 1)."'
+        						WHEN contabil.exercicio = '".(intval($this->getDado('exercicio')) - 1)."'
         						THEN contabil.valor
         						ELSE 0.00
         					END
@@ -1062,13 +1062,13 @@
 								 ON plano_conta_recurso_debito.cod_plano = plano_analitica_debito.cod_plano
 								AND plano_conta_recurso_debito.exercicio = plano_analitica_debito.exercicio
 								    
-						      WHERE (lancamento.exercicio = '".(intval($_data['exercicio']) - 1)."' 
+						      WHERE (lancamento.exercicio = '".(intval($this->getDado('exercicio')) - 1)."' 
 						      	 OR lote.dt_lote BETWEEN '".$this->getDado('dtInicial')."' AND '".$this->getDado('dtFinal')."')
 								AND lancamento.cod_entidade IN (".$this->getDado('entidades').")
 							  ORDER BY valor_lancamento.vl_lancamento
 						) AS contabil 
 
-					 ON contabil.exercicio = recurso.exercicio
+					 ON recurso.exercicio = '2017'
 					AND contabil.cod_recurso = recurso.cod_recurso
 
 				GROUP BY recurso.cod_recurso, recurso.nom_recurso

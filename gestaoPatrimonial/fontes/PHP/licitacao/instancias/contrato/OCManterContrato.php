@@ -177,61 +177,72 @@ switch ($_REQUEST['stCtrl']) {
     break;
 
     case "preencheObjeto":
-    if ($_REQUEST['inCodModalidade'] != '') {
-        include_once ( TLIC."TLicitacaoLicitacao.class.php" );
-        $obTLicitacacaoLicitacao = new TLicitacaoLicitacao();
-        $obTLicitacacaoLicitacao->setDado( 'cod_entidade' , $_REQUEST['inCodEntidade'] );
-        $obTLicitacacaoLicitacao->setDado( 'cod_modalidade' , $_REQUEST['inCodModalidade'] );
-        $obTLicitacacaoLicitacao->setDado( 'cod_licitacao', $_REQUEST['inCodLicitacao'] );
-        $obTLicitacacaoLicitacao->setDado( 'exercicio' , $_REQUEST['stExercicioLicitacao'] );
-        $obTLicitacacaoLicitacao->recuperaObjetoLicitacao( $rsLicitacao );
+        if ($_REQUEST['inCodModalidade'] != '') {
+            include_once ( TLIC."TLicitacaoLicitacao.class.php" );
+            include_once ( TLIC."TLicitacaoEdital.class.php" );
 
-        if ( $rsLicitacao->getNumLinhas() > 0 ) {
-           if ($_REQUEST['inCodLicitacao']) {
-               $stJs  = "d.getElementById('stDescObjeto').innerHTML = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "",$rsLicitacao->getCampo('descricao'))))."';\n";
-               $stJs .= "f.hdnDescObjeto.value = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "", $rsLicitacao->getCampo('descricao'))))."';\n";
-           }
+            $obTLicitacacaoLicitacao = new TLicitacaoLicitacao();
+            $obTLicitacacaoLicitacao->setDado( 'cod_entidade' , $_REQUEST['inCodEntidade'] );
+            $obTLicitacacaoLicitacao->setDado( 'cod_modalidade' , $_REQUEST['inCodModalidade'] );
+            $obTLicitacacaoLicitacao->setDado( 'cod_licitacao', $_REQUEST['inCodLicitacao'] );
+            $obTLicitacacaoLicitacao->setDado( 'exercicio' , $_REQUEST['stExercicioLicitacao'] );
+            $obTLicitacacaoLicitacao->recuperaObjetoLicitacao( $rsLicitacao );
+
+            if ( $rsLicitacao->getNumLinhas() > 0 ) {
+                if ($_REQUEST['inCodLicitacao']) {
+                   $stJs  = "d.getElementById('stDescObjeto').innerHTML = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "",$rsLicitacao->getCampo('descricao'))))."';\n";
+                   $stJs .= "f.hdnDescObjeto.value = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "", $rsLicitacao->getCampo('descricao'))))."';\n";
+                   $stJs .= "f.stJustificativa.value = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "", $rsLicitacao->getCampo('justificativa'))))."';\n";
+                   $stJs .= "f.stRazao.value = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "", $rsLicitacao->getCampo('razao'))))."';\n";
+                   $stJs .= "f.stFundamentacaoLegal.value = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "", $rsLicitacao->getCampo('fundamentacao_legal'))))."';\n";
+                   $stJs .= "f.inCGM.value = '". $rsLicitacao->getCampo('responsavel_juridico')."';\n";
+                }
+            } else {
+                $stJs  = "d.getElementById('stDescObjeto').innerHTML = '';\n";
+                $stJs .= "f.hdnDescObjeto.value = '';\n";
+                $stJs .= "f.stJustificativa.value = '';\n";
+                $stJs .= "f.stRazao.value = '';\n";
+                $stJs .= "f.stFundamentacaoLegal.value = '';\n";
+            }
+
+            $stJs = isset($stJs) ? $stJs : "";
+            $stJs.= "f.inCGMContratado.selectedIndex =  0;\n";
+            $stJs.= "limpaSelect(f.inCGMContratado,1);\n";
+
+            $stFiltro = isset($stFiltro) ? $stFiltro : "";
+            $obTLicitacacaoLicitacao->recuperaLicitacaoFornecedores( $rsFornecedores, $stFiltro );
+
+            if ( $rsFornecedores->getNumLinhas() == 1 ) {
+                $obTLicitacacaoContrato = new TLicitacaoContrato;
+                $obTLicitacacaoContrato->setDado('cod_licitacao', $_REQUEST['inCodLicitacao']);
+                $obTLicitacacaoContrato->setDado('cod_modalidade', $_REQUEST['inCodModalidade']);
+                $obTLicitacacaoContrato->setDado('cgm_fornecedor', $rsFornecedores->getCampo('cgm_fornecedor'));
+                $obTLicitacacaoContrato->setDado('exercicio', Sessao::getExercicio());
+                $obTLicitacacaoContrato->setDado('cod_entidade', $_REQUEST['inCodEntidade']);
+                $obTLicitacacaoContrato->recuperaValorContrato($rsValorContrato);
+        
+                $vlContrato = $rsValorContrato->getCampo('valor_contrato');
+                $vlContrato = number_format($vlContrato, 2, ',', '.');
+                $stJs.= " d.getElementById('vlContrato').value = '".$vlContrato."';";
+                $stJs.= " d.getElementById('hdnValorContrato').value = '".$vlContrato."';";
+                $selected = 'selected';
+            } 
+
+            $selected = isset($selected) ? $selected : "";
+            while ( !$rsFornecedores->eof() ) {
+                $stJs .= "f.inCGMContratado[".$rsFornecedores->getCorrente()."] = new Option('".addslashes($rsFornecedores->getCampo('nom_cgm'))."','".$rsFornecedores->getCampo('cgm_fornecedor')."','".$selected."');\n";
+                $rsFornecedores->proximo();
+            }
         } else {
-            $stJs  = "d.getElementById('stDescObjeto').innerHTML = '';\n";
-            $stJs .= "f.hdnDescObjeto.value = '';\n";
+            $stJs = "d.getElementById('stDescObjeto').innerHTML = '&nbsp;';\n";
+            $stJs.= "f.hdnDescObjeto.value = '';\n";
+            $stJs.= " d.getElementById('vlContrato').value = '';";
+            $stJs.= " d.getElementById('hdnValorContrato').value = '';";
+            $stJs.= "f.inCGMContratado.selectedIndex =  0;\n";
+            $stJs.= "limpaSelect(f.inCGMContratado,1);\n";
         }
-        $stJs = isset($stJs) ? $stJs : "";
-        $stJs.= "f.inCGMContratado.selectedIndex =  0;\n";
-        $stJs.= "limpaSelect(f.inCGMContratado,1);\n";
 
-        $stFiltro = isset($stFiltro) ? $stFiltro : "";
-        $obTLicitacacaoLicitacao->recuperaLicitacaoFornecedores( $rsFornecedores, $stFiltro );
-
-        if ( $rsFornecedores->getNumLinhas() == 1 ) {
-            $obTLicitacacaoContrato = new TLicitacaoContrato;
-            $obTLicitacacaoContrato->setDado('cod_licitacao', $_REQUEST['inCodLicitacao']);
-            $obTLicitacacaoContrato->setDado('cod_modalidade', $_REQUEST['inCodModalidade']);
-            $obTLicitacacaoContrato->setDado('cgm_fornecedor', $rsFornecedores->getCampo('cgm_fornecedor'));
-            $obTLicitacacaoContrato->setDado('exercicio', Sessao::getExercicio());
-            $obTLicitacacaoContrato->setDado('cod_entidade', $_REQUEST['inCodEntidade']);
-            $obTLicitacacaoContrato->recuperaValorContrato($rsValorContrato);
-    
-            $vlContrato = $rsValorContrato->getCampo('valor_contrato');
-            $vlContrato = number_format($vlContrato, 2, ',', '.');
-            $stJs.= " d.getElementById('vlContrato').value = '".$vlContrato."';";
-            $stJs.= " d.getElementById('hdnValorContrato').value = '".$vlContrato."';";
-            $selected = 'selected';
-        } 
-        $selected = isset($selected) ? $selected : "";
-        while ( !$rsFornecedores->eof() ) {
-            $stJs .= "f.inCGMContratado[".$rsFornecedores->getCorrente()."] = new Option('".addslashes($rsFornecedores->getCampo('nom_cgm'))."','".$rsFornecedores->getCampo('cgm_fornecedor')."','".$selected."');\n";
-            $rsFornecedores->proximo();
-        }
-    } else {
-        $stJs = "d.getElementById('stDescObjeto').innerHTML = '&nbsp;';\n";
-        $stJs.= "f.hdnDescObjeto.value = '';\n";
-        $stJs.= " d.getElementById('vlContrato').value = '';";
-        $stJs.= " d.getElementById('hdnValorContrato').value = '';";
-        $stJs.= "f.inCGMContratado.selectedIndex =  0;\n";
-        $stJs.= "limpaSelect(f.inCGMContratado,1);\n";
-    }
-
-    echo $stJs;
+        echo $stJs;
     break;
 
     //Carrega itens vazios na listagem de documentos de publicacao utilizados no carregamento do Form.

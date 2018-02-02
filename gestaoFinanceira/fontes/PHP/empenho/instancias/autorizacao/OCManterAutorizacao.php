@@ -39,6 +39,12 @@
                     uc-02.01.08
 */
 
+
+ini_set("display_errors", 1);
+error_reporting(E_ALL ^ E_NOTICE);
+
+$stOrder = null;
+
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 include_once CAM_GF_EMP_NEGOCIO.'REmpenhoAutorizacaoEmpenho.class.php';
@@ -470,7 +476,373 @@ function LiberaDataAutorizacao($boLibera = 'true'){
     return $js;
 }
 
+
+
+function montaListaConvenios($convenios, $inCodEntidade)
+{
+    include_once ( CAM_GPC_TCEMG_MAPEAMENTO.'TTCEMGConvenio.class.php' );
+
+    $stFiltro  = " WHERE convenio.cod_entidade = ".$inCodEntidade."\n";
+    //$stFiltro .= " AND convenio.nro_convenio IN (".implode(", ", $convenios).")\n";
+
+    $stFiltro .= "AND ( ";
+    $or = "";
+
+    foreach ($convenios as $convenio) {
+        $stFiltro .= $or . " (convenio.exercicio = '". $convenio['exercicio'] ."' AND convenio.nro_convenio = ".$convenio['nro_convenio'].") ";
+        $or = " OR ";
+    }
+
+    $stFiltro .= " ) ";
+
+    $stOrdem = "ORDER BY convenio.nro_convenio ASC";
+
+    $obTTCEMGConvenio = new TTCEMGConvenio;
+    $obTTCEMGConvenio->recuperaConvenioFiltro ( $rsLista, $stFiltro, $stOrdem );
+
+    $obLista = new Lista;
+    $obLista->setRecordSet       ( $rsLista               );
+    $obLista->setTitulo          ( "Convênios do Empenho" );
+    $obLista->setMostraPaginacao ( false                  );
+    
+    $obLista->addCabecalho();
+    $obLista->ultimoCabecalho->addConteudo  ( "&nbsp;" );
+    $obLista->ultimoCabecalho->setWidth     ( 5 );
+    $obLista->commitCabecalho();
+    
+    $obLista->addCabecalho();
+    $obLista->ultimoCabecalho->addConteudo  ( "Número do Convênio" );
+    $obLista->ultimoCabecalho->setWidth     ( 15 );
+    $obLista->commitCabecalho();
+    
+    $obLista->addCabecalho();
+    $obLista->ultimoCabecalho->addConteudo  ( "Entidade" );
+    $obLista->ultimoCabecalho->setWidth     ( 5 );
+    $obLista->commitCabecalho();
+    
+    $obLista->addCabecalho();
+    $obLista->ultimoCabecalho->addConteudo  ( "Objeto do Convênio" );
+    $obLista->ultimoCabecalho->setWidth     ( 40 );
+    $obLista->commitCabecalho();
+    
+    $obLista->addCabecalho();
+    $obLista->ultimoCabecalho->addConteudo  ( "Valor" );
+    $obLista->ultimoCabecalho->setWidth     ( 15 );
+    $obLista->commitCabecalho();
+    
+    $obLista->addCabecalho();
+    $obLista->ultimoCabecalho->addConteudo  ( "&nbsp;" );
+    $obLista->ultimoCabecalho->setWidth     ( 5 );
+    $obLista->commitCabecalho();
+    
+    $obLista->addDado();
+    $obLista->ultimoDado->setAlinhamento    ( "DIREITA" );
+    $obLista->ultimoDado->setCampo          ( "[nro_convenio]/[exercicio]" );
+    $obLista->commitDado();
+    
+    $obLista->addDado();
+    $obLista->ultimoDado->setAlinhamento    ( "ESQUERDA" );
+    $obLista->ultimoDado->setCampo          ( "cod_entidade" );
+    $obLista->commitDado();
+    
+    $obLista->addDado();
+    $obLista->ultimoDado->setAlinhamento    ( "ESQUERDA" );
+    $obLista->ultimoDado->setCampo          ( "objeto" );
+    $obLista->commitDado();
+    
+    $obLista->addDado();
+    $obLista->ultimoDado->setAlinhamento    ( "DIREITA" );
+    $obLista->ultimoDado->setCampo          ( "vl_convenio" );
+    $obLista->commitDado();
+
+    $obLista->addAcao();
+    $obLista->ultimaAcao->setAcao( "EXCLUIR" );
+    $obLista->ultimaAcao->setFuncaoAjax( true );
+    $obLista->ultimaAcao->setLink( "JavaScript:executaFuncaoAjax('removerConvenioLista')"  );
+    $obLista->ultimaAcao->addCampo("1","nro_convenio");
+    $obLista->commitAcao();
+    
+    $obLista->montaHTML();
+
+    $stHTML = $obLista->getHTML();
+    $stHTML = str_replace( "\r\n" ,"" ,$stHTML );
+    $stHTML = str_replace( "\n" ,"" ,$stHTML );
+    $stHTML = str_replace( "  " ,"" ,$stHTML );
+    $stHTML = str_replace( "'","\\'",$stHTML );
+    $stHTML = str_replace( "\\\'","\\'",$stHTML );
+ 
+    return "jQuery('#spnListaConvenios').html('".$stHTML."');  \n";
+}
+
+function incluirConvenioLista($inCodEntidade, $request)
+{
+    $stExercicioConvenio = $request->get('stExercicioConvenio');
+    $inNroConvenio = intval($request->get('inNroConvenio'));
+
+    if ($inNroConvenio == 0) {
+        $retornoJS = " alertaAviso('@Convênio inválido!.','form','erro','".Sessao::getId()."'); ";
+        $retornoJS .= "jQuery('#inNroConvenio').val('');";
+        $retornoJS .= "jQuery('#txtConvenio').html('');";
+
+        return $retornoJS;
+    }
+
+    $convenios = Sessao::read( 'convenios' );
+    $convenios[$inNroConvenio] = array(
+        'nro_convenio' => $inNroConvenio,
+        'exercicio' => $stExercicioConvenio,
+    );
+
+    Sessao::write( 'convenios', $convenios );
+
+    $retornoJS  = montaListaConvenios($convenios, $inCodEntidade);
+    $retornoJS .= "jQuery('#inNroConvenio').val('');";
+    $retornoJS .= "jQuery('#txtConvenio').html('');";
+
+    return $retornoJS;
+}
+
+function removerConvenioLista($inCodEntidade, $request)
+{
+    $inNroConvenio = $request->get('nro_convenio');
+    $stExercicioConvenio = $request->get('stExercicioConvenio');
+
+    if (intval($inNroConvenio) == 0) {
+        $retornoJS = " alertaAviso('@Convênio inválido!.','form','erro','".Sessao::getId()."'); ";
+        $retornoJS .= "jQuery('#inNroConvenio').val('');";
+        $retornoJS .= "jQuery('#txtConvenio').html('');";
+
+        return $retornoJS;
+    }
+
+    $convenios = Sessao::read( 'convenios' );
+    unset($convenios[$inNroConvenio]);
+    Sessao::write( 'convenios', $convenios );
+
+    if (count($convenios) == 0) {
+        return limparConveniosLista();
+    }
+
+    return montaListaConvenios($convenios, $inCodEntidade);
+}
+
+function limparConveniosLista()
+{
+    Sessao::write( 'convenios', array() );
+    return "jQuery('#spnListaConvenios').html('')";
+}
+
+function validaConvenio($inCodEntidade, $request)
+{
+    include_once ( CAM_GPC_TCEMG_MAPEAMENTO.'TTCEMGConvenio.class.php' );
+    $inNroConvenio = $request->get('inNroConvenio');
+    $stExercicioConvenio = $request->get('stExercicioConvenio');
+
+    if (intval($inCodEntidade) == 0) {
+        $retornoJS = " alertaAviso('@Preencha o campo entidade!.','form','erro','".Sessao::getId()."'); ";
+        $retornoJS .= "jQuery('#inNroConvenio').val('');";
+        $retornoJS .= "jQuery('#txtConvenio').html('');";
+
+        return $retornoJS;
+    }
+
+    $stFiltro  = " WHERE convenio.exercicio = '".  $stExercicioConvenio ."'";
+    $stFiltro .= " AND convenio.cod_entidade = ".$inCodEntidade."\n";
+    $stFiltro .= " AND convenio.nro_convenio = ".intval($inNroConvenio)."\n";
+    $stFiltro .= " LIMIT 1";
+
+    $obTTCEMGConvenio = new TTCEMGConvenio;
+    $obTTCEMGConvenio->recuperaConvenioFiltro ( $rsLista, $stFiltro, "" );
+
+    if ($rsLista->getNumLinhas() < 1) {
+        $retornoJS  = " alertaAviso('@Convênio inválido!.','form','erro','".Sessao::getId()."'); ";
+        $retornoJS .= " jQuery('#inNroConvenio').val('');";
+        $retornoJS .= " jQuery('#txtConvenio').html('');";
+
+        return $retornoJS;
+    }
+
+    $convenio = $rsLista->getObjeto();
+
+    return "jQuery('#txtConvenio').html('".preg_replace( "/\r|\n/", "", $convenio['objeto'] )."')";
+}
+
+
+function montaListaContratos($contratos, $inCodEntidade)
+{
+    include_once(TLIC."TLicitacaoContrato.class.php");
+
+    $stFiltro  = " WHERE contrato.cod_entidade = ".$inCodEntidade."\n";
+    //$stFiltro .= " AND convenio.nro_convenio IN (".implode(", ", $convenios).")\n";
+
+    $stFiltro .= "AND ( ";
+    $or = "";
+
+    foreach ($contratos as $contrato) {
+        $stFiltro .= $or . " (contrato.exercicio = '". $contrato['exercicio'] ."' AND contrato.num_contrato = ".$contrato['num_contrato'].") ";
+        $or = " OR ";
+    }
+
+    $stFiltro .= " ) ";
+    $stOrdem = "ORDER BY contrato.num_contrato ASC";
+    
+    $obTLicitacaoContrato = new TLicitacaoContrato;
+    $obTLicitacaoContrato->recuperaNaoAnulados( $rsLista, $stFiltro, $stOrdem );
+
+    $obLista = new Lista;
+    $obLista->setRecordSet       ( $rsLista               );
+    $obLista->setTitulo          ( "Convênios do Empenho" );
+    $obLista->setMostraPaginacao ( false                  );
+
+    $obLista->addCabecalho();
+    $obLista->ultimoCabecalho->addConteudo  ( "&nbsp;" );
+    $obLista->ultimoCabecalho->setWidth     ( 5 );
+    $obLista->commitCabecalho();
+    
+    $obLista->addCabecalho();
+    $obLista->ultimoCabecalho->addConteudo  ( "Contrato" );
+    $obLista->ultimoCabecalho->setWidth     ( 15 );
+    $obLista->commitCabecalho();
+    
+    $obLista->addCabecalho();
+    $obLista->ultimoCabecalho->addConteudo  ( "Entidade" );
+    $obLista->ultimoCabecalho->setWidth     ( 5 );
+    $obLista->commitCabecalho();
+    
+    $obLista->addCabecalho();
+    $obLista->ultimoCabecalho->addConteudo  ( "Data de Assinatura" );
+    $obLista->ultimoCabecalho->setWidth     ( 40 );
+    $obLista->commitCabecalho();
+    
+    $obLista->addCabecalho();
+    $obLista->ultimoCabecalho->addConteudo  ( "Valor Total" );
+    $obLista->ultimoCabecalho->setWidth     ( 15 );
+    $obLista->commitCabecalho();
+    
+    $obLista->addCabecalho();
+    $obLista->ultimoCabecalho->addConteudo  ( "&nbsp;" );
+    $obLista->ultimoCabecalho->setWidth     ( 5 );
+    $obLista->commitCabecalho();
+
+    $obLista->addDado();
+    $obLista->ultimoDado->setAlinhamento    ( "DIREITA" );
+    $obLista->ultimoDado->setCampo          ( "[num_contrato]/[exercicio]" );
+    $obLista->commitDado();
+    
+    $obLista->addDado();
+    $obLista->ultimoDado->setAlinhamento    ( "ESQUERDA" );
+    $obLista->ultimoDado->setCampo          ( "cod_entidade" );
+    $obLista->commitDado();
+    
+    $obLista->addDado();
+    $obLista->ultimoDado->setAlinhamento    ( "ESQUERDA" );
+    $obLista->ultimoDado->setCampo          ( "dt_assinatura" );
+    $obLista->commitDado();
+
+    $obLista->addDado();
+    $obLista->ultimoDado->setAlinhamento    ( "DIREITA" );
+    $obLista->ultimoDado->setCampo          ( "valor_contratado" );
+    $obLista->commitDado();
+
+    $obLista->addAcao();
+    $obLista->ultimaAcao->setAcao( "EXCLUIR" );
+    $obLista->ultimaAcao->setFuncaoAjax( true );
+    $obLista->ultimaAcao->setLink( "JavaScript:executaFuncaoAjax('removerContratoLista')"  );
+    $obLista->ultimaAcao->addCampo("1","num_contrato");
+    $obLista->commitAcao();
+
+    $obLista->montaHTML();
+
+    $stHTML = $obLista->getHTML();
+    $stHTML = str_replace( "\r\n" ,"" ,$stHTML );
+    $stHTML = str_replace( "\n" ,"" ,$stHTML );
+    $stHTML = str_replace( "  " ,"" ,$stHTML );
+    $stHTML = str_replace( "'","\\'",$stHTML );
+    $stHTML = str_replace( "\\\'","\\'",$stHTML );
+ 
+    return "jQuery('#spnListaContratos').html('".$stHTML."');  \n";
+}
+
+function incluirContratoLista($inCodEntidade, $request)
+{
+    $stExercicioContrato = $request->get('stExercicioContrato');
+    $inCodContrato = intval($request->get('inCodContrato'));
+
+    if ($inCodContrato == 0) {
+        $retornoJS = " alertaAviso('@Contrato inválido!.','form','erro','".Sessao::getId()."'); ";
+        $retornoJS .= "jQuery('#inCodContrato').val('');";
+        $retornoJS .= "jQuery('#txtContrato').html('');";
+
+        return $retornoJS;
+    }
+
+    $contratos = Sessao::read( 'contratos' );
+    $contratos[$inCodContrato] = array(
+        'nro_Contrato' => $inCodContrato,
+        'exercicio' => $stExercicioContrato,
+    );
+
+    Sessao::write( 'contratos', $contratos );
+
+    $retornoJS  = montaListaContratos($contratos, $inCodEntidade);
+    $retornoJS .= "jQuery('#inCodContrato').val('');";
+    $retornoJS .= "jQuery('#txtContrato').html('');";
+
+    return $retornoJS;
+}
+
+function removerContratoLista($inCodEntidade, $request)
+{
+    
+}
+
+function limparContratosLista()
+{
+
+}
+
+function validaContrato($inCodEntidade, $request)
+{
+
+}
+
+$inCodEntidade = $request->get('inCodEntidade');
+
+$js = "";
+
 switch ($stCtrl) {
+    case 'incluirContratoLista':
+        echo incluirContratoLista($inCodEntidade, $request);
+    break;
+
+    case 'removerContratoLista':
+        echo removerContratoLista($inCodEntidade, $request);
+    break;
+
+    case 'limparContratosLista':
+        echo limparContratosLista();
+    break;
+
+    case 'validaContrato':
+        echo validaContrato($inCodEntidade, $request);
+    break;
+
+    case 'incluirConvenioLista':
+        echo incluirConvenioLista($inCodEntidade, $request);
+    break;
+
+    case 'removerConvenioLista':
+        echo removerConvenioLista($inCodEntidade, $request);
+    break;
+
+    case 'limparConveniosLista':
+        echo limparConveniosLista();
+    break;
+
+    case 'validaConvenio':
+        echo validaConvenio($inCodEntidade, $request);
+    break;
+
     case 'buscaOrgaoUnidade':
 
     $js .= "jq('#inCodUnidadeOrcamento').empty().append(new Option('Selecione',''));\n"; 

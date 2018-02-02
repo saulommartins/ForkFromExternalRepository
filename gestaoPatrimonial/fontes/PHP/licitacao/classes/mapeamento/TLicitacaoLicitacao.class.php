@@ -366,26 +366,32 @@ function recuperaObjetoLicitacao(&$rsRecordSet)
     $obConexao   = new Conexao;
     $rsRecordSet = new RecordSet;
     $boTransacao = "";
-    $stFiltro = "";
-    if( $this->getDado('cod_licitacao') != "" )
-        $stFiltro  = " AND licitacao.cod_licitacao = ".$this->getDado('cod_licitacao')."   \n";
-    if( $this->getDado('cod_modalidade') != "" )
-        $stFiltro .= " AND licitacao.cod_modalidade = ".$this->getDado('cod_modalidade')." \n";
-    if( $this->getDado('cod_entidade') != "" )
-        $stFiltro .= " AND licitacao.cod_entidade = ".$this->getDado('cod_entidade')."     \n";
-    if( $this->getDado('exercicio') != "" )
-        $stFiltro .= " AND licitacao.exercicio = '".$this->getDado('exercicio')."'          \n";
+    $stFiltro = "WHERE edital_anulado.num_edital IS NULL";
 
-    $stFiltro = ($stFiltro!="")?" WHERE ".substr($stFiltro,4,strlen($stFiltro)):"";
+    if( $this->getDado('cod_licitacao') != "" )
+        $stFiltro  .= " AND licitacao.cod_licitacao = ".$this->getDado('cod_licitacao');
+    if( $this->getDado('cod_modalidade') != "" )
+        $stFiltro .= " AND licitacao.cod_modalidade = ".$this->getDado('cod_modalidade');
+    if( $this->getDado('cod_entidade') != "" )
+        $stFiltro .= " AND licitacao.cod_entidade = ".$this->getDado('cod_entidade');
+    if( $this->getDado('exercicio') != "" )
+        $stFiltro .= " AND licitacao.exercicio = '".$this->getDado('exercicio')."'";
+
+    // $stFiltro = ($stFiltro!="")?" WHERE ".substr($stFiltro,4,strlen($stFiltro)):"";
 
     $stSql = $this->montaRecuperaObjetoLicitacao().$stFiltro;
+    
+    // echo "<pre>";
+    // var_dump($stSql);
+    // die;
+
     $this->stDebug = $stSql;
     $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, "", $boTransacao );
 }
 
 function montaRecuperaObjetoLicitacao()
 {
-    $stSql  = " select licitacao.cod_licitacao                  \n";
+    /*$stSql  = " select licitacao.cod_licitacao                  \n";
     $stSql .= "      , licitacao.cod_modalidade                 \n";
     $stSql .= "      , licitacao.cod_entidade                   \n";
     $stSql .= "      , licitacao.exercicio                      \n";
@@ -395,7 +401,58 @@ function montaRecuperaObjetoLicitacao()
     $stSql .= "   join compras.objeto                           \n";
     $stSql .= "     on objeto.cod_objeto = licitacao.cod_objeto \n";
 
-    return $stSql;
+    return $stSql;*/
+
+    return "
+        SELECT licitacao.cod_licitacao, 
+               licitacao.cod_modalidade, 
+               licitacao.cod_entidade, 
+               licitacao.exercicio,
+             
+             --Campo: Objeto do Contrato
+               objeto.cod_objeto,
+             
+             --Campo: Objeto do Contrato
+               objeto.descricao,
+
+               -- Campo: CGM Representante Legal
+               -- Campo: CGM Signatário
+
+               edital.num_edital,
+  
+               -- Campo: Responsável Jurídico
+               edital.responsavel_juridico,
+
+               -- Campo: Justificativa
+               justificativa_razao.justificativa,
+
+               -- Campo: Razão
+               justificativa_razao.razao,
+
+               -- Campo: *Fundamentação Legal
+               justificativa_razao.fundamentacao_legal
+          
+          FROM licitacao.licitacao  
+                           
+          JOIN compras.objeto                           
+            ON objeto.cod_objeto = licitacao.cod_objeto 
+
+          LEFT JOIN licitacao.edital
+            ON edital.cod_licitacao = licitacao.cod_licitacao
+           AND edital.cod_modalidade = licitacao.cod_modalidade
+           AND edital.cod_entidade = licitacao.cod_entidade
+           AND edital.exercicio_licitacao = licitacao.exercicio
+
+          LEFT JOIN licitacao.edital_anulado
+            ON edital_anulado.num_edital = edital.num_edital
+           AND edital_anulado.exercicio = edital.exercicio
+
+          LEFT JOIN licitacao.justificativa_razao
+            ON justificativa_razao.cod_licitacao = licitacao.cod_licitacao
+           AND justificativa_razao.cod_modalidade = licitacao.cod_modalidade
+           AND justificativa_razao.cod_entidade = licitacao.cod_entidade
+           AND justificativa_razao.exercicio = licitacao.exercicio
+    ";
 }
 
 function recuperaDescricaoJulgamentoObjeto(&$rsRecordSet, $stFiltro = "", $stOrdem = "", $boTransacao = "")
@@ -1382,6 +1439,11 @@ function montaRecuperaLicitacaoNaoHomologada()
       $rsRecordSet = new RecordSet;
       $stOrdem = " ORDER BY  ll.cod_licitacao ";
       $stSql = $this->montaRecuperaLicitacao().$stFiltro.$stOrdem;
+
+      // echo "<pre>";
+      // var_dump($stSql);
+      // die;
+
       $this->stDebug = $stSql;
       $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
 
