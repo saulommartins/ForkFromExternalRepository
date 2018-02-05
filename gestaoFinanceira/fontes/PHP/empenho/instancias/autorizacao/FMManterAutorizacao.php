@@ -527,6 +527,7 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
     $obBscFornecedor->setValue  ($stNomFornecedor);
     $obBscFornecedor->setNull   (false );
     $obBscFornecedor->obCampoCod->setName     ('inCodFornecedor');
+    $obBscFornecedor->obCampoCod->setId       ('inCodFornecedor');
     $obBscFornecedor->obCampoCod->setSize     (10);
     $obBscFornecedor->obCampoCod->setNull     (false);
     $obBscFornecedor->obCampoCod->setMaxLength(8);

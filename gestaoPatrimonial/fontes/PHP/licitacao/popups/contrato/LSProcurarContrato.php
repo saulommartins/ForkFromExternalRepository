@@ -103,7 +103,7 @@ if( $request->get('boFornecedor') ){
     $stFiltro .= " and contrato.cod_entidade ".$stCodEntidade;
 
     $inCodFornecedor = $request->get('inCodFornecedor', '');
-    $stCodFornecedor = ($inCodFornecedor!='') ? '= '.$inCodFornecedor : 'IS NULL';
+    $stCodFornecedor = ($inCodFornecedor!='') ? '= '.$inCodFornecedor : 'IS NOT NULL';
     $stFiltro .= " and contrato.cgm_contratado ".$stCodFornecedor;
     
     if($request->get('stExercicio'))

@@ -47,6 +47,8 @@ include CAM_GF_EMP_NEGOCIO.'REmpenhoAutorizacaoEmpenho.class.php';
 include_once CAM_GF_EMP_MAPEAMENTO.'TEmpenhoItemPreEmpenho.class.php';
 include_once CAM_GF_CONT_MAPEAMENTO.'TContabilidadeEncerramentoMes.class.php';
 include_once CAM_GF_EMP_MAPEAMENTO.'TEmpenhoAutorizacaoEmpenhoAssinatura.class.php';
+include CAM_GF_EMP_MAPEAMENTO.'TEmpenhoAutorizacaoContrato.class.php';
+include CAM_GF_EMP_MAPEAMENTO.'TEmpenhoAutorizacaoConvenio.class.php';
 
 //Define o nome dos arquivos PHP
 $stPrograma = "ManterAutorizacao";
@@ -110,7 +112,7 @@ switch ($stAcao) {
                 $obREmpenhoAutorizacaoEmpenho->setTipoEmissao('R');
                 $obREmpenhoAutorizacaoEmpenho->consultaSaldoAnteriorDataEmpenho($nuSaldoDotacao);
 
-               if ($request->get('nuVlTotalAutorizacao') > $nuSaldoDotacao)
+                if ($request->get('nuVlTotalAutorizacao') > $nuSaldoDotacao)
                    $obErro->setDescricao("O Saldo da Dotação é menor que o Valor Total da Autorização!");
             }
         }
@@ -129,8 +131,10 @@ switch ($stAcao) {
             $obREmpenhoAutorizacaoEmpenho->obROrcamentoReserva->setDtInclusao( $request->get('stDtAutorizacao') );
             $obREmpenhoAutorizacaoEmpenho->setDescricao( $request->get('stDescricao') );
             $obREmpenhoAutorizacaoEmpenho->setDtAutorizacao( $request->get('stDtAutorizacao') );
+
             $nuVlReserva = str_replace('.','',$request->get('hdnVlReserva') );
             $nuVlReserva = str_replace(',','.',$nuVlReserva );
+
             $obREmpenhoAutorizacaoEmpenho->obROrcamentoReserva->setVlReserva( $nuVlReserva );
             $obREmpenhoAutorizacaoEmpenho->obROrcamentoDespesa->obROrcamentoUnidadeOrcamentaria->obROrcamentoOrgaoOrcamentario->setNumeroOrgao( $request->get('inCodOrgao') );
             $obREmpenhoAutorizacaoEmpenho->obROrcamentoDespesa->obROrcamentoUnidadeOrcamentaria->setNumeroUnidade($request->get('inCodUnidadeOrcamento'));
@@ -177,12 +181,12 @@ switch ($stAcao) {
                     $obTEmpenhoAutorizacaoContrato = new TEmpenhoAutorizacaoContrato();
                     $obTEmpenhoAutorizacaoContrato->setDado( "exercicio"          , Sessao::getExercicio()              );
                     $obTEmpenhoAutorizacaoContrato->setDado( "cod_entidade"       , $request->get('inCodEntidade')      );
-                    $obTEmpenhoAutorizacaoContrato->setDado( "cod_empenho"        , $obREmpenhoEmpenho->getCodEmpenho() );
+                    $obTEmpenhoAutorizacaoContrato->setDado( 'cod_autorizacao', $obREmpenhoAutorizacaoEmpenho->getCodAutorizacao() );
                     $obTEmpenhoAutorizacaoContrato->setDado( "num_contrato"       , $request->get('inCodContrato')      );
                     $obTEmpenhoAutorizacaoContrato->setDado( "exercicio_contrato" , $request->get('stExercicioContrato'));
                     $obErro = $obTEmpenhoAutorizacaoContrato->inclusao($boTransacao);
 
-                    /*if ( !$obErro->ocorreu() ) {
+                    if ( !$obErro->ocorreu() ) {
                         list($inNumAditivo, $stExercicioAditivo) = explode('/', $request->get('inNumAditivo'));
 
                         // Relaciona o empenho a aditivo de contrato
@@ -191,7 +195,7 @@ switch ($stAcao) {
                             $obTEmpenhoAutorizacaoContratoAditivo = new TEmpenhoAutorizacaoContratoAditivo();
                             $obTEmpenhoAutorizacaoContratoAditivo->setDado( "exercicio_empenho"  , Sessao::getExercicio()              );
                             $obTEmpenhoAutorizacaoContratoAditivo->setDado( "cod_entidade"       , $request->get('inCodEntidade')      );
-                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( "cod_empenho"        , $obREmpenhoEmpenho->getCodEmpenho() );
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( 'cod_autorizacao', $obREmpenhoAutorizacaoEmpenho->getCodAutorizacao() );
                             $obTEmpenhoAutorizacaoContratoAditivo->setDado( "num_contrato"       , $request->get('inCodContrato')      );
                             $obTEmpenhoAutorizacaoContratoAditivo->setDado( "exercicio_contrato" , $request->get('stExercicioContrato'));
                             $obTEmpenhoAutorizacaoContratoAditivo->setDado( "num_aditivo"        , $inNumAditivo                       );
@@ -199,7 +203,7 @@ switch ($stAcao) {
 
                             $obErro = $obTEmpenhoAutorizacaoContratoAditivo->inclusao($boTransacao);
                         }
-                    }*/
+                    }
                 }
 
                 //Relaciona o empenho aos convênios

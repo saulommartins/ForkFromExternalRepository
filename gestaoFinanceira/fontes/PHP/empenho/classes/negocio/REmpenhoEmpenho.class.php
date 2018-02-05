@@ -1548,18 +1548,23 @@ function listar(&$rsRecordSet, $stOrder = "tabela.cod_entidade, tabela.cod_empen
 
     $stFiltro = '';
 
-    if( $this->stExercicio )
+    if ( $this->stExercicio )
         $stFiltro .= " AND tabela.exercicio = '".$this->stExercicio."' ";
-    if( $this->obROrcamentoEntidade->getCodigoEntidade() )
-        $stFiltro  .= " AND tabela.cod_entidade IN (".$this->obROrcamentoEntidade->getCodigoEntidade()." ) ";
-    if( $this->obREmpenhoPermissaoAutorizacao->obROrcamentoUnidade->obROrcamentoOrgaoOrcamentario->getNumeroOrgao())
+    
+    if ( $this->obROrcamentoEntidade->getCodigoEntidade() )
+        $stFiltro .= " AND tabela.cod_entidade IN (".$this->obROrcamentoEntidade->getCodigoEntidade()." ) ";
+    
+    if ( $this->obREmpenhoPermissaoAutorizacao->obROrcamentoUnidade->obROrcamentoOrgaoOrcamentario->getNumeroOrgao())
         $stFiltro .= " AND tabela.num_orgao = ".$this->obREmpenhoPermissaoAutorizacao->obROrcamentoUnidade->obROrcamentoOrgaoOrcamentario->getNumeroOrgao()." ";
-    if( $this->obREmpenhoPermissaoAutorizacao->obROrcamentoUnidade->getNumeroUnidade())
+    
+    if ( $this->obREmpenhoPermissaoAutorizacao->obROrcamentoUnidade->getNumeroUnidade())
         $stFiltro .= " AND tabela.num_unidade = ".$this->obREmpenhoPermissaoAutorizacao->obROrcamentoUnidade->getNumeroUnidade()." ";
-    if( $this->inCodDespesa )
-        $stFiltro  .= " AND tabela.cod_despesa = ".$this->inCodDespesa." ";
-    if( $this->obROrcamentoDespesa->obROrcamentoClassificacaoDespesa->getCodEstrutural() )
-        $stFiltro  .= " AND tabela.cod_estrutural = '".$this->obROrcamentoDespesa->obROrcamentoClassificacaoDespesa->getCodEstrutural()."' ";
+    
+    if ( $this->inCodDespesa )
+        $stFiltro .= " AND tabela.cod_despesa = ".$this->inCodDespesa." ";
+    
+    if ( $this->obROrcamentoDespesa->obROrcamentoClassificacaoDespesa->getCodEstrutural() )
+        $stFiltro .= " AND tabela.cod_estrutural = '".$this->obROrcamentoDespesa->obROrcamentoClassificacaoDespesa->getCodEstrutural()."' ";
 
     if ($this->stDtVencimento) {
         $stFiltro .= " AND TO_DATE(tabela.dt_vencimento,'dd/mm/yyyy') = TO_DATE('".$this->stDtVencimento."','dd/mm/yyyy') ";

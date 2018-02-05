@@ -876,6 +876,7 @@ function recuperaContratoEmpenho(&$rsRecordSet, $stFiltro = "",$boTransacao = ""
     $obConexao   = new Conexao;
     $rsRecordSet = new RecordSet;
     $stSql = $this->montaRecuperaContratoEmpenho().$stFiltro;
+
     $this->stDebug = $stSql;
     $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
 
