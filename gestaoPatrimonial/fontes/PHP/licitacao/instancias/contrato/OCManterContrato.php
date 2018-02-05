@@ -147,33 +147,37 @@ switch ($_REQUEST['stCtrl']) {
     break;
     
     case "montaAtributos":
-    $stJs = montaAtributos( $_REQUEST['inCodDocumento'] );
-    $stJs .= buscaDocumentoFornecedor ( $_REQUEST['inCGMContratado']  , $_REQUEST['inCodDocumento'] ) ;
-    echo $stJs;
+        $stJs = montaAtributos( $_REQUEST['inCodDocumento'] );
+        $stJs .= buscaDocumentoFornecedor ( $_REQUEST['inCGMContratado']  , $_REQUEST['inCodDocumento'] ) ;
+        echo $stJs;
     break;
 
     case "preencheVigencia":
         include_once ( CAM_GA_NORMAS_MAPEAMENTO."TNormaDataTermino.class.php");
-    $obTNormaDataTermino = new TNormaDataTermino;
-    $obTNormaDataTermino->setDado('cod_norma', $_REQUEST['inCodNorma']);
-    $obTNormaDataTermino->recuperaPorChave($rsDataTermino);
-    $stDataVigencia = $rsDataTermino->getCampo('dt_termino');
-    $stJs = " d.getElementById('stDataVigencia').innerHTML = '".$stDataVigencia."';";;
-    $stJs.= " d.getElementById('hdnDataVigencia').value = '".$stDataVigencia."';";;
-    echo $stJs;
+        
+        $obTNormaDataTermino = new TNormaDataTermino;
+        $obTNormaDataTermino->setDado('cod_norma', $_REQUEST['inCodNorma']);
+        $obTNormaDataTermino->recuperaPorChave($rsDataTermino);
+        
+        $stDataVigencia = $rsDataTermino->getCampo('dt_termino');
+        $stJs = " d.getElementById('stDataVigencia').innerHTML = '".$stDataVigencia."';";;
+        $stJs.= " d.getElementById('hdnDataVigencia').value = '".$stDataVigencia."';";;
+        
+        echo $stJs;
     break;
 
     case 'carregaValorDocumentosContrato':
+        buscarRepresentanteLegal($request);
         preencheValorContrato($request);
         buscaDocumentoAssinado($request);
     break;
 
     case "sincronizaDataValida":
-    sincronizarDataValidaDocumento($_REQUEST['inNumDiasValido'], $_REQUEST['stDataEmissao']);
+        sincronizarDataValidaDocumento($_REQUEST['inNumDiasValido'], $_REQUEST['stDataEmissao']);
     break;
 
     case "sincronizaDiasValidos":
-    sincronizaDiasValidosDocumento($_REQUEST['stDataValidade'], $_REQUEST['stDataEmissao']);
+        sincronizaDiasValidosDocumento($_REQUEST['stDataValidade'], $_REQUEST['stDataEmissao']);
     break;
 
     case "preencheObjeto":
@@ -190,12 +194,16 @@ switch ($_REQUEST['stCtrl']) {
 
             if ( $rsLicitacao->getNumLinhas() > 0 ) {
                 if ($_REQUEST['inCodLicitacao']) {
-                   $stJs  = "d.getElementById('stDescObjeto').innerHTML = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "",$rsLicitacao->getCampo('descricao'))))."';\n";
-                   $stJs .= "f.hdnDescObjeto.value = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "", $rsLicitacao->getCampo('descricao'))))."';\n";
-                   $stJs .= "f.stJustificativa.value = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "", $rsLicitacao->getCampo('justificativa'))))."';\n";
-                   $stJs .= "f.stRazao.value = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "", $rsLicitacao->getCampo('razao'))))."';\n";
-                   $stJs .= "f.stFundamentacaoLegal.value = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "", $rsLicitacao->getCampo('fundamentacao_legal'))))."';\n";
-                   $stJs .= "f.inCGM.value = '". $rsLicitacao->getCampo('responsavel_juridico')."';\n";
+                    $stJs  = "d.getElementById('stDescObjeto').innerHTML = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "",$rsLicitacao->getCampo('descricao'))))."';\n";
+                    $stJs .= "f.hdnDescObjeto.value = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "", $rsLicitacao->getCampo('descricao'))))."';\n";
+                    $stJs .= "f.stJustificativa.value = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "", $rsLicitacao->getCampo('justificativa'))))."';\n";
+                    $stJs .= "f.stRazao.value = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "", $rsLicitacao->getCampo('razao'))))."';\n";
+                    $stJs .= "f.stFundamentacaoLegal.value = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "", $rsLicitacao->getCampo('fundamentacao_legal'))))."';\n";
+                    $stJs .= "f.inCGM.value = '". $rsLicitacao->getCampo('cgm_responsavel_juridico')."';\n";
+                    $stJs .= "d.getElementById('stNomCGM').innerHTML = '". $rsLicitacao->getCampo('responsavel_juridico')."';\n";
+                    $stJs .= "f.stObjeto.value = '". $rsLicitacao->getCampo('descricao_objeto_contrato')."';\n";
+                    $stJs .= "f.inCGMSignatario.value = '". $rsLicitacao->getCampo('cgm_signatario')."';\n";
+                    $stJs .= "d.getElementById('stCGMSignatario').innerHTML = '".nl2br(str_replace("\r\n", "\n", preg_replace("/(\r\n|\n|\r)/", "",$rsLicitacao->getCampo('nome_signatario'))))."';\n";
                 }
             } else {
                 $stJs  = "d.getElementById('stDescObjeto').innerHTML = '';\n";
@@ -203,6 +211,9 @@ switch ($_REQUEST['stCtrl']) {
                 $stJs .= "f.stJustificativa.value = '';\n";
                 $stJs .= "f.stRazao.value = '';\n";
                 $stJs .= "f.stFundamentacaoLegal.value = '';\n";
+                $stJs .= "f.inCGM.value = '';\n";
+                $stJs .= "f.inCGMSignatario.value = '';\n";
+                $stJs .= "d.getElementById('stNomCGM').innerHTML = '';\n";
             }
 
             $stJs = isset($stJs) ? $stJs : "";
@@ -245,228 +256,239 @@ switch ($_REQUEST['stCtrl']) {
         echo $stJs;
     break;
 
+    case 'carregaDadosFornecedor':
+
+    break;
+
     //Carrega itens vazios na listagem de documentos de publicacao utilizados no carregamento do Form.
     case 'carregaListaDocumentos' :
-    $arDocumentos = Sessao::read('arDocumentos');
-    echo montaListaDocumentos($arDocumentos, true, $request->get('consultar'));
+        $arDocumentos = Sessao::read('arDocumentos');
+        echo montaListaDocumentos($arDocumentos, true, $request->get('consultar'));
     break;
 
     //Inclui itens na listagem de documentos de publicacao utilizados
     case 'incluirDocumentos':
-    include_once ( CAM_GP_LIC_MAPEAMENTO."TLicitacaoDocumento.class.php");
-    $obTLicitacaoDocumento = new TLicitacaoDocumento;
-    $obTLicitacaoDocumento->setDado('cod_documento', $_REQUEST["inCodDocumento"]);
-    $obTLicitacaoDocumento->recuperaPorChave($rsDocumentos);
-    $stNomDocumento = $rsDocumentos->getCampo('nom_documento');
+        include_once ( CAM_GP_LIC_MAPEAMENTO."TLicitacaoDocumento.class.php");
+        $obTLicitacaoDocumento = new TLicitacaoDocumento;
+        $obTLicitacaoDocumento->setDado('cod_documento', $_REQUEST["inCodDocumento"]);
+        $obTLicitacaoDocumento->recuperaPorChave($rsDocumentos);
+        $stNomDocumento = $rsDocumentos->getCampo('nom_documento');
 
-    $boDocumentoRepetido = false;
-    $arDocumentos = Sessao::read('arDocumentos');
-    if (is_array($arDocumentos) == true) {
-        foreach ($arDocumentos as $arTEMP) {
-            if ($arTEMP['inCodDocumento'] == $_REQUEST["inCodDocumento"]) {
-                $boDocumentoRepetido = true ;
-                break;
+        $boDocumentoRepetido = false;
+        $arDocumentos = Sessao::read('arDocumentos');
+        if (is_array($arDocumentos) == true) {
+            foreach ($arDocumentos as $arTEMP) {
+                if ($arTEMP['inCodDocumento'] == $_REQUEST["inCodDocumento"]) {
+                    $boDocumentoRepetido = true ;
+                    break;
+                }
             }
         }
-    }
 
-    if (!($boDocumentoRepetido)) {
-       $inCount = sizeof($arDocumentos);
-       $arDocumentos[$inCount]['id'               ] = $inCount + 1;
-       $arDocumentos[$inCount]['boNovo'           ] = true;
-       $arDocumentos[$inCount]['inCodDocumento'   ] = $_REQUEST[ "inCodDocumento"];
-       $arDocumentos[$inCount]['stNumDocumento'   ] = $_REQUEST[ "stNumDocumento" ];
-       $arDocumentos[$inCount]['stNomDocumento'   ] = $stNomDocumento;
-       $arDocumentos[$inCount]['dtValidade'       ] = $_REQUEST[ "stDataValidade" ];
-       $arDocumentos[$inCount]['dtEmissao'        ] = $_REQUEST[ "stDataEmissao"  ];
+        if (!($boDocumentoRepetido)) {
+           $inCount = sizeof($arDocumentos);
+           $arDocumentos[$inCount]['id'               ] = $inCount + 1;
+           $arDocumentos[$inCount]['boNovo'           ] = true;
+           $arDocumentos[$inCount]['inCodDocumento'   ] = $_REQUEST[ "inCodDocumento"];
+           $arDocumentos[$inCount]['stNumDocumento'   ] = $_REQUEST[ "stNumDocumento" ];
+           $arDocumentos[$inCount]['stNomDocumento'   ] = $stNomDocumento;
+           $arDocumentos[$inCount]['dtValidade'       ] = $_REQUEST[ "stDataValidade" ];
+           $arDocumentos[$inCount]['dtEmissao'        ] = $_REQUEST[ "stDataEmissao"  ];
 
-    } else {
-       echo "alertaAviso('Este documento já consta nesse contrato.','form','erro','".Sessao::getId()."');";
-    }
-    echo 'limpaFormularioDocumentos();';
-    echo 'document.getElementById("inNumDiasValido").value = "";';
-    Sessao::write('arDocumentos', $arDocumentos);
-    echo montaListaDocumentos($arDocumentos, true, $request->get('consultar'));
+        } else {
+           echo "alertaAviso('Este documento já consta nesse contrato.','form','erro','".Sessao::getId()."');";
+        }
+
+        echo 'limpaFormularioDocumentos();';
+        echo 'document.getElementById("inNumDiasValido").value = "";';
+        Sessao::write('arDocumentos', $arDocumentos);
+        echo montaListaDocumentos($arDocumentos, true, $request->get('consultar'));
     break;
 
     //Carrega itens da listagem de documentos de publicacao utilizados em seus determinados campos no Form.
     case 'alteraDocumentos':
-    $i = 0;
-    $arDocumentos = Sessao::read('arDocumentos');
-    foreach ($arDocumentos as $key => $value) {
-        if (($key+1) == $_REQUEST['id']) {
-        $dataValidade = $arDocumentos[$i]['dtValidade'];
-        $dataEmissao = $arDocumentos[$i]['dtEmissao'];
+        $i = 0;
+        $arDocumentos = Sessao::read('arDocumentos');
+        foreach ($arDocumentos as $key => $value) {
+            if (($key+1) == $_REQUEST['id']) {
+            $dataValidade = $arDocumentos[$i]['dtValidade'];
+            $dataEmissao = $arDocumentos[$i]['dtEmissao'];
 
-        $js ="f.HdnCodDocumento.value = '".$_REQUEST['id']."';";
-        $js.="f.inCodDocumento.value = '".$arDocumentos[$i]['inCodDocumento']."';";
-        $js.="f.stNumDocumento.value = '".$arDocumentos[$i]['stNumDocumento']."';";
-        $js.="f.stDataValidade.value = '".$arDocumentos[$i]['dtValidade']."';";
-        $js.="f.stDataEmissao.value = '".$arDocumentos[$i]['dtEmissao']."';";
-        $js.="f.btIncluirDocumentos.disabled = true;";
-        $js.="f.btAlterarDocumentos.disabled = false;";
-        $js.= "f.stDataValidade.disabled = '';";
-        $js.= "f.inNumDiasValido.disabled = '';";
+            $js ="f.HdnCodDocumento.value = '".$_REQUEST['id']."';";
+            $js.="f.inCodDocumento.value = '".$arDocumentos[$i]['inCodDocumento']."';";
+            $js.="f.stNumDocumento.value = '".$arDocumentos[$i]['stNumDocumento']."';";
+            $js.="f.stDataValidade.value = '".$arDocumentos[$i]['dtValidade']."';";
+            $js.="f.stDataEmissao.value = '".$arDocumentos[$i]['dtEmissao']."';";
+            $js.="f.btIncluirDocumentos.disabled = true;";
+            $js.="f.btAlterarDocumentos.disabled = false;";
+            $js.= "f.stDataValidade.disabled = '';";
+            $js.= "f.inNumDiasValido.disabled = '';";
+            }
+
+            $i++;
         }
 
-        $i++;
-    }
-
-    sincronizaDiasValidosDocumento($dataValidade,$dataEmissao);
-    Sessao::write('arDocumentos', $arDocumentos);
-    echo $js;
+        sincronizaDiasValidosDocumento($dataValidade,$dataEmissao);
+        Sessao::write('arDocumentos', $arDocumentos);
+        echo $js;
     break;
 
     //Confirma itens alterados da listagem de documentos de publicacao utilizados
     case "alterarDocumentos":
-    $inCount = 0;
-    include_once ( CAM_GP_LIC_MAPEAMENTO."TLicitacaoDocumento.class.php");
-    $obTLicitacaoDocumento = new TLicitacaoDocumento;
-    $obTLicitacaoDocumento->setDado('cod_documento', $_REQUEST["inCodDocumento"]);
-    $obTLicitacaoDocumento->recuperaPorChave($rsDocumentos);
-    $stNomDocumento = $rsDocumentos->getCampo('nom_documento');
-    $arDocumentos = Sessao::read('arDocumentos');
+        $inCount = 0;
+        include_once ( CAM_GP_LIC_MAPEAMENTO."TLicitacaoDocumento.class.php");
+        $obTLicitacaoDocumento = new TLicitacaoDocumento;
+        $obTLicitacaoDocumento->setDado('cod_documento', $_REQUEST["inCodDocumento"]);
+        $obTLicitacaoDocumento->recuperaPorChave($rsDocumentos);
+        $stNomDocumento = $rsDocumentos->getCampo('nom_documento');
+        $arDocumentos = Sessao::read('arDocumentos');
 
-    $boDocumentoRepetido = false;
-    foreach ($arDocumentos as $key=>$value) {
-        if ($value['inCodDocumento'] == $_REQUEST["inCodDocumento"]) {
-        if ($value['id'] != $_REQUEST['HdnCodDocumento']) {
-            $boDocumentoRepetido = true;
-        }
-        }
-    }
-
-    if (!$boDocumentoRepetido) {
+        $boDocumentoRepetido = false;
         foreach ($arDocumentos as $key=>$value) {
-        if (($key+1) == $_REQUEST['HdnCodDocumento']) {
-            $arDocumentos[$inCount]['id'            ] = $inCount + 1;
-            $arDocumentos[$inCount]['boAlterado'    ] = true;
-            $arDocumentos[$inCount]['inCodDocumento'] = $_REQUEST[ "inCodDocumento"];
-            $arDocumentos[$inCount]['stNumDocumento'] = $_REQUEST[ "stNumDocumento" ];
-            $arDocumentos[$inCount]['stNomDocumento'] = $stNomDocumento;
-            $arDocumentos[$inCount]['dtValidade'    ] = $_REQUEST[ "stDataValidade" ];
-            $arDocumentos[$inCount]['dtEmissao'     ] = $_REQUEST[ "stDataEmissao"  ];
+            if ($value['inCodDocumento'] == $_REQUEST["inCodDocumento"]) {
+                if ($value['id'] != $_REQUEST['HdnCodDocumento']) {
+                    $boDocumentoRepetido = true;
+                }
+            }
         }
-        $inCount++;
-    }
-    Sessao::write('arDocumentos', $arDocumentos);
-    echo 'limpaFormularioDocumentos();';
-    echo 'document.getElementById("inNumDiasValido").value = "";';
-    $js.= montaListaDocumentos($arDocumentos, true, $request->get('consultar'));
-    $js.= "f.btIncluirDocumentos.disabled = false;";
-    $js.= "f.btAlterarDocumentos.disabled = true;";
-    $js.= "f.stDataValidade.disabled = 'disabled';";
-    $js.= "f.inNumDiasValido.disabled = 'disabled';";
 
-    echo $js;
+        if (!$boDocumentoRepetido) {
+            foreach ($arDocumentos as $key=>$value) {
+                if (($key+1) == $_REQUEST['HdnCodDocumento']) {
+                    $arDocumentos[$inCount]['id'            ] = $inCount + 1;
+                    $arDocumentos[$inCount]['boAlterado'    ] = true;
+                    $arDocumentos[$inCount]['inCodDocumento'] = $_REQUEST[ "inCodDocumento"];
+                    $arDocumentos[$inCount]['stNumDocumento'] = $_REQUEST[ "stNumDocumento" ];
+                    $arDocumentos[$inCount]['stNomDocumento'] = $stNomDocumento;
+                    $arDocumentos[$inCount]['dtValidade'    ] = $_REQUEST[ "stDataValidade" ];
+                    $arDocumentos[$inCount]['dtEmissao'     ] = $_REQUEST[ "stDataEmissao"  ];
+                }
 
-    } else {
-        echo "alertaAviso('Este documento já consta nesse contrato.','form','erro','".Sessao::getId()."');";
-    }
+                $inCount++;
+            }
+
+            Sessao::write('arDocumentos', $arDocumentos);
+            echo 'limpaFormularioDocumentos();';
+            echo 'document.getElementById("inNumDiasValido").value = "";';
+            
+            $js.= montaListaDocumentos($arDocumentos, true, $request->get('consultar'));
+            $js.= "f.btIncluirDocumentos.disabled = false;";
+            $js.= "f.btAlterarDocumentos.disabled = true;";
+            $js.= "f.stDataValidade.disabled = 'disabled';";
+            $js.= "f.inNumDiasValido.disabled = 'disabled';";
+
+            echo $js;
+
+        } else {
+            echo "alertaAviso('Este documento já consta nesse contrato.','form','erro','".Sessao::getId()."');";
+        }
     break;
 
     case 'excluirDocumentos':
-    $boDocumentoRepetido = false;
-    $arTEMP            = array();
-    $inCount           = 0;
-    $arDocumentos = Sessao::read('arDocumentos');
-    foreach ($arDocumentos as $key => $value) {
-        if (($key+1) != $_REQUEST['id']) {
-            $arTEMP[$inCount]['id'            ] = $inCount + 1;
-            $arTEMP[$inCount]['inCodDocumento'] = $value[ "inCodDocumento" ];
-            $arTEMP[$inCount]['stNumDocumento'] = $value[ "stNumDocumento" ];
-            $arTEMP[$inCount]['stNomDocumento'] = $value[ "stNomDocumento" ];
-            $arTEMP[$inCount]['dtValidade'    ] = $value[ "dtValidade"     ];
-            $arTEMP[$inCount]['dtEmissao'     ] = $value[ "dtEmissao"      ];
-            $inCount++;
+        $boDocumentoRepetido = false;
+        $arTEMP            = array();
+        $inCount           = 0;
+        $arDocumentos = Sessao::read('arDocumentos');
+
+        foreach ($arDocumentos as $key => $value) {
+            if (($key+1) != $_REQUEST['id']) {
+                $arTEMP[$inCount]['id'            ] = $inCount + 1;
+                $arTEMP[$inCount]['inCodDocumento'] = $value[ "inCodDocumento" ];
+                $arTEMP[$inCount]['stNumDocumento'] = $value[ "stNumDocumento" ];
+                $arTEMP[$inCount]['stNomDocumento'] = $value[ "stNomDocumento" ];
+                $arTEMP[$inCount]['dtValidade'    ] = $value[ "dtValidade"     ];
+                $arTEMP[$inCount]['dtEmissao'     ] = $value[ "dtEmissao"      ];
+                $inCount++;
+            }
         }
-    }
-    Sessao::write('arDocumentos', $arTEMP);
-    echo montaListaDocumentos($arTEMP, true, $request->get('consultar'));
+
+        Sessao::write('arDocumentos', $arTEMP);
+        echo montaListaDocumentos($arTEMP, true, $request->get('consultar'));
     break;
 
     //Carrega itens vazios na listagem de aditivos de publicacao utilizados no carregamento do Form.
     case 'carregaListaAditivos' :
-    echo montaListaAditivos(Sessao::read('arAditivos'));
+        echo montaListaAditivos(Sessao::read('arAditivos'));
     break;
 
     //Inclui itens na listagem de Aditivos de publicacao utilizados
     case 'incluirAditivos':
-    $boAditivoRepetido = false;
-    $arAditivos = Sessao::read('arAditivos');
-    foreach ($arAditivos as $arTEMP) {
-        if ($arTEMP['inCodNorma'] == $_REQUEST["inCodNorma"]) {
-            $boAditivoRepetido = true ;
-            break;
+        $boAditivoRepetido = false;
+        $arAditivos = Sessao::read('arAditivos');
+        foreach ($arAditivos as $arTEMP) {
+            if ($arTEMP['inCodNorma'] == $_REQUEST["inCodNorma"]) {
+                $boAditivoRepetido = true ;
+                break;
+            }
         }
-    }
 
-    if (!($boAditivoRepetido)) {
-        $inCount = sizeof($arAditivos);
-            $arAditivos[$inCount]['id'               ] = $inCount + 1;
-        $arAditivos[$inCount]['inCodNorma'       ] = $_REQUEST[ "inCodNorma"];
-        $arAditivos[$inCount]['dtVencimento'     ] = $_REQUEST[ "hdnDataVigencia"];
-    } else {
-        echo "alertaAviso('Este aditivo já consta nesse contrato.','form','erro','".Sessao::getId()."');";
-    }
+        if (!($boAditivoRepetido)) {
+            $inCount = sizeof($arAditivos);
+                $arAditivos[$inCount]['id'               ] = $inCount + 1;
+            $arAditivos[$inCount]['inCodNorma'       ] = $_REQUEST[ "inCodNorma"];
+            $arAditivos[$inCount]['dtVencimento'     ] = $_REQUEST[ "hdnDataVigencia"];
+        } else {
+            echo "alertaAviso('Este aditivo já consta nesse contrato.','form','erro','".Sessao::getId()."');";
+        }
 
-    echo 'limpaFormularioAditivos();';
-    Sessao::write('arAditivos', $arAditivos);
-    echo montaListaAditivos( $arAditivos);
+        echo 'limpaFormularioAditivos();';
+        Sessao::write('arAditivos', $arAditivos);
+        echo montaListaAditivos( $arAditivos);
     break;
 
     case 'excluirAditivos':
-    $arTEMP            = array();
-    $inCount           = 0;
-    $arAditivos = Sessao::read('arAditivos');
-    foreach ($arAditivos as $key => $value) {
-        if (($key+1) != $_REQUEST['id']) {
-        $arTEMP[$inCount]['id'               ] = $inCount + 1;
-        $arTEMP[$inCount]['inCodNorma'     ] = $value[ "inCodNorma"   ];
-        $arTEMP[$inCount]['dtVencimento'   ] = $value[ "dtVencimento"     ];
-        $inCount++;
+        $arTEMP            = array();
+        $inCount           = 0;
+        $arAditivos = Sessao::read('arAditivos');
+        
+        foreach ($arAditivos as $key => $value) {
+            if (($key+1) != $_REQUEST['id']) {
+            $arTEMP[$inCount]['id'               ] = $inCount + 1;
+            $arTEMP[$inCount]['inCodNorma'     ] = $value[ "inCodNorma"   ];
+            $arTEMP[$inCount]['dtVencimento'   ] = $value[ "dtVencimento"     ];
+            $inCount++;
+            }
         }
-    }
 
-    Sessao::write('arAditivos', $arTEMP);
-    echo montaListaAditivos($arTEMP);
+        Sessao::write('arAditivos', $arTEMP);
+        echo montaListaAditivos($arTEMP);
     break;
 
     case 'limparTela':
-    Sessao::remove('arDocumentos');
-    $stJs  = montaListaDocumentos( array(), true, $request->get('consultar'));
-    $stJs .= "frm.inCodLicitacao.options[0].selected = true; \n";
-    $stJs .= "frm.inCGMContratado.options[0].selected = true; \n";
+        Sessao::remove('arDocumentos');
+        $stJs  = montaListaDocumentos( array(), true, $request->get('consultar'));
+        $stJs .= "frm.inCodLicitacao.options[0].selected = true; \n";
+        $stJs .= "frm.inCGMContratado.options[0].selected = true; \n";
 
-    echo $stJs;
+        echo $stJs;
     break;
 
     //Carrega itens vazios na listagem de veiculos de publicacao utilizados no carregamento do Form.
     case 'carregaListaVeiculos' :
-    $arValores = Sessao::read('arValores');
-    echo montaListaVeiculos($arValores, true, $request->get('consultar'));
+        $arValores = Sessao::read('arValores');
+        echo montaListaVeiculos($arValores, true, $request->get('consultar'));
     break;
 
     //Inclui itens na listagem de Aditivos de publicacao utilizados
     case 'incluiAditivos':
-    $boAditivoRepetido = false;
-    $arAditivos = Sessao::read('arAditivos');
+        $boAditivoRepetido = false;
+        $arAditivos = Sessao::read('arAditivos');
 
-    foreach ($arAditivos as $arTEMP) {
-        if ($arTEMP['inCodNorma'] == $_REQUEST["inCodNorma"]) {
-        $boAditivoRepetido = true ;
-        break;
+        foreach ($arAditivos as $arTEMP) {
+            if ($arTEMP['inCodNorma'] == $_REQUEST["inCodNorma"]) {
+            $boAditivoRepetido = true ;
+            break;
+            }
         }
-    }
 
-    if (!($boAditivoRepetido)) {
-       $inCount = sizeof($arAditivos);
-       $arAditivos[$inCount]['id'           ] = $inCount + 1;
-       $arAditivos[$inCount]['inCodNorma'   ] = $_REQUEST[ "inCodNorma"];
-       $arAditivos[$inCount]['dtVencimento' ] = $_REQUEST[ "hdnDataVigencia"];
-    }
+        if (!($boAditivoRepetido)) {
+           $inCount = sizeof($arAditivos);
+           $arAditivos[$inCount]['id'           ] = $inCount + 1;
+           $arAditivos[$inCount]['inCodNorma'   ] = $_REQUEST[ "inCodNorma"];
+           $arAditivos[$inCount]['dtVencimento' ] = $_REQUEST[ "hdnDataVigencia"];
+        }
 
-    Sessao::write('arAditivos', $arAditivos);
+        Sessao::write('arAditivos', $arAditivos);
     break;
 
     //Inclui itens na listagem de veiculos de publicacao utilizados
@@ -519,26 +541,26 @@ switch ($_REQUEST['stCtrl']) {
 
     //Carrega itens da listagem de veiculos de publicacao utilizados em seus determinados campos no Form.
     case 'alterarListaVeiculos':
-    $i = 0;
+        $i = 0;
 
-    $arValores = Sessao::read('arValores');
-    if ( is_array($arValores)) {
-        foreach ($arValores as $key => $value) {
-        if (($key+1) == $_REQUEST['id']) {
-            $js ="$('HdnCodVeiculo').value                      ='".$_REQUEST['id']."';                                            ";
-            $js.="$('inVeiculo').value                          ='".$arValores[$i]['inVeiculo']."';             ";
-            $js.="$('dtDataPublicacao').value                   ='".$arValores[$i]['dtDataPublicacao']."';        ";
-            $js.="$('inNumPublicacao').value                    ='".$arValores[$i]['inNumPublicacao']."';        ";
-            $js.="$('stObservacao').value                       ='".$arValores[$i]['stObservacao']."';          ";
-            $js.="$('stNomCgmVeiculoPublicadade').innerHTML='".$arValores[$i]['stVeiculo']."';";
-            $js.="$('incluiVeiculo').value    ='Alterar';                                                        ";
-            $js.="$('incluiVeiculo').setAttribute('onclick','montaParametrosGET(\'alteradoListaVeiculos\', \'id, inVeiculo, stVeiculo, dtDataPublicacao, inNumPublicacao, stNomCgmVeiculoPublicadade, stObservacao, inCodLicitacao, HdnCodLicitacao, HdnCodVeiculo\')');";
+        $arValores = Sessao::read('arValores');
+        if ( is_array($arValores)) {
+            foreach ($arValores as $key => $value) {
+            if (($key+1) == $_REQUEST['id']) {
+                $js ="$('HdnCodVeiculo').value                      ='".$_REQUEST['id']."';                                            ";
+                $js.="$('inVeiculo').value                          ='".$arValores[$i]['inVeiculo']."';             ";
+                $js.="$('dtDataPublicacao').value                   ='".$arValores[$i]['dtDataPublicacao']."';        ";
+                $js.="$('inNumPublicacao').value                    ='".$arValores[$i]['inNumPublicacao']."';        ";
+                $js.="$('stObservacao').value                       ='".$arValores[$i]['stObservacao']."';          ";
+                $js.="$('stNomCgmVeiculoPublicadade').innerHTML='".$arValores[$i]['stVeiculo']."';";
+                $js.="$('incluiVeiculo').value    ='Alterar';                                                        ";
+                $js.="$('incluiVeiculo').setAttribute('onclick','montaParametrosGET(\'alteradoListaVeiculos\', \'id, inVeiculo, stVeiculo, dtDataPublicacao, inNumPublicacao, stNomCgmVeiculoPublicadade, stObservacao, inCodLicitacao, HdnCodLicitacao, HdnCodVeiculo\')');";
+            }
+            $i++;
+            }
         }
-        $i++;
-        }
-    }
 
-    echo $js;
+        echo $js;
     break;
 
     //Confirma itens alterados da listagem de veiculos de publicacao utilizados
@@ -1000,8 +1022,8 @@ function buscaDocumentoAssinado(Request $request)
 
 function preencheValorContrato(Request $request)
 {
-     $stJs = buscaDocumentoFornecedor (  $request->get('inCGMFornecedor') , $request->get('inCodDocumento') );
-     if ($request->get('inCodLicitacao') && $request->get('inCGMFornecedor')) {
+    $stJs = buscaDocumentoFornecedor (  $request->get('inCGMFornecedor') , $request->get('inCodDocumento') );
+    if ($request->get('inCodLicitacao') && $request->get('inCGMFornecedor')) {
         $obTLicitacacaoContrato = new TLicitacaoContrato;
         $obTLicitacacaoContrato->setDado('cod_licitacao'    , $request->get('inCodLicitacao'));
         $obTLicitacacaoContrato->setDado('cod_modalidade'   , $request->get('inCodModalidade'));
@@ -1020,7 +1042,25 @@ function preencheValorContrato(Request $request)
         $stJs.= " d.getElementById('vlContrato').value = '';";
         $stJs.= " d.getElementById('hdnValorContrato').value = '';";
         echo $stJs;
-   }
+    }
+}
+
+function buscarRepresentanteLegal($request)
+{
+    include_once(TCOM."TComprasFornecedor.class.php");
+
+    $rsRepresentanteLegal = null;
+    $obTComprasFornecedor = new TComprasFornecedor;
+    $obTComprasFornecedor->recuperaRepresentanteLegal($rsRepresentanteLegal, $request->get('inCGMFornecedor'));
+    $representanteLegal = $rsRepresentanteLegal->getObjeto();
+
+    if ($representanteLegal != null) {
+        echo " d.getElementById('inCGMRepresentanteLegal').value = '".$representanteLegal['numcgm']."'; \n";
+        echo " d.getElementById('stCGMRepresentanteLegal').innerHTML = '".$representanteLegal['nom_cgm']."'; \n";
+    } else {
+        echo " d.getElementById('inCGMRepresentanteLegal').value = ''; \n";
+        echo " d.getElementById('stCGMRepresentanteLegal').innerHTML = ''; \n";
+    }
 }
 
 function montaListaAditivos($arRecordSet , $boExecuta = true)

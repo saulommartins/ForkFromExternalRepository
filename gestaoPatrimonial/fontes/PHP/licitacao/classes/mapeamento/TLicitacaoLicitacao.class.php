@@ -377,51 +377,36 @@ function recuperaObjetoLicitacao(&$rsRecordSet)
     if( $this->getDado('exercicio') != "" )
         $stFiltro .= " AND licitacao.exercicio = '".$this->getDado('exercicio')."'";
 
-    // $stFiltro = ($stFiltro!="")?" WHERE ".substr($stFiltro,4,strlen($stFiltro)):"";
-
     $stSql = $this->montaRecuperaObjetoLicitacao().$stFiltro;
     
-    // echo "<pre>";
-    // var_dump($stSql);
-    // die;
-
     $this->stDebug = $stSql;
     $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, "", $boTransacao );
 }
 
 function montaRecuperaObjetoLicitacao()
 {
-    /*$stSql  = " select licitacao.cod_licitacao                  \n";
-    $stSql .= "      , licitacao.cod_modalidade                 \n";
-    $stSql .= "      , licitacao.cod_entidade                   \n";
-    $stSql .= "      , licitacao.exercicio                      \n";
-    $stSql .= "      , objeto.cod_objeto                        \n";
-    $stSql .= "      , objeto.descricao                         \n";
-    $stSql .= "   from licitacao.licitacao                      \n";
-    $stSql .= "   join compras.objeto                           \n";
-    $stSql .= "     on objeto.cod_objeto = licitacao.cod_objeto \n";
-
-    return $stSql;*/
-
     return "
         SELECT licitacao.cod_licitacao, 
                licitacao.cod_modalidade, 
                licitacao.cod_entidade, 
                licitacao.exercicio,
-             
-             --Campo: Objeto do Contrato
-               objeto.cod_objeto,
-             
-             --Campo: Objeto do Contrato
-               objeto.descricao,
 
-               -- Campo: CGM Representante Legal
+               --Campo: Objeto
+               objeto.descricao,
+               
+               --Campo: Objeto do Contrato
+               objeto_solicitacao_compra.cod_objeto as cod_objeto_contrato,
+               objeto_solicitacao_compra.descricao as descricao_objeto_contrato,
+
                -- Campo: CGM Signatário
+               cgm_signatario.numcgm as cgm_signatario,
+               cgm_signatario.nom_cgm as nome_signatario,
 
                edital.num_edital,
-  
+
                -- Campo: Responsável Jurídico
-               edital.responsavel_juridico,
+               sw_cgm.numcgm as cgm_responsavel_juridico,
+               sw_cgm.nom_cgm as responsavel_juridico,
 
                -- Campo: Justificativa
                justificativa_razao.justificativa,
@@ -433,7 +418,7 @@ function montaRecuperaObjetoLicitacao()
                justificativa_razao.fundamentacao_legal
           
           FROM licitacao.licitacao  
-                           
+                   
           JOIN compras.objeto                           
             ON objeto.cod_objeto = licitacao.cod_objeto 
 
@@ -452,6 +437,38 @@ function montaRecuperaObjetoLicitacao()
            AND justificativa_razao.cod_modalidade = licitacao.cod_modalidade
            AND justificativa_razao.cod_entidade = licitacao.cod_entidade
            AND justificativa_razao.exercicio = licitacao.exercicio
+
+          LEFT JOIN sw_cgm
+            ON sw_cgm.numcgm = edital.responsavel_juridico
+
+          LEFT JOIN compras.mapa
+            ON mapa.exercicio = licitacao.exercicio
+           AND mapa.cod_mapa = licitacao.cod_mapa
+
+          LEFT JOIN compras.mapa_solicitacao
+            ON mapa_solicitacao.exercicio = mapa.exercicio
+           AND mapa_solicitacao.cod_mapa = mapa.cod_mapa
+
+          LEFT JOIN compras.solicitacao_homologada
+            ON solicitacao_homologada.exercicio = mapa_solicitacao.exercicio
+           AND solicitacao_homologada.cod_entidade = mapa_solicitacao.cod_entidade
+           AND solicitacao_homologada.cod_solicitacao = mapa_solicitacao.cod_solicitacao
+
+          LEFT JOIN compras.solicitacao
+            ON solicitacao.exercicio = solicitacao_homologada.exercicio
+           AND solicitacao.cod_entidade = solicitacao_homologada.cod_entidade
+           AND solicitacao.cod_solicitacao = solicitacao_homologada.cod_solicitacao
+
+          LEFT JOIN compras.objeto as objeto_solicitacao_compra
+            ON objeto_solicitacao_compra.cod_objeto = solicitacao.cod_objeto
+
+          LEFT JOIN tcemg.configuracao_orgao
+            ON configuracao_orgao.cod_entidade = licitacao.cod_entidade
+           AND tipo_responsavel = 1
+           AND configuracao_orgao.exercicio = licitacao.exercicio
+
+          LEFT JOIN sw_cgm as cgm_signatario
+            ON cgm_signatario.numcgm = configuracao_orgao.num_cgm
     ";
 }
 

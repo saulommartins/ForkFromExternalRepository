@@ -38,6 +38,9 @@
                     uc-02.01.08
 */
 
+ini_set("display_errors", 1);
+error_reporting(E_ALL ^ E_NOTICE);
+
 include '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
 include CAM_GF_EMP_NEGOCIO.'REmpenhoAutorizacaoEmpenho.class.php';
@@ -95,6 +98,7 @@ switch ($stAcao) {
             $obErro->setDescricao("Campo Contrapartida inválido!");
 
         $obREmpenhoAutorizacaoEmpenho->checarFormaExecucaoOrcamento( $stFormaExecucao );
+
         if ($request->get('inCodDespesa', '') != '') {
             if ($stFormaExecucao==1 and ($request->get('stCodClassificacao', '') == ''))
                 $obErro->setDescricao("Desdobramento não informado!");
@@ -110,6 +114,7 @@ switch ($stAcao) {
                    $obErro->setDescricao("O Saldo da Dotação é menor que o Valor Total da Autorização!");
             }
         }
+
         if ( !$obErro->ocorreu() ) {
             $obREmpenhoAutorizacaoEmpenho->setExercicio( Sessao::getExercicio() );
             $obREmpenhoAutorizacaoEmpenho->obROrcamentoEntidade->setCodigoEntidade( $request->get('inCodEntidade') );
@@ -163,6 +168,56 @@ switch ($stAcao) {
                 $obREmpenhoAutorizacaoEmpenho->setCodEntidade($request->get('inCodEntidade'));
                 $obREmpenhoAutorizacaoEmpenho->setTipoEmissao('R');
                 $obErro = $obREmpenhoAutorizacaoEmpenho->incluir($boTransacao);
+            }
+
+            // Relaciona a autorização a um contrato
+            if ( !$obErro->ocorreu() ) {
+                if($request->get('inCodContrato') && $request->get('stExercicioContrato')){
+                    include_once CAM_GF_EMP_MAPEAMENTO.'TEmpenhoAutorizacaoContrato.class.php';
+                    $obTEmpenhoAutorizacaoContrato = new TEmpenhoAutorizacaoContrato();
+                    $obTEmpenhoAutorizacaoContrato->setDado( "exercicio"          , Sessao::getExercicio()              );
+                    $obTEmpenhoAutorizacaoContrato->setDado( "cod_entidade"       , $request->get('inCodEntidade')      );
+                    $obTEmpenhoAutorizacaoContrato->setDado( "cod_empenho"        , $obREmpenhoEmpenho->getCodEmpenho() );
+                    $obTEmpenhoAutorizacaoContrato->setDado( "num_contrato"       , $request->get('inCodContrato')      );
+                    $obTEmpenhoAutorizacaoContrato->setDado( "exercicio_contrato" , $request->get('stExercicioContrato'));
+                    $obErro = $obTEmpenhoAutorizacaoContrato->inclusao($boTransacao);
+
+                    /*if ( !$obErro->ocorreu() ) {
+                        list($inNumAditivo, $stExercicioAditivo) = explode('/', $request->get('inNumAditivo'));
+
+                        // Relaciona o empenho a aditivo de contrato
+                        if(!empty($inNumAditivo) && !empty($stExercicioAditivo)){
+                            include_once CAM_GF_EMP_MAPEAMENTO.'TEmpenhoAutorizacaoContratoAditivo.class.php';
+                            $obTEmpenhoAutorizacaoContratoAditivo = new TEmpenhoAutorizacaoContratoAditivo();
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( "exercicio_empenho"  , Sessao::getExercicio()              );
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( "cod_entidade"       , $request->get('inCodEntidade')      );
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( "cod_empenho"        , $obREmpenhoEmpenho->getCodEmpenho() );
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( "num_contrato"       , $request->get('inCodContrato')      );
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( "exercicio_contrato" , $request->get('stExercicioContrato'));
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( "num_aditivo"        , $inNumAditivo                       );
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( "exercicio_aditivo"  , $stExercicioAditivo                 );
+
+                            $obErro = $obTEmpenhoAutorizacaoContratoAditivo->inclusao($boTransacao);
+                        }
+                    }*/
+                }
+
+                //Relaciona o empenho aos convênios
+                $obTTEmpenhoAutorizacaoConvenio = new TEmpenhoAutorizacaoConvenio();
+                // $obTTEmpenhoAutorizacaoConvenio->encerraTransaction();
+                $arConvenios = Sessao::read('convenios');
+
+                foreach ($arConvenios as $arTemp) {
+                    // $convenio = $obTTEmpenhoAutorizacaoConvenio->recuperaConvenioPorNumero($arTemp['exercicio'], $arTemp['nro_convenio'] );
+                    // $obTTEmpenhoAutorizacaoConvenio->setDado( 'exercicio_empenho', $arTemp['exercicio'] );
+                    
+                    $obTTEmpenhoAutorizacaoConvenio->setDado( 'cod_entidade', $_POST['inCodEntidade'] );
+                    $obTTEmpenhoAutorizacaoConvenio->setDado( 'cod_autorizacao', $obREmpenhoAutorizacaoEmpenho->getCodAutorizacao() );
+                    $obTTEmpenhoAutorizacaoConvenio->setDado( 'exercicio', Sessao::getExercicio() );
+                    $obTTEmpenhoAutorizacaoConvenio->setDado( 'nro_convenio', $arTemp['nro_convenio'] );
+                    
+                    $obErro = $obTTEmpenhoAutorizacaoConvenio->inclusao($boTransacao);
+                }
             }
             
             if ( !$obErro->ocorreu() ) {

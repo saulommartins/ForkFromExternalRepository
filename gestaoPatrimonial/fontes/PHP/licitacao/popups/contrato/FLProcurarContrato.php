@@ -83,10 +83,13 @@ $obHdnBoFornecedor = new Hidden;
 $obHdnBoFornecedor->setName( "boFornecedor" );
 $obHdnBoFornecedor->setValue( $request->get('boFornecedor') );
 
+$inCodEntidade = $_REQUEST['inCodEntidade'];
+
+
 if($request->get('boFornecedor')){
     $arFiltroBuscaContrato = Sessao::read('arFiltroBuscaContrato');
     $arFiltroBuscaContrato = (is_array($arFiltroBuscaContrato)) ? $arFiltroBuscaContrato : array();
-    $inCodEntidade = $arFiltroBuscaContrato['inCodEntidade'];
+    $inCodEntidade = (isset($arFiltroBuscaContrato['inCodEntidade'])) ? $arFiltroBuscaContrato['inCodEntidade'] : $inCodEntidade;
     $inCodFornecedor = $arFiltroBuscaContrato['inCodFornecedor'];
     $stNomFornecedor = '';
 

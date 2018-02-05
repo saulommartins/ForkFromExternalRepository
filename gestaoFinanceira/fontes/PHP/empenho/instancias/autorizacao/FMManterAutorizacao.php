@@ -750,26 +750,26 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
 
     //BOTÕES CONTRATOS
     /* Botão Incluir */
-    $obBtnIncluirContratos = new Button;
+    /*$obBtnIncluirContratos = new Button;
     $obBtnIncluirContratos->setValue             ( "Incluir"            );
     $obBtnIncluirContratos->setName              ( "btnIncluirContrato" );
     $obBtnIncluirContratos->setId                ( "btnIncluirContrato" );
     $obBtnIncluirContratos->setDisabled          ( false                );
-    $obBtnIncluirContratos->obEvento->setOnClick ( "montaParametrosGET('incluirContratoLista','inCodContrato,inCodEntidade,stExercicioContrato');" );
+    $obBtnIncluirContratos->obEvento->setOnClick ( "montaParametrosGET('incluirContratoLista','inCodContrato,inCodEntidade,stExercicioContrato');" );*/
 
     /* Botão Limpar */
-    $obBtnLimparContratos = new Button;
+    /*$obBtnLimparContratos = new Button;
     $obBtnLimparContratos->setName              ( "btnLimparContratos" );
     $obBtnLimparContratos->setId                ( "limparContratos"    );
     $obBtnLimparContratos->setValue             ( "Limpar"             );
     $obBtnLimparContratos->setDisabled          ( false                );
-    $obBtnLimparContratos->obEvento->setOnClick ( "montaParametrosGET('limparContratosLista');" );
+    $obBtnLimparContratos->obEvento->setOnClick ( "montaParametrosGET('limparContratosLista');" );*/
 
     /**
      * Lista Convenio(s)
      */
-    $spnListaContratos = new Span;
-    $spnListaContratos->setId( 'spnListaContratos' );
+    // $spnListaContratos = new Span;
+    // $spnListaContratos->setId( 'spnListaContratos' );
 
     // Cria a seção de convênios com busca
     $obConvenio = new IPopUpConvenio( $obForm );
@@ -944,9 +944,9 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
 
     $obFormulario->addTitulo('Contrato');
     $obContrato->geraFormulario($obFormulario);
-    $obFormulario->agrupaComponentes( array( $obBtnIncluirContratos, $obBtnLimparContratos ), "", "" );
-    $obFormulario->addSpan( $spnListaContratos );
-
+    // $obFormulario->agrupaComponentes( array( $obBtnIncluirContratos, $obBtnLimparContratos ), "", "" );
+    // $obFormulario->addSpan( $spnListaContratos );
+// 
     // Adiciona a parte de convênios ao formulário de empenhos
     $obFormulario->addTitulo( 'Convênios' );
     $obConvenio->geraFormulario($obFormulario);
@@ -1002,15 +1002,18 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
         $obLimpar->obEvento->setOnClick('limparTodos();');
         $obFormulario->defineBarra(array($obOk, $obLimpar));
     }
+    
     $obFormulario->show();
 
     if ($obMontaAssinaturas->getOpcaoAssinaturas()) {
         $jsOnLoad .= "getIMontaAssinaturas();\n";
     }
 }
+
 if ($stAcao != 'alterar') {
     $jsOnLoad .= "habilitaCampos('Descricao');\n";
 }
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/rodape.inc.php';
+
 ?>

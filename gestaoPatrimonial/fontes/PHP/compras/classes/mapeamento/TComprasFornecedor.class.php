@@ -328,8 +328,8 @@ $stSql .="    WHERE sw_cgm.numcgm = fornecedor.cgm_fornecedor   \n";
     return $stSql;
 }
 
- function recuperaFornecedorDebito(&$rsRecordSet, $stFiltroSQL = "", $boTransacao = "")
- {
+    function recuperaFornecedorDebito(&$rsRecordSet, $stFiltroSQL = "", $boTransacao = "")
+    {
         $obErro      = new Erro;
         $obConexao   = new Conexao;
         $rsRecordSet = new RecordSet;
@@ -370,4 +370,31 @@ $stSql .="    WHERE sw_cgm.numcgm = fornecedor.cgm_fornecedor   \n";
         return $stSql;
     }
 
+    public function recuperaRepresentanteLegal(&$rsRepresentanteLegal, $codFornecedor)
+    {
+        $obErro      = new Erro;
+        $obConexao   = new Conexao;
+        $rsRepresentanteLegal = new RecordSet;
+
+        $stFiltro =  "WHERE fornecedor.cgm_fornecedor = " . $codFornecedor;
+
+        $stSql = $this->montaRecuperaRepresentanteLegal().$stFiltro.$stOrdem;
+        $this->stDebug = $stSql;
+        $obErro = $obConexao->executaSQL( $rsRepresentanteLegal, $stSql, "", $boTransacao );
+    }
+
+    public function montaRecuperaRepresentanteLegal()
+    {
+        return "
+            SELECT fornecedor.cgm_fornecedor, sw_cgm.numcgm, sw_cgm.nom_cgm
+              FROM compras.fornecedor
+            
+              JOIN compras.fornecedor_socio
+                ON fornecedor_socio.cgm_fornecedor = fornecedor.cgm_fornecedor
+               AND fornecedor_socio.cod_tipo = 1
+
+              JOIN sw_cgm
+                ON sw_cgm.numcgm = fornecedor_socio.cgm_socio
+        ";
+    }
 }
