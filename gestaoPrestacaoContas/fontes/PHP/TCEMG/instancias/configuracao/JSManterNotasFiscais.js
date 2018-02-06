@@ -94,6 +94,11 @@ function ValidaNF(){
     	    erro = true;
     	    mensagem += "O @Campo Chave de Acesso é obrigatório!().";
     	}
+
+        if (!ValidaChaveNF(stCampo.value)) {
+            erro = true;
+            mensagem += "Chave de Acesso inválida!().";   
+        }
     }
      
     if (document.getElementById('inChaveMunicipal')) {
@@ -127,6 +132,27 @@ function ValidaNF(){
     } else {
 	   Salvar();
     }
+}
+
+function ValidaChaveNF(chave) {
+    var multiplicadores = [2, 3, 4, 5, 6, 7, 8, 9];
+    var posicaoChave = 42;
+    var posicaoMultiplicador = 0;
+    var soma_ponderada = 0;
+
+    while (posicaoChave >= 0) {
+        soma_ponderada += chave[posicaoChave] * multiplicadores[posicaoMultiplicador];
+        posicaoMultiplicador++;
+
+        if (posicaoMultiplicador > multiplicadores.length - 1) {
+            posicaoMultiplicador = 0;
+        }
+
+        posicaoChave--;
+    }
+
+    var resto = soma_ponderada % 11;
+    return (resto == (11 - chave[chave.length - 1]));
 }
 
 </script>
