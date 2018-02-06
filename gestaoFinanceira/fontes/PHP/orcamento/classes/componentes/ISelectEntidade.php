@@ -24,56 +24,61 @@
 ?>
 <?php
 /**
-*
-* Data de Criação: 27/10/2005
+    * Arquivo de textbox e select orgao
+    * Data de Criação  : 13/12/2017
 
-* @author Desenvolvedor: Cassiano de Vasconcellos Ferreira
-* @author Documentor: Cassiano de Vasconcellos Ferreira
+    * @author Analista/Desenvolvedor Jhonatan H. D. Machado
 
-* @package framework
-* @subpackage componentes
+    * @package URBEM
+    * @subpackage
 
-Casos de uso: uc-01.01.00
+    * $Id: ISelectEntidade.class.php
+
+    * Casos de uso: --
 */
 
-set_time_limit(0);
+require_once CLA_SELECT;
 
-include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
-include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
-include_once(CAM_FRAMEWORK."/request/Request.class.php" );
+class ISelectEntidade extends Select
+{
+    public $stExercicio;
 
-//Define a função do arquivo, ex: incluir, excluir, alterar, consultar, etc
-$request = new Request($_REQUEST);
-$stAcao = $request->get('stAcao');
-$acao = ($request->get('acao')!='') ? "&acao=".$request->get('acao'): '';
-if ( empty( $stAcao ) ) {
-    $stAcao = "incluir";
-}
+    public function ISelectEntidade()
+    {
+        parent::Select();
 
-echo "\n";
-$stFiltroRelatorio = Sessao::read('filtroRelatorio');
-
-if ( $request->get("boCtrl") == "true"  ) {
-    $stArquivoPrincipal = "BarraProgresso.php?".Sessao::getId().$acao;
-    $stArquivoOculto = $stFiltroRelatorio["stCaminho"]."?".Sessao::getId();
-    if ($_REQUEST["stFilaImpressao"]) {
-        $stFiltroRelatorio["stFilaImpressao"] = $_REQUEST["stFilaImpressao"];
+        $this->setName      ( 'inCodEntidade' );
+        $this->setId        ( 'inCodEntidade' );
+        $this->setValue     ( '' );
+        $this->setRotulo    ( 'Entidade' );
+        $this->setTitle     ( 'Selecione a entidade.' );
+        $this->setNull      ( true );
+        $this->setCampoId   ( "num_entidade" );
+        $this->setCampoDesc ( "[num_entidade] - [nom_entidade]" );
+        $this->addOption    ( "", "Selecione" );
     }
-    if ($_REQUEST["inNumCopias"]) {
-        $stFiltroRelatorio["inNumCopias"] = $_REQUEST["inNumCopias"];
-    } else {
-        $stFiltroRelatorio["inNumCopias"] = 1;
+
+    public function setExercicio($stExercicio)
+    {
+        $this->stExercicio = $stExercicio;
     }
-} else {
-    $stArquivoPrincipal = "FMImpressora.php?".Sessao::getId().$acao;
-    $stArquivoOculto = "";
+
+    public function getExercicio()
+    {
+       return $this->stExercicio;
+    }
+
+    public function montaHTML()
+    {
+
+        $rsEntidade = new RecordSet;
+        require_once CAM_GF_ORC_MAPEAMENTO."TOrcamentoEntidade.class.php" ;
+        $obTOrcamentoEntidade = new TOrcamentoEntidade;
+        $obTOrcamentoEntidade->setDado('exercicio', $this->getExercicio() );
+        $obTOrcamentoEntidade->recuperaDadosExercicio( $rsEntidade, '', 'orcamento.entidade.num_entidade' );
+        $this->preencheCombo( $rsEntidade );
+        parent::montaHTML();
+    }
+
 }
-
-
-Sessao::write('filtroRelatorio',$stFiltroRelatorio);
-
 ?>
-<frameset rows="100%,0%">
-    <frame name="telaPrincipalRelatorio" marginwidth="0" marginheight="0" src="<?=$stArquivoPrincipal;?>">
-    <frame name="ocultoRelatorio" marginwidth="0" marginheight="0" src="<?=$stArquivoOculto;?>">
-</frameset>

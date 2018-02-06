@@ -320,16 +320,18 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
     $obTxtCodigoEntidade = new TextBox;
     $obTxtCodigoEntidade->setName        ( "inCodEntidade"             );
     $obTxtCodigoEntidade->setId          ( "inCodEntidade"             );
+    
     if ($rsEntidade->getNumLinhas()==1) {
-         $obTxtCodigoEntidade->setValue       ( $rsEntidade->getCampo('cod_entidade')  );
-           $obTxtCodigoEntidade->obEvento->setOnChange("buscaDado('buscaDtOrdem');");
+        $obTxtCodigoEntidade->setValue       ( $rsEntidade->getCampo('cod_entidade')  );
+        $obTxtCodigoEntidade->obEvento->setOnChange("buscaDado('buscaDtOrdem');");
     } else {
         if (isset($inCodEntidade)) {
             $obTxtCodigoEntidade->setValue       ( $inCodEntidade              );
         }
-         $obTxtCodigoEntidade->obEvento->setOnChange("buscaDado('buscaDtOrdem');");
-
+        
+        $obTxtCodigoEntidade->obEvento->setOnChange("buscaDado('buscaDtOrdem');");
     }
+
     $obTxtCodigoEntidade->setRotulo      ( "Entidade"                     );
     $obTxtCodigoEntidade->setTitle       ( "Selecione a entidade."        );
     $obTxtCodigoEntidade->setInteiro     ( true                           );
@@ -339,13 +341,16 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
     $obCmbNomeEntidade = new Select;
     $obCmbNomeEntidade->setName          ( "stNomeEntidade"               );
     $obCmbNomeEntidade->setId            ( "stNomeEntidade"               );
+
     if ($rsEntidade->getNumLinhas()>1) {
         $obCmbNomeEntidade->addOption              ( "", "Selecione"               );
         $obCmbNomeEntidade->obEvento->setOnChange("buscaDado('buscaDtOrdem');"  );
     }
+
     if (isset($inCodEntidade)) {
         $obCmbNomeEntidade->setValue         ( $inCodEntidade                 );
     }
+    
     $obCmbNomeEntidade->setCampoId       ( "cod_entidade"                 );
     $obCmbNomeEntidade->setCampoDesc     ( "nom_cgm"                      );
     $obCmbNomeEntidade->setStyle         ( "width: 520"                   );

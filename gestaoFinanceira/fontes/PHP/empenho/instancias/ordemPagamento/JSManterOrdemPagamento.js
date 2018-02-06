@@ -135,7 +135,7 @@ function incluirRetencao() {
     var erro          = false;
     var mensagem      = "";
 
-    jq('#Ok').attr('disabled', 'disabled');
+    // jq('#Ok').attr('disabled', 'disabled');
     //document.frm.Ok.disabled = true; // desabilita botão Ok, até carregar a lista
     inCodPlanoRetencao = jq('#inCodPlanoRetencao');
     stNomContaRetencao = jq('#stNomContaRetencao');
@@ -145,17 +145,17 @@ function incluirRetencao() {
         erro = true;
         mensagem += "@Informe uma Conta de Retenção!";
         alertaAviso(mensagem,'form','erro','<?=Sessao::getId();?>', '../');
-        jq('#Ok').attr('disabled', ''); // habilita novamente botão Ok, em caso de erro
+        //jq('#Ok').attr('disabled', ''); // habilita novamente botão Ok, em caso de erro
     } else if ( inCodCredito.val() == "" ) {
         erro = true;
         mensagem += "@Informe um Crédito da Receita.";
         alertaAviso(mensagem,'form','erro','<?=Sessao::getId();?>', '../');
-        jq('#Ok').attr('disabled', ''); // habilita novamente botão Ok, em caso de erro
+        //jq('#Ok').attr('disabled', ''); // habilita novamente botão Ok, em caso de erro
     } else if ( nuValorRetencao.val() == "0,00" || nuValorRetencao.val() == "" ) {
         erro = true;
         mensagem += "@Valor da Retenção não pode ser zero.";
         alertaAviso(mensagem,'form','erro','<?=Sessao::getId();?>', '../');
-        jq('#Ok').attr('disabled', ''); // habilita novamente botão Ok, em caso de erro
+        //jq('#Ok').attr('disabled', ''); // habilita novamente botão Ok, em caso de erro
     } else {
         document.frm.stCtrl.value = 'incluirRetencao';
         document.frm.target = "telaListaNotaLiquidacao";
@@ -163,6 +163,8 @@ function incluirRetencao() {
         document.frm.submit();
         // O botão ok será habilitado novamente no final da função no OC
     }
+
+    // jq('#Ok').attr('disabled', '');
     document.frm.target = stTarget;
     document.frm.action = stAction;
 }

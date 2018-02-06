@@ -174,16 +174,19 @@ switch ($stAcao) {
                 $obErro = $obREmpenhoAutorizacaoEmpenho->incluir($boTransacao);
             }
 
-            // Relaciona a autorização a um contrato
             if ( !$obErro->ocorreu() ) {
+                // Relaciona a autorização a um contrato
                 if($request->get('inCodContrato') && $request->get('stExercicioContrato')){
                     include_once CAM_GF_EMP_MAPEAMENTO.'TEmpenhoAutorizacaoContrato.class.php';
                     $obTEmpenhoAutorizacaoContrato = new TEmpenhoAutorizacaoContrato();
+                    // $obTEmpenhoAutorizacaoContrato->removerRegistrosAntigos($obREmpenhoAutorizacaoEmpenho->getCodAutorizacao(), $_POST['inCodEntidade'], Sessao::getExercicio());
+
                     $obTEmpenhoAutorizacaoContrato->setDado( "exercicio"          , Sessao::getExercicio()              );
                     $obTEmpenhoAutorizacaoContrato->setDado( "cod_entidade"       , $request->get('inCodEntidade')      );
-                    $obTEmpenhoAutorizacaoContrato->setDado( 'cod_autorizacao', $obREmpenhoAutorizacaoEmpenho->getCodAutorizacao() );
+                    $obTEmpenhoAutorizacaoContrato->setDado( 'cod_autorizacao'    , $obREmpenhoAutorizacaoEmpenho->getCodAutorizacao() );
                     $obTEmpenhoAutorizacaoContrato->setDado( "num_contrato"       , $request->get('inCodContrato')      );
                     $obTEmpenhoAutorizacaoContrato->setDado( "exercicio_contrato" , $request->get('stExercicioContrato'));
+
                     $obErro = $obTEmpenhoAutorizacaoContrato->inclusao($boTransacao);
 
                     if ( !$obErro->ocorreu() ) {
@@ -193,9 +196,10 @@ switch ($stAcao) {
                         if(!empty($inNumAditivo) && !empty($stExercicioAditivo)){
                             include_once CAM_GF_EMP_MAPEAMENTO.'TEmpenhoAutorizacaoContratoAditivo.class.php';
                             $obTEmpenhoAutorizacaoContratoAditivo = new TEmpenhoAutorizacaoContratoAditivo();
+
                             $obTEmpenhoAutorizacaoContratoAditivo->setDado( "exercicio_empenho"  , Sessao::getExercicio()              );
                             $obTEmpenhoAutorizacaoContratoAditivo->setDado( "cod_entidade"       , $request->get('inCodEntidade')      );
-                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( 'cod_autorizacao', $obREmpenhoAutorizacaoEmpenho->getCodAutorizacao() );
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( 'cod_autorizacao'    , $obREmpenhoAutorizacaoEmpenho->getCodAutorizacao() );
                             $obTEmpenhoAutorizacaoContratoAditivo->setDado( "num_contrato"       , $request->get('inCodContrato')      );
                             $obTEmpenhoAutorizacaoContratoAditivo->setDado( "exercicio_contrato" , $request->get('stExercicioContrato'));
                             $obTEmpenhoAutorizacaoContratoAditivo->setDado( "num_aditivo"        , $inNumAditivo                       );
@@ -207,20 +211,18 @@ switch ($stAcao) {
                 }
 
                 //Relaciona o empenho aos convênios
-                $obTTEmpenhoAutorizacaoConvenio = new TEmpenhoAutorizacaoConvenio();
-                // $obTTEmpenhoAutorizacaoConvenio->encerraTransaction();
+                $obTEmpenhoAutorizacaoConvenio = new TEmpenhoAutorizacaoConvenio();
+                // $obTEmpenhoAutorizacaoConvenio->removerRegistrosAntigos($obREmpenhoAutorizacaoEmpenho->getCodAutorizacao(), $_POST['inCodEntidade'], Sessao::getExercicio());
                 $arConvenios = Sessao::read('convenios');
 
                 foreach ($arConvenios as $arTemp) {
-                    // $convenio = $obTTEmpenhoAutorizacaoConvenio->recuperaConvenioPorNumero($arTemp['exercicio'], $arTemp['nro_convenio'] );
-                    // $obTTEmpenhoAutorizacaoConvenio->setDado( 'exercicio_empenho', $arTemp['exercicio'] );
                     
-                    $obTTEmpenhoAutorizacaoConvenio->setDado( 'cod_entidade', $_POST['inCodEntidade'] );
-                    $obTTEmpenhoAutorizacaoConvenio->setDado( 'cod_autorizacao', $obREmpenhoAutorizacaoEmpenho->getCodAutorizacao() );
-                    $obTTEmpenhoAutorizacaoConvenio->setDado( 'exercicio', Sessao::getExercicio() );
-                    $obTTEmpenhoAutorizacaoConvenio->setDado( 'nro_convenio', $arTemp['nro_convenio'] );
+                    $obTEmpenhoAutorizacaoConvenio->setDado( 'cod_entidade', $_POST['inCodEntidade'] );
+                    $obTEmpenhoAutorizacaoConvenio->setDado( 'cod_autorizacao', $obREmpenhoAutorizacaoEmpenho->getCodAutorizacao() );
+                    $obTEmpenhoAutorizacaoConvenio->setDado( 'exercicio', Sessao::getExercicio() );
+                    $obTEmpenhoAutorizacaoConvenio->setDado( 'nro_convenio', $arTemp['nro_convenio'] );
                     
-                    $obErro = $obTTEmpenhoAutorizacaoConvenio->inclusao($boTransacao);
+                    $obErro = $obTEmpenhoAutorizacaoConvenio->inclusao($boTransacao);
                 }
             }
             
@@ -446,6 +448,60 @@ switch ($stAcao) {
                 Sessao::write('assinaturas', $arAssinaturas);
             }
 
+
+            if ( !$obErro->ocorreu() ) {
+                // Relaciona a autorização a um contrato
+                if($request->get('inCodContrato') && $request->get('stExercicioContrato')){
+                    include_once CAM_GF_EMP_MAPEAMENTO.'TEmpenhoAutorizacaoContrato.class.php';
+                    $obTEmpenhoAutorizacaoContrato = new TEmpenhoAutorizacaoContrato();
+                    $obTEmpenhoAutorizacaoContrato->removerRegistrosAntigos($obREmpenhoAutorizacaoEmpenho->getCodAutorizacao(), $_POST['inCodEntidade'], Sessao::getExercicio());
+
+                    $obTEmpenhoAutorizacaoContrato->setDado( "exercicio"          , Sessao::getExercicio()              );
+                    $obTEmpenhoAutorizacaoContrato->setDado( "cod_entidade"       , $request->get('inCodEntidade')      );
+                    $obTEmpenhoAutorizacaoContrato->setDado( 'cod_autorizacao'    , $obREmpenhoAutorizacaoEmpenho->getCodAutorizacao() );
+                    $obTEmpenhoAutorizacaoContrato->setDado( "num_contrato"       , $request->get('inCodContrato')      );
+                    $obTEmpenhoAutorizacaoContrato->setDado( "exercicio_contrato" , $request->get('stExercicioContrato'));
+
+                    $obErro = $obTEmpenhoAutorizacaoContrato->inclusao($boTransacao);
+
+                    if ( !$obErro->ocorreu() ) {
+                        list($inNumAditivo, $stExercicioAditivo) = explode('/', $request->get('inNumAditivo'));
+
+                        // Relaciona o empenho a aditivo de contrato
+                        if(!empty($inNumAditivo) && !empty($stExercicioAditivo)){
+                            include_once CAM_GF_EMP_MAPEAMENTO.'TEmpenhoAutorizacaoContratoAditivo.class.php';
+                            $obTEmpenhoAutorizacaoContratoAditivo = new TEmpenhoAutorizacaoContratoAditivo();
+
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( "exercicio_empenho"  , Sessao::getExercicio()              );
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( "cod_entidade"       , $request->get('inCodEntidade')      );
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( 'cod_autorizacao'    , $obREmpenhoAutorizacaoEmpenho->getCodAutorizacao() );
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( "num_contrato"       , $request->get('inCodContrato')      );
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( "exercicio_contrato" , $request->get('stExercicioContrato'));
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( "num_aditivo"        , $inNumAditivo                       );
+                            $obTEmpenhoAutorizacaoContratoAditivo->setDado( "exercicio_aditivo"  , $stExercicioAditivo                 );
+
+                            $obErro = $obTEmpenhoAutorizacaoContratoAditivo->inclusao($boTransacao);
+                        }
+                    }
+                }
+
+                //Relaciona o empenho aos convênios
+                $obTEmpenhoAutorizacaoConvenio = new TEmpenhoAutorizacaoConvenio();
+                $obTEmpenhoAutorizacaoConvenio->removerRegistrosAntigos($obREmpenhoAutorizacaoEmpenho->getCodAutorizacao(), $_POST['inCodEntidade'], Sessao::getExercicio());
+                $arConvenios = Sessao::read('convenios');
+
+                foreach ($arConvenios as $arTemp) {
+                    
+                    $obTEmpenhoAutorizacaoConvenio->setDado( 'cod_entidade', $_POST['inCodEntidade'] );
+                    $obTEmpenhoAutorizacaoConvenio->setDado( 'cod_autorizacao', $obREmpenhoAutorizacaoEmpenho->getCodAutorizacao() );
+                    $obTEmpenhoAutorizacaoConvenio->setDado( 'exercicio', Sessao::getExercicio() );
+                    $obTEmpenhoAutorizacaoConvenio->setDado( 'nro_convenio', $arTemp['nro_convenio'] );
+                    
+                    $obErro = $obTEmpenhoAutorizacaoConvenio->inclusao($boTransacao);
+                }
+            }
+            
+            
             if ( !$obErro->ocorreu() ) {
                 $stFiltro = "";
                 $arFiltro = Sessao::read('filtro');

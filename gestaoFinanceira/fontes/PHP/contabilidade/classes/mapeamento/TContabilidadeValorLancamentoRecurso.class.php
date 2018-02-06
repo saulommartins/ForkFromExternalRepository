@@ -78,8 +78,8 @@
 		{
 			return "
 				SELECT valor_lancamento.cod_lote, valor_lancamento.tipo, valor_lancamento.sequencia,
-					   valor_lancamento.exercicio, valor_lancamento.tipo_valor, valor_lancamento.cod_entidade,
-					   ordem_pagamento_retencao.cod_recurso, valor_lancamento.vl_lancamento
+				       valor_lancamento.exercicio, valor_lancamento.tipo_valor, valor_lancamento.cod_entidade,
+				       despesa.cod_recurso, valor_lancamento.vl_lancamento
 
 				  FROM contabilidade.lancamento_retencao
 
@@ -89,7 +89,39 @@
 				   AND ordem_pagamento_retencao.exercicio = lancamento_retencao.exercicio
 				   AND ordem_pagamento_retencao.sequencial = lancamento_retencao.sequencial
 				   AND ordem_pagamento_retencao.cod_entidade = lancamento_retencao.cod_entidade
-				   
+
+				  JOIN empenho.ordem_pagamento
+				    ON ordem_pagamento.cod_ordem = ordem_pagamento_retencao.cod_ordem
+				   AND ordem_pagamento.exercicio = ordem_pagamento_retencao.exercicio
+				   AND ordem_pagamento.cod_entidade = ordem_pagamento_retencao.cod_entidade
+				    
+				  JOIN empenho.pagamento_liquidacao
+				    ON pagamento_liquidacao.exercicio = ordem_pagamento.exercicio
+				   AND pagamento_liquidacao.cod_entidade = ordem_pagamento.cod_entidade
+				   AND pagamento_liquidacao.cod_ordem = ordem_pagamento.cod_ordem
+
+				  JOIN empenho.nota_liquidacao
+				    ON nota_liquidacao.exercicio = pagamento_liquidacao.exercicio
+				   AND nota_liquidacao.cod_entidade = pagamento_liquidacao.cod_entidade
+				   AND nota_liquidacao.cod_nota = pagamento_liquidacao.cod_nota
+
+				  JOIN empenho.empenho
+				    ON empenho.exercicio = nota_liquidacao.exercicio
+				   AND empenho.cod_entidade = nota_liquidacao.cod_entidade
+				   AND empenho.cod_empenho = nota_liquidacao.cod_empenho
+
+				  JOIN empenho.pre_empenho
+				    ON pre_empenho.exercicio = empenho.exercicio
+				   AND pre_empenho.cod_pre_empenho = empenho.cod_pre_empenho
+
+				  JOIN empenho.pre_empenho_despesa  
+				    ON pre_empenho_despesa.exercicio = pre_empenho.exercicio
+				   AND pre_empenho_despesa.cod_pre_empenho = pre_empenho.cod_pre_empenho
+
+				  JOIN orcamento.despesa
+				    ON despesa.exercicio = pre_empenho_despesa.exercicio
+				   AND despesa.cod_despesa = pre_empenho_despesa.cod_despesa
+
 				  JOIN contabilidade.lancamento
 				    ON lancamento.tipo = lancamento_retencao.tipo
 				   AND lancamento.cod_lote = lancamento_retencao.cod_lote

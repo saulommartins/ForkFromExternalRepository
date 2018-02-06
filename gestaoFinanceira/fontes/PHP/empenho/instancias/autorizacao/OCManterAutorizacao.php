@@ -39,10 +39,6 @@
                     uc-02.01.08
 */
 
-
-ini_set("display_errors", 1);
-error_reporting(E_ALL ^ E_NOTICE);
-
 $stOrder = null;
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
@@ -478,32 +474,35 @@ function LiberaDataAutorizacao($boLibera = 'true'){
 
 
 
-function montaListaConvenios($convenios, $inCodEntidade)
+function montaListaConvenios($inCodEntidade)
 {
     include_once ( CAM_GPC_TCEMG_MAPEAMENTO.'TTCEMGConvenio.class.php' );
 
-    $stFiltro  = " WHERE convenio.cod_entidade = ".$inCodEntidade."\n";
-    //$stFiltro .= " AND convenio.nro_convenio IN (".implode(", ", $convenios).")\n";
+    $convenios = Sessao::read('convenios');
+    $rsLista = new RecordSet;
 
-    $stFiltro .= "AND ( ";
-    $or = "";
+    if (count($convenios) > 0 ) {
+        $stFiltro .= " WHERE convenio.cod_entidade = ".$inCodEntidade."\n";
+        $stFiltro .= "AND (  ";
+        $or = "";
 
-    foreach ($convenios as $convenio) {
-        $stFiltro .= $or . " (convenio.exercicio = '". $convenio['exercicio'] ."' AND convenio.nro_convenio = ".$convenio['nro_convenio'].") ";
-        $or = " OR ";
+        foreach ($convenios as $convenio) {
+            $stFiltro .= $or . " (convenio.exercicio = '". $convenio['exercicio'] ."' AND convenio.nro_convenio = ".$convenio['nro_convenio'].") ";
+            $or = " OR ";
+        }
+
+        $stFiltro .= " ) ";
+        $stOrdem = "ORDER BY convenio.nro_convenio ASC";
+
+        $obTTCEMGConvenio = new TTCEMGConvenio;
+        $obTTCEMGConvenio->recuperaConvenioFiltro ( $rsLista, $stFiltro, $stOrdem );
     }
 
-    $stFiltro .= " ) ";
-
-    $stOrdem = "ORDER BY convenio.nro_convenio ASC";
-
-    $obTTCEMGConvenio = new TTCEMGConvenio;
-    $obTTCEMGConvenio->recuperaConvenioFiltro ( $rsLista, $stFiltro, $stOrdem );
 
     $obLista = new Lista;
-    $obLista->setRecordSet       ( $rsLista               );
-    $obLista->setTitulo          ( "Convênios do Empenho" );
-    $obLista->setMostraPaginacao ( false                  );
+    $obLista->setRecordSet       ( $rsLista );
+    $obLista->setTitulo          ( "Convênios da Autorização" );
+    $obLista->setMostraPaginacao ( false );
     
     $obLista->addCabecalho();
     $obLista->ultimoCabecalho->addConteudo  ( "&nbsp;" );
@@ -595,7 +594,7 @@ function incluirConvenioLista($inCodEntidade, $request)
 
     Sessao::write( 'convenios', $convenios );
 
-    $retornoJS  = montaListaConvenios($convenios, $inCodEntidade);
+    $retornoJS  = montaListaConvenios($inCodEntidade);
     $retornoJS .= "jQuery('#inNroConvenio').val('');";
     $retornoJS .= "jQuery('#txtConvenio').html('');";
 
@@ -623,7 +622,7 @@ function removerConvenioLista($inCodEntidade, $request)
         return limparConveniosLista();
     }
 
-    return montaListaConvenios($convenios, $inCodEntidade);
+    return montaListaConvenios($inCodEntidade);
 }
 
 function limparConveniosLista()
@@ -813,6 +812,10 @@ $js = "";
 switch ($stCtrl) {
     case 'incluirContratoLista':
         echo incluirContratoLista($inCodEntidade, $request);
+    break;
+
+    case 'montaListaConvenios':
+        echo montaListaConvenios($inCodEntidade);
     break;
 
     case 'removerContratoLista':

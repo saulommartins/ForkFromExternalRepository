@@ -28,4 +28,34 @@
 	        $this->AddCampo('nro_convenio',	   'integer', true, '',  true,  true );
 	    }
 
+	    public function recurperaConveniosPorAutorizacao(&$rsRecordSet, $codAutorizacao, $codEntidade, $exercicio)
+	    {
+	    	$stFiltro  = " WHERE cod_autorizacao = " . $codAutorizacao;
+	    	$stFiltro .= "   AND cod_entidade = " . $codEntidade;
+	    	$stFiltro .= "   AND exercicio = '" . $exercicio . "'";
+
+	    	return $this->executaRecupera( "montaRecurperaConveniosPorAutorizacao", $rsRecordSet, $stFiltro );
+	    }
+
+	    public function montaRecurperaConveniosPorAutorizacao()
+	    {
+	    	return "
+	    		SELECT cod_autorizacao, nro_convenio, cod_entidade, exercicio
+	    		  FROM empenho.autorizacao_convenio
+	    	";
+	    }
+
+	    public function removerRegistrosAntigos($codAutorizacao, $codEntidade, $exercicio)
+	    {
+    	    $obErro     = new Erro;
+		    $obConexao  = new Conexao;
+	        
+	        return $obConexao->executaDML( 
+	        	"DELETE 
+	        	   FROM empenho.autorizacao_convenio 
+	              WHERE cod_entidade = " . $codEntidade . "
+	                AND exercicio = '".$exercicio."'
+	                AND cod_autorizacao = ".$codAutorizacao
+	        );
+	    }
     }

@@ -48,6 +48,8 @@ include_once CAM_GPC_TCERN_MAPEAMENTO.'TTCERNFundeb.class.php';
 include_once CAM_GPC_TCERN_MAPEAMENTO.'TTCERNRoyalties.class.php';
 include_once CAM_FW_HTML."MontaAtributos.class.php";
 include_once CAM_GF_EMP_MAPEAMENTO."TEmpenhoContrapartidaAutorizacao.class.php";
+include_once CAM_GF_EMP_MAPEAMENTO.'TEmpenhoAutorizacaoContrato.class.php';
+include_once CAM_GF_EMP_MAPEAMENTO.'TEmpenhoAutorizacaoConvenio.class.php';
 include_once CAM_GP_LIC_COMPONENTES.'IPopUpContrato.class.php';
 include_once CAM_GP_LIC_COMPONENTES.'IPopUpConvenio.class.php';
 
@@ -163,15 +165,19 @@ foreach ($arItemPreEmpenho as $inCount => $obItemPreEmpenho) {
     $arItens[$inCount]['nom_item']     = $obItemPreEmpenho->getNomItem();
     $arItens[$inCount]['complemento']  = $obItemPreEmpenho->getComplemento();
     $arItens[$inCount]['quantidade']   = $obItemPreEmpenho->getQuantidade();
+
     $arItens[$inCount]['cod_unidade']  = $obItemPreEmpenho->obRUnidadeMedida->getCodUnidade();
     $arItens[$inCount]['cod_grandeza'] = $obItemPreEmpenho->obRUnidadeMedida->obRGrandeza->getCodGrandeza();
     $arItens[$inCount]['nom_unidade']  = $obItemPreEmpenho->getNomUnidade();
+
     $arItens[$inCount]['cod_marca']    = $inCodMarca;
     $arItens[$inCount]['nome_marca']   = $stDescrisaoItemMarca;
     $arItens[$inCount]['vl_total']     = $obItemPreEmpenho->getValorTotal();
     $arItens[$inCount]['vl_unitario']  = $nuVlUnitario;
+
     if($obItemPreEmpenho->getCodItemPreEmp()!='')
         $arItens[$inCount]['cod_item']     = $obItemPreEmpenho->getCodItemPreEmp();
+
     Sessao::write('arItens', $arItens);
 }
 
@@ -608,6 +614,20 @@ $obContrato->obBuscaInner->setFuncaoBusca(
     "montaParametrosGET('montaBuscaContrato', 'inCodContrato,inCodEntidade,inCodFornecedor,stExercicioContrato');".$obContrato->obBuscaInner->getFuncaoBusca()
 );
 
+
+$rsContratos = new RecordSet;
+$obTEmpenhoAutorizacaoContrato = new TEmpenhoAutorizacaoContrato();
+$obTEmpenhoAutorizacaoContrato->recurperaContratosPorAutorizacao($rsContratos, $inCodAutorizacao, $inCodEntidade, Sessao::read("exercicio"));
+
+if ($rsContratos->getNumLinhas() > 0) {
+    $contrato = $rsContratos->getObjeto();
+    // echo "<pre>";
+    // var_dump($contrato);
+    // die;
+    $obContrato->obBuscaInner->obCampoCod->setValue($contrato['num_contrato']);
+}
+
+
 $obConvenio = new IPopUpConvenio( $obForm );
 $obConvenio->obBuscaInner->obCampoCod->obEvento->setOnBlur(
     "montaParametrosGET('validaConvenio', 'inNroConvenio,inCodEntidade,stExercicioConvenio');"
@@ -619,7 +639,22 @@ $obConvenio->obBuscaInner->setFuncaoBusca(
     .$obConvenio->obBuscaInner->getFuncaoBusca()
 );
 
-Sessao::write( 'convenios', array() );
+
+$convenios = array();
+$rsConvenios = new RecordSet;
+
+$obTEmpenhoAutorizacaoConvenio = new TEmpenhoAutorizacaoConvenio();
+$obTEmpenhoAutorizacaoConvenio->recurperaConveniosPorAutorizacao($rsConvenios, $inCodAutorizacao, $inCodEntidade, Sessao::read("exercicio"));
+
+foreach ($rsConvenios->getElementos() as $key => $convenio) {
+    $convenios[] = array(
+        'exercicio' => $convenio['exercicio'],
+        'nro_convenio' => $convenio['nro_convenio'],
+    );
+}
+
+Sessao::write( 'convenios', $convenios );
+
 
 //BOTÕES CONVENIO
 /* Botão Incluir */

@@ -64,6 +64,8 @@ $inMarca = null;
 $nuQuantidade = null;
 $nuVlUnitario = null;
 $nuVlTotal = null;
+$nuVlTotalItens = null;
+$inCodContrapartida = null;
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once CAM_GF_INCLUDE.'validaGF.inc.php';
@@ -72,6 +74,8 @@ include_once CAM_GF_EMP_NEGOCIO.'REmpenhoAutorizacaoEmpenho.class.php';
 include_once CAM_FW_HTML.'MontaAtributos.class.php';
 include_once CAM_GA_ADM_COMPONENTES.'IMontaAssinaturas.class.php';
 include_once TEMP.'TEmpenhoCategoriaEmpenho.class.php';
+include_once CAM_GF_EMP_MAPEAMENTO.'TEmpenhoAutorizacaoContrato.class.php';
+include_once CAM_GF_EMP_MAPEAMENTO.'TEmpenhoAutorizacaoConvenio.class.php';
 include_once CAM_GP_ALM_COMPONENTES.'IPopUpCentroCustoUsuario.class.php';
 require_once CAM_GP_ALM_COMPONENTES."IPopUpMarca.class.php";
 include_once CAM_GP_LIC_COMPONENTES.'IPopUpContrato.class.php';
@@ -214,6 +218,7 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
         } else {
             $stDtInclusao = $obREmpenhoAutorizacaoEmpenho->getDtAutorizacao();
         }
+
         if($obREmpenhoAutorizacaoEmpenho->obROrcamentoReserva->getVlReserva()!='')
             $nuVlReserva = number_format($obREmpenhoAutorizacaoEmpenho->obROrcamentoReserva->getVlReserva(),2,',','.');
         $arItemPreEmpenho = $obREmpenhoAutorizacaoEmpenho->getItemPreEmpenho();
@@ -633,12 +638,14 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
     $obTxtComplemento->setCols  (100);
 
     $obMarca = new IPopUpMarca($obForm);
-    $obMarca->setNull               ( true );
+    $obMarca->setNull( true );
+    
     if ( $obREmpenhoAutorizacaoEmpenho->getBoModuloEmpenho() == true AND $stAcao == 'alterar') {
         $obMarca->setRotulo             ( 'Marca do Item' );
     }else{
         $obMarca->setRotulo             ( 'Marca' );
     }
+
     $obMarca->setId                 ( 'stNomeMarca' );
     $obMarca->setName               ( 'stNomeMarca' );
     $obMarca->obCampoCod->setName   ( 'inMarca' );
@@ -736,7 +743,6 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
     $obSpanReserva = new Span;
     $obSpanReserva->setId('spnReserva');
 
-
     $obContrato = new IPopUpContrato( $obForm );
     $obContrato->obHdnBoFornecedor->setValue(TRUE);
     $obContrato->obBuscaInner->obCampoCod->obEvento->setOnBlur(
@@ -786,6 +792,40 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
 
     Sessao::write( 'convenios', array() );
     Sessao::write( 'contratos', array() );
+
+
+    if ($stAcao == 'alterar') {
+        $rsAutorizacaoContrato = new RecordSet();
+        $obTEmpenhoAutorizacaoContrato = new TEmpenhoAutorizacaoContrato();
+        $obTEmpenhoAutorizacaoContrato->recurperaContratosPorAutorizacao($rsAutorizacaoContrato, $inCodAutorizacao, $inCodEntidade, Sessao::read('exercicio'));
+
+        if ($rsAutorizacaoContrato->getNumLinhas() > 0) {
+            $contrato = $rsAutorizacaoContrato->getObjeto();
+            $obContrato->obBuscaInner->obCampoCod->setValue($contrato['num_contrato']);
+
+            $objeto = str_replace( "\n","",$contrato['objeto'] );
+            $objeto = str_replace( "  ","",$objeto  );
+            $objeto = str_replace( "'","\\'",$objeto);
+
+            $jsOnLoad .= "jq('#txtContrato').html('".$objeto."');\n";
+            // $jsOnLoad .= "montaParametrosGET('montaBuscaContrato', 'inCodContrato,inCodEntidade,inCodFornecedor,stExercicioContrato');";
+        }
+
+        $rsAutorizacaoConvenio = new RecordSet();
+        $obTEmpenhoAutorizacaoConvenio = new TEmpenhoAutorizacaoConvenio();
+        $obTEmpenhoAutorizacaoConvenio->recurperaConveniosPorAutorizacao($rsAutorizacaoConvenio, $inCodAutorizacao, $inCodEntidade, Sessao::read('exercicio'));
+
+        $convenios = array();
+        foreach ($rsAutorizacaoConvenio->getElementos() as $convenio) {
+            $convenios[] = array(
+                'nro_convenio' => $convenio['nro_convenio'],
+                'exercicio' => $convenio['exercicio'],
+            );
+        }
+
+        Sessao::write( 'convenios', $convenios);
+        $jsOnLoad .= "montaParametrosGET('montaListaConvenios', 'inCodEntidade');";
+    }
 
     //BOTÕES CONVENIO
     /* Botão Incluir */

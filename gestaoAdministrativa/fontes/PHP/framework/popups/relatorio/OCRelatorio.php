@@ -51,6 +51,7 @@ $acao="";
 if (isset($recebeRequest['acao'])) {
     $acao = "&acao=".$recebeRequest['acao'];
 }
+
 Sessao::write('filtroRelatorio',$recebeRequest);
 
 $js = "window.open('frame.php?".Sessao::getId().$acao."','relatorio','width=500,height=300');";

@@ -677,10 +677,9 @@ function incluir($boTransacao = "", $boFlagTransacao = true)
                                             $obTEmpenhoOrdemPagamentoRetencao->setDado( "cod_plano", $stCodPlano );
                                             $obTEmpenhoOrdemPagamentoRetencao->setDado( "vl_retencao", str_replace(',','.',str_replace('.','',$item['nuValor'])) );
                                             
-                                            if (intval($item['inCodRecurso']) > 0) {
+                                            /*if (intval($item['inCodRecurso']) > 0) {
                                                 $obTEmpenhoOrdemPagamentoRetencao->setDado( "cod_recurso", intval($item['inCodRecurso']) );
-                                            }
-
+                                            }*/
 
                                             $obTEmpenhoOrdemPagamentoRetencao->proximoSequencial($inSequencial, $boTransacao);
                                             $obTEmpenhoOrdemPagamentoRetencao->setDado("sequencial", $inSequencial);
@@ -689,13 +688,14 @@ function incluir($boTransacao = "", $boFlagTransacao = true)
                                             $obTEmpenhoOrdemPagamentoRetencao->setDado( "cod_plano", '' );
                                             $obTEmpenhoOrdemPagamentoRetencao->setDado("cod_receita", '');
                                         }
-
                                     }
+
                                     if (!$obErro->ocorreu()) {
                                         foreach ($this->arNotaLiquidacao as $novaNota => $arNotaLiquidacao) {
                                             if (SistemaLegado::comparaDatas($arNotaLiquidacao["dt_nota"],$this->dtDataEmissao)) {
                                                 $obErro->setDescricao( "A data da O.P. deve ser posterior ou igual à data da liquidação." );
                                             }
+
                                             if ( !$obErro->ocorreu() ) {
                                                 $nuVlAPagar = str_replace('.','',$arNotaLiquidacao["valor_pagar"] );
                                                 $nuVlAPagar = str_replace(',','.',$nuVlAPagar );
@@ -727,6 +727,7 @@ function incluir($boTransacao = "", $boFlagTransacao = true)
             }
         }
     }
+
     $this->obTransacao->fechaTransacao( $boFlagTransacao, $boTransacao, $obErro, $obTEmpenhoOrdemPagamento );
 
     return $obErro;

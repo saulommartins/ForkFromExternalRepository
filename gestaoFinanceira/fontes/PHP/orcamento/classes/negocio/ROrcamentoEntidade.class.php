@@ -772,7 +772,10 @@ function listarEntidadeRestos(&$rsRecordSet, $stOrdem = "", $boTransacao = "")
     $obTEntidade = new TOrcamentoEntidade;
     $obTEntidade->setDado('exercicio',  $this->stExercicio);
     $obTEntidade->setDado('valor', 't');
+    
+    $stFiltro = "";
     $obErro = $obTEntidade->recuperaEntidadeRestos( $rsRecordSet, $stFiltro, $stOrdem, $boTransacao);
+
     return $obErro;
 }
 

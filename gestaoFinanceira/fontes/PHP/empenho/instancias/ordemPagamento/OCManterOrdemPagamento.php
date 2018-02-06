@@ -40,6 +40,9 @@
                     uc-02.03.31
 */
 
+    ini_set("display_errors", 1);
+    error_reporting(E_ALL);
+
     include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
     include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
     include_once CAM_GF_EMP_NEGOCIO."REmpenhoOrdemPagamento.class.php";
@@ -1182,10 +1185,10 @@ switch ($_REQUEST ["stCtrl"]) {
             $obTxtValorRetencao->setMaxLength( 12        );
 
             /// Busca de recurso
-            include_once(CAM_GF_ORC_COMPONENTES."IMontaRecursoDestinacao.class.php");
+            /*include_once(CAM_GF_ORC_COMPONENTES."IMontaRecursoDestinacao.class.php");
             $obIMontaRecursoDestinacao = new IMontaRecursoDestinacao;
             $obIMontaRecursoDestinacao->setFiltro ( true );
-            $obIMontaRecursoDestinacao->setNull ( true );
+            $obIMontaRecursoDestinacao->setNull ( true );*/
 
             $obBtnIncluirItem = new Button;
             $obBtnIncluirItem->setName              ( "btnIncluirRetencao" );
@@ -1207,7 +1210,7 @@ switch ($_REQUEST ["stCtrl"]) {
             $obFormulario->addComponente($obTxtValorRetencao);
             // $obFormulario->addComponente($obIMontaRecursoDestinacao);
 
-            $obIMontaRecursoDestinacao->geraFormulario (  $obFormulario );
+            // $obIMontaRecursoDestinacao->geraFormulario (  $obFormulario );
             $obFormulario->defineBarra(array($obBtnIncluirItem, $obBtnLimparItem));
             $obFormulario->montaInnerHTML();
 

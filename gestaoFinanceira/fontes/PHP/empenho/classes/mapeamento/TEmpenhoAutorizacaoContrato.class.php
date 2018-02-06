@@ -31,4 +31,44 @@
 	        $this->AddCampo('num_contrato',	   'integer', true, '',  true,  true );
 	    }
 
+	    public function recurperaContratosPorAutorizacao(&$rsRecordSet, $codAutorizacao, $codEntidade, $exercicio)
+	    {
+	    	$stFiltro  = " WHERE autorizacao_contrato.cod_autorizacao = " . $codAutorizacao;
+	    	$stFiltro .= "   AND autorizacao_contrato.cod_entidade = " . $codEntidade;
+	    	$stFiltro .= "   AND autorizacao_contrato.exercicio = '" . $exercicio . "'";
+
+	    	return $this->executaRecupera( "montaRecurperaContratosPorAutorizacao", $rsRecordSet, $stFiltro );
+	    }
+
+	    public function montaRecurperaContratosPorAutorizacao()
+	    {
+	    	return "
+	    		SELECT autorizacao_contrato.cod_autorizacao, 
+	    			   contrato.num_contrato, 
+	    			   autorizacao_contrato.cod_entidade, 
+	    			   autorizacao_contrato.exercicio, 
+	    			   contrato.objeto
+
+				  FROM empenho.autorizacao_contrato
+
+				  JOIN licitacao.contrato
+				    ON contrato.exercicio = autorizacao_contrato.exercicio
+				   AND contrato.cod_entidade = autorizacao_contrato.cod_entidade
+				   AND contrato.num_contrato = autorizacao_contrato.num_contrato
+	    	";
+	    }
+
+	    public function removerRegistrosAntigos($codAutorizacao, $codEntidade, $exercicio)
+	    {
+    	    $obErro     = new Erro;
+		    $obConexao  = new Conexao;
+	        
+	        return $obConexao->executaDML( 
+	        	"DELETE 
+	        	   FROM empenho.autorizacao_contrato 
+	              WHERE cod_entidade = " . $codEntidade . "
+	                AND exercicio = '".$exercicio."'
+	                AND cod_autorizacao = ".$codAutorizacao
+	        );
+	    }
     }

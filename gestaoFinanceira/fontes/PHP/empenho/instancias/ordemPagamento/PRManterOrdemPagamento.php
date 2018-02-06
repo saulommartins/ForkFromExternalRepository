@@ -229,13 +229,14 @@ case "incluir":
                 print '<script type="text/javascript">
                             mudaMenu         ( "Liquidação","202",816);
                        </script>';
-                $stFiltro  = "&acao=".$_REQUEST['acaoLiquidacao']."&modulo=".$_REQUEST['moduloLiquidacao']."&funcionalidade=".$_REQUEST['funcionalidadeLiquidacao']."&acaoOrdem=816";;
+                $stFiltro = "&acao=".$_REQUEST['acaoLiquidacao']."&modulo=".$_REQUEST['moduloLiquidacao']."&funcionalidade=".$_REQUEST['funcionalidadeLiquidacao']."&acaoOrdem=816";;
                 $stFiltro .= "&pg=".$_REQUEST['inPg']."&pos=".$_REQUEST['inPos'];
                 SistemaLegado::alertaAviso($_REQUEST['pgProxLiquidacao']."?".Sessao::getId()."&stAcao=".$_REQUEST['stAcaoLiquidacao'].$stFiltro,"Código da Ordem: ".$obREmpenhoOrdemPagamento->getCodigoOrdem()."/".$obREmpenhoOrdemPagamento->getExercicio(),"incluir","aviso", Sessao::getId(), "../");
             }
         } else {
             SistemaLegado::alertaAviso($pgForm."?stAcao=incluir","Código da Ordem: ".$obREmpenhoOrdemPagamento->getCodigoOrdem()."/".$obREmpenhoOrdemPagamento->getExercicio(),"incluir","aviso", Sessao::getId(), "../");
         }
+        
         Sessao::geraURLRandomica();
 
         // Caso tenha mais de um item ou não tenha nenhuma retenção, não precisa gerar os outros relatórios, então continuará gerando pelo FPDF
