@@ -1055,7 +1055,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
         }
     }
 } else {
-    $arRecordSetBALANCETE99 = array(
+    /*$arRecordSetBALANCETE99 = array(
         '0' => array(
             'tipo_registro' => '99',
         )
@@ -1068,7 +1068,7 @@ if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
     $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("tipo_registro");
     $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
     $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
-    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
+    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);*/
 }
 
 $rsRegistroBALANCETE10 = null;

@@ -441,7 +441,7 @@ class TOrcamentoReceita extends Persistente
       $stSql .= "          CLASSIFICACAO.exercicio IS NOT NULL                ".$stQuebra;
       $stSql .= "      AND RECEITA.cod_conta     = CLASSIFICACAO.cod_conta    ".$stQuebra;
       $stSql .= "      AND RECEITA.exercicio     = CLASSIFICACAO.exercicio    ".$stQuebra;
-      $stSql .= "      AND CLASSIFICACAO.mascara_classificacao  LIKE '9.%'    ".$stQuebra;
+      $stSql .= "      AND CLASSIFICACAO.mascara_classificacao  LIKE '9%'    ".$stQuebra;
       $stSql .= "      AND RECEITA.exercicio     = CR.exercicio               ".$stQuebra;
       $stSql .= "      AND RECEITA.cod_conta     = CR.cod_conta               ".$stQuebra;
 
