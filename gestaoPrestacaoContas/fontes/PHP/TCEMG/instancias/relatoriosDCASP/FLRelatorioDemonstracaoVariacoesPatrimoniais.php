@@ -7,10 +7,10 @@
     include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
     require_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
     include_once ( CAM_GF_ORC_COMPONENTES."ISelectMultiploEntidadeUsuario.class.php" );
-    include_once ( CAM_GPC_TCEMG_MAPEAMENTO."TTCEMGRelatorioBalancoOrcamentario.class.php");
+    include_once ( CAM_GPC_TCEMG_MAPEAMENTO."TTCEMGRelatorioDemonstracaoVariacoesPatrimoniais.class.php");
 
-    $pgOcul = 'OCRelatorioBalancoOrcamentario.php';
-    $pgGera = 'OCGeraRelatorioBalancoOrcamentario.php';
+    $pgOcul = 'OCRelatorioDemonstracaoVariacoesPatrimoniais.php';
+    $pgGera = 'OCGeraRelatorioDemonstracaoVariacoesPatrimoniais.php';
 
     $stAcao = $request->get('stAcao');
     $boTransacao = new Transacao();

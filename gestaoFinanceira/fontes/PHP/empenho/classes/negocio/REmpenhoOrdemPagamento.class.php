@@ -37,6 +37,8 @@
 
     * Casos de uso: uc-02.03.03,uc-02.03.05,uc-02.03.20,uc-02.03.23,uc-02.04.05,uc-02.03.28
 */
+ini_set("display_errors", 1);
+error_reporting(E_ALL ^ E_NOTICE);
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 include_once ( CAM_GF_EMP_NEGOCIO."REmpenhoNotaLiquidacao.class.php"             );

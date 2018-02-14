@@ -40,6 +40,9 @@
                     uc-02.03.28
 */
 
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+
 //Define o nome dos arquivos PHP
 $stPrograma      = "ManterOrdemPagamento";
 $pgFilt          = "FL".$stPrograma.".php";
@@ -85,7 +88,7 @@ case "incluir":
         exit;
     }
     
-    if ( strlen($_REQUEST["stDescricaoOrdem"]) > 600 ){
+    if ( strlen($_REQUEST["stDescricaoOrdem"]) > 600 ) {
         $obErro->setDescricao(" A descrição da ordem ultrapassou 600 caracteres!");
     }
 
@@ -189,10 +192,12 @@ case "incluir":
     Sessao::write('assinaturas', $arAssinaturas);
 
     // Caso haja mais de um item selecioinado, o sistema bloqueia a parte de retenções, então não há necessidade de se fazer esse processamento
-
     if (!$obErro->ocorreu() && count($arItens) == 1 && count($arItensRetencao) > 0) {
-        // faz a inclusão do recibo extra, caso tenha sido incluido algum item na listagem extra-orçamentária
-        incluirReciboExtra($obREmpenhoOrdemPagamento, $boTransacao);
+        // faz a inclusão dos recibos extra, caso tenha sido incluido algum item na listagem extra-orçamentária
+        // incluirReciboExtraReceita($obREmpenhoOrdemPagamento, $boTransacao);
+        incluirReciboExtra($obREmpenhoOrdemPagamento, 'D');
+        incluirReciboExtra($obREmpenhoOrdemPagamento, 'R');
+
 
         //Faz a verificação na configuração para saber se deve gerar ou não o carne pela configuração feita em Empenho::Alterar Configuração
         $stEmitirCarneOp = SistemaLegado::pegaDado('valor', 'administracao.configuracao', "WHERE exercicio='".Sessao::getExercicio()."' AND cod_modulo=".Sessao::getModulo()." AND parametro='emitir_carne_op'", $boTransacao);
@@ -363,14 +368,14 @@ case "anular":
 }
 
 /**
- * incluirReciboExtra
+ * incluirReciboExtraReceita
  *
- * realiza o processamento de inclusao de recibo de receita direto
+ * realiza o processamento de inclusao de recibo de receita ou de despesa direto
  *
  * @author Henrique Girardi dos Santos <henrique.santos@cnm.org.br>
  * @return void
  */
-function incluirReciboExtra($obREmpenhoOrdemPagamento, $boTransacao = "")
+function incluirReciboExtra($obREmpenhoOrdemPagamento, $tipoRecibo, $boTransacao = false)
 {
     /* includes de mapeamento necessários */
     include_once CAM_GF_TES_MAPEAMENTO.'TTesourariaReciboExtra.class.php';
@@ -381,18 +386,19 @@ function incluirReciboExtra($obREmpenhoOrdemPagamento, $boTransacao = "")
     global $request;
     
     $obErro = new Erro;
+
     $obTReciboExtra = new TTesourariaReciboExtra;
     $obTReciboExtra->setDado('cod_entidade', $_POST['inCodEntidade']);
-    $obTReciboExtra->setDado('tipo_recibo','R');
+    $obTReciboExtra->setDado('tipo_recibo', $tipoRecibo);
     $obTReciboExtra->setDado('exercicio',Sessao::getExercicio());
     $obTReciboExtra->recuperaUltimaDataRecibo($rsDataRecibo, $boTransacao);
     
     //$boFlagTransacao = false;
     $obTransacao = new Transacao;
-
     $obTransacao->abreTransacao($boFlagTransacao, $boTransacao);
     $stCodigoRecibo = '';
     $arItemRetencao = Sessao::read('itemRetencao');
+
     foreach ($arItemRetencao as $arDadosRetencao) {
         if ($arDadosRetencao['stTipo'] == 'E') {
             $obTReciboExtra->proximoCod($inCodigoRecibo, 'P');
@@ -412,7 +418,7 @@ function incluirReciboExtra($obREmpenhoOrdemPagamento, $boTransacao = "")
                 $obErro = $obCredor->inclusao($boTransacao);
             }
 
-            $inCodRecurso = SistemaLegado::pegaDado('cod_recurso', 'contabilidade.plano_recurso', 'WHERE exercicio = \''.Sessao::getExercicio().'\' AND cod_plano = '.$arDadosRetencao['cod_reduzido']);
+            $inCodRecurso = Sessao::read("inCodRecurso");
             
             if (isset($_POST['inCodRecurso']) && !empty($_POST['inCodRecurso'])) {
                 $inCodRecurso = $_POST['inCodRecurso'];
@@ -431,7 +437,7 @@ function incluirReciboExtra($obREmpenhoOrdemPagamento, $boTransacao = "")
                 $obTEmpenhoOrdemPagamentoReciboExtra = new TEmpenhoOrdemPagamentoReciboExtra;
                 $obTEmpenhoOrdemPagamentoReciboExtra->setDado('cod_entidade'    , $_POST['inCodEntidade']);
                 $obTEmpenhoOrdemPagamentoReciboExtra->setDado('cod_ordem'       , $obREmpenhoOrdemPagamento->getCodigoOrdem());
-                $obTEmpenhoOrdemPagamentoReciboExtra->setDado('tipo_recibo'     , 'R');
+                $obTEmpenhoOrdemPagamentoReciboExtra->setDado('tipo_recibo'     , $tipoRecibo);
                 $obTEmpenhoOrdemPagamentoReciboExtra->setDado('exercicio'       , Sessao::getExercicio());
                 $obTEmpenhoOrdemPagamentoReciboExtra->setDado('cod_recibo_extra', $inCodigoRecibo);
                 $obTEmpenhoOrdemPagamentoReciboExtra->inclusao($boTransacao);
@@ -448,23 +454,28 @@ function incluirReciboExtra($obREmpenhoOrdemPagamento, $boTransacao = "")
     // para que possa ser adicionada alguma assinatura
     $arAssinaturas = Sessao::read('assinaturas');
     if ( isset($arAssinaturas) && count($arAssinaturas['selecionadas']) > 0 ) {
+        include_once CAM_GF_TES_MAPEAMENTO."TTesourariaReciboExtraAssinatura.class.php";
+
         foreach ($arAssinaturas['selecionadas'] as $arDados) {
-            if ($arDados['papel'] == 'tesoureiro') {
-                include_once CAM_GF_TES_MAPEAMENTO."TTesourariaReciboExtraAssinatura.class.php";
+            if ($arDados['papel'] == 'tesoureiro' && $tipoRecibo == 'R') {
                 $obTTesReciboExtraAssinatura = new TTesourariaReciboExtraAssinatura;
                 //Sessao::getTransacao()->setMapeamento($obTTesReciboExtraAssinatura);
                 $obTTesReciboExtraAssinatura->setDado( 'exercicio', $obTReciboExtra->getDado('exercicio') );
                 $obTTesReciboExtraAssinatura->setDado( 'cod_entidade', $obTReciboExtra->getDado('cod_entidade') );
                 $obTTesReciboExtraAssinatura->setDado( 'cod_recibo_extra', $obTReciboExtra->getDado('cod_recibo_extra') );
                 $obTTesReciboExtraAssinatura->setDado( 'tipo_recibo', 'R' );
+
                 $obTTesReciboExtraAssinatura->setDado( 'num_assinatura', 1 ); // numero 1 quando o tipo_recibo=R quer dizer tesoureiro
                 $obTTesReciboExtraAssinatura->setDado( 'numcgm', $arDados['inCGM'] );
                 $obTTesReciboExtraAssinatura->setDado( 'cargo', $arDados['stCargo'] );
+
                 $obErro = $obTTesReciboExtraAssinatura->inclusao($boTransacao);
+
                 break;
             }
         }
     }
+
     $obTransacao->fechaTransacao( $boFlagTransacao, $boTransacao, $obErro, $obTReciboExtra );
 }
 

@@ -680,9 +680,14 @@ switch ($_REQUEST ["stCtrl"]) {
         Sessao::write('bo_implantado', $arImplantado);
         Sessao::write('valorTotalOrdem', $arValorTotalOrdem);
         Sessao::write('cgmFornecedor', $arCgmFornecedor);
+        Sessao::write('inCodRecurso', $inCodRecurso);
 
         $stJs .= "d.frm.Ok.disabled = false; \n"; // Habilita novamente o botão Ok, já com a lista pronta.
+        // $stJs .= "d.frm.inCodRecurso.value = ".$inCodRecurso."; \n"; // Define o valor do recurso
 
+        // echo $stJs;
+        SistemaLegado::executaiFrameOculto($stJs);
+    break;
     case "limparItem":
         $stJs .= "limpaSelect(f.cmbLiquidacao,0); \n";
         $stJs .= "d.frm.flValorPagar.value = '';";

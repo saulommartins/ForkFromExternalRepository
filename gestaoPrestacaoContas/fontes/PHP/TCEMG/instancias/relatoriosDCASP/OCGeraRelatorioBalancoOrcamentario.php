@@ -30,34 +30,34 @@
     $_data['10'] = $rsRecordSet10->getObjeto();
 
     $_data[10]['vl_subtotal_previsao_inicial'] = (
-        $_data[10]['vl_rec_tributaria_previsao_inicial']   
-        + $_data[10]['vl_rec_contribuicoes_previsao_inicial']      
-        + $_data[10]['vl_rec_patrimonial_previsao_inicial']   
-        + $_data[10]['vl_rec_agropecuaria_previsao_inicial'] 
-        + $_data[10]['vl_rec_industrial_previsao_inicial']         
-        + $_data[10]['vl_rec_servicos_previsao_inicial']      
+        $_data[10]['vl_rec_tributaria_previsao_inicial']
+        + $_data[10]['vl_rec_contribuicoes_previsao_inicial']
+        + $_data[10]['vl_rec_patrimonial_previsao_inicial'] 
+        + $_data[10]['vl_rec_agropecuaria_previsao_inicial']
+        + $_data[10]['vl_rec_industrial_previsao_inicial']
+        + $_data[10]['vl_rec_servicos_previsao_inicial']
         + $_data[10]['vl_transf_correntes_previsao_inicial'] 
-        + $_data[10]['vl_outras_rec_correntes_previsao_inicial']   
+        + $_data[10]['vl_outras_rec_correntes_previsao_inicial']
         + $_data[10]['vl_operacoes_credito_previsao_inicial'] 
-        + $_data[10]['vl_alienacao_bens_previsao_inicial']   
-        + $_data[10]['vl_amortizacao_emprestimo_previsao_inicial'] 
-        + $_data[10]['vl_transf_capital_previsao_inicial']    
+        + $_data[10]['vl_alienacao_bens_previsao_inicial']
+        + $_data[10]['vl_amortizacao_emprestimo_previsao_inicial']
+        + $_data[10]['vl_transf_capital_previsao_inicial']
         + $_data[10]['vl_outras_rec_capital_previsao_inicial']
     );
 
     $_data[10]['vl_subtotal_previsao_atualizada'] = (
-        $_data[10]['vl_rec_tributaria_previsao_atualizada']   
-        + $_data[10]['vl_rec_contribuicoes_previsao_atualizada']     
-        + $_data[10]['vl_rec_patrimonial_previsao_atualizada']   
+        $_data[10]['vl_rec_tributaria_previsao_atualizada']
+        + $_data[10]['vl_rec_contribuicoes_previsao_atualizada']
+        + $_data[10]['vl_rec_patrimonial_previsao_atualizada']
         + $_data[10]['vl_rec_agropecuaria_previsao_atualizada'] 
-        + $_data[10]['vl_rec_industrial_previsao_atualizada']         
-        + $_data[10]['vl_rec_servicos_previsao_atualizada']      
-        + $_data[10]['vl_transf_correntes_previsao_atualizada'] 
-        + $_data[10]['vl_outras_rec_correntes_previsao_atualizada']   
-        + $_data[10]['vl_operacoes_credito_previsao_atualizada'] 
-        + $_data[10]['vl_alienacao_bens_previsao_atualizada']   
-        + $_data[10]['vl_amortizacao_emprestimo_previsao_atualizada'] 
-        + $_data[10]['vl_transf_capital_previsao_atualizada']    
+        + $_data[10]['vl_rec_industrial_previsao_atualizada']
+        + $_data[10]['vl_rec_servicos_previsao_atualizada']
+        + $_data[10]['vl_transf_correntes_previsao_atualizada']
+        + $_data[10]['vl_outras_rec_correntes_previsao_atualizada']
+        + $_data[10]['vl_operacoes_credito_previsao_atualizada']
+        + $_data[10]['vl_alienacao_bens_previsao_atualizada']
+        + $_data[10]['vl_amortizacao_emprestimo_previsao_atualizada']
+        + $_data[10]['vl_transf_capital_previsao_atualizada']
         + $_data[10]['vl_outras_rec_capital_previsao_atualizada']
     );
 
@@ -82,24 +82,24 @@
 
     $_data[10]['vl_subtotal_com_refinanciamento_previsao_inicial'] = (
         $_data[10]['vl_subtotal_previsao_inicial']
-        + $_data[10]['vl_opera_credito_refina_internas_mobiliaria_previsao_inicial'] 
-        + $_data[10]['vl_opera_credito_refina_internas_contratual_previsao_inicial'] 
+        + $_data[10]['vl_opera_credito_refina_internas_mobiliaria_previsao_inicial']
+        + $_data[10]['vl_opera_credito_refina_internas_contratual_previsao_inicial']
         + $_data[10]['vl_opera_credito_refina_externas_mobiliaria_previsao_inicial']
         + $_data[10]['vl_opera_credito_refina_externas_contratual_previsao_inicial']
     );
     
     $_data[10]['vl_subtotal_com_refinanciamento_previsao_atualizada'] = (
         $_data[10]['vl_subtotal_previsao_atualizada']
-        + $_data[10]['vl_opera_credito_refina_internas_mobiliaria_previsao_atualizada'] 
-        + $_data[10]['vl_opera_credito_refina_internas_contratual_previsao_atualizada'] 
+        + $_data[10]['vl_opera_credito_refina_internas_mobiliaria_previsao_atualizada']
+        + $_data[10]['vl_opera_credito_refina_internas_contratual_previsao_atualizada']
         + $_data[10]['vl_opera_credito_refina_externas_mobiliaria_previsao_atualizada']
         + $_data[10]['vl_opera_credito_refina_externas_contratual_previsao_atualizada']
     );
     
     $_data[10]['vl_subtotal_com_refinanciamento_realizada'] = (
         $_data[10]['vl_subtotal_realizada']
-        + $_data[10]['vl_opera_credito_refina_internas_mobiliaria_realizada'] 
-        + $_data[10]['vl_opera_credito_refina_internas_contratual_realizada'] 
+        + $_data[10]['vl_opera_credito_refina_internas_mobiliaria_realizada']
+        + $_data[10]['vl_opera_credito_refina_internas_contratual_realizada']
         + $_data[10]['vl_opera_credito_refina_externas_mobiliaria_realizada']
         + $_data[10]['vl_opera_credito_refina_externas_contratual_realizada']
     );
@@ -136,7 +136,7 @@
         + $_data[30]['vl_inver_financeira_dotacao_atualizada']
         + $_data[30]['vl_amortiza_divida_dotacao_atualizada']
         + $_data[30]['vl_reserva_contingencia_dotacao_atualizada']
-    );;
+    );
     
     $_data[30]['vl_subtotal_despesas_empenhadas'] = (
         $_data[30]['vl_pessoal_encar_social_despesas_empenhadas']
@@ -147,7 +147,7 @@
         + $_data[30]['vl_inver_financeira_despesas_empenhadas']
         + $_data[30]['vl_amortiza_divida_despesas_empenhadas']
         + $_data[30]['vl_reserva_contingencia_despesas_empenhadas']
-    );;
+    );
     
     $_data[30]['vl_subtotal_despesas_liquidadas'] = (
         $_data[30]['vl_pessoal_encar_social_despesas_liquidadas']
@@ -158,7 +158,7 @@
         + $_data[30]['vl_inver_financeira_despesas_liquidadas']
         + $_data[30]['vl_amortiza_divida_despesas_liquidadas']
         + $_data[30]['vl_reserva_contingencia_despesas_liquidadas']
-    );;
+    );
     
     $_data[30]['vl_subtotal_despesas_pagas'] = (
         $_data[30]['vl_pessoal_encar_social_despesas_pagas']
@@ -169,7 +169,7 @@
         + $_data[30]['vl_inver_financeira_despesas_pagas']
         + $_data[30]['vl_amortiza_divida_despesas_pagas']
         + $_data[30]['vl_reserva_contingencia_despesas_pagas']
-    );;
+    );
 
     $_data[30]['vl_subtotal_com_refinanciamento_dotacao_inicial'] = (
         $_data[30]['vl_subtotal_despesas_inicial']

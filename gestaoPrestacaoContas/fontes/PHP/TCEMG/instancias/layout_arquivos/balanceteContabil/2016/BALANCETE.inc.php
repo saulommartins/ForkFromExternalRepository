@@ -41,6 +41,9 @@
 * BALANCETE.csv | Autor : Franver Sarmento de Moraes
 */
 
+ini_set("display_errors", 1);
+error_reporting(E_ALL ^ E_NOTICE);
+
 include_once CAM_GPC_TCEMG_MAPEAMENTO.Sessao::getExercicio()."/TTCEMGBALANCETE.class.php";
 
 $stChave = null;
