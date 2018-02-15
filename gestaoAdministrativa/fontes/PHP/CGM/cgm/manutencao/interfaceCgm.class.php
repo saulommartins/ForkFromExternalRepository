@@ -660,7 +660,7 @@ HEREDOC;
     $obCmbOrgaoRegistro->setCampoDesc    ("[codigo] - [descricao]");
     $obCmbOrgaoRegistro->preencheCombo   ($rsOrgaoRegistro        );
     $obCmbOrgaoRegistro->setValue        ($cod_orgao_registro     );
-    $obCmbOrgaoRegistro->setNull         (true                    );
+    $obCmbOrgaoRegistro->setNull         (false                    );
     $obCmbOrgaoRegistro->setStyle        ("width: 220px"          );
     
     $obTxtDataRegistro = new Data;
@@ -668,7 +668,7 @@ HEREDOC;
     $obTxtDataRegistro->setName          ( "stDataRegistro"                   );
     $obTxtDataRegistro->setId            ( "stDataRegistro"                   );
     $obTxtDataRegistro->setValue         ( $dt_registro                       );
-    $obTxtDataRegistro->setNull          ( true                               );
+    $obTxtDataRegistro->setNull          ( false                               );
     $obTxtDataRegistro->setTitle         ( "Informe a data do Órgão Registro" );
     
     $obNumRegistro = new Inteiro;
@@ -678,7 +678,7 @@ HEREDOC;
     $obNumRegistro->setId            ( "inNumRegistro"                         );
     $obNumRegistro->setValue         ( $num_registro                           );
     $obNumRegistro->setNegativo      ( false                                   );
-    $obNumRegistro->setNull          ( true                                    );
+    $obNumRegistro->setNull          ( false                                    );
     $obNumRegistro->setMaxLength     ( 20                                      );
     
     $obNumCVM = new Inteiro;
@@ -705,7 +705,7 @@ HEREDOC;
     $obSocial->setName          ( "stOjetoSocial"                        );
     $obSocial->setId            ( "stOjetoSocial"                        );
     $obSocial->setValue         ( $objeto_social                         );
-    $obSocial->setNull          ( true                                   );
+    $obSocial->setNull          ( false                                   );
     
     $obCmbOrgaoRegistro->montaHTML();
     $obTxtDataRegistro->montaHTML();
@@ -754,17 +754,17 @@ $stHTML = <<<HEREDOC
         </tr>
         
         <tr>
-            <td class="label" title="Informe o registro do órgão.">Orgão do Registro</td>
+            <td class="label" title="Informe o registro do órgão.">*Orgão do Registro</td>
             <td class="field">$stHtmlOrgaoRegistro</td>
         </tr>
         
         <tr>
-            <td class="label" title="Informe o número do registro do órgão">Número do Registro do Órgão</td>
+            <td class="label" title="Informe o número do registro do órgão">*Número do Registro do Órgão</td>
             <td class="field">$stHtmlNumRegistro</td>
         </tr>
         
          <tr>
-            <td class="label" title="Informe a data do órgão registro">Data do Órgão Registro</td>
+            <td class="label" title="Informe a data do órgão registro">*Data do Órgão Registro</td>
             <td class="field">$stHtmlDataRegistro</td>
         </tr>
         
@@ -779,7 +779,7 @@ $stHTML = <<<HEREDOC
         </tr>
         
         <tr>
-            <td class="label" title="Informe a descrição do objeto social">Objeto Social</td>
+            <td class="label" title="Informe a descrição do objeto social">*Objeto Social</td>
             <td class="field">$stHtmlObjSocial</td>
         </tr>        
 HEREDOC;
@@ -1231,6 +1231,24 @@ Se a variável $dados Cgm for maior que zero ele carrega também os dados do CGM
                          erro = true;
                          mensagem += "@Campo Inscrição Estadual Inválido!("+stCampo.value+")";
                     }
+                }
+
+                campo = document.frm.inNumRegistro.value.length;
+                if (campo==0) {
+                    mensagem += "@Campo Número do Registro do Órgão inválido!()";
+                    erro = true;
+                }
+
+                campo = document.frm.stDataRegistro.value.length;
+                if (campo==0) {
+                    mensagem += "@Campo Data do Órgão Registro inválido!()";
+                    erro = true;
+                }
+
+                campo = document.frm.stOjetoSocial.value.length;
+                if (campo==0) {
+                    mensagem += "@Campo Objeto Social inválido!()";
+                    erro = true;
                 }
 
     <?php } elseif ($pessoa == 'fisica') { ?>
