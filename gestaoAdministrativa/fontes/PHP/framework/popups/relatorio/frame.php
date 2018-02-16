@@ -56,9 +56,11 @@ $stFiltroRelatorio = Sessao::read('filtroRelatorio');
 if ( $request->get("boCtrl") == "true"  ) {
     $stArquivoPrincipal = "BarraProgresso.php?".Sessao::getId().$acao;
     $stArquivoOculto = $stFiltroRelatorio["stCaminho"]."?".Sessao::getId();
+
     if ($_REQUEST["stFilaImpressao"]) {
         $stFiltroRelatorio["stFilaImpressao"] = $_REQUEST["stFilaImpressao"];
     }
+    
     if ($_REQUEST["inNumCopias"]) {
         $stFiltroRelatorio["inNumCopias"] = $_REQUEST["inNumCopias"];
     } else {
@@ -71,9 +73,15 @@ if ( $request->get("boCtrl") == "true"  ) {
 
 
 Sessao::write('filtroRelatorio',$stFiltroRelatorio);
+$stCaminhoSecundario = Sessao::read('stCaminhoSecundario');
 
 ?>
 <frameset rows="100%,0%">
     <frame name="telaPrincipalRelatorio" marginwidth="0" marginheight="0" src="<?=$stArquivoPrincipal;?>">
     <frame name="ocultoRelatorio" marginwidth="0" marginheight="0" src="<?=$stArquivoOculto;?>">
+    <?php 
+        if (!empty($stCaminhoSecundario) && !empty($stArquivoOculto)) {
+            ?><frame name="ocultoRelatorio" marginwidth="0" marginheight="0" src="<?= $stCaminhoSecundario ?>"><?php
+        }
+    ?>
 </frameset>

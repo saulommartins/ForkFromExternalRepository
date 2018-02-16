@@ -61,7 +61,7 @@ function TOrcamentoEspecificacaoDestinacaoRecurso()
 
 function montaRecuperaTodos()
 {
-    $stSql .= " SELECT edr.exercicio, lpad(edr.cod_especificacao::text,2,'0') as cod_especificacao, edr.cod_fonte, fr.descricao as descricao_fonte, edr.descricao \n";
+    $stSql = " SELECT edr.exercicio, lpad(edr.cod_especificacao::text,2,'0') as cod_especificacao, edr.cod_fonte, fr.descricao as descricao_fonte, edr.descricao \n";
     $stSql .= "   FROM orcamento.especificacao_destinacao_recurso as edr    \n";
     $stSql .= "        JOIN orcamento.fonte_recurso as fr USING ( cod_fonte )     \n";
 

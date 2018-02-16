@@ -1,5 +1,5 @@
 <?php
-/*
+   /**
     **********************************************************************************
     *                                                                                *
     * @package URBEM CNM - Soluções em Gestão Pública                                *
@@ -20,17 +20,17 @@
     * no endereço 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.       *
     *                                                                                *
     **********************************************************************************
-*/
+    */
 ?>
 <?php
-/**
- * Arquivo oculto - Exportação arquivos Planejamento TCE/MG
- *
- * @category    Urbem
- * @package     TCE/MG
- * @author      Eduardo Schitz   <eduardo.schitz@cnm.org.br>
- * $Id: OCExportarBalanceteContabil.php 63835 2015-10-22 13:53:31Z franver $
- */
+    /**
+     * Arquivo oculto - Exportação arquivos Planejamento TCE/MG
+     *
+     * @category    Urbem
+     * @package     TCE/MG
+     * @author      Eduardo Schitz   <eduardo.schitz@cnm.org.br>
+     * $Id: OCExportarBalanceteContabil.php 63835 2015-10-22 13:53:31Z franver $
+     */
 set_time_limit(0);
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 include_once CLA_EXPORTADOR;

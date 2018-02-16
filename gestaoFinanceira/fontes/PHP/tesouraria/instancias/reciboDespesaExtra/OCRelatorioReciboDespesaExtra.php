@@ -36,6 +36,8 @@
 
     * Casos de uso: uc-02.04.30
 */
+// ini_set("display_errors", 1);
+// error_reporting(E_ALL);
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
@@ -43,9 +45,27 @@ include_once CAM_FW_PDF."RRelatorio.class.php";
 include_once CAM_GF_CONT_MAPEAMENTO.'TContabilidadePlanoAnalitica.class.php';
 include_once CAM_GF_ORC_MAPEAMENTO.'TOrcamentoEntidade.class.php';
 
-$obRelatorio = new RRelatorio;
+include_once CAM_GF_TES_MAPEAMENTO.'TTesourariaReciboExtra.class.php';
+include_once CAM_GF_TES_MAPEAMENTO.'TTesourariaReciboExtraBanco.class.php';
+include_once CAM_GF_TES_MAPEAMENTO.'TTesourariaReciboExtraCredor.class.php';
+include_once CAM_GF_TES_MAPEAMENTO.'TTesourariaReciboExtraRecurso.class.php';
 
+$arTemp = null;
+$obRelatorio = new RRelatorio;
 $arDados = Sessao::read('post');
+
+if (empty($arDados)) {
+    $obTReciboExtra = new TTesourariaReciboExtra;
+
+    // $inCodEntidade = Sessao::read('inCodEntidade');
+    $stCodigoRecibo = Sessao::read('stCodigoReciboD');
+    $exercicio = Sessao::read('exercicio');
+
+    $rsRecordSet = new RecordSet;
+    $obTReciboExtra->recuperaDadosReciboEmissao($rsRecordSet, $stCodigoRecibo, $exercicio, 'D');
+    $arDados = $rsRecordSet->getObjeto();
+    $arDados['txtValor'] = str_replace('.',',', $arDados['txtValor']);
+}
 
 ///// Dados da Entidade
 $arEntidade = array();

@@ -37,9 +37,6 @@
     * Casos de uso: uc-02.02.02
 */
 
-ini_set("display_errors", 1);
-error_reporting(E_ALL);
-
 $boTransacao = null;
 $inCodFundo = null;
 

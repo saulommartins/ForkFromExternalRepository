@@ -37,6 +37,9 @@
     * Casos de uso: uc-02.04.30
 */
 
+// ini_set("display_errors", 1);
+// error_reporting(E_ALL);
+
 include_once '../../../../../../config.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkPDF.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
@@ -53,6 +56,7 @@ $rsVazio        = new RecordSet();
 
 $arDados = Sessao::read('filtroRelatorio');
 $numeroRecibo = Sessao::read('numeroRecibo');
+
 
 if($numeroRecibo == "")
     $numeroRecibo = $arDados['numeroRecibo'];

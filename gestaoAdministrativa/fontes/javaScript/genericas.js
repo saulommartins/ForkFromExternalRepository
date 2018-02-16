@@ -240,7 +240,7 @@ function preencheCampoMensagem( selecionado, preenchido, sessao, mensagem ){
         }
     }
     return true;
-} 
+}
 
 /**
 * Faz o chamada de alerta.
@@ -310,14 +310,14 @@ function mudaFrameOculto(sPag){
     if ((a.text+"") < (b.text+"")) { return -1; }
     if ((a.text+"") > (b.text+"")) { return 1; }
     return 0;
-}  
+}
 
 /**
 * Ordena o select em ordem numérica
 */
 function sortByValue(a,b){
     return (a.value - b.value);
-} 
+}
 
 /**
 * Ordena o select em ordem alfabética retirando o codigo antes da descricao
@@ -339,7 +339,7 @@ function sortSelect(obj,ordenacao){
     for (var i=0; i<obj.options.length; i++){
         o[o.length] = new Option(obj.options[i].text, obj.options[i].value, obj.options[i].defaultSelected, obj.options[i].selected);
     }
-    
+
     if (ordenacao == "valueText")
       o = o.sort(sortByValueText);
 
@@ -348,7 +348,7 @@ function sortSelect(obj,ordenacao){
 
     if (ordenacao == "value")
       o = o.sort(sortByValue);
-        
+
     for (var i=0; i<o.length; i++){
         obj.options[i] = new Option(o[i].text, o[i].value, o[i].defaultSelected, o[i].selected);
     }
@@ -357,14 +357,14 @@ function sortSelect(obj,ordenacao){
 /**
 * Envia o valor de um select para outro, ordenando no final
 */
-function passaItem(objDe,objPara,acao,ordenacao){      
+function passaItem(objDe,objPara,acao,ordenacao){
 
     objDe     = eval(objDe);
     objPara   = eval(objPara);
 
     if (acao=='tudo'){
         for (var i = 0; i < objDe.length; i++){
-          if(!(objDe.options[i].disabled)){        
+          if(!(objDe.options[i].disabled)){
             valor = objDe.options[i].value;
             texto = objDe.options[i].text;
             var temp = document.createElement('option');
@@ -397,15 +397,17 @@ function passaItem(objDe,objPara,acao,ordenacao){
         }
     }
 
-    // Caso não seja passado o parâmetro para ordenar, ordena default por texto. 
+
+	// Caso não seja passado o parâmetro para ordenar, ordena default por texto.
+
     if (ordenacao == "")
         ordenacao = "text";
-    
+
     // Executa função que ordena o combo com base na ordenação setada (text ou value).
     if (ordenacao != "selacao")
         sortSelect(objPara, ordenacao);
-    
-    return;
+
+	return;
 }
 
 /**
@@ -581,7 +583,7 @@ function toLowerCase(obThis){
 
 /**
 * Descrição: Recupera o option de um determinado VALUE em uma combo.
-*/ 
+*/
 function recuperaOption( campo , valor ){
     var option = 0;
     for (iCount = campo.options.length-1; iCount > 0; iCount--){
@@ -608,7 +610,7 @@ function validaValorMaximo(campo, maxValue, Decimais) {
     }
     for( var i = 0; i < maxValue.length; i++ ){
         if( maxValue[i] == "." ){
-            valorMax += "";        
+            valorMax += "";
         }
         else if( maxValue[i] == "," ){
             valorMax += ".";
@@ -622,7 +624,7 @@ function validaValorMaximo(campo, maxValue, Decimais) {
         return false;
     } else {
         return true;
-    }  
+    }
 }
 
 /**
@@ -655,7 +657,7 @@ function validaValorMinimo(campo, minValue, Decimais) {
     return false;
   } else {
     return true;
-  }  
+  }
 }
 
 /**
@@ -703,7 +705,7 @@ function alfaNumerico( campo, evento ){
 *
 */
 function removeEspacosExtras( campo,evento ){
-    campo.value = campo.value.replace(/\s+/gm, " "); 
+    campo.value = campo.value.replace(/\s+/gm, " ");
     campo.value = campo.value.replace(/^\s*|\s*$/g,"");
 }
 
@@ -839,13 +841,27 @@ function validaMaxCaracter(campo,limite,evento,blur){
 }
 
 /**
+* Libera o campo subtipo.
+*/
+function liberaSubTipo(campo){
+  var subTipo = document.getElementById("inSubTipo");
+  if (campo.value <= 15) {
+    subTipo.disabled = false;
+  } else {
+    subTipo.disabled = true;
+  }
+
+  return true;
+}
+
+/**
 * Muda o item selecionadoem selects que contiverem chave no começo do id do select.
 */
 function muda_selects(chave){
     var count;
     var id;
     var texto;
- 
+
     for(i=0; i < document.frm.elements.length; i++){
        texto = document.frm.elements[i].id;
        if (texto.match(chave)==chave){
@@ -866,11 +882,11 @@ function BloqueiaFrames(boPrincipal,boMenu){
             parent.frames[1].document.getElementById('fundo_carregando').style.visibility='visible';
     }
     if  (boPrincipal==true)   {
-            parent.frames[2].document.getElementById('layerFormulario').style.visibility='hidden'; 
+            parent.frames[2].document.getElementById('layerFormulario').style.visibility='hidden';
             parent.frames[2].document.getElementById('layerFormulario').disabled = true;
-            parent.frames[2].document.getElementById('BOTAO').style.visibility='hidden'; 
+            parent.frames[2].document.getElementById('BOTAO').style.visibility='hidden';
             parent.frames[2].document.body.scrollTop=0;
-            parent.frames[2].document.getElementById('fundo_carregando').style.visibility='visible';            
+            parent.frames[2].document.getElementById('fundo_carregando').style.visibility='visible';
     }
     */
 }
@@ -887,36 +903,36 @@ function LiberaFrames(boPrincipal,boMenu){
             parent.frames[1].document.getElementById('fundo_carregando').style.visibility='hidden';
         }
     if  (boPrincipal==true)   {
-            parent.frames[2].document.getElementById('layerFormulario').style.visibility='visible'; 
-            parent.frames[2].document.getElementById('BOTAO').style.visibility='visible'; 
+            parent.frames[2].document.getElementById('layerFormulario').style.visibility='visible';
+            parent.frames[2].document.getElementById('BOTAO').style.visibility='visible';
             parent.frames[2].document.getElementById('fundo_carregando').style.visibility='hidden';
         }
     */
 }
 
 function BloqueiaBotoesFrame( ) {
- parent.frames[2].document.getElementById('layerFormulario').style.visibility='hidden'; 
+ parent.frames[2].document.getElementById('layerFormulario').style.visibility='hidden';
  parent.frames[2].document.getElementById('layerFormulario').disabled = true;
- parent.frames[2].document.getElementById('BOTAO').style.visibility='hidden'; 
+ parent.frames[2].document.getElementById('BOTAO').style.visibility='hidden';
  parent.frames[2].document.body.scrollTop=0;
- parent.frames[2].document.getElementById('fundo_carregando').style.visibility='visible'; 
+ parent.frames[2].document.getElementById('fundo_carregando').style.visibility='visible';
 
  for (i=0;i<document.frm.elements.length;i++)
-       if ( document.frm.elements[i].type == 'button' ){ 
+       if ( document.frm.elements[i].type == 'button' ){
              document.frm.elements[i].disabled = true;
-       } 
+       }
 
 
 }
 
 function LiberaBotoesFrames( ){
-   d = window.parent.frames["telaPrincipal"].document; 
+   d = window.parent.frames["telaPrincipal"].document;
 
    for (i=0;i<d.frm.elements.length;i++)
             d.frm.elements[i].disabled = false;
 
-   parent.frames[2].document.getElementById('layerFormulario').style.visibility='visible'; 
-   parent.frames[2].document.getElementById('BOTAO').style.visibility='visible'; 
+   parent.frames[2].document.getElementById('layerFormulario').style.visibility='visible';
+   parent.frames[2].document.getElementById('BOTAO').style.visibility='visible';
    parent.frames[2].document.getElementById('fundo_carregando').style.visibility='hidden';
 
 }
@@ -1059,7 +1075,7 @@ function verificaPlacaVeiculo(campo){
 }
 
 /*
-* 
+*
 */
 function executa(){
    return true;
@@ -1142,8 +1158,8 @@ function procuraFocaCampo(){
    if(document.forms[0]){
        for(x=0;x<document.forms[0].elements.length;x++){
            for(z=0;z<objeto.length;z++){
-               if(document.forms[0].elements[x].type != objeto[z]){   
-                   if(!(document.forms[0].elements[x].disabled == true | document.forms[0].elements[x].readOnly == true)){ 
+               if(document.forms[0].elements[x].type != objeto[z]){
+                   if(!(document.forms[0].elements[x].disabled == true | document.forms[0].elements[x].readOnly == true)){
                        focado = true;
                    }
                }
@@ -1397,23 +1413,23 @@ function setLabel( id, reverter )
     }
 }
 
-function selecionaValoresAtributos(linkPagina, acao, idComponentes, nomeAtributos)                                                      
-{                                                                                   
+function selecionaValoresAtributos(linkPagina, acao, idComponentes, nomeAtributos)
+{
     var i = 0;
-    var j = 0;                                                                        
+    var j = 0;
     var link = '';
-     
-    var arrayComponentes = idComponentes.split(' | ');    
+
+    var arrayComponentes = idComponentes.split(' | ');
     var nomeAtributo = nomeAtributos.split(' | ');
-        
+
     for(j = 0; j < arrayComponentes.length; j++) {
         if(arrayComponentes[j] != '') {
 
-            var selectSelecionados = document.getElementById(arrayComponentes[j]);                                 
-            for(i = 0; i < selectSelecionados.length; i++)                                    
-            {                                                                                 
+            var selectSelecionados = document.getElementById(arrayComponentes[j]);
+            for(i = 0; i < selectSelecionados.length; i++)
+            {
                link += '&stAtributo['+ nomeAtributo[j] +'_Selecionados]['+ i +'][valor]='+ selectSelecionados.options[i].value;
-               link += '&stAtributo['+ nomeAtributo[j] +'_Selecionados]['+ i +'][texto]='+ selectSelecionados.options[i].text; 
+               link += '&stAtributo['+ nomeAtributo[j] +'_Selecionados]['+ i +'][texto]='+ selectSelecionados.options[i].text;
             }
 
             if(selectSelecionados.length == 0) {
@@ -1422,7 +1438,7 @@ function selecionaValoresAtributos(linkPagina, acao, idComponentes, nomeAtributo
 
         }
     }
-    ajaxJavaScript(linkPagina+link,acao);   
+    ajaxJavaScript(linkPagina+link,acao);
 }
 
 function removeConfirmPopUp()
@@ -1445,7 +1461,7 @@ function removePopUp()
                                                                     jq(this).remove();
                                                                });
             jq('html',parent.frames[i].document).css({'overflow':'auto'});
-    }   
+    }
 }
 
 function confirmPopUp(stTitle,stText,stMethodSim)
@@ -1453,7 +1469,7 @@ function confirmPopUp(stTitle,stText,stMethodSim)
     removePopUp();
     if (typeof jq == 'undefined') {
        var jq = window.parent.frames["telaPrincipal"].jQuery;
-    } 
+    }
 
     stHTMLFrames = '<div id="containerPopUp">&nbsp;</div>';
 
@@ -1461,17 +1477,17 @@ function confirmPopUp(stTitle,stText,stMethodSim)
     stHTML = stHTML + '        <h3>'+stTitle+'</h3>';
     stHTML = stHTML + '        <h4>Confirmação</h4>';
     stHTML = stHTML + '        <p>'+stText+'</p>';
-    stHTML = stHTML + '        <input type="button" value="Sim" id="btPopUpSim" name="btPopUpSim" onclick="javascript:removeConfirmPopUp();'+stMethodSim+';"; />'; 
+    stHTML = stHTML + '        <input type="button" value="Sim" id="btPopUpSim" name="btPopUpSim" onclick="javascript:removeConfirmPopUp();'+stMethodSim+';"; />';
     stHTML = stHTML + '        <input type="button" value="Não" id="btPopUpNao" name="btPopUpNao" onclick="removeConfirmPopUp();" />';
     stHTML = stHTML + '    </div>';
 
-    var containerCSS = { 'width':'100%',  
+    var containerCSS = { 'width':'100%',
                          'height': '1999px',
                          'background':'transparent url(../../../../../../gestaoAdministrativa/fontes/PHP/framework/temas/padrao/imagens/overlay.png) left',
                          'position':'absolute',
                          'left':'0',
                          'top':'0' };
-    
+
     for(i=1;i<4;i++){
         jq('html',parent.frames[i].document).append(stHTMLFrames);
         jq('html',parent.frames[i].document).css({'overflow':'hidden'});
@@ -1488,7 +1504,7 @@ function alertPopUp(stTitle,stText,stMethod)
     removePopUp();
     if (typeof jq == 'undefined') {
        var jq = window.parent.frames["telaPrincipal"].jQuery;
-    } 
+    }
     stHTMLFrames = '<div id="containerPopUp">&nbsp;</div>';
 
     stHTML = '    <div id="showPopUp">';
@@ -1498,14 +1514,14 @@ function alertPopUp(stTitle,stText,stMethod)
     stHTML = stHTML + '        <input type="button" value="Ok" id="btPopUpOk" name="btPopUpOk" onclick="removeConfirmPopUp();' + stMethod + '" />';
     stHTML = stHTML + '    </div>';
 
-    var containerCSS = { 'width':'100%',  
+    var containerCSS = { 'width':'100%',
                          'height': '1999px',
                          'background':'transparent url(../../../../../../gestaoAdministrativa/fontes/PHP/framework/temas/padrao/imagens/overlay.png) left',
                          'position':'absolute',
                          'left':'0',
                          'top':'0'
                           };
-    
+
     for(i=1;i<4;i++){
         jq('html',parent.frames[i].document).append(stHTMLFrames);
         jq('html',parent.frames[i].document).css({'overflow':'hidden'});
@@ -1522,7 +1538,7 @@ function loadingModal(boPrincipal, boMenu, stText)
     removePopUp();
     if (typeof jq == 'undefined') {
        var jq = window.parent.frames["telaPrincipal"].jQuery;
-    } 
+    }
     jq("input:button").each(function(){
         this.disabled = true;
     });
@@ -1538,14 +1554,14 @@ function loadingModal(boPrincipal, boMenu, stText)
     stHTML = stHTML + ' <img src = "../../../../../../gestaoAdministrativa/fontes/PHP/framework/temas/padrao/imagens/loading_modal.gif" id="loadingModal" />';
     stHTML = stHTML + '    </div>';
 
-    var containerCSS = { 'width':'100%',  
+    var containerCSS = { 'width':'100%',
                          'height': '1999px',
                          'background':'transparent url(../../../../../../gestaoAdministrativa/fontes/PHP/framework/temas/padrao/imagens/overlay.png) left',
                          'position':'fixed',
                          'left':'0',
                          'top':'0',
                          'z-index':'5' };
-   
+
     //Aplica o modal no frame de mensagens
     jq('html',parent.frames[3].document).append(stHTMLFrames);
     jq('div#containerPopUp', parent.frames[3].document).css(containerCSS);
@@ -1581,13 +1597,13 @@ function imagemPopUp(stTitle,stText, stRotulo, stMethod)
         }
         stHTML = stHTML + '    </div>';
 
-        var containerCSS = { 'width':'100%',  
+        var containerCSS = { 'width':'100%',
                              'height': '1999px',
                              'background':'transparent url(../../../../../../gestaoAdministrativa/fontes/PHP/framework/temas/padrao/imagens/overlay.png) left',
                              'position':'absolute',
                              'left':'0',
                              'top':'0' };
-    
+
         for(i=1;i<4;i++){
             jq('html',parent.frames[i].document).append(stHTMLFrames);
             jq('html',parent.frames[i].document).css({'overflow':'hidden'});
@@ -1603,26 +1619,26 @@ function removeConfirmImagemPopUp()
     for(i=1;i<4;i++){
         jq('div#containerImagemPopUp',parent.frames[i].document).remove();
             jq('html',parent.frames[i].document).css({'overflow':'auto'});
-    }   
+    }
 }
 
 /***********************************************************
 * Funções utilizadas pelo seletorAno (Componente do GRH).
 ***********************************************************/
-function increaseSelectorYear(inIdElemento) {                                            
-   jQuery('#'+inIdElemento).val(parseInt(jQuery('#'+inIdElemento).val())+1);                
-}                                                                                    
+function increaseSelectorYear(inIdElemento) {
+   jQuery('#'+inIdElemento).val(parseInt(jQuery('#'+inIdElemento).val())+1);
+}
 
-function decreaseSelectorYear(inIdElemento, inAnoInicioPerMov) {                                               
+function decreaseSelectorYear(inIdElemento, inAnoInicioPerMov) {
     if (parseInt(jQuery('#'+inIdElemento).val()) > inAnoInicioPerMov) {
-        jQuery('#'+inIdElemento).val(parseInt(jQuery('#'+inIdElemento).val())-1);                
+        jQuery('#'+inIdElemento).val(parseInt(jQuery('#'+inIdElemento).val())-1);
     }
-}                                                                                    
+}
 
-function checkSelectorDate(obData, inAnoInicioPerMov) {        
-    if (obData.value.length < 4) {                                                   
-        var obDate = new Date();                                                     
-        obData.value = obDate.getFullYear();                                         
+function checkSelectorDate(obData, inAnoInicioPerMov) {
+    if (obData.value.length < 4) {
+        var obDate = new Date();
+        obData.value = obDate.getFullYear();
     } else {
         if (obData.value < inAnoInicioPerMov) {
            obData.value = inAnoInicioPerMov;     
@@ -1630,15 +1646,14 @@ function checkSelectorDate(obData, inAnoInicioPerMov) {
     } 
 }                                                                                   
 
-function analisaChaveNFe(e, a, t, o) {
-    var n = document.getElementById(a);
-    null != n && (n.value = e.value.substring(24, 33));
-    var r = document.getElementById(t);
-    null != r && (r.value = e.value.substring(21, 24));
-    var s = document.getElementById(o);
-    if (null != s) {
-        var i = e.value.substring(2, 4),
-            l = e.value.substring(4, 6);
-        s.value = "00/" + l + "/20" + i
+function analisaChaveNFe(elemento, nomeCampoNumero, nomeCampoSerie) {
+    var campoSerie = document.getElementById(nomeCampoSerie);
+    if (campoSerie != null) {
+        campoSerie.value = elemento.value.substring(22, 25);
+    }
+
+    var campoNumero = document.getElementById(nomeCampoNumero);
+    if (campoNumero != null) {
+        campoNumero.value = elemento.value.substring(25, 34);
     }
 }

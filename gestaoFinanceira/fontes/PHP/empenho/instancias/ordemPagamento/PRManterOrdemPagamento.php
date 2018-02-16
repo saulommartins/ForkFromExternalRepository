@@ -260,19 +260,32 @@ case "incluir":
         } else {
 
             // envia somente os dados necessários para o arquivo que gera o relatório do birt, colocando-os em um array ($arDados).
+            // dados do recibo de receita extra
             $arFornecedor = explode(' - ', $_REQUEST['stFornecedor']);
             $arDados['inCodFornecedor'] = $arFornecedor[0];
             $arDados['inCodEntidade'] = $obREmpenhoOrdemPagamento->obROrcamentoEntidade->getCodigoEntidade();
             $arDados['inCodOrdem'] = $obREmpenhoOrdemPagamento->getCodigoOrdem();
-            $arDados['stCodReciboExtra'] = Sessao::read('stCodigoRecibo');
+            
             $arDados['stCodLancamento'] = Sessao::read('stCodLancamento');
             $arDados['stCodReceita'] = Sessao::read('stCodReceita');
+            $arDados['stCodReciboExtra'] = Sessao::read('stCodigoReciboR');
             $arDados['acao'] = 816;
-            Sessao::remove('stCodigoRecibo');
+
+            // dados do recibo de despesa extra
+            $arDados['cod_recibo_extra'] = Sessao::read('stCodigoReciboD');
+
+            Sessao::write('post', Sessao::read('dadosReciboD'));
+
+            // Sessao::remove('stCodigoReciboR');
+            // Sessao::remove('stCodigoReciboD');
             Sessao::remove('stCodLancamento');
             Sessao::remove('stCodReceita');
 
             $stCaminho = CAM_GF_EMP_INSTANCIAS."ordemPagamento/OCGeraRelatorioOrdemPagamentoBirt.php";
+            $stCaminhoSecundario = CAM_GF_TES_INSTANCIAS . 'reciboDespesaExtra/OCRelatorioReciboDespesaExtra.php';
+
+            Sessao::write('stCaminhoSecundario', $stCaminhoSecundario);
+            // $stCampos = "?".Sessao::getId()."&stAcao=imprimir&stCaminho=".$stCaminho."&stCaminhoSecundario=" . $stCaminhoSecundario . "&";
             $stCampos = "?".Sessao::getId()."&stAcao=imprimir&stCaminho=".$stCaminho."&";
             $stCampos .= http_build_query($arDados); //pega o array $arDados e monta o caminho correto para passar no href
             SistemaLegado::executaFrameOculto( "var x = window.open('".CAM_FW_POPUPS."relatorio/OCRelatorio.php".$stCampos."&acao=816','oculto');" );
@@ -408,6 +421,7 @@ function incluirReciboExtra($obREmpenhoOrdemPagamento, $tipoRecibo, $boTransacao
             $obTReciboExtra->setDado('timestamp', substr($request->get('stDtOrdem'), 6, 4).'-'.substr($request->get('stDtOrdem'), 3, 2).'-'.substr($request->get('stDtOrdem'),0,2).date(' H:i:s.ms'));
             $obErro = $obTReciboExtra->inclusao($boTransacao);
 
+
             if (!$obErro->ocorreu() && $_REQUEST['stFornecedor'] != "") {
                 $arCodCredor = explode(" - ", $_REQUEST['stFornecedor']);
                 $inCodCredor = $arCodCredor[0];
@@ -442,12 +456,13 @@ function incluirReciboExtra($obREmpenhoOrdemPagamento, $tipoRecibo, $boTransacao
                 $obTEmpenhoOrdemPagamentoReciboExtra->setDado('cod_recibo_extra', $inCodigoRecibo);
                 $obTEmpenhoOrdemPagamentoReciboExtra->inclusao($boTransacao);
             }
+
         }
     }
 
     // Pega os cógigos do recibo para que possam ser enviados para o birt posteriormente (quando monta o link na hora dentro do PR mesmo)
     $stCodigoRecibo = substr($stCodigoRecibo, 0, (strlen($stCodigoRecibo)-1));
-    Sessao::write('stCodigoRecibo', $stCodigoRecibo);
+    Sessao::write('stCodigoRecibo' . $tipoRecibo, $stCodigoRecibo);
 
     // Adiciona a assinatura selecionada no ordem de pagamento para as assintaturas do recibo extra,
     // porém como o tipo é 'R' então somente poderá ser o papel=tesoureiro, sendo o num_assinatura=1

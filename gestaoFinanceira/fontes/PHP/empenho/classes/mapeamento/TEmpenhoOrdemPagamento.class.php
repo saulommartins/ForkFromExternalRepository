@@ -2991,5 +2991,329 @@ class TEmpenhoOrdemPagamento extends Persistente
     }
 
 
+    public function consultarParaEmissao(&$rsRecordSet, $exercicio, $codOrdem, $codEntidade)
+    {
+        $obErro      = new Erro;
+        $obConexao   = new Conexao;
+        $rsRecordSet = new RecordSet;
 
+        $stSql = $this->montaConsultarParaEmissao($exercicio, $codOrdem, $codEntidade);
+        $this->setDebug( $stSql );
+        return $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
+    }
+
+    public function montaConsultarParaEmissao($exercicio, $codOrdem, $codEntidade)
+    {
+      return "
+            SELECT  tabela.*,
+                    ( SELECT  valor 
+                        FROM  administracao.configuracao 
+                       WHERE  cod_modulo = 2 
+                         AND  parametro = 'nom_prefeitura' 
+                         AND  exercicio  = '2008') AS nom_prefeitura,
+                    ( SELECT  LOWER(publico.fn_extenso((vl_pagamento-vl_anulado))) AS vl_extenso
+
+               FROM ( 
+                      SELECT  empenho.fn_consultar_valor_pagamento_anulado_ordem_empenho(
+                                nota_liquidacao.exercicio, 
+                                pagamento_liquidacao.cod_ordem, 
+                                empenho.cod_entidade, 
+                                empenho.cod_empenho
+                              ) as vl_anulado,
+                              pagamento_liquidacao.vl_pagamento
+
+                        FROM  empenho.pagamento_liquidacao
+
+                        JOIN  empenho.ordem_pagamento
+                          ON  ordem_pagamento.cod_ordem    = pagamento_liquidacao.cod_ordem
+                         AND  ordem_pagamento.cod_entidade = pagamento_liquidacao.cod_entidade
+                         AND  ordem_pagamento.exercicio    = pagamento_liquidacao.exercicio
+                        
+                        JOIN  empenho.nota_liquidacao
+                          ON  nota_liquidacao.cod_nota     = pagamento_liquidacao.cod_nota
+                         AND  nota_liquidacao.cod_entidade = pagamento_liquidacao.cod_entidade
+                         AND  nota_liquidacao.exercicio    = pagamento_liquidacao.exercicio_liquidacao
+                
+                        JOIN  empenho.empenho
+                          ON  empenho.cod_empenho  = nota_liquidacao.cod_empenho
+                         AND  empenho.cod_entidade = nota_liquidacao.cod_entidade
+                         AND  empenho.exercicio    = nota_liquidacao.exercicio_empenho
+                        
+                        JOIN  orcamento.entidade
+                          ON  entidade.cod_entidade = empenho.cod_entidade
+                         AND  entidade.exercicio    = empenho.exercicio
+                        
+                        JOIN  sw_cgm
+                          ON  sw_cgm.numcgm = entidade.numcgm
+                        
+                        JOIN  empenho.pre_empenho
+                          ON  pre_empenho.cod_pre_empenho = empenho.cod_pre_empenho
+                         AND  pre_empenho.exercicio       = empenho.exercicio
+         
+                        JOIN  sw_cgm AS pre_empenho_cgm
+                          ON  pre_empenho_cgm.numcgm = pre_empenho.cgm_beneficiario
+                   
+                   LEFT JOIN  sw_cgm_pessoa_fisica
+                          ON  pre_empenho_cgm.numcgm = sw_cgm_pessoa_fisica.numcgm
+                   
+                   LEFT JOIN  sw_cgm_pessoa_juridica
+                          ON  pre_empenho_cgm.numcgm = sw_cgm_pessoa_juridica.numcgm
+                   
+                        JOIN  sw_municipio
+                          ON  sw_municipio.cod_municipio = pre_empenho_cgm.cod_municipio
+                         AND  sw_municipio.cod_uf        = pre_empenho_cgm.cod_uf
+                   
+                       WHERE  ordem_pagamento.exercicio    = '".$exercicio."'
+                         AND  ordem_pagamento.cod_entidade = ".$codEntidade."
+                         AND  ordem_pagamento.cod_ordem    = ".$codOrdem."
+                    ) AS tabela
+              ) as vl_extenso,
+              TO_REAL(vl_liquidado) AS vl_liquitado_br,
+              publico.fn_data_extenso(dt_extenso_1) AS dt_extenso,
+              TO_CHAR(dt_extenso_1, 'dd/mm/yyyy') AS dt_formatada,
+              LPAD(cod_ordem::VARCHAR, 6, '0') AS ordem,
+              '00000000'||LPAD(cod_ordem||substr(exercicio,3,2), 8, '0')||LPAD(cod_entidade::VARCHAR, 3, '0')||'0' as codigo_barra
+
+        FROM  ( SELECT SUM (empenho.fn_consultar_valor_liquidado_nota( nota_liquidacao.exercicio, empenho.cod_empenho, empenho.cod_entidade, nota_liquidacao.cod_nota) -
+                           empenho.fn_consultar_valor_liquidado_anulado_nota( nota_liquidacao.exercicio, empenho.cod_empenho, empenho.cod_entidade, nota_liquidacao.cod_nota )
+                    ) AS vl_liquidado
+                    , pagamento_liquidacao.cod_ordem
+                    , to_char(ordem_pagamento.dt_emissao,'yyyy-mm-dd') as dt_emissao
+                    , ordem_pagamento.dt_emissao as dt_extenso_1
+                    , ordem_pagamento.observacao
+                    , pre_empenho_cgm.numcgm
+                    , pre_empenho_cgm.nom_cgm
+                    , CASE WHEN sw_cgm_pessoa_fisica.numcgm IS NOT NULL THEN sw_cgm_pessoa_fisica.cpf
+                          ELSE sw_cgm_pessoa_juridica.cnpj
+                      END as cpf_cnpj
+                    , CASE WHEN sw_cgm_pessoa_fisica.numcgm IS NOT NULL THEN 'CPF'
+                          ELSE 'CNPJ'
+                      END AS cpfcnpj
+                    , sw_municipio.nom_municipio
+                    , ordem_pagamento.dt_vencimento
+                    , ordem_pagamento.exercicio
+                    , ordem_pagamento.cod_entidade
+           FROM empenho.pagamento_liquidacao
+           JOIN empenho.ordem_pagamento
+             ON ordem_pagamento.cod_ordem    = pagamento_liquidacao.cod_ordem
+            AND ordem_pagamento.cod_entidade = pagamento_liquidacao.cod_entidade
+            AND ordem_pagamento.exercicio    = pagamento_liquidacao.exercicio
+           JOIN empenho.nota_liquidacao
+             ON nota_liquidacao.cod_nota     = pagamento_liquidacao.cod_nota
+            AND nota_liquidacao.cod_entidade = pagamento_liquidacao.cod_entidade
+            AND nota_liquidacao.exercicio    = pagamento_liquidacao.exercicio_liquidacao
+           JOIN empenho.empenho
+             ON empenho.cod_empenho  = nota_liquidacao.cod_empenho
+            AND empenho.cod_entidade = nota_liquidacao.cod_entidade
+            AND empenho.exercicio    = nota_liquidacao.exercicio_empenho
+           JOIN orcamento.entidade
+             ON entidade.cod_entidade = empenho.cod_entidade
+            AND entidade.exercicio    = empenho.exercicio
+           JOIN sw_cgm
+             ON sw_cgm.numcgm = entidade.numcgm
+           JOIN empenho.pre_empenho
+             ON pre_empenho.cod_pre_empenho = empenho.cod_pre_empenho
+            AND pre_empenho.exercicio       = empenho.exercicio
+           JOIN sw_cgm AS pre_empenho_cgm
+             ON pre_empenho_cgm.numcgm = pre_empenho.cgm_beneficiario
+      LEFT JOIN sw_cgm_pessoa_fisica
+             ON pre_empenho_cgm.numcgm = sw_cgm_pessoa_fisica.numcgm
+      LEFT JOIN sw_cgm_pessoa_juridica
+             ON pre_empenho_cgm.numcgm = sw_cgm_pessoa_juridica.numcgm
+           JOIN sw_municipio
+             ON sw_municipio.cod_municipio = sw_cgm.cod_municipio
+            AND sw_municipio.cod_uf        = sw_cgm.cod_uf
+          WHERE ordem_pagamento.exercicio    = '".$exercicio."'
+            AND ordem_pagamento.cod_entidade = ".$codEntidade."
+            AND ordem_pagamento.cod_ordem    = ".$codOrdem."
+      GROUP BY pagamento_liquidacao.cod_ordem
+               , ordem_pagamento.dt_emissao
+               , ordem_pagamento.observacao
+               , pre_empenho_cgm.numcgm
+               , pre_empenho_cgm.nom_cgm
+               , CASE WHEN sw_cgm_pessoa_fisica.numcgm IS NOT NULL THEN sw_cgm_pessoa_fisica.cpf
+                      ELSE sw_cgm_pessoa_juridica.cnpj
+                END
+               ,CASE WHEN sw_cgm_pessoa_fisica.numcgm IS NOT NULL THEN 'CPF'
+                    ELSE 'CNPJ'
+                END
+               , sw_municipio.nom_municipio
+               , ordem_pagamento.dt_vencimento
+               , ordem_pagamento.exercicio
+               , ordem_pagamento.cod_entidade
+      ) as tabela
+      ";
+    }
+
+    public function consultarListagemEmpenhos(&$rsRecordSet, $exercicio, $codOrdem, $codEntidade)
+    {
+        $obErro      = new Erro;
+        $obConexao   = new Conexao;
+        $rsRecordSet = new RecordSet;
+
+        $stSql = $this->montaConsultarListagemEmpenhos($exercicio, $codOrdem, $codEntidade);
+        $this->setDebug( $stSql );
+        return $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
+    }
+
+    public function montaConsultarListagemEmpenhos($exercicio, $codOrdem, $codEntidade)
+    {
+      return "
+          SELECT tabela.*
+               , publico.fn_mascara_dinamica( ( SELECT valor FROM administracao.configuracao WHERE parametro = 'masc_despesa' AND exercicio = '2008' ), dotacao ) AS dotacao_formatada
+               , cod_recurso as recurso_formatado
+               , ( SELECT valor FROM administracao.configuracao WHERE cod_modulo = 2 AND parametro = 'nom_prefeitura' AND  exercicio  = '2008' ) AS nom_prefeitura
+               , lower(publico.fn_extenso((vl_pagamento-vl_anulado))) AS vl_extenso
+               , to_real((vl_pagamento-vl_anulado)) AS vl_liquitado_br
+            FROM ( SELECT lpad(nota_liquidacao.cod_empenho::VARCHAR,6,'0') as cod_empenho
+                        , nota_liquidacao.exercicio_empenho
+                        , lpad(nota_liquidacao.cod_empenho::VARCHAR,6,'0')||'/'||nota_liquidacao.exercicio_empenho AS empenho
+                        , lpad(nota_liquidacao.cod_nota::VARCHAR,6,'0') as cod_nota
+                        , nota_liquidacao.exercicio as exercicio_nota
+                        , ( empenho.fn_consultar_valor_liquidado_nota( nota_liquidacao.exercicio, empenho.cod_empenho, empenho.cod_entidade, nota_liquidacao.cod_nota) -
+                            empenho.fn_consultar_valor_liquidado_anulado_nota( nota_liquidacao.exercicio, empenho.cod_empenho, empenho.cod_entidade, nota_liquidacao.cod_nota )
+                          )as vl_liquidado
+                        , to_char(nota_liquidacao.dt_liquidacao,'dd/mm/yyyy') as dt_liquidacao
+                        , empenho.fn_consultar_valor_pagamento_anulado_ordem_empenho(nota_liquidacao.exercicio, pagamento_liquidacao.cod_ordem, empenho.cod_entidade, empenho.cod_empenho ) as vl_anulado
+                        , pagamento_liquidacao.vl_pagamento
+                        , nota_liquidacao.cod_entidade
+                        , pagamento_liquidacao.cod_ordem
+                        , ordem_pagamento.exercicio AS exercicio_ordem
+
+                        , dados_empenho.dotacao_reduzida
+                        , dados_empenho.dotacao
+                        , dados_empenho.nom_conta
+                        , dados_empenho.cod_recurso
+                        , dados_empenho.num_pao
+                        , dados_empenho.nom_pao
+                        , dados_empenho.nom_recurso
+                        , dados_empenho.num_programa
+                        , dados_empenho.num_acao
+                    FROM empenho.pagamento_liquidacao
+                    JOIN empenho.ordem_pagamento
+                      ON ordem_pagamento.cod_ordem    = pagamento_liquidacao.cod_ordem
+                     AND ordem_pagamento.cod_entidade = pagamento_liquidacao.cod_entidade
+                     AND ordem_pagamento.exercicio    = pagamento_liquidacao.exercicio
+                    JOIN empenho.nota_liquidacao
+                      ON nota_liquidacao.cod_nota     = pagamento_liquidacao.cod_nota
+                     AND nota_liquidacao.cod_entidade = pagamento_liquidacao.cod_entidade
+                     AND nota_liquidacao.exercicio    = pagamento_liquidacao.exercicio_liquidacao
+                    JOIN empenho.empenho
+                      ON empenho.cod_empenho  = nota_liquidacao.cod_empenho
+                     AND empenho.cod_entidade = nota_liquidacao.cod_entidade
+                     AND empenho.exercicio    = nota_liquidacao.exercicio_empenho
+                    JOIN orcamento.entidade
+                      ON entidade.cod_entidade = empenho.cod_entidade
+                     AND entidade.exercicio    = empenho.exercicio
+                    JOIN sw_cgm
+                      ON sw_cgm.numcgm = entidade.numcgm
+                    JOIN empenho.pre_empenho
+                      ON pre_empenho.cod_pre_empenho = empenho.cod_pre_empenho
+                     AND pre_empenho.exercicio       = empenho.exercicio
+               LEFT JOIN (
+                           SELECT pre_empenho_despesa.cod_pre_empenho
+                                , pre_empenho_despesa.exercicio
+                                , despesa.cod_despesa AS dotacao_reduzida
+                                , conta_despesa.descricao AS nom_conta
+                                , recurso.cod_fonte AS cod_recurso
+                                , despesa.num_orgao
+                                    ||'.'||despesa.num_unidade
+                                    ||'.'||despesa.cod_funcao
+                                    ||'.'||despesa.cod_subfuncao
+                                    ||'.'||ppa.programa.num_programa
+                                    ||'.'||ppa.acao.num_acao
+                                    ||'.'||replace(conta_despesa.cod_estrutural,'.','')
+                                    AS dotacao
+                                , pao.num_pao
+                                , pao.nom_pao
+                                , recurso.nom_recurso
+                                , ppa.programa.num_programa AS num_programa
+                                , ppa.acao.num_acao AS num_acao
+                  
+                             FROM empenho.pre_empenho_despesa
+                             JOIN orcamento.despesa
+                               ON despesa.cod_despesa = pre_empenho_despesa.cod_despesa
+                              AND despesa.exercicio   = pre_empenho_despesa.exercicio
+                             JOIN orcamento.recurso
+                               ON recurso.cod_recurso = despesa.cod_recurso
+                              AND recurso.exercicio   = despesa.exercicio
+                             JOIN orcamento.pao
+                               ON pao.num_pao   = despesa.num_pao
+                              AND pao.exercicio = despesa.exercicio
+                  
+                             JOIN orcamento.programa_ppa_programa
+                               ON programa_ppa_programa.cod_programa = despesa.cod_programa
+                              AND programa_ppa_programa.exercicio   = despesa.exercicio
+                             JOIN ppa.programa
+                               ON ppa.programa.cod_programa = programa_ppa_programa.cod_programa_ppa
+                             JOIN orcamento.pao_ppa_acao
+                               ON pao_ppa_acao.num_pao = despesa.num_pao
+                              AND pao_ppa_acao.exercicio = despesa.exercicio
+                             JOIN ppa.acao 
+                               ON ppa.acao.cod_acao = pao_ppa_acao.cod_acao
+                  
+                             JOIN orcamento.conta_despesa
+                               ON conta_despesa.cod_conta = despesa.cod_conta
+                              AND conta_despesa.exercicio = despesa.exercicio
+
+                        UNION ALL
+
+                           SELECT restos_pre_empenho.cod_pre_empenho
+                                , restos_pre_empenho.exercicio
+                                , null AS dotacao_reduzida
+                                , conta_despesa.descricao AS nom_conta
+                                , restos_pre_empenho.recurso::VARCHAR AS cod_recurso
+                                , restos_pre_empenho.num_orgao
+                                    ||'.'||restos_pre_empenho.num_unidade
+                                    ||'.'||restos_pre_empenho.cod_funcao
+                                    ||'.'||restos_pre_empenho.cod_subfuncao
+                                    ||'.'||ppa.programa.num_programa
+                                    ||'.'||ppa.acao.num_acao
+                                    ||'.'||restos_pre_empenho.cod_estrutural
+                                    AS dotacao
+                                , pao.num_pao
+                                , pao.nom_pao
+                                , recurso.nom_recurso
+                                , ppa.programa.num_programa AS num_programa
+                                , ppa.acao.num_acao AS num_acao
+
+                             FROM empenho.restos_pre_empenho
+                             JOIN orcamento.conta_despesa
+                               ON REPLACE(conta_despesa.cod_estrutural, '.', '') = restos_pre_empenho.cod_estrutural
+                              AND conta_despesa.exercicio = '".$exercicio."'
+                        LEFT JOIN orcamento.pao
+                               ON pao.num_pao   = restos_pre_empenho.num_pao
+                              AND pao.exercicio = restos_pre_empenho.exercicio
+                        LEFT JOIN orcamento.pao_ppa_acao
+                               ON pao_ppa_acao.num_pao = pao.num_pao
+                              AND pao_ppa_acao.exercicio = pao.exercicio
+                        LEFT JOIN ppa.acao
+                               ON acao.cod_acao = pao_ppa_acao.cod_acao
+                        LEFT JOIN orcamento.programa_ppa_programa
+                               ON programa_ppa_programa.cod_programa = restos_pre_empenho.cod_programa
+                              AND programa_ppa_programa.exercicio    = restos_pre_empenho.exercicio
+                        LEFT JOIN ppa.programa
+                               ON programa.cod_programa = programa_ppa_programa.cod_programa_ppa
+
+                        LEFT JOIN orcamento.recurso
+                               ON recurso.cod_recurso = restos_pre_empenho.recurso
+                              AND recurso.exercicio   = restos_pre_empenho.exercicio
+                       ) AS dados_empenho
+                      ON dados_empenho.cod_pre_empenho = pre_empenho.cod_pre_empenho
+                     AND dados_empenho.exercicio       = pre_empenho.exercicio
+                    JOIN sw_cgm AS pre_empenho_cgm
+                      ON pre_empenho_cgm.numcgm = pre_empenho.cgm_beneficiario
+               LEFT JOIN sw_cgm_pessoa_fisica
+                      ON pre_empenho_cgm.numcgm = sw_cgm_pessoa_fisica.numcgm
+               LEFT JOIN sw_cgm_pessoa_juridica
+                      ON pre_empenho_cgm.numcgm = sw_cgm_pessoa_juridica.numcgm
+                    JOIN sw_municipio
+                      ON sw_municipio.cod_municipio = pre_empenho_cgm.cod_municipio
+                     AND sw_municipio.cod_uf        = pre_empenho_cgm.cod_uf
+                   WHERE ordem_pagamento.exercicio    = '".$exercicio."'
+                     AND ordem_pagamento.cod_ordem    = ".$codOrdem."
+                     AND ordem_pagamento.cod_entidade = ".$codEntidade."
+          ) as tabela
+      ";
+    }
 }

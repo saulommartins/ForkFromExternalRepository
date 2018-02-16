@@ -53,30 +53,31 @@ $arFiltro = Sessao::read('filtroRelatorio');
 $arRecordSetTodos = array();
 
 switch ($arFiltro['stCtrl']) {
-case 'imprimirTodos':
-    $rsListaImpressao = Sessao::read('rsListaImpressao');
-    while (!$rsListaImpressao->eof()) {
+    case 'imprimirTodos':
+        $rsListaImpressao = Sessao::read('rsListaImpressao');
+        while (!$rsListaImpressao->eof()) {
 
-        $obRegra->setCodOrdem   ($rsListaImpressao->getCampo('cod_ordem'));
-        $obRegra->setExercicio  ($rsListaImpressao->getCampo('exercicio'));
-        $obRegra->setCodEntidade($rsListaImpressao->getCampo('cod_entidade'));
-        $obRegra->setImplantado ($rsListaImpressao->getCampo('implantado'));
-        $obRegra->setExercicioEmpenho($rsListaImpressao->getCampo('exercicio_empenho'));
-        $obRegra->geraRecordSet($arRecordSet);
-        $arRecordSetTodos[] = $arRecordSet;
+            $obRegra->setCodOrdem   ($rsListaImpressao->getCampo('cod_ordem'));
+            $obRegra->setExercicio  ($rsListaImpressao->getCampo('exercicio'));
+            $obRegra->setCodEntidade($rsListaImpressao->getCampo('cod_entidade'));
+            $obRegra->setImplantado ($rsListaImpressao->getCampo('implantado'));
+            $obRegra->setExercicioEmpenho($rsListaImpressao->getCampo('exercicio_empenho'));
+            $obRegra->geraRecordSet($arRecordSet);
+            $arRecordSetTodos[] = $arRecordSet;
 
-        $rsListaImpressao->proximo();
-    }
+            $rsListaImpressao->proximo();
+        }
     break;
 
-default:
-    $obRegra->setCodOrdem   ($arFiltro['inCodigoOrdem']);
-    $obRegra->setExercicio  ($arFiltro['stExercicio']);
-    $obRegra->setCodEntidade($arFiltro['inCodEntidade']);
-    $obRegra->setImplantado ($arFiltro['boImplantado']);
-    $obRegra->setExercicioEmpenho($arFiltro['stExercicioEmpenho']);
-    $obRegra->geraRecordSet($arRecordSet);
-    $arRecordSetTodos[] = $arRecordSet;
+    default:
+        $obRegra->setCodOrdem   ($arFiltro['inCodigoOrdem']);
+        $obRegra->setExercicio  ($arFiltro['stExercicio']);
+        $obRegra->setCodEntidade($arFiltro['inCodEntidade']);
+        $obRegra->setImplantado ($arFiltro['boImplantado']);
+        $obRegra->setExercicioEmpenho($arFiltro['stExercicioEmpenho']);
+        $obRegra->geraRecordSet($arRecordSet);
+        $arRecordSetTodos[] = $arRecordSet;
+    break;
 }
 
 Sessao::write('inCodAcaoTMP', Sessao::read('acao'));

@@ -105,8 +105,12 @@ $preview->addParametro('break_page', 0);
 
 $stCodigoBarra  = '00000000'.str_pad($arFiltro['inCodOrdem'].Sessao::getExercicio(), 8, '0', STR_PAD_LEFT);
 $stCodigoBarra .= str_pad($arFiltro['inCodEntidade'], 3, '0', STR_PAD_LEFT).'0';
+
 $preview->addParametro('codigo_barra', $stCodigoBarra);
 $preview->addParametro('mostrar_codigo', 'mostrar');
 $preview->addParametro('mostrar_rodape', 'mostrar');
+
+$preview->setDownload(true);
 $preview->preview();
+
 ?>

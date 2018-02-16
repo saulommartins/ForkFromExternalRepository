@@ -40,10 +40,11 @@
 
 set_time_limit(0);
 
+$recebeRequest = $_REQUEST;
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
 include_once( CAM_FW_PDF."RRelatorio.class.php"  );
 
-$recebeRequest = $_REQUEST;
+
 if (isset($recebeRequest['stTitulo'])) {
     $recebeRequest['stTitulo']=mb_strtoupper($recebeRequest['stTitulo'], 'UTF-8');
 }

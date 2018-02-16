@@ -590,6 +590,7 @@ switch ($_REQUEST ["stCtrl"]) {
             }   else $boRetencao = true;
 
         }
+
         if ( str_replace('.','',str_replace(',','.',$flValorNota)) < str_replace('.','',str_replace(',','.',$_REQUEST['flValorPagar']))) {
             $obErro = new Erro;
             $obErro->setDescricao( "O Valor a Pagar não pode ser maior que o Valor da Nota!" );
@@ -647,6 +648,7 @@ switch ($_REQUEST ["stCtrl"]) {
         } else {
             $newValorTotal = number_format($arValorTotalOrdem, 2, ',', '.');
         }
+
         $rsListaItemOrdem = new RecordSet;
         $rsListaItemOrdem->preenche ( $arItens );
         $rsListaItemOrdem->ordena("cod_nota");
@@ -676,6 +678,7 @@ switch ($_REQUEST ["stCtrl"]) {
             $stJs .= "combo.setAttribute('onclick', stCodigo + stCodigo2); \n";
             $stJs .= "combo.setAttribute('onblur', stCodigo3); \n";
         }
+        
         Sessao::write('boAdiantamento', $arAdiantamento);
         Sessao::write('bo_implantado', $arImplantado);
         Sessao::write('valorTotalOrdem', $arValorTotalOrdem);

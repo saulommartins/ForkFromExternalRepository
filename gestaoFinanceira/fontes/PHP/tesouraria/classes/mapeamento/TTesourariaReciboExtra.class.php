@@ -1162,4 +1162,70 @@ function montaRecuperaUltimaDataRecibo()
     return $stSql;
 }
 
+    public function recuperaDadosReciboEmissao(&$rsRecordSet, $stCodigoRecibo, $exercicio, $tipoRecibo)
+    {
+        $obErro      = new Erro;
+        $obConexao   = new Conexao;
+        $rsRecordSet = new RecordSet;
+
+        $stSql = $this->montaRecuperaDadosReciboEmissao($stCodigoRecibo, $exercicio, $tipoRecibo);
+        $this->setDebug( $stSql );
+        $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql );
+
+        return $obErro;
+    }
+
+    public function montaRecuperaDadosReciboEmissao($stCodigoRecibo, $exercicio, $tipoRecibo)
+    {
+        return '
+            SELECT recibo_extra.cod_entidade as "inCodEntidade",
+                   sw_cgm.numcgm as "inCodCredor",
+                   recibo_extra.cod_plano as "inCodContaDespesa",
+                   recibo_extra_banco.cod_plano as "inCodContaBanco",
+                   recurso.cod_recurso as "inCodRecurso",
+                   recurso_destinacao.cod_especificacao as "inCodEspecificacao",
+                   0 as "stDestinacaoRecurso",
+                   recurso.nom_recurso as "stDescricaoRecurso",
+                   recibo_extra.exercicio as "exercicio",
+                   sw_cgm.nom_cgm as "stNomCredor",
+                   recibo_extra.cod_recibo_extra as "numeroRecibo",
+                   recibo_extra.valor as "txtValor",
+                   recibo_extra.historico as "txtHistorico"
+
+            FROM tesouraria.recibo_extra
+
+            JOIN tesouraria.recibo_extra_credor
+            ON recibo_extra_credor.cod_recibo_extra = recibo_extra.cod_recibo_extra 
+            AND recibo_extra_credor.exercicio = recibo_extra.exercicio
+            AND recibo_extra_credor.cod_entidade = recibo_extra.cod_entidade
+            AND recibo_extra_credor.tipo_recibo = recibo_extra.tipo_recibo
+
+            JOIN sw_cgm
+            ON sw_cgm.numcgm = recibo_extra_credor.numcgm
+
+            LEFT JOIN tesouraria.recibo_extra_recurso
+            ON recibo_extra_recurso.cod_recibo_extra = recibo_extra.cod_recibo_extra
+            AND recibo_extra_recurso.exercicio = recibo_extra.exercicio
+            AND recibo_extra_recurso.cod_entidade = recibo_extra.cod_entidade
+            AND recibo_extra_recurso.tipo_recibo = recibo_extra.tipo_recibo
+
+            LEFT JOIN orcamento.recurso 
+            ON recurso.exercicio = recibo_extra_recurso.exercicio
+            AND recurso.cod_recurso = recibo_extra_recurso.cod_recurso
+
+            LEFT JOIN orcamento.recurso_destinacao
+            ON recurso_destinacao.exercicio = recurso.exercicio
+            AND recurso_destinacao.cod_recurso = recurso.cod_recurso
+
+            LEFT JOIN tesouraria.recibo_extra_banco 
+            ON recibo_extra_banco.cod_recibo_extra = recibo_extra.cod_recibo_extra
+            AND recibo_extra_banco.exercicio = recibo_extra.exercicio
+            AND recibo_extra_banco.cod_entidade = recibo_extra.cod_entidade
+            AND recibo_extra_banco.tipo_recibo = recibo_extra.tipo_recibo
+
+            WHERE recibo_extra.cod_recibo_extra = '.$stCodigoRecibo.'
+            AND recibo_extra.exercicio = \''.$exercicio.'\'
+            AND recibo_extra.tipo_recibo = \''.$tipoRecibo.'\'';
+    }
+
 }
