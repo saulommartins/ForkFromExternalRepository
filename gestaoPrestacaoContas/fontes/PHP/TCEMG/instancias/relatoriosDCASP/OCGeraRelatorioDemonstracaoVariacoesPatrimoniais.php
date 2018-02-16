@@ -11,8 +11,15 @@
 
     include_once CLA_MPDF;
 
+    $codRelatorio = 20;
+    $tipoRelatorio = "Analitico";
+    
+    if ($request->get('stTipoRelatorio') == "Sintetico") {
+        $codRelatorio = 21;
+        $tipoRelatorio = "Sintetico";
+    }
 
-    $obMPDF = new FrameWorkMPDF(6, 55, 20);
+    $obMPDF = new FrameWorkMPDF(6, 55, $codRelatorio);
     $obMPDF->setCodEntidades($request->get('inCodEntidade'));
     $obMPDF->setDataInicio($request->get("stDataInicial"));
     $obMPDF->setDataFinal($request->get("stDataFinal"));
@@ -26,11 +33,17 @@
     $obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais->setDado('dtFinal'      , $_REQUEST['stDataFinal']);
     $obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais->setDado('entidades'    , implode(',',$_REQUEST['inCodEntidade']));
 
-    echo "<pre>";
-    var_dump($obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais->montaRecuperaRegistro10Analitico());
-    die;
+    $rsRecorset10 = new Recordset;
+    $obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais->recuperaDados("montaRecuperaRegistro10" . $tipoRelatorio, $rsRecorset10);
+    $_data[10] = $rsRecorset10->getObjeto();
+
+    $rsRecorset20 = new Recordset;
+    $obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais->recuperaDados("montaRecuperaRegistro20" . $tipoRelatorio, $rsRecorset20);
+    $_data[20] = $rsRecorset10->getObjeto();
 
     $_data['exercicio'] = Sessao::read('exercicio');
+    
+    include_once '../../../../../../gestaoPrestacaoContas/fontes/RPT/TCEMG/MPDF/LHTCEMGRelatorioDCASPDemonstracaoVariacoesPatrimoniais'.$tipoRelatorio.'.php';
 
-    $obMPDF->setConteudo($_data);
-    $obMPDF->gerarRelatorio();
+    // $obMPDF->setConteudo($_data);
+    // $obMPDF->gerarRelatorio();

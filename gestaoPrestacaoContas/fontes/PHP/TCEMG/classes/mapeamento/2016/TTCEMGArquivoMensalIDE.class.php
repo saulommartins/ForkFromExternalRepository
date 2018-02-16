@@ -65,7 +65,7 @@ class TTCEMGArquivoMensalIDE extends Persistente {
                                WHERE configuracao_entidade.exercicio = ACE.exercicio
                                      AND configuracao_entidade.cod_entidade = ACE.cod_entidade
                                      AND parametro = 'tcemg_codigo_orgao_entidade_sicom'
-                              ), 3, '0') AS cod_orgao,
+                              ), 2, '0') AS cod_orgao,
                          (SELECT valor
                           FROM tcemg.orgao
                                INNER JOIN administracao.configuracao_entidade ON configuracao_entidade.valor::integer = orgao.num_orgao

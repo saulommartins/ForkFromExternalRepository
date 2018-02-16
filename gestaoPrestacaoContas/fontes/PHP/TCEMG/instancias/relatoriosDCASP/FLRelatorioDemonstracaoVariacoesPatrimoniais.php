@@ -1,7 +1,7 @@
 <?php
 
-    // ini_set("display_errors", 1);
-    // error_reporting(E_ALL);
+    ini_set("display_errors", 1);
+    error_reporting(E_ALL);
 
     include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
     include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
@@ -33,6 +33,20 @@
     /* ComboBox dos entidades */
     $obISelectMultiploEntidadeUsuario = new ISelectMultiploEntidadeUsuario();
 
+    $obRdTipoRelatorioSintetico = new Radio;
+    $obRdTipoRelatorioSintetico->setName   ( "stTipoRelatorio" );
+    $obRdTipoRelatorioSintetico->setId     ( "stTipoRelatorioSintetico" );
+    $obRdTipoRelatorioSintetico->setValue  ( "Sintetico" );
+    $obRdTipoRelatorioSintetico->setRotulo ( "*Tipo de Relatório" );
+    $obRdTipoRelatorioSintetico->setLabel  ( "Sintético" );
+    $obRdTipoRelatorioSintetico->setChecked( true );
+
+    $obRdTipoRelatorioAnalitico = new Radio;
+    $obRdTipoRelatorioAnalitico->setName ( "stTipoRelatorio" );
+    $obRdTipoRelatorioAnalitico->setId   ( "stTipoRelatorioAnalitico" );
+    $obRdTipoRelatorioAnalitico->setValue( "Analitico" );
+    $obRdTipoRelatorioAnalitico->setLabel( "Analítico" );
+
     $obFormulario = new Formulario();
     $obFormulario->addForm($obForm);
     $obFormulario->addHidden( $obHdnAcao );
@@ -40,6 +54,8 @@
     $obFormulario->addTitulo( "Dados para o filtro" );
     $obFormulario->addComponente($obISelectMultiploEntidadeUsuario);
     $obFormulario->addComponente($obPeriodo);
+    $obFormulario->agrupaComponentes( array($obRdTipoRelatorioSintetico, $obRdTipoRelatorioAnalitico) );
+    
 
     $obOk  = new Ok;
     $obOk->setId ("Ok");

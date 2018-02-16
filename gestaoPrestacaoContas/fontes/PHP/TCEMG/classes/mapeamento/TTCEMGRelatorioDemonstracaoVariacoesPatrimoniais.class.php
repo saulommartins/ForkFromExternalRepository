@@ -10,7 +10,11 @@
     {
         public function recuperaDados($metodo, &$rsRecordSet, $stFiltro = "", $stOrder = "", $boTransacao = "")
         {
-            return $this->executaRecupera($metodo, $rsRecordSet, $stFiltro, $stOrder, $boTransacao);
+            if (method_exists($this, $metodo)) {
+                return $this->executaRecupera($metodo, $rsRecordSet, $stFiltro, $stOrder, $boTransacao);
+            }
+
+            return $rsRecordSet;
         }
 
         public function montaRecuperaRegistro10Sintetico()
@@ -862,7 +866,7 @@
             ";
         }
 
-        public function montaRecuperaRegistro20()
+        public function montaRecuperaRegistro20Sintetico()
         {
             return "
             	SELECT  -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> PESSOAL E ENCARGOS
@@ -1049,14 +1053,14 @@
             ";
         }
 
-        public function montaRecuperaRegistro20()
+        public function montaRecuperaRegistro20Analitico()
         {
             return "
             	SELECT  -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> PESSOAL E ENCARGOS -> REMUNERAÇÃO A PESSOAL
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaPessoaEncargos'
-                                 AND contabil.contabil LIKE '311%'
+                                 AND contabil.conta LIKE '311%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1065,7 +1069,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaPessoaEncargos'
-                                 AND contabil.contabil LIKE '311%'
+                                 AND contabil.conta LIKE '311%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1076,7 +1080,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaPessoaEncargos'
-                                 AND contabil.contabil LIKE '312%'
+                                 AND contabil.conta LIKE '312%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1085,7 +1089,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaPessoaEncargos'
-                                 AND contabil.contabil LIKE '312%'
+                                 AND contabil.conta LIKE '312%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1096,7 +1100,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaPessoaEncargos'
-                                 AND contabil.contabil LIKE '313%'
+                                 AND contabil.conta LIKE '313%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1105,7 +1109,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaPessoaEncargos'
-                                 AND contabil.contabil LIKE '313%'
+                                 AND contabil.conta LIKE '313%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1116,7 +1120,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaPessoaEncargos'
-                                 AND contabil.contabil LIKE '319%'
+                                 AND contabil.conta LIKE '319%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1125,7 +1129,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaPessoaEncargos'
-                                 AND contabil.contabil LIKE '319%'
+                                 AND contabil.conta LIKE '319%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1137,7 +1141,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPrevAssistenciais'
-                                 AND contabil.contabil LIKE '321%'
+                                 AND contabil.conta LIKE '321%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1146,7 +1150,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPrevAssistenciais'
-                                 AND contabil.contabil LIKE '321%'
+                                 AND contabil.conta LIKE '321%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1157,7 +1161,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPrevAssistenciais'
-                                 AND contabil.contabil LIKE '322%'
+                                 AND contabil.conta LIKE '322%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1166,7 +1170,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPrevAssistenciais'
-                                 AND contabil.contabil LIKE '322%'
+                                 AND contabil.conta LIKE '322%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1177,7 +1181,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPrevAssistenciais'
-                                 AND contabil.contabil LIKE '323%'
+                                 AND contabil.conta LIKE '323%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1186,7 +1190,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPrevAssistenciais'
-                                 AND contabil.contabil LIKE '323%'
+                                 AND contabil.conta LIKE '323%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1197,7 +1201,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPrevAssistenciais'
-                                 AND contabil.contabil LIKE '324%'
+                                 AND contabil.conta LIKE '324%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1206,7 +1210,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPrevAssistenciais'
-                                 AND contabil.contabil LIKE '324%'
+                                 AND contabil.conta LIKE '324%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1217,7 +1221,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPrevAssistenciais'
-                                 AND contabil.contabil LIKE '325%'
+                                 AND contabil.conta LIKE '325%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1226,7 +1230,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPrevAssistenciais'
-                                 AND contabil.contabil LIKE '325%'
+                                 AND contabil.conta LIKE '325%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1237,7 +1241,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPrevAssistenciais'
-                                 AND contabil.contabil LIKE '329%'
+                                 AND contabil.conta LIKE '329%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1246,7 +1250,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlPrevAssistenciais'
-                                 AND contabil.contabil LIKE '329%'
+                                 AND contabil.conta LIKE '329%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1257,7 +1261,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlServicosCapitalFixo'
-                                 AND contabil.contabil LIKE '331%'
+                                 AND contabil.conta LIKE '331%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1266,7 +1270,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlServicosCapitalFixo'
-                                 AND contabil.contabil LIKE '331%'
+                                 AND contabil.conta LIKE '331%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1277,7 +1281,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlServicosCapitalFixo'
-                                 AND contabil.contabil LIKE '332%'
+                                 AND contabil.conta LIKE '332%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1286,7 +1290,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlServicosCapitalFixo'
-                                 AND contabil.contabil LIKE '332%'
+                                 AND contabil.conta LIKE '332%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1297,7 +1301,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlServicosCapitalFixo'
-                                 AND contabil.contabil LIKE '333%'
+                                 AND contabil.conta LIKE '333%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1306,7 +1310,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlServicosCapitalFixo'
-                                 AND contabil.contabil LIKE '333%'
+                                 AND contabil.conta LIKE '333%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1318,7 +1322,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaVariacoesFinanceiras'
-                                 AND contabil.contabil LIKE '341%'
+                                 AND contabil.conta LIKE '341%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1327,7 +1331,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaVariacoesFinanceiras'
-                                 AND contabil.contabil LIKE '341%'
+                                 AND contabil.conta LIKE '341%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1338,7 +1342,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaVariacoesFinanceiras'
-                                 AND contabil.contabil LIKE '342%'
+                                 AND contabil.conta LIKE '342%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1347,7 +1351,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaVariacoesFinanceiras'
-                                 AND contabil.contabil LIKE '342%'
+                                 AND contabil.conta LIKE '342%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1358,7 +1362,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaVariacoesFinanceiras'
-                                 AND contabil.contabil LIKE '343%'
+                                 AND contabil.conta LIKE '343%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1367,7 +1371,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaVariacoesFinanceiras'
-                                 AND contabil.contabil LIKE '343%'
+                                 AND contabil.conta LIKE '343%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1378,7 +1382,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaVariacoesFinanceiras'
-                                 AND contabil.contabil LIKE '344%'
+                                 AND contabil.conta LIKE '344%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1387,7 +1391,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaVariacoesFinanceiras'
-                                 AND contabil.contabil LIKE '344%'
+                                 AND contabil.conta LIKE '344%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1398,7 +1402,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaVariacoesFinanceiras'
-                                 AND contabil.contabil LIKE '349%'
+                                 AND contabil.conta LIKE '349%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1407,7 +1411,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaVariacoesFinanceiras'
-                                 AND contabil.contabil LIKE '349%'
+                                 AND contabil.conta LIKE '349%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1419,7 +1423,7 @@
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
-                                 AND contabil.contabil LIKE '351%'
+                                 AND contabil.conta LIKE '351%'
                                  AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1428,7 +1432,7 @@
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
-                                 AND contabil.contabil LIKE '351%'
+                                 AND contabil.conta LIKE '351%'
                                  AND contabil.exercicio = '".$this->getDado('exercicio')."'
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
@@ -1436,33 +1440,487 @@
                         ) as vl_transf_intragov_exercicio_atual,
 
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> TRANSFERÊNCIAS E DELEGAÇÕES CONCEDIDAS -> TRANSFERÊNCIAS INTERGOVERNAMENTAIS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
+                                 AND contabil.conta LIKE '352%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_transf_intergov_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
+                                 AND contabil.conta LIKE '352%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_transf_intergov_exercicio_atual,
+
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> TRANSFERÊNCIAS E DELEGAÇÕES CONCEDIDAS -> TRANSFERÊNCIAS A INSTITUIÇÕES PRIVADAS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
+                                 AND contabil.conta LIKE '353%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_transf_inst_priv_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
+                                 AND contabil.conta LIKE '353%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_transf_inst_priv_exercicio_atual,
+
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> TRANSFERÊNCIAS E DELEGAÇÕES CONCEDIDAS -> TRANSFERÊNCIAS A INSTITUIÇÕES MULTIGOVERNAMENTAIS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
+                                 AND contabil.conta LIKE '354%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_transf_inst_multigov_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
+                                 AND contabil.conta LIKE '354%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_transf_inst_multigov_exercicio_atual,
+
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> TRANSFERÊNCIAS E DELEGAÇÕES CONCEDIDAS -> TRANSFERÊNCIAS A CONSÓRCIOS PÚBLICOS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
+                                 AND contabil.conta LIKE '355%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_transf_consor_pub_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
+                                 AND contabil.conta LIKE '355%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_transf_consor_pub_exercicio_atual,
+
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> TRANSFERÊNCIAS E DELEGAÇÕES CONCEDIDAS -> TRANSFERÊNCIAS AO EXTERIOR
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
+                                 AND contabil.conta LIKE '356%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_transf_exterior_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
+                                 AND contabil.conta LIKE '356%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_transf_exterior_exercicio_atual,
+
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> TRANSFERÊNCIAS E DELEGAÇÕES CONCEDIDAS -> EXECUÇÃO ORÇAMENTÁRIA DELEGADA DE ENTES
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
+                                 AND contabil.conta LIKE '3571%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_exec_orc_dele_entes_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
+                                 AND contabil.conta LIKE '3571%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_exec_orc_dele_entes_exercicio_atual,
+
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> TRANSFERÊNCIAS E DELEGAÇÕES CONCEDIDAS -> OUTRAS TRANSFERÊNCIAS E DELEGAÇÕES CONCEDIDAS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
+                                 AND contabil.conta LIKE '3572%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_outras_transf_dele_conce_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTransfConcedidas'
+                                 AND contabil.conta LIKE '3572%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_outras_transf_dele_conce_exercicio_atual,
 
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> DESVALORIZAÇÃO E PERDAS DE ATIVOS E INCORPORAÇÃO DE PASSIVOS -> REDUÇÃO A VALOR RECUPERÁVEL E AJUSTE PARA PERDAS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesvaloAtivoIncorpoPassivo'
+                                 AND contabil.conta LIKE '361%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_redu_vl_recu_ajs_perdas_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesvaloAtivoIncorpoPassivo'
+                                 AND contabil.conta LIKE '361%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_redu_vl_recu_ajs_perdas_exercicio_atual,
+
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> DESVALORIZAÇÃO E PERDAS DE ATIVOS E INCORPORAÇÃO DE PASSIVOS -> PERDAS COM ALIENAÇÃO
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesvaloAtivoIncorpoPassivo'
+                                 AND contabil.conta LIKE '362%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_perdas_alienacao_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesvaloAtivoIncorpoPassivo'
+                                 AND contabil.conta LIKE '362%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_perdas_alienacao_exercicio_atual,
+
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> DESVALORIZAÇÃO E PERDAS DE ATIVOS E INCORPORAÇÃO DE PASSIVOS -> PERDAS INVOLUNTÁRIAS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesvaloAtivoIncorpoPassivo'
+                                 AND contabil.conta LIKE '363%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_perdas_involuntarias_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesvaloAtivoIncorpoPassivo'
+                                 AND contabil.conta LIKE '363%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_perdas_involuntarias_exercicio_atual,
+
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> DESVALORIZAÇÃO E PERDAS DE ATIVOS E INCORPORAÇÃO DE PASSIVOS -> INCORPORAÇÃO DE PASSIVOS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesvaloAtivoIncorpoPassivo'
+                                 AND contabil.conta LIKE '364%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_incorp_passivos_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesvaloAtivoIncorpoPassivo'
+                                 AND contabil.conta LIKE '364%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_incorp_passivos_exercicio_atual,
+
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> DESVALORIZAÇÃO E PERDAS DE ATIVOS E INCORPORAÇÃO DE PASSIVOS -> DESINCORPORAÇÃO DE ATIVOS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesvaloAtivoIncorpoPassivo'
+                                 AND contabil.conta LIKE '365%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_desincorporacao_ativos_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDesvaloAtivoIncorpoPassivo'
+                                 AND contabil.conta LIKE '365%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_desincorporacao_ativos_exercicio_atual,
+
 
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> TRIBUTÁRIAS -> IMPOSTOS, TAXAS E CONTRIBUIÇÕES DE MELHORIA
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTributarias'
+                                 AND contabil.conta LIKE '371%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_impostos_taxas_contrib_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTributarias'
+                                 AND contabil.conta LIKE '371%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_impostos_taxas_contrib_exercicio_atual,
+
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> TRIBUTÁRIAS -> CONTRIBUIÇÕES
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTributarias'
+                                 AND contabil.conta LIKE '372%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_contribuicoes_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTributarias'
+                                 AND contabil.conta LIKE '372%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_contribuicoes_exercicio_atual,
+
 
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> CUSTO DAS MERCADORIAS E PRODUTOS VENDIDOS, E DOS SERVIÇOS PRESTADOS -> CUSTOS DAS MERCADORIAS VENDIDAS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlMercadoriaVendidoServicos'
+                                 AND contabil.conta LIKE '381%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_custos_mercad_vendidas_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlMercadoriaVendidoServicos'
+                                 AND contabil.conta LIKE '381%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_custos_mercad_vendidas_exercicio_atual,
+
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> CUSTO DAS MERCADORIAS E PRODUTOS VENDIDOS, E DOS SERVIÇOS PRESTADOS -> CUSTOS DOS PRODUTOS VENDIDOS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlMercadoriaVendidoServicos'
+                                 AND contabil.conta LIKE '382%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_custos_prod_vendidos_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlMercadoriaVendidoServicos'
+                                 AND contabil.conta LIKE '382%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_custos_prod_vendidos_exercicio_atual,
+
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> CUSTO DAS MERCADORIAS E PRODUTOS VENDIDOS, E DOS SERVIÇOS PRESTADOS -> CUSTOS DOS SERVIÇOS PRESTADOS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlMercadoriaVendidoServicos'
+                                 AND contabil.conta LIKE '383%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_custos_serv_prestados_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlMercadoriaVendidoServicos'
+                                 AND contabil.conta LIKE '383%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_custos_serv_prestados_exercicio_atual,
+                        
 
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> OUTRAS VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> PREMIAÇÕES
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasVariacoesPatriDiminutivas'
+                                 AND contabil.conta LIKE '391%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_premiacoes_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasVariacoesPatriDiminutivas'
+                                 AND contabil.conta LIKE '391%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_premiacoes_exercicio_atual,
+                        
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> OUTRAS VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> RESULTADO NEGATIVO DE PARTICIPAÇÕES
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasVariacoesPatriDiminutivas'
+                                 AND contabil.conta LIKE '392%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_result_negativo_particip_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasVariacoesPatriDiminutivas'
+                                 AND contabil.conta LIKE '392%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_result_negativo_particip_exercicio_atual,
+                        
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> OUTRAS VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> INCENTIVOS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasVariacoesPatriDiminutivas'
+                                 AND contabil.conta LIKE '394%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_incentivos_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasVariacoesPatriDiminutivas'
+                                 AND contabil.conta LIKE '394%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_incentivos_exercicio_atual,
+                        
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> OUTRAS VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> SUBVENÇÕES ECONÔMICAS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasVariacoesPatriDiminutivas'
+                                 AND contabil.conta LIKE '395%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_subvencoes_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasVariacoesPatriDiminutivas'
+                                 AND contabil.conta LIKE '395%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_subvencoes_exercicio_atual,
+                        
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> OUTRAS VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> PARTICIPAÇÕES E CONTRIBUIÇÕES
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasVariacoesPatriDiminutivas'
+                                 AND contabil.conta LIKE '396%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_participacoes_contribuicoes_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasVariacoesPatriDiminutivas'
+                                 AND contabil.conta LIKE '396%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_participacoes_contribuicoes_exercicio_atual,
+                        
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> OUTRAS VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> CONSTITUIÇÃO DE PROVISÕES
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasVariacoesPatriDiminutivas'
+                                 AND contabil.conta LIKE '397%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_provisoes_contribuicoes_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasVariacoesPatriDiminutivas'
+                                 AND contabil.conta LIKE '397%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_provisoes_contribuicoes_exercicio_atual,
+                        
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> OUTRAS VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> DIVERSAS VARIAÇÕES PATRIMONIAIS DIMINUTIVAS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasVariacoesPatriDiminutivas'
+                                 AND contabil.conta LIKE '399%'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_div_varia_patrimoni_diminutivas_exercicio_anterior,
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlOutrasVariacoesPatriDiminutivas'
+                                 AND contabil.conta LIKE '399%'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_div_varia_patrimoni_diminutivas_exercicio_atual
 
   				  FROM  tcemg.configuracao_dcasp_registros
 				  JOIN  tcemg.configuracao_dcasp_arquivo using (seq_arquivo)
