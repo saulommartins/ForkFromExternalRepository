@@ -105,10 +105,36 @@ switch ($_REQUEST['stAcao']) {
         $arFornecedor  = Sessao::read('arFornecedor');
         $arSocioSessao = Sessao::read('arSocio');
 
-        if ( $rsFornecedor->getNumLinhas()  > 0 ) {
-            sistemaLegado::exibeAviso( 'Fornecedor já cadastrado no sistema.'    ,"n_incluir","erro");
-        } else {
+        $arSocioSessao = Sessao::read('arSocio');
 
+        $idTipoEmpreendedorIndividual = 3;
+	    $arrTipoSocioObrigatorio    = array();
+        $arrTipoSocioSelecionado    = array();
+	    $arrTipoSocioSelecionado[$idTipoEmpreendedorIndividual] = 0;
+
+        if ( count($arSocioSessao) > 0 ) {
+            $rsTipo = new Recordset;
+            $obTComprasTipoSocio = new TComprasTipoSocio;
+            $obTComprasTipoSocio->recuperaTodos($rsTipo);
+
+            while ( !$rsTipo->eof() ) {
+	            if (!isset($arrTipoSocioObrigatorio[$rsTipo->getCampo("cod_tipo")])) $arrTipoSocioObrigatorio[$rsTipo->getCampo("cod_tipo")] = 0;
+                $arrTipoSocioObrigatorio[$rsTipo->getCampo("cod_tipo")] = $rsTipo->getCampo("descricao");
+	            $rsTipo->proximo();
+            }
+            foreach ($arSocioSessao as $key => $value) {
+                if (!isset($arrTipoSocioSelecionado[$value['cod_tipo']])) $arrTipoSocioSelecionado[$value['cod_tipo']] = 0;
+	            $arrTipoSocioSelecionado[$value['cod_tipo']]+=1;
+            }
+
+        }
+
+	    if ( $rsFornecedor->getNumLinhas()  > 0 ) {
+		    sistemaLegado::exibeAviso('Fornecedor já cadastrado no sistema.', "n_incluir", "erro");
+	    } else if ($arrTipoSocioSelecionado[$idTipoEmpreendedorIndividual] <= 0
+            && count($arrTipoSocioObrigatorio) != count($arrTipoSocioSelecionado)  ) {
+            sistemaLegado::exibeAviso('Informe todos os tipos de participação no quadro societário para empresa habilitada', "n_incluir", "erro");
+        }else {
             $flMoeda = str_replace('.','',$_REQUEST['moeda']);
             $flMoeda = str_replace(',','.',$flMoeda);
 
@@ -154,13 +180,13 @@ switch ($_REQUEST['stAcao']) {
                     $obTFornecedorConta->inclusao();
                 }
             }
-            
+
             if ( count($arSocioSessao) > 0 ) {
                 foreach ($arSocioSessao as $key => $value) {
                     $obTComprasFornecedorSocio = new TComprasFornecedorSocio;
-                
+
                     $obTComprasFornecedorSocio->proximoCod($inCod);
-                
+
                     $obTComprasFornecedorSocio->setDado("id"            , $inCod);
                     $obTComprasFornecedorSocio->setDado("cod_tipo"      , $value['cod_tipo']);
                     $obTComprasFornecedorSocio->setDado("cgm_fornecedor", $_REQUEST['inCGM']);
@@ -170,7 +196,7 @@ switch ($_REQUEST['stAcao']) {
                     $obTComprasFornecedorSocio->inclusao();
                 }
             }
-            
+
             SistemaLegado::alertaAviso($pgForm."?".Sessao::getId()."&stAcao=incluir","Fornecedor - ".$_REQUEST['inCGM']."","incluir","incluir_n", Sessao::getId(), "../");
         }
     break;
