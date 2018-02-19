@@ -106,7 +106,7 @@ class TTCEMGAberturaLicitacao extends Persistente
                , (DATE(contrato.fim_execucao)-DATE(contrato.inicio_execucao)) AS prazo_execucao
                , regexp_replace(sem_acentos(edital.condicoes_pagamento),'[º|°|%|§]', '', 'gi') AS forma_pagamento
                , LPAD('',80,'') AS citerio_aceitabilidade
-               , 2 AS desconto_tabela
+               , COALESCE(licitacao.criterio_adjudicacao, 3) AS criterio_adjudicacao
                , CASE WHEN mapa.cod_tipo_licitacao = 2
                       THEN 1
                       ELSE 2
@@ -306,7 +306,7 @@ class TTCEMGAberturaLicitacao extends Persistente
               ON convidados.cod_licitacao  = licitacao.cod_licitacao
              AND convidados.cod_modalidade = licitacao.cod_modalidade
              AND convidados.cod_entidade   = licitacao.cod_entidade
-             AND convidados.exercicio      = licitacao.exercicio				  
+             AND convidados.exercicio      = licitacao.exercicio          
 
       INNER JOIN administracao.configuracao_entidade
               ON configuracao_entidade.parametro    = 'tcemg_codigo_orgao_entidade_sicom'
@@ -349,7 +349,7 @@ class TTCEMGAberturaLicitacao extends Persistente
                , (DATE(contrato.fim_execucao)-DATE(contrato.inicio_execucao))
                , forma_pagamento
                , citerio_aceitabilidade
-               , desconto_tabela
+               , licitacao.criterio_adjudicacao
                , processo_lote
                , criterio_desempate
                , destinacao_exclusiva
@@ -512,12 +512,12 @@ class TTCEMGAberturaLicitacao extends Persistente
 
       INNER JOIN (
                      SELECT * FROM tcemg.fn_exercicio_numero_licitacao ('".$this->getDado('exercicio')."', '".$this->getDado('entidades')."')
-																VALUES (cod_licitacao		INTEGER
-																	   ,cod_modalidade		INTEGER
-																	   ,cod_entidade		INTEGER
-																	   ,exercicio			CHAR(4)
-																	   ,exercicio_licitacao	VARCHAR
-																	   ,num_licitacao		TEXT ) 
+                                VALUES (cod_licitacao   INTEGER
+                                     ,cod_modalidade    INTEGER
+                                     ,cod_entidade    INTEGER
+                                     ,exercicio     CHAR(4)
+                                     ,exercicio_licitacao VARCHAR
+                                     ,num_licitacao   TEXT ) 
                  ) AS config_licitacao
               ON config_licitacao.cod_entidade = licitacao.cod_entidade
              AND config_licitacao.cod_licitacao = licitacao.cod_licitacao
@@ -835,7 +835,7 @@ class TTCEMGAberturaLicitacao extends Persistente
                  END AS num_lote
                , homologacao.cod_item AS cod_item
                , TO_CHAR(licitacao.timestamp,'ddmmyyyy') AS dt_cotacao
-               , CASE WHEN licitacao.cod_tipo_objeto = 4
+               , CASE WHEN COALESCE(licitacao.criterio_adjudicacao, 3) = 2
                       THEN ('0,0000')
                       ELSE ((cotacao_fornecedor_item.vl_cotacao/SUM(((mapa_item.quantidade)-COALESCE(mapa_item_anulacao.quantidade, 0.0000))))::NUMERIC(14,4))::VARCHAR
                  END AS vl_cot_precos_unitario
@@ -1002,9 +1002,9 @@ class TTCEMGAberturaLicitacao extends Persistente
              AND last_day(TO_DATE('" . $this->getDado('exercicio') . "' || '-' || '".$this->getDado('mes') . "' || '-' || '01','yyyy-mm-dd'))
              AND licitacao.cod_entidade IN (" . $this->getDado('entidades') . ")
              AND licitacao.cod_modalidade NOT IN (8,9)
-			 AND homologacao_anulada.num_homologacao IS NULL
+       AND homologacao_anulada.num_homologacao IS NULL
              AND licitacao_anulada.cod_licitacao IS NULL
-			 AND homologacao.homologado IS TRUE 
+       AND homologacao.homologado IS TRUE 
              AND edital_anulado.num_edital IS NULL
 
         GROUP BY tipo_registro
@@ -1015,7 +1015,7 @@ class TTCEMGAberturaLicitacao extends Persistente
                , num_lote
                , dt_cotacao
                , homologacao.cod_item
-               , licitacao.cod_tipo_objeto
+               , licitacao.criterio_adjudicacao
                , cotacao_fornecedor_item.vl_cotacao
                , total_cotacao.total";
 
@@ -1095,29 +1095,29 @@ class TTCEMGAberturaLicitacao extends Persistente
              AND configuracao_entidade.cod_modulo = 55
              AND configuracao_entidade.exercicio = despesa.exercicio
              AND configuracao_entidade.cod_entidade = despesa.cod_entidade
-			 
+       
             JOIN (
                      SELECT * FROM tcemg.fn_exercicio_numero_licitacao ('".$this->getDado('exercicio')."', '".$this->getDado('entidades')."')
-																VALUES (cod_licitacao		INTEGER
-																	   ,cod_modalidade		INTEGER
-																	   ,cod_entidade		INTEGER
-																	   ,exercicio			CHAR(4)
-																	   ,exercicio_licitacao	VARCHAR
-																	   ,num_licitacao		TEXT ) 
+                                VALUES (cod_licitacao   INTEGER
+                                     ,cod_modalidade    INTEGER
+                                     ,cod_entidade    INTEGER
+                                     ,exercicio     CHAR(4)
+                                     ,exercicio_licitacao VARCHAR
+                                     ,num_licitacao   TEXT ) 
                  ) AS config_licitacao
               ON config_licitacao.cod_entidade = licitacao.cod_entidade
              AND config_licitacao.cod_licitacao = licitacao.cod_licitacao
              AND config_licitacao.cod_modalidade = licitacao.cod_modalidade
-             AND config_licitacao.exercicio = licitacao.exercicio  			 
+             AND config_licitacao.exercicio = licitacao.exercicio        
               
             WHERE TO_DATE(TO_CHAR(homologacao.timestamp,'dd/mm/yyyy'), 'dd/mm/yyyy') BETWEEN TO_DATE('01/" . $this->getDado('mes') . "/" . $this->getDado('exercicio') . "', 'dd/mm/yyyy')
               AND last_day(TO_DATE('" . $this->getDado('exercicio') . "' || '-' || '".$this->getDado('mes') . "' || '-' || '01','yyyy-mm-dd'))
               AND licitacao.cod_entidade IN (" . $this->getDado('entidades') . ")
               AND modalidade.cod_modalidade NOT IN (8,9) 
               AND NOT EXISTS( SELECT 1
-			       FROM licitacao.licitacao_anulada
-			      WHERE licitacao_anulada.cod_licitacao = licitacao.cod_licitacao
-			        AND licitacao_anulada.cod_modalidade = licitacao.cod_modalidade
+             FROM licitacao.licitacao_anulada
+            WHERE licitacao_anulada.cod_licitacao = licitacao.cod_licitacao
+              AND licitacao_anulada.cod_modalidade = licitacao.cod_modalidade
                                 AND licitacao_anulada.cod_entidade = licitacao.cod_entidade
                                 AND licitacao_anulada.exercicio = licitacao.exercicio
                            )
@@ -1318,12 +1318,12 @@ class TTCEMGAberturaLicitacao extends Persistente
 
       INNER JOIN (
                      SELECT * FROM tcemg.fn_exercicio_numero_licitacao ('".$this->getDado('exercicio')."', '".$this->getDado('entidades')."')
-																VALUES (cod_licitacao		INTEGER
-																	   ,cod_modalidade		INTEGER
-																	   ,cod_entidade		INTEGER
-																	   ,exercicio			CHAR(4)
-																	   ,exercicio_licitacao	VARCHAR
-																	   ,num_licitacao		TEXT ) 
+                                VALUES (cod_licitacao   INTEGER
+                                     ,cod_modalidade    INTEGER
+                                     ,cod_entidade    INTEGER
+                                     ,exercicio     CHAR(4)
+                                     ,exercicio_licitacao VARCHAR
+                                     ,num_licitacao   TEXT ) 
                  ) AS config_licitacao
               ON config_licitacao.cod_entidade = licitacao.cod_entidade
              AND config_licitacao.cod_licitacao = licitacao.cod_licitacao

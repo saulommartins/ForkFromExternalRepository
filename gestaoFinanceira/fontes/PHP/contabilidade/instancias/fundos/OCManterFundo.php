@@ -2,9 +2,6 @@
 	
 	include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 
-	ini_set("display_errors", 1);
-	error_reporting(E_ALL);
-
 	function recuperarOrgaosPorEntidade($exercicio, $value) {
 		include_once CAM_GF_ORC_NEGOCIO . 'ROrcamentoOrgaoOrcamentario.class.php';
 

@@ -228,6 +228,7 @@ switch ($stAcao) {
                     $obTLicitacaoLicitacao->setDado('num_orgao'             , $arStUnidadeOrcamentaria[0]       );
                     $obTLicitacaoLicitacao->setDado('num_unidade'           , $arStUnidadeOrcamentaria[1]       );
                     $obTLicitacaoLicitacao->setDado('cod_regime'            , $_REQUEST['inCodRegime'] != '' ? $_REQUEST['inCodRegime'] : 'null');
+                    $obTLicitacaoLicitacao->setDado('criterio_adjudicacao'  , $_REQUEST['inCodCriterioAdjudicacao']);
                     $obTLicitacaoLicitacao->inclusao();
                     
                     $obTMapaModalidade = new TComprasMapaModalidade();
@@ -543,6 +544,7 @@ switch ($stAcao) {
                 $obTLicitacaoLicitacao->setDado('num_orgao'  , $arStUnidadeOrcamentaria[0]);
                 $obTLicitacaoLicitacao->setDado('num_unidade', $arStUnidadeOrcamentaria[1]);
                 $obTLicitacaoLicitacao->setDado('cod_regime',$_REQUEST['inCodRegime'] != '' ? $_REQUEST['inCodRegime'] : 'null');
+                $obTLicitacaoLicitacao->setDado('criterio_adjudicacao'  , $_REQUEST['inCodCriterioAdjudicacao']);
 
                 if (($_REQUEST['inCodModalidade'] == 8 ||
                      $_REQUEST['inCodModalidade'] == 9 ||

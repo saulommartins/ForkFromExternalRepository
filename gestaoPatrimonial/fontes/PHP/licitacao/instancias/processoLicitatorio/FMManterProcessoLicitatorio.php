@@ -250,7 +250,7 @@ $obSlNaturezaCargo->addOption       ( '','Selecione'                   );
 $obSlNaturezaCargo->setCampoId      ( "codigo"                         );
 $obSlNaturezaCargo->setCampoDesc    ( "[codigo] - [descricao]"         );
 $obSlNaturezaCargo->preencheCombo   ( $rsNaturezaCargo                 );
-$obSlNaturezaCargo->setNull         ( treu                            );
+$obSlNaturezaCargo->setNull         ( true                            );
 $obSlNaturezaCargo->setObrigatorioBarra(true);
 
 //recuperar o valor total da referência...
@@ -303,7 +303,27 @@ if ($stAcao == 'incluir') {
     $obISelectModalidadeLicitacao->addOption     ("","Selecione"                          );
     $obISelectModalidadeLicitacao->setNull       ( false                                  );
     $obISelectModalidadeLicitacao->obEvento->setOnChange ("ajaxJavaScript('".$pgOcul."?".Sessao::getId()."&inCodModalidade='+this.value,'recuperaRegistroModalidade');");
+    
 }
+
+$obISelectCriterioAdjudicacao = new Select();
+$obISelectCriterioAdjudicacao->setRotulo     ("Critério Adjudicação"                  );
+$obISelectCriterioAdjudicacao->setTitle      ("Selecione o critério."                 );
+$obISelectCriterioAdjudicacao->setName       ("inCodCriterioAdjudicacao"              );
+$obISelectCriterioAdjudicacao->setId         ("inCodCriterioAdjudicacao"              );
+$obISelectCriterioAdjudicacao->setCampoID    ("cod_criterio_adjudicacao"              );
+$obISelectCriterioAdjudicacao->addOption     ("","Selecione"                          );
+$obISelectCriterioAdjudicacao->setNull       ( false                                  );
+
+$criteriosDeAjudicacao = array(
+    "" => 'Selecione',
+    1 => 'Desconto sobre tabela de preços praticados no mercado',
+    2 => 'Menor taxa de administração ou menor percentual de acréscimo sobre tabela',
+    3 => 'Outros'
+);
+
+$obISelectCriterioAdjudicacao->setOptions($criteriosDeAjudicacao);
+$obISelectCriterioAdjudicacao->setValue($request->get('inCodCriterio'));
 
 if(!$boEdital) {
     $obPopUpObjeto = new IPopUpObjeto($obForm);
@@ -518,10 +538,12 @@ if ($stAcao != "incluir") {
         $obHdnCriterioJulg->setName('inCodCriterio');
         $obHdnCriterioJulg->setValue($rsRecordSet->getCampo('cod_criterio'));
     }
+
     if ($stAcao == "anular") {
         $obLblProcesso = new Label();
         $obLblProcesso->setRotulo('Processo Administrativo');
         $obLblProcesso->setValue($stProcesso[0]."/".$stProcesso[1]);
+
         $obHdnProcesso = new Hidden();
         $obHdnProcesso->setName('hdnProcesso');
         $obHdnProcesso->setValue($stProcesso[0]."/".$stProcesso[1]);
@@ -639,6 +661,7 @@ if ($stAcao != 'anular' ) {
         $obFormulario->addComponente    ( $obLblModalidade              );
     }
 
+    $obFormulario->addComponente    ( $obISelectCriterioAdjudicacao );
     $obFormulario->addSpan              ( $obSpnRegistroModalidade      );
 
     if($compraJulgamento){

@@ -427,7 +427,7 @@ class TTCEMGBALANCETE extends Persistente {
     public function montaRecuperaRegistro23()
     {
       $stSql = "SELECT tipo_registro,
-                       SUBSTR(REPLACE(cod_estrutural_contabil, '.', ''), 1, 9) AS conta_contabil,
+                       SUBSTR(REPLACE(conta_contabil, '.', ''), 1, 9) AS conta_contabil,
                        natureza_receita,
                        ABS(saldo_inicial_nat_receita) AS saldo_inicial_nat_receita,
                        natureza_saldo_inicial_nat_receita,

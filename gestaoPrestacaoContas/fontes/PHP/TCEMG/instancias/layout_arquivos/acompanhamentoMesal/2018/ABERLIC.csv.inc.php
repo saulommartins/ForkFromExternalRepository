@@ -235,7 +235,7 @@ if (count($rsRecordSetABERLIC10->getElementos()) > 0) {
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(80);
         
-        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("desconto_tabela");
+        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("criterio_adjudicacao");
         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(1);

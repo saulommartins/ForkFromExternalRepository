@@ -162,5 +162,8 @@
 			<td class="border_top text_align_right"></td>
 		</tr>
 
+		<tr>
+			<td> <b> RESULTADO PATRIMONIAL DO </b></td>
+		</tr>
 	</tbody>
 </table>

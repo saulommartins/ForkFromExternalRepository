@@ -106,7 +106,7 @@ class TTCEMGAberturaLicitacao extends Persistente
                , (DATE(contrato.fim_execucao)-DATE(contrato.inicio_execucao)) AS prazo_execucao
                , regexp_replace(sem_acentos(edital.condicoes_pagamento),'[º|°|%|§]', '', 'gi') AS forma_pagamento
                , LPAD('',80,'') AS citerio_aceitabilidade
-               , 2 AS desconto_tabela
+               , COALESCE(licitacao.criterio_adjudicacao, 3) AS criterio_adjudicacao
                , CASE WHEN mapa.cod_tipo_licitacao = 2
                       THEN 1
                       ELSE 2
@@ -349,7 +349,7 @@ class TTCEMGAberturaLicitacao extends Persistente
                , (DATE(contrato.fim_execucao)-DATE(contrato.inicio_execucao))
                , forma_pagamento
                , citerio_aceitabilidade
-               , desconto_tabela
+               , licitacao.criterio_adjudicacao
                , processo_lote
                , criterio_desempate
                , destinacao_exclusiva
@@ -835,7 +835,7 @@ class TTCEMGAberturaLicitacao extends Persistente
                  END AS num_lote
                , homologacao.cod_item AS cod_item
                , TO_CHAR(licitacao.timestamp,'ddmmyyyy') AS dt_cotacao
-               , CASE WHEN licitacao.cod_tipo_objeto = 4
+               , CASE WHEN COALESCE(licitacao.criterio_adjudicacao, 3) = 2
                       THEN ('0,0000')
                       ELSE ((cotacao_fornecedor_item.vl_cotacao/SUM(((mapa_item.quantidade)-COALESCE(mapa_item_anulacao.quantidade, 0.0000))))::NUMERIC(14,4))::VARCHAR
                  END AS vl_cot_precos_unitario
@@ -1015,7 +1015,7 @@ class TTCEMGAberturaLicitacao extends Persistente
                , num_lote
                , dt_cotacao
                , homologacao.cod_item
-               , licitacao.cod_tipo_objeto
+               , licitacao.criterio_adjudicacao
                , cotacao_fornecedor_item.vl_cotacao
                , total_cotacao.total";
 
