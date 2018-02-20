@@ -261,6 +261,39 @@ class TTCEMGAOC extends Persistente
     {
         $stSql = "SELECT '12' AS tiporegistro,
                         LPAD(tabela.num_norma||tabela.cod_tipo, 8,'0' ) as codreduzidodecreto,
+                        LPAD('' || tabela.num_norma, 6, '0') AS nrodecreto,
+                         CASE
+                           WHEN tabela.tipo_lei_alteracao_orcamentaria = 5
+                             THEN '11'
+                           WHEN tabela.cod_tipo = 1
+                             THEN '01'
+                           WHEN tabela.cod_tipo = 2
+                             THEN '01'
+                           WHEN tabela.cod_tipo = 3
+                             THEN '01'
+                           WHEN tabela.cod_tipo = 4
+                             THEN '01'
+                           WHEN tabela.cod_tipo = 5
+                             THEN '01'
+                           WHEN tabela.cod_tipo = 6
+                             THEN '02'
+                           WHEN tabela.cod_tipo = 7
+                             THEN '02'
+                           WHEN tabela.cod_tipo = 8
+                             THEN '02'
+                           WHEN tabela.cod_tipo = 9
+                             THEN '02'
+                           WHEN tabela.cod_tipo = 10
+                             THEN '02'
+                           WHEN tabela.cod_tipo = 11
+                             THEN '04'
+                           WHEN tabela.cod_tipo = 12
+                             THEN '10'
+                           WHEN tabela.cod_tipo = 13
+                             THEN '08'
+                           WHEN tabela.cod_tipo = 14
+                             THEN '09'
+                         END AS tipodecretoalteracao,
                         (SELECT DISTINCT atributo_norma_valor.valor
                          FROM normas.atributo_norma_valor
                               INNER JOIN normas.atributo_tipo_norma ON atributo_tipo_norma.cod_tipo_norma = atributo_norma_valor.cod_tipo_norma
@@ -331,6 +364,7 @@ class TTCEMGAOC extends Persistente
                              nroleialteracao,
                              dataleialteracao,
                              codreduzidodecreto,
+                             tipodecretoalteracao,
                              descricao,
                              tipo_lei_alteracao_orcamentaria
                     ORDER BY tabela.num_norma";
@@ -365,6 +399,7 @@ class TTCEMGAOC extends Persistente
     {
         $stSql  = "SELECT '13' AS tiporegistro,
                           LPAD(tabela.num_norma||tabela.cod_tipo, 8,'0' ) as codreduzidodecreto,
+                          LPAD('' || tabela.num_norma, 6, '0') AS nrodecreto,
                           CASE
                             WHEN tabela.cod_tipo = 1
                               THEN '03'
@@ -434,7 +469,8 @@ class TTCEMGAOC extends Persistente
                    WHERE tabela.situacao = 'valida'
                    GROUP BY tabela.num_norma,
                             origemrecalteracao,
-                            codreduzidodecreto
+                            codreduzidodecreto,
+                            nrodecreto
                    ORDER BY tabela.num_norma";
         return $stSql;
     }
@@ -468,6 +504,7 @@ class TTCEMGAOC extends Persistente
         $stSql = "SELECT tabela.dt_suplementacao,
                          '14' AS tiporegistro,
                          LPAD(tabela.num_norma || tabela.cod_tipo, 8, '0') as codreduzidodecreto,
+                         LPAD('' || tabela.num_norma, 6, '0') AS nrodecreto,
                          origemrecalteracao as origemrecalteracao,
                          LPAD((SELECT valor
                                FROM administracao.configuracao_entidade
@@ -594,6 +631,7 @@ class TTCEMGAOC extends Persistente
                   WHERE tabela.situacao = 'valida'
                   GROUP BY dt_suplementacao,
                            codreduzidodecreto,
+                           nrodecreto,
                            origemrecAlteracao,
                            num_norma,
                            codorgao,
@@ -613,6 +651,7 @@ class TTCEMGAOC extends Persistente
                   SELECT tabela.dt_suplementacao,
                          '14' AS tiporegistro,
                          LPAD(tabela.num_norma||tabela.cod_tipo, 8,'0' ) as codreduzidodecreto,
+                         LPAD('' || tabela.num_norma, 6, '0') AS nrodecreto,
                          origemrecalteracao as origemrecalteracao,
                          LPAD((SELECT valor FROM administracao.configuracao_entidade WHERE exercicio = '".$this->getDado('exercicio')."' AND cod_entidade = tabela.cod_entidade AND parametro = 'tcemg_codigo_orgao_entidade_sicom'), 2, '0') AS codorgao,
                          LPAD(lpad(tabela.num_orgao::VARCHAR, 2, '0')||LPAD(tabela.num_unidade::VARCHAR, 2, '0'),5,'0') AS codunidadesub,
@@ -738,6 +777,7 @@ class TTCEMGAOC extends Persistente
                   WHERE tabela.situacao = 'valida'
                   GROUP BY dt_suplementacao,
                            codreduzidodecreto,
+                           nrodecreto,
                            origemrecAlteracao,
                            num_norma,
                            codorgao,
