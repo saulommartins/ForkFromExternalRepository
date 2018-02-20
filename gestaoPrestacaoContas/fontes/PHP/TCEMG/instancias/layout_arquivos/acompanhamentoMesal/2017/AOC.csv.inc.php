@@ -139,6 +139,7 @@ if (count($rsRecordSetAOC10->getElementos()) > 0) {
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(8);
         }//if chave AOC10
         //Se houver registros no array
+	    $stChave11_fk = "";
         if (count($rsRecordSetAOC11->getElementos()) > 0) {
             $stChave11 = '';
 
@@ -249,6 +250,8 @@ if (count($rsRecordSetAOC10->getElementos()) > 0) {
 
 				    $inCount++;
 
+				    $arAOC13['codreduzidodecreto_unico'] = $stChave11_fk;
+
 				    $rsBloco13 = 'rsBloco13_'.$inCount;
 				    unset($rsBloco13);
 				    $rsBloco13 = new RecordSet();
@@ -262,7 +265,7 @@ if (count($rsRecordSetAOC10->getElementos()) > 0) {
 				    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
 				    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
 
-				    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("codreduzidodecreto");
+				    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("codreduzidodecreto_unico");
 				    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
 				    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
 				    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(15);
@@ -286,6 +289,8 @@ if (count($rsRecordSetAOC10->getElementos()) > 0) {
 
 							    $inCount++;
 
+							    $arAOC14['codreduzidodecreto_unico'] = $stChave11_fk;
+
 							    $rsBloco14 = 'rsBloco14_'.$inCount;
 							    unset($rsBloco14);
 							    $rsBloco14 = new RecordSet();
@@ -299,7 +304,7 @@ if (count($rsRecordSetAOC10->getElementos()) > 0) {
 							    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
 							    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoFixo(2);
 
-							    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("codreduzidodecreto");
+							    $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("codreduzidodecreto_unico");
 							    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
 							    $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
 							    $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(15);
