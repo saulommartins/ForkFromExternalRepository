@@ -191,6 +191,7 @@ class TTCEMGJulgamentoLicitacao extends Persistente
                        , num_documento
                        , num_lote
                        , mapa_item.cod_item
+                       , edital.criterio_adjudicacao
                        , licitacao.cod_entidade
                        , licitacao.cod_licitacao
                        , licitacao.cod_modalidade
@@ -463,7 +464,7 @@ class TTCEMGJulgamentoLicitacao extends Persistente
                   SELECT  *
                     FROM  tcemg.fn_exercicio_numero_licitacao (
                       '".$this->getDado('exercicio')."',
-                      '".$this->getDado('cod_entidade')."'
+                      '".$this->getDado('entidades')."'
                     )
                   VALUES  (
                             cod_licitacao INTEGER,
@@ -485,7 +486,7 @@ class TTCEMGJulgamentoLicitacao extends Persistente
              AND  licitacao_anulada.cod_entidade = licitacao.cod_entidade
              AND  licitacao_anulada.exercicio = licitacao.exercicio
              
-           WHERE  licitacao.cod_entidade IN (".$this->getDado('cod_entidade').")
+           WHERE  licitacao.cod_entidade IN (".$this->getDado('entidades').")
              AND  licitacao_anulada.cod_licitacao IS NULL
              AND  TO_DATE(homologacao.timestamp::varchar, 'YYYY-MM-DD') 
                   BETWEEN TO_DATE('".$this->getDado('dt_inicial')."', 'dd/mm/yyyy') 

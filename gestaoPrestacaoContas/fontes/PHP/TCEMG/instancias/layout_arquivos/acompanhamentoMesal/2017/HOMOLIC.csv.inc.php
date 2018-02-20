@@ -58,6 +58,8 @@ $obTTCEMGHOMOLIC->setDado('dt_final' ,$stDataFinal);
 
 $obTTCEMGHOMOLIC->recuperaDadosHOMOLIC10($rsRecordSetHOMOLIC10,$boTransacao);
 
+$obTTCEMGHOMOLIC->recuperaDadosHOMOLIC30($rsRecordSetHOMOLIC30, $boTransacao);
+
 // $this->obTTCEMGHOMOLIC->recuperaDadosHOMOLIC20($rsRecordSetHOMOLIC20,$boTransacao
 
 $obTTCEMGHOMOLIC->recuperaDadosHOMOLIC40($rsRecordSetHOMOLIC40,$boTransacao);
@@ -258,9 +260,9 @@ if (count($arRecordSetHOMOLIC10) > 0) {
                 }
             }
 
-            if ($arHOMOLIC10['criterio_adjudicacao'] == 2) {
-                $obTTCEMGHOMOLIC->recuperaDadosHOMOLIC30($rsRecordSetHOMOLIC30, $boTransacao, " AND config_licitacao.num_licitacao = '" . $stNumProcLic . "'");
-            }
+            // if ($arHOMOLIC10['criterio_adjudicacao'] == 2) {
+            //     $obTTCEMGHOMOLIC->recuperaDadosHOMOLIC30($rsRecordSetHOMOLIC30, $boTransacao, " AND config_licitacao.num_licitacao = '" . $stNumProcLic . "'");
+            // }
 
             //Se houver registros no array
             if ( count($rsRecordSetHOMOLIC30->getElementos()) > 0 ) {
@@ -324,7 +326,7 @@ if (count($arRecordSetHOMOLIC10) > 0) {
                         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(15);
 
                         $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("percentual_taxa_administracao");
-                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
                         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(6);
                     }//Fim if HOMOLIC30

@@ -92,10 +92,17 @@ class TTCEMGJulgamentoLicitacao extends Persistente
                               ELSE ' '
                          END AS num_lote
                        , mapa_item.cod_item AS cod_item
+                       , edital.criterio_adjudicacao
                        , (SUM(mapa_item.vl_total) / SUM(mapa_item.quantidade) )::numeric(14,4) AS vl_unitario
                        , SUM(mapa_item.quantidade)::numeric(14,4) AS quantidade
 
                     FROM licitacao.licitacao
+
+                    JOIN licitacao.edital
+                      ON edital.cod_licitacao = licitacao.cod_licitacao
+                     AND edital.cod_modalidade = licitacao.cod_modalidade
+                     AND edital.cod_entidade = licitacao.cod_entidade
+                     AND edital.exercicio_licitacao = licitacao.exercicio
 
               INNER JOIN compras.mapa
                       ON mapa.exercicio = licitacao.exercicio_mapa
@@ -184,6 +191,7 @@ class TTCEMGJulgamentoLicitacao extends Persistente
                        , num_documento
                        , num_lote
                        , mapa_item.cod_item
+                       , edital.criterio_adjudicacao
                        , licitacao.cod_entidade
                        , licitacao.cod_licitacao
                        , licitacao.cod_modalidade
@@ -315,9 +323,176 @@ class TTCEMGJulgamentoLicitacao extends Persistente
 
     public function montaRecuperaExportacao30()
     {
-        return "
-          
-        ";
+      return "
+          SELECT  DISTINCT
+                  '30'::char(2) AS tiporegistro,
+                  LPAD(( SELECT valor
+                          FROM administracao.configuracao_entidade
+                         WHERE exercicio = '2017'
+                           AND parametro LIKE 'tcemg_codigo_orgao_entidade_sicom'
+                           AND cod_entidade = licitacao.cod_entidade
+                  ), 2, '0') AS cod_orgao,
+                  CASE
+                      WHEN homologacao.exercicio_licitacao <= '2013'
+                      THEN ''
+                      ELSE LPAD(LPAD(licitacao.num_orgao::VARCHAR, 2, '0') || LPAD(licitacao.num_unidade::VARCHAR, 2, '0'), 5, '0')
+                  END AS cod_unidadesub,
+                  config_licitacao.exercicio_licitacao,
+                  config_licitacao.num_licitacao AS nro_processolicitatorio,
+                  CASE WHEN sw_cgm_pessoa_juridica.cnpj IS NOT NULL THEN 2
+                       WHEN sw_cgm_pessoa_fisica.cpf  IS NOT NULL THEN 1
+                       ELSE 3
+                  END AS tipo_documento,
+                  CASE WHEN sw_cgm_pessoa_juridica.cnpj IS NOT NULL
+                       THEN sw_cgm_pessoa_juridica.cnpj
+                       ELSE sw_cgm_pessoa_fisica.cpf
+                  END AS nro_documento,
+                  CASE WHEN mapa.cod_tipo_licitacao = 2
+                       THEN homologacao.lote
+                       ELSE NULL
+                  END AS nro_lote,
+                  homologacao.cod_item,
+                  COALESCE(edital.percentual_taxa_administracao, 0) as percentual_taxa_administracao
+
+            FROM  licitacao.homologacao
+
+            JOIN  licitacao.adjudicacao 
+              ON  adjudicacao.num_adjudicacao = homologacao.num_adjudicacao
+             AND  adjudicacao.cod_entidade = homologacao.cod_entidade
+             AND  adjudicacao.cod_modalidade = homologacao.cod_modalidade
+             AND  adjudicacao.cod_licitacao= homologacao.cod_licitacao
+             AND  adjudicacao.exercicio_licitacao = homologacao.exercicio_licitacao
+             AND  adjudicacao.cod_item = homologacao.cod_item
+             AND  adjudicacao.cod_cotacao = homologacao.cod_cotacao
+             AND  adjudicacao.lote = homologacao.lote
+             AND  adjudicacao.exercicio_cotacao = homologacao.exercicio_cotacao
+             AND  adjudicacao.cgm_fornecedor = homologacao.cgm_fornecedor
+
+            JOIN  licitacao.cotacao_licitacao 
+              ON  cotacao_licitacao.cod_licitacao = adjudicacao.cod_licitacao
+             AND  cotacao_licitacao.cod_modalidade = adjudicacao.cod_modalidade
+             AND  cotacao_licitacao.cod_entidade = adjudicacao.cod_entidade
+             AND  cotacao_licitacao.exercicio_licitacao = adjudicacao.exercicio_licitacao
+             AND  cotacao_licitacao.lote = adjudicacao.lote
+             AND  cotacao_licitacao.cod_cotacao = adjudicacao.cod_cotacao
+             AND  cotacao_licitacao.cod_item = adjudicacao.cod_item
+             AND  cotacao_licitacao.exercicio_cotacao = adjudicacao.exercicio_cotacao
+             AND  cotacao_licitacao.cgm_fornecedor = adjudicacao.cgm_fornecedor
+
+            JOIN  licitacao.licitacao 
+              ON  licitacao.cod_licitacao  = cotacao_licitacao.cod_licitacao
+             AND  licitacao.cod_modalidade = cotacao_licitacao.cod_modalidade
+             AND  licitacao.cod_entidade = cotacao_licitacao.cod_entidade
+             AND  licitacao.exercicio = cotacao_licitacao.exercicio_licitacao
+
+            JOIN  licitacao.edital
+              ON  edital.cod_licitacao = licitacao.cod_licitacao
+             AND  edital.cod_modalidade = licitacao.cod_modalidade
+             AND  edital.cod_entidade = licitacao.cod_entidade
+             AND  edital.exercicio_licitacao = licitacao.exercicio
+
+            JOIN  licitacao.licitacao_documentos
+              ON  licitacao_documentos.cod_licitacao = licitacao.cod_licitacao
+             AND  licitacao_documentos.cod_modalidade = licitacao.cod_modalidade
+             AND  licitacao_documentos.cod_entidade = licitacao.cod_entidade
+             AND  licitacao_documentos.exercicio = licitacao.exercicio
+
+            JOIN  licitacao.participante 
+              ON  participante.cod_licitacao = licitacao.cod_licitacao
+             AND  participante.cod_modalidade = licitacao.cod_modalidade
+             AND  participante.cod_entidade = licitacao.cod_entidade
+             AND  participante.exercicio = licitacao.exercicio
+
+            JOIN  compras.cotacao_fornecedor_item
+              ON  cotacao_fornecedor_item.cgm_fornecedor = cotacao_licitacao.cgm_fornecedor
+             AND  cotacao_fornecedor_item.cod_cotacao = cotacao_licitacao.cod_cotacao
+             AND  cotacao_fornecedor_item.exercicio = cotacao_licitacao.exercicio_cotacao
+             AND  cotacao_fornecedor_item.lote = cotacao_licitacao.lote
+             AND  cotacao_fornecedor_item.cod_item = cotacao_licitacao.cod_item
+
+            JOIN  compras.cotacao_item
+              ON  cotacao_item.exercicio = cotacao_fornecedor_item.exercicio
+             AND  cotacao_item.cod_cotacao = cotacao_fornecedor_item.cod_cotacao
+             AND  cotacao_item.cod_item = cotacao_fornecedor_item.cod_item
+             AND  cotacao_item.lote = cotacao_fornecedor_item.lote
+
+            JOIN  compras.cotacao
+              ON  cotacao.exercicio = cotacao_item.exercicio
+             AND  cotacao.cod_cotacao = cotacao_item.cod_cotacao
+
+            JOIN  compras.mapa_cotacao
+              ON  mapa_cotacao.exercicio_cotacao = cotacao.exercicio
+             AND  mapa_cotacao.cod_cotacao = cotacao.cod_cotacao
+
+            JOIN  compras.julgamento_item
+              ON  cotacao_fornecedor_item.exercicio = julgamento_item.exercicio
+             AND  cotacao_fornecedor_item.cod_cotacao = julgamento_item.cod_cotacao
+             AND  cotacao_fornecedor_item.cod_item = julgamento_item.cod_item
+             AND  cotacao_fornecedor_item.cgm_fornecedor = julgamento_item.cgm_fornecedor
+             AND  cotacao_fornecedor_item.lote = julgamento_item.lote
+
+            LEFT  JOIN sw_cgm_pessoa_juridica
+              ON  sw_cgm_pessoa_juridica.numcgm = participante.cgm_fornecedor
+
+            LEFT  JOIN sw_cgm_pessoa_fisica
+              ON  sw_cgm_pessoa_fisica.numcgm = participante.cgm_fornecedor
+
+            JOIN  compras.fornecedor 
+              ON  fornecedor.cgm_fornecedor = participante.cgm_fornecedor
+                       
+            JOIN  compras.mapa
+              ON  mapa.exercicio = mapa_cotacao.exercicio_mapa
+             AND  mapa.cod_mapa  = mapa_cotacao.cod_mapa
+
+            JOIN  compras.mapa_item
+              ON  mapa_item.cod_mapa = mapa_cotacao.cod_mapa
+             AND  mapa_item.exercicio = mapa_cotacao.exercicio_mapa
+             AND  mapa_item.cod_item = cotacao_fornecedor_item.cod_item
+             AND  mapa_item.lote = cotacao_fornecedor_item.lote
+
+            LEFT  JOIN compras.mapa_item_anulacao
+              ON  mapa_item.exercicio = mapa_item_anulacao.exercicio
+             AND  mapa_item.exercicio_solicitacao = mapa_item_anulacao.exercicio_solicitacao
+             AND  mapa_item.cod_mapa = mapa_item_anulacao.cod_mapa
+             AND  mapa_item.cod_entidade = mapa_item_anulacao.cod_entidade
+             AND  mapa_item.cod_solicitacao = mapa_item_anulacao.cod_solicitacao
+             AND  mapa_item.cod_centro = mapa_item_anulacao.cod_centro
+             AND  mapa_item.lote = mapa_item_anulacao.lote
+             AND  mapa_item.cod_item = mapa_item_anulacao.cod_item
+
+            JOIN  (
+                  SELECT  *
+                    FROM  tcemg.fn_exercicio_numero_licitacao (
+                      '".$this->getDado('exercicio')."',
+                      '".$this->getDado('entidades')."'
+                    )
+                  VALUES  (
+                            cod_licitacao INTEGER,
+                            cod_modalidade INTEGER,
+                            cod_entidade INTEGER,
+                            exercicio CHAR(4),
+                            exercicio_licitacao VARCHAR,
+                            num_licitacao TEXT
+                          )
+                  )  AS config_licitacao 
+              ON  config_licitacao.cod_entidade = licitacao.cod_entidade
+             AND  config_licitacao.cod_licitacao = licitacao.cod_licitacao
+             AND  config_licitacao.cod_modalidade = licitacao.cod_modalidade
+             AND  config_licitacao.exercicio = licitacao.exercicio
+
+            LEFT  JOIN licitacao.licitacao_anulada
+              ON  licitacao_anulada.cod_licitacao = licitacao.cod_licitacao
+             AND  licitacao_anulada.cod_modalidade = licitacao.cod_modalidade
+             AND  licitacao_anulada.cod_entidade = licitacao.cod_entidade
+             AND  licitacao_anulada.exercicio = licitacao.exercicio
+             
+           WHERE  licitacao.cod_entidade IN (".$this->getDado('entidades').")
+             AND  licitacao_anulada.cod_licitacao IS NULL
+             AND  TO_DATE(homologacao.timestamp::varchar, 'YYYY-MM-DD') 
+                  BETWEEN TO_DATE('".$this->getDado('dt_inicial')."', 'dd/mm/yyyy') 
+             AND  TO_DATE('".$this->getDado('dt_final')."', 'dd/mm/yyyy')
+             AND  licitacao.cod_modalidade NOT IN (8,9)
+      ";
     }
 
     public function recuperaExportacao40(&$rsRecordSet,$stFiltro="",$stOrder="",$boTransacao="")
@@ -338,7 +513,7 @@ class TTCEMGJulgamentoLicitacao extends Persistente
                                                              ,cod_entidade        INTEGER
                                                              ,exercicio           CHAR(4)
                                                              ,exercicio_licitacao VARCHAR
-                                                             ,num_licitacao       TEXT ) 	    
+                                                             ,num_licitacao       TEXT )      
                    WHERE cod_entidade = licitacao.cod_entidade
                      AND cod_licitacao = licitacao.cod_licitacao
                      AND cod_modalidade = licitacao.cod_modalidade
@@ -351,7 +526,7 @@ class TTCEMGJulgamentoLicitacao extends Persistente
                                                              ,cod_entidade        INTEGER
                                                              ,exercicio           CHAR(4)
                                                              ,exercicio_licitacao VARCHAR
-                                                             ,num_licitacao       TEXT ) 	    
+                                                             ,num_licitacao       TEXT )      
                    WHERE cod_entidade = licitacao.cod_entidade
                      AND cod_licitacao = licitacao.cod_licitacao
                      AND cod_modalidade = licitacao.cod_modalidade

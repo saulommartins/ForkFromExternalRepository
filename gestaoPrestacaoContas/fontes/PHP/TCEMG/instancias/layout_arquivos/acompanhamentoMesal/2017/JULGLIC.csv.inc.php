@@ -37,6 +37,10 @@
   * $Rev: 62269 $
   *
 */
+
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+
 /**
 * JULGLIC.csv | Autor : Jean da Silva
 */
@@ -61,7 +65,7 @@ $obTTCEMGJulgamentoLicitacao->recuperaExportacao10($rsRecordSetJULGLIC10);
 //$obTTCEMGJulgamentoLicitacao->recuperaExportacao20($rsRecordSetJULGLIC20);
 
 ////Tipo Registro 30
-//$obTTCEMGJulgamentoLicitacao->recuperaExportacao30($rsRecordSetJULGLIC30);
+$obTTCEMGJulgamentoLicitacao->recuperaExportacao30($rsRecordSetJULGLIC30);
 
 ////Tipo Registro 40
 $obTTCEMGJulgamentoLicitacao->recuperaExportacao40($rsRecordSetJULGLIC40);
@@ -223,9 +227,9 @@ if (count($arRecordSetJULGLIC10) > 0) {
             }
 
 
-            if ($arJULGLIC10['criterio_adjudicacao'] == 2) {
-                $obTTCEMGJULGLIC->recuperaDadosJULGLIC30($rsRecordSetJULGLIC30, $boTransacao, " AND config_licitacao.num_licitacao = '" . $stNumProcLic . "'");
-            }
+            // if ($arJULGLIC10['criterio_adjudicacao'] == 2) {
+            //     $obTTCEMGJulgamentoLicitacao->recuperaExportacao30($rsRecordSetJULGLIC30, $boTransacao, " AND config_licitacao.num_licitacao = '" . $stNumProcLic . "'");
+            // }
 
             //Se houver registros no array
             if ( count($rsRecordSetJULGLIC30->getElementos()) > 0 ) {

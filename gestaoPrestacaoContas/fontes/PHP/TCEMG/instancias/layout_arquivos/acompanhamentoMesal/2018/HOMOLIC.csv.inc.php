@@ -37,6 +37,9 @@
   * $Rev: 62269 $
   *
 */
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+
 /**
 * HOMOLIC.csv | Autor : Evandro Melos
 */
@@ -55,9 +58,9 @@ $obTTCEMGHOMOLIC->setDado('dt_final' ,$stDataFinal);
 
 $obTTCEMGHOMOLIC->recuperaDadosHOMOLIC10($rsRecordSetHOMOLIC10,$boTransacao);
 
-// $this->obTTCEMGHOMOLIC->recuperaDadosHOMOLIC20($rsRecordSetHOMOLIC20,$boTransacao);
+$obTTCEMGHOMOLIC->recuperaDadosHOMOLIC30($rsRecordSetHOMOLIC30, $boTransacao);
 
-// $obTTCEMGHOMOLIC->recuperaDadosHOMOLIC30($rsRecordSetHOMOLIC30,$boTransacao);
+// $this->obTTCEMGHOMOLIC->recuperaDadosHOMOLIC20($rsRecordSetHOMOLIC20,$boTransacao
 
 $obTTCEMGHOMOLIC->recuperaDadosHOMOLIC40($rsRecordSetHOMOLIC40,$boTransacao);
 
@@ -257,6 +260,10 @@ if (count($arRecordSetHOMOLIC10) > 0) {
                 }
             }
 
+            // if ($arHOMOLIC10['criterio_adjudicacao'] == 2) {
+            //     $obTTCEMGHOMOLIC->recuperaDadosHOMOLIC30($rsRecordSetHOMOLIC30, $boTransacao, " AND config_licitacao.num_licitacao = '" . $stNumProcLic . "'");
+            // }
+
             //Se houver registros no array
             if ( count($rsRecordSetHOMOLIC30->getElementos()) > 0 ) {
                 //Percorre array de registros
@@ -318,8 +325,8 @@ if (count($arRecordSetHOMOLIC10) > 0) {
                         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(15);
 
-                        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("perc_taxa_adm");
-                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("percentual_taxa_administracao");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
                         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(6);
                     }//Fim if HOMOLIC30
