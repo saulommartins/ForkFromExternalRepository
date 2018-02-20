@@ -72,7 +72,6 @@ function __construct()
     $this->AddCampo('cod_regime'          ,'integer'    ,false ,''     ,false,false);
     $this->AddCampo('tipo_chamada_publica','integer'    ,false ,''     ,false,true);
     $this->AddCampo('registro_precos'     ,'boolean'    ,false ,''     ,false,true);
-    $this->AddCampo('criterio_adjudicacao','integer'    ,true  ,''     ,false,false);
 }
 
 function proximoCodigoLicitacao(&$inCodLicitacao , $boTransacao = "")

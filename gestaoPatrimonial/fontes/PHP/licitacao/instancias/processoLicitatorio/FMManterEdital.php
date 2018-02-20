@@ -71,6 +71,41 @@ $obHdnAcao = new Hidden();
 $obHdnAcao->setName  ( "stAcao" );
 $obHdnAcao->setValue ( $stAcao  );
 
+
+$obISelectCriterioAdjudicacao = new Select();
+$obISelectCriterioAdjudicacao->setRotulo     ("Critério Adjudicação"                  );
+$obISelectCriterioAdjudicacao->setTitle      ("Selecione o critério."                 );
+$obISelectCriterioAdjudicacao->setName       ("inCodCriterioAdjudicacao"              );
+$obISelectCriterioAdjudicacao->setId         ("inCodCriterioAdjudicacao"              );
+$obISelectCriterioAdjudicacao->setCampoID    ("cod_criterio_adjudicacao"              );
+$obISelectCriterioAdjudicacao->addOption     ("","Selecione"                          );
+$obISelectCriterioAdjudicacao->setNull       ( false                                  );
+
+$criteriosDeAjudicacao = array(
+    "" => 'Selecione',
+    1 => 'Desconto sobre tabela de preços praticados no mercado',
+    2 => 'Menor taxa de administração ou menor percentual de acréscimo sobre tabela',
+    3 => 'Outros'
+);
+
+$obISelectCriterioAdjudicacao->setOptions($criteriosDeAjudicacao);
+$obISelectCriterioAdjudicacao->setValue($request->get('inCodCriterioAdjudicacao'));
+
+// Define Objeto Moeda para Valor Unitário
+$obPercentualTaxaAdministracao = new ValorUnitario;
+$obPercentualTaxaAdministracao->setName              ('nuPercentualTaxaAdministracao');
+$obPercentualTaxaAdministracao->setId                ('nuPercentualTaxaAdministracao');
+$obPercentualTaxaAdministracao->setValue             ($request->get('nuPercentualTaxaAdministracao'));
+$obPercentualTaxaAdministracao->setRotulo            ('Percentual da taxa de administração');
+$obPercentualTaxaAdministracao->setTitle             ('Informe o valor percentual.');
+$obPercentualTaxaAdministracao->setDecimais          (2);
+$obPercentualTaxaAdministracao->setSize              (20);
+$obPercentualTaxaAdministracao->setNull              (false);
+$obPercentualTaxaAdministracao->setMaxLength         (3);
+$obPercentualTaxaAdministracao->setFormatarNumeroBR  (true);
+$obPercentualTaxaAdministracao->obEvento->setOnChange('geraValor(this);');
+
+
 if ($_REQUEST['inNumEdital'] && $_REQUEST['stExercicio']) {
     $exercicioLicitacao = $_REQUEST['stExercicio'];
     $obTLicitacaoEdital->setDado( 'exercicio' , $exercicioLicitacao );
@@ -314,6 +349,7 @@ if ($boIdLicitacaoAutomatica == "f") {
     $obFormulario->addComponente( $obTxtNumEdital );
 }
 
+    
 if ($stAcao == 'alterar') {
     $obFormulario->addComponente    ( $obExercicio              );
     $obFormulario->addComponente    ( $obLblEntidade            );
@@ -332,6 +368,8 @@ if ($stAcao == 'alterar') {
 }
 
 $obFormulario->addComponente( $obLblValorLicitacao );
+$obFormulario->addComponente( $obISelectCriterioAdjudicacao );
+$obFormulario->addComponente( $obPercentualTaxaAdministracao );
 
 $obFormulario->addTitulo( 'Aprovação Jurídica' );
 $obFormulario->addComponente( $obPopUpCGM );

@@ -250,6 +250,8 @@ $obLista->ultimaAcao->addCampo("&dtAbertura"           , "dt_abertura_propostas"
 $obLista->ultimaAcao->addCampo("&stHoraAbertura"       , "local_abertura_propostas ");
 $obLista->ultimaAcao->addCampo("&stLocalAbertura"      , "hora_abertura_propostas");
 $obLista->ultimaAcao->addCampo("&txtCodPagamento"      , "condicoes_pagamento");
+$obLista->ultimaAcao->addCampo("&inCodCriterioAdjudicacao", "criterio_adjudicacao");
+$obLista->ultimaAcao->addCampo("&nuPercentualTaxaAdministracao", "percentual_taxa_administracao");
 
 if ($stAcao == "anular") {
    $obLista->ultimaAcao->setLink( $stCaminho.$pgFormAnular."?".Sessao::getId().$stLink );

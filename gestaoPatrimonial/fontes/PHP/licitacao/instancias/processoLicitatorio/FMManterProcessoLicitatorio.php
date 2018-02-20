@@ -306,25 +306,6 @@ if ($stAcao == 'incluir') {
     
 }
 
-$obISelectCriterioAdjudicacao = new Select();
-$obISelectCriterioAdjudicacao->setRotulo     ("Critério Adjudicação"                  );
-$obISelectCriterioAdjudicacao->setTitle      ("Selecione o critério."                 );
-$obISelectCriterioAdjudicacao->setName       ("inCodCriterioAdjudicacao"              );
-$obISelectCriterioAdjudicacao->setId         ("inCodCriterioAdjudicacao"              );
-$obISelectCriterioAdjudicacao->setCampoID    ("cod_criterio_adjudicacao"              );
-$obISelectCriterioAdjudicacao->addOption     ("","Selecione"                          );
-$obISelectCriterioAdjudicacao->setNull       ( false                                  );
-
-$criteriosDeAjudicacao = array(
-    "" => 'Selecione',
-    1 => 'Desconto sobre tabela de preços praticados no mercado',
-    2 => 'Menor taxa de administração ou menor percentual de acréscimo sobre tabela',
-    3 => 'Outros'
-);
-
-$obISelectCriterioAdjudicacao->setOptions($criteriosDeAjudicacao);
-$obISelectCriterioAdjudicacao->setValue($request->get('inCodCriterio'));
-
 if(!$boEdital) {
     $obPopUpObjeto = new IPopUpObjeto($obForm);
     $obPopUpObjeto->setNull(false);
@@ -661,7 +642,6 @@ if ($stAcao != 'anular' ) {
         $obFormulario->addComponente    ( $obLblModalidade              );
     }
 
-    $obFormulario->addComponente    ( $obISelectCriterioAdjudicacao );
     $obFormulario->addSpan              ( $obSpnRegistroModalidade      );
 
     if($compraJulgamento){

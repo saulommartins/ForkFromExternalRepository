@@ -76,6 +76,8 @@ class TLicitacaoEdital extends Persistente
     $this->AddCampo('cod_documento'                 ,'integer' ,false ,''   ,false,false);
     $this->AddCampo('dt_final_entrega_propostas'    ,'date'    ,false ,''   ,false,false);
     $this->AddCampo('hora_final_entrega_propostas'  ,'varchar' ,false ,''   ,false,false);
+    $this->AddCampo('criterio_adjudicacao'          ,'integer' ,true  ,''   ,false,false);
+    $this->AddCampo('percentual_taxa_administracao' ,'numeric' ,true  ,'4.2',false,false);
   }
 
   public function recuperaListaEdital(&$rsRecordSet, $stFiltro = "", $stOrdem = "", $boTransacao = "")
@@ -96,9 +98,9 @@ class TLicitacaoEdital extends Persistente
         $stSql .= "         , cp.descricao                                                         \n";
         $stSql .= "         , le.exercicio                                                         \n";
         $stSql .= "         , le.cod_entidade                                                      \n";
-        $stSql .= "         , ll.cod_licitacao||'/'||ll.exercicio as num_licitacao                 \n";
+        $stSql .= "         , ll.cod_licitacao||'/'||ll.exercicio AS num_licitacao                 \n";
         $stSql .= "         , ll.cod_entidade                                                      \n";
-        $stSql .= "         , cgm.nom_cgm as entidade                                              \n";
+        $stSql .= "         , cgm.nom_cgm AS entidade                                              \n";
         $stSql .= "         , ll.cod_modalidade                                                    \n";
         $stSql .= "         , ll.cod_licitacao                                                     \n";
         $stSql .= "         , ll.cod_processo                                                      \n";
@@ -113,7 +115,9 @@ class TLicitacaoEdital extends Persistente
         $stSql .= "         , le.hora_abertura_propostas                                           \n";
         $stSql .= "         , le.condicoes_pagamento                                               \n";
         $stSql .= "         , le.dt_validade_proposta                                              \n";
-        $stSql .= "         , le.dt_validade_proposta-le.dt_entrega_propostas as qtd_dias_validade \n";
+        $stSql .= "         , le.dt_validade_proposta-le.dt_entrega_propostas AS qtd_dias_validade \n";
+        $stSql .= "         , le.criterio_adjudicacao                                              \n";
+        $stSql .= "         , REPLACE(le.percentual_taxa_administracao::text, '.', ',') AS percentual_taxa_administracao \n";
         $stSql .= "      FROM licitacao.edital as le                                               \n";
         $stSql .= "INNER JOIN licitacao.licitacao ll                                               \n";
         $stSql .= "        ON le.cod_licitacao   = ll.cod_licitacao                                \n";

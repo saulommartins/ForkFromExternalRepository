@@ -106,7 +106,7 @@ class TTCEMGAberturaLicitacao extends Persistente
                , (DATE(contrato.fim_execucao)-DATE(contrato.inicio_execucao)) AS prazo_execucao
                , regexp_replace(sem_acentos(edital.condicoes_pagamento),'[º|°|%|§]', '', 'gi') AS forma_pagamento
                , LPAD('',80,'') AS citerio_aceitabilidade
-               , COALESCE(licitacao.criterio_adjudicacao, 3) AS criterio_adjudicacao
+               , COALESCE(edital.criterio_adjudicacao, 3) AS criterio_adjudicacao
                , CASE WHEN mapa.cod_tipo_licitacao = 2
                       THEN 1
                       ELSE 2
@@ -349,7 +349,7 @@ class TTCEMGAberturaLicitacao extends Persistente
                , (DATE(contrato.fim_execucao)-DATE(contrato.inicio_execucao))
                , forma_pagamento
                , citerio_aceitabilidade
-               , licitacao.criterio_adjudicacao
+               , edital.criterio_adjudicacao
                , processo_lote
                , criterio_desempate
                , destinacao_exclusiva
@@ -511,7 +511,8 @@ class TTCEMGAberturaLicitacao extends Persistente
              AND contrato.exercicio=contrato_licitacao.exercicio
 
       INNER JOIN (
-                     SELECT * FROM tcemg.fn_exercicio_numero_licitacao ('".$this->getDado('exercicio')."', '".$this->getDado('entidades')."')
+                     SELECT * 
+                     FROM tcemg.fn_exercicio_numero_licitacao ('".$this->getDado('exercicio')."', '".$this->getDado('entidades')."')
 																VALUES (cod_licitacao		INTEGER
 																	   ,cod_modalidade		INTEGER
 																	   ,cod_entidade		INTEGER
@@ -835,7 +836,7 @@ class TTCEMGAberturaLicitacao extends Persistente
                  END AS num_lote
                , homologacao.cod_item AS cod_item
                , TO_CHAR(licitacao.timestamp,'ddmmyyyy') AS dt_cotacao
-               , CASE WHEN COALESCE(licitacao.criterio_adjudicacao, 3) = 2
+               , CASE WHEN COALESCE(edital.criterio_adjudicacao, 3) = 2
                       THEN ('0,0000')
                       ELSE ((cotacao_fornecedor_item.vl_cotacao/SUM(((mapa_item.quantidade)-COALESCE(mapa_item_anulacao.quantidade, 0.0000))))::NUMERIC(14,4))::VARCHAR
                  END AS vl_cot_precos_unitario
@@ -1015,7 +1016,7 @@ class TTCEMGAberturaLicitacao extends Persistente
                , num_lote
                , dt_cotacao
                , homologacao.cod_item
-               , licitacao.criterio_adjudicacao
+               , edital.criterio_adjudicacao
                , cotacao_fornecedor_item.vl_cotacao
                , total_cotacao.total";
 

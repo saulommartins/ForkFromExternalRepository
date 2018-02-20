@@ -169,39 +169,50 @@ switch ($stAcao) {
                 $stMensagem = 'Data de abertura das propostas ( <b><i>'.$request->get('dtAbertura').'</i></b> ) deve ser menor ou igual a data de vigência da comissão de licitação( <b><i>'.$dtTerminoVigencia.'</i></b> )!';
             }
 
+            $nuPercentualTaxaAdministracao = str_replace(".", "" , $request->get('nuPercentualTaxaAdministracao')   );
+            $nuPercentualTaxaAdministracao = str_replace(",", ".", $nuPercentualTaxaAdministracao                   );
+            if (floatval($nuPercentualTaxaAdministracao) > 100) {
+                $stMensagem = "O percentual da taxa de administração não pode ser maior que 100%";    
+            }
+
             if ($stMensagem == '') {
                 if ($request->get('inCodEdital') != '') {
                     $obTLicitacaoEdital->setDado( 'num_edital' , $request->get('inCodEdital') );
                 }
-                $obTLicitacaoEdital->setDado( 'exercicio' , Sessao::getExercicio()                 );
+
 
                 //*  POR QUE AINDA NÃO TEM O COMPONENTE QUE SELECIONA O DOCUMENTO O CODIGO TIPO E O CODIGO DO
                 // DOCUMENTO ESTÃO FIXADOS COMO 0 (NÃO INFORMADO)
 
                 $exercicioLicitacao = $request->get('stExercicioLicitacao');
+                $obTLicitacaoEdital->setDado( 'exercicio' , Sessao::getExercicio()                                    );
+                $obTLicitacaoEdital->setDado( 'cod_tipo_documento'           , 0                                      );
+                $obTLicitacaoEdital->setDado( 'cod_documento'                , 0                                      );
 
-                $obTLicitacaoEdital->setDado( 'cod_tipo_documento'            , 0  );
-                $obTLicitacaoEdital->setDado( 'cod_documento'                 , 0  );
-
-                $obTLicitacaoEdital->setDado( 'responsavel_juridico'          , $request->get('inResponsavelJuridico') );
-                $obTLicitacaoEdital->setDado( 'exercicio_licitacao'           , $exercicioLicitacao                    );
-                $obTLicitacaoEdital->setDado( 'cod_entidade'                  , $request->get('inCodEntidade')         );
-                $obTLicitacaoEdital->setDado( 'cod_modalidade'                , $request->get('inCodModalidade')       );
-                $obTLicitacaoEdital->setDado( 'cod_licitacao'                 , $request->get('inCodLicitacao')        );
-                $obTLicitacaoEdital->setDado( 'local_entrega_propostas'       , $request->get('stLocalEntrega')        );
-                $obTLicitacaoEdital->setDado( 'dt_entrega_propostas'          , $request->get('dtEntrega')             );
-                $obTLicitacaoEdital->setDado( 'hora_entrega_propostas'        , $request->get('stHoraEntrega')         );
-                $obTLicitacaoEdital->setDado( 'dt_final_entrega_propostas'    , $request->get('dtEntregaFinal')        );
-                $obTLicitacaoEdital->setDado( 'hora_final_entrega_propostas'  , $request->get('stHoraEntregaFinal')    );
-                $obTLicitacaoEdital->setDado( 'local_abertura_propostas'      , $request->get('stLocalAbertura')       );
-                $obTLicitacaoEdital->setDado( 'dt_abertura_propostas'         , $request->get('dtAbertura')            );
-                $obTLicitacaoEdital->setDado( 'hora_abertura_propostas'       , $request->get('stHoraAbertura')        );
-                $obTLicitacaoEdital->setDado( 'dt_validade_proposta'          , $request->get('dtValidade')            );
-                $obTLicitacaoEdital->setDado( 'observacao_validade_proposta'  , $request->get('txtValidade')       );
-                $obTLicitacaoEdital->setDado( 'condicoes_pagamento'           , stripslashes(stripslashes($request->get('txtCodPagamento')))     );
-                $obTLicitacaoEdital->setDado( 'local_entrega_material'        , $request->get('stLocalMaterial')       );
-                $obTLicitacaoEdital->setDado( 'dt_aprovacao_juridico'         , $request->get('dtAprovacao')           );
-
+                $obTLicitacaoEdital->setDado( 'responsavel_juridico'         , $request->get('inResponsavelJuridico') );
+                $obTLicitacaoEdital->setDado( 'exercicio_licitacao'          , $exercicioLicitacao                    );
+                $obTLicitacaoEdital->setDado( 'cod_entidade'                 , $request->get('inCodEntidade')         );
+                $obTLicitacaoEdital->setDado( 'cod_modalidade'               , $request->get('inCodModalidade')       );
+                
+                $obTLicitacaoEdital->setDado( 'cod_licitacao'                , $request->get('inCodLicitacao')        );
+                $obTLicitacaoEdital->setDado( 'local_entrega_propostas'      , $request->get('stLocalEntrega')        );
+                $obTLicitacaoEdital->setDado( 'dt_entrega_propostas'         , $request->get('dtEntrega')             );
+                $obTLicitacaoEdital->setDado( 'hora_entrega_propostas'       , $request->get('stHoraEntrega')         );
+                
+                $obTLicitacaoEdital->setDado( 'dt_final_entrega_propostas'   , $request->get('dtEntregaFinal')        );
+                $obTLicitacaoEdital->setDado( 'hora_final_entrega_propostas' , $request->get('stHoraEntregaFinal')    );
+                $obTLicitacaoEdital->setDado( 'local_abertura_propostas'     , $request->get('stLocalAbertura')       );
+                $obTLicitacaoEdital->setDado( 'dt_abertura_propostas'        , $request->get('dtAbertura')            );
+                
+                $obTLicitacaoEdital->setDado( 'hora_abertura_propostas'      , $request->get('stHoraAbertura')        );
+                $obTLicitacaoEdital->setDado( 'dt_validade_proposta'         , $request->get('dtValidade')            );
+                $obTLicitacaoEdital->setDado( 'observacao_validade_proposta' , $request->get('txtValidade')       );
+                $obTLicitacaoEdital->setDado( 'condicoes_pagamento'          , stripslashes(stripslashes($request->get('txtCodPagamento')))     );
+                
+                $obTLicitacaoEdital->setDado( 'local_entrega_material'       , $request->get('stLocalMaterial')          );
+                $obTLicitacaoEdital->setDado( 'dt_aprovacao_juridico'        , $request->get('dtAprovacao')              );
+                $obTLicitacaoEdital->setDado( 'criterio_adjudicacao'         , $request->get('inCodCriterioAdjudicacao') );
+                $obTLicitacaoEdital->setDado( 'percentual_taxa_administracao', $nuPercentualTaxaAdministracao            );
                 $obTLicitacaoEdital->inclusao();
             }
 
@@ -258,13 +269,23 @@ switch ($stAcao) {
             $dtFim = dataYMD($request->get('dtValidade')).' 23:59:59';
             $qtd_dias_validade = SistemaLegado::datediff('d', $dtInicio, $dtFim);
 
+            $nuPercentualTaxaAdministracao = str_replace(".", "" , $request->get('nuPercentualTaxaAdministracao')   );
+            $nuPercentualTaxaAdministracao = str_replace(",", ".", $nuPercentualTaxaAdministracao                   );
+            
+            if (floatval($nuPercentualTaxaAdministracao) > 100) {
+                $stMensagem = "O percentual da taxa de administração não pode ser maior que 100%";    
+            }
+
             if ($stMensagem == '') {
                 $obTLicitacaoEdital->setDado( 'num_edital'              , $request->get('inNumEdital')           );
                 $obTLicitacaoEdital->setDado( 'exercicio'               , Sessao::getExercicio()                 );
 
+
+
                 // POR QUE AINDA NÃO TEM O COMPONENTE QUE SELECIONA O DOCUMENTO O CODIGO TIPO E O CODIGO DO
                 // DOCUMENTO ESTÃO FIXADOS COMO 0 (NÃO INFORMADO)
 
+                $obTLicitacaoEdital->setDado( 'percentual_taxa_administracao', $nuPercentualTaxaAdministracao          );
                 $obTLicitacaoEdital->setDado( 'cod_tipo_documento'            , 0    								   );
                 $obTLicitacaoEdital->setDado( 'cod_documento'                 , 0    							       );
 
@@ -286,6 +307,7 @@ switch ($stAcao) {
                 $obTLicitacaoEdital->setDado( 'condicoes_pagamento'           , $request->get('txtCodPagamento')       );
                 $obTLicitacaoEdital->setDado( 'local_entrega_material'        , $request->get('stLocalMaterial')       );
                 $obTLicitacaoEdital->setDado( 'dt_aprovacao_juridico'         , $request->get('dtAprovacao')           );
+                $obTLicitacaoEdital->setDado( 'criterio_adjudicacao'         , $request->get('inCodCriterioAdjudicacao') );
 
                 $obTLicitacaoEdital->alteracao();
 
