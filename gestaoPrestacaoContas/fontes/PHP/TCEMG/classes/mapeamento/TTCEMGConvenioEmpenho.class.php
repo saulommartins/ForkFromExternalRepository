@@ -38,8 +38,8 @@
 	 * $Id: TTCEMGConvenioEmpenho.class.php 59719 2014-09-08 15:00:53Z franver $
      */
 
-    ini_set("display_errors", 1);
-    error_reporting(E_ALL ^ E_NOTICE);
+    // ini_set("display_errors", 1);
+    // error_reporting(E_ALL ^ E_NOTICE);
 
     include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
     include_once ( CLA_PERSISTENTE );

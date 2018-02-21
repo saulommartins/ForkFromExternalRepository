@@ -40,8 +40,8 @@
                     uc-02.03.28
 */
 
-ini_set("display_errors", 1);
-error_reporting(E_ALL);
+// ini_set("display_errors", 1);
+// error_reporting(E_ALL);
 
 //Define o nome dos arquivos PHP
 $stPrograma      = "ManterOrdemPagamento";

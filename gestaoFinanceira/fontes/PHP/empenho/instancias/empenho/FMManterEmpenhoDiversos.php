@@ -40,8 +40,8 @@
                     uc-02.03.04
 */
 
-ini_set("display_errors", 1);
-error_reporting(E_ALL);
+// ini_set("display_errors", 1);
+// error_reporting(E_ALL);
 
 $boTransacao = false;
 $stOrder = "";

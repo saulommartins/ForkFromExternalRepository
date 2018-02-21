@@ -38,8 +38,8 @@
                     uc-02.01.08
 */
 
-ini_set("display_errors", 1);
-error_reporting(E_ALL ^ E_NOTICE);
+// ini_set("display_errors", 1);
+// error_reporting(E_ALL ^ E_NOTICE);
 
 include '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
