@@ -127,16 +127,8 @@ if ( count($rsRecordSetRESPLIC10->getElementos()) > 0 ) {
 }
 
 if ( count($rsRecordSetRESPLIC20->getElementos()) > 0 ) {
-    $stChave20 = ''; $membroCorrente = $membroCache = '';
+    $stChave20 = ''; $membroCache = '';
     foreach ( $rsRecordSetRESPLIC20->getElementos() as $arRESPLIC20 ) {
-        // Verifica se pessoa faz parte da comissão e é membro adicional
-        $membroCorrente = $arRESPLIC20['tipo_registro'].$arRESPLIC20['cod_orgao'].$arRESPLIC20['codunidadesub'].$arRESPLIC20['exercicio_licitacao'].$arRESPLIC20['num_processo_licitatorio'].$arRESPLIC20['tipo_responsabilidade'].$arRESPLIC20['cod_tipo_norma'].$arRESPLIC20['num_norma'].$arRESPLIC20['dt_nomeacao'].$arRESPLIC20['ini_vigencia'].$arRESPLIC20['fim_vigencia'].$arRESPLIC20['cpf_membro'].$arRESPLIC20['cod_atribuicao'].$arRESPLIC20['natureza_cargo'];
-
-        if ($membroCache == $membroCorrente) {
-            continue;
-        }
-        $membroCache = $membroCorrente;
-
         $inCount++;
         $arRESPLIC20['tipo_registro'] = 20;
         $rsBloco = 'rsBloco_'.$inCount;
