@@ -851,7 +851,24 @@
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
                              END
-                        ) as vl_diver_var_patrim_aument_exercicio_atual
+                        ) as vl_diver_var_patrim_aument_exercicio_atual,
+                        -- VARIAÇÕES PATRIMONIAIS AUMENTATIVAS -> TOTAL DAS VARIAÇÕES PATRIMONIAIS AUMENTATIVAS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTotalVPAumentativas'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_total_vp_aumentativas_exercicio_anterior,
+                        SUM ( 
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTotalVPAumentativas'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_total_vp_aumentativas_exercicio_atual
 
   				  FROM  tcemg.configuracao_dcasp_registros
 				  JOIN  tcemg.configuracao_dcasp_arquivo using (seq_arquivo)
@@ -1338,7 +1355,7 @@
                              END
                         ) as vl_juros_encarg_empres_finan_obtidos_exercicio_atual,
 
-            	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> VARIAÇÕES PATRIMONIAIS DIMINUTIVAS FINANCEIRAS -> JUROS E ENCARGOS E CAMBIAIS
+            	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> VARIAÇÕES PATRIMONIAIS DIMINUTIVAS FINANCEIRAS -> JUROS E ENCARGOS DE MORA
                         SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaVariacoesFinanceiras'
@@ -1347,7 +1364,7 @@
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
                              END
-                        ) as vl_juros_encargos_cambiais_exercicio_anterior,
+                        ) as vl_juros_encargos_mora_exercicio_anterior,
             	      	SUM (
                             CASE
                                 WHEN configuracao_dcasp_arquivo.nome_tag = 'vlDiminutivaVariacoesFinanceiras'
@@ -1356,7 +1373,7 @@
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
                              END
-                        ) as vl_juros_encargos_cambiais_exercicio_atual,
+                        ) as vl_juros_encargos_mora_exercicio_atual,
 
             	        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> VARIAÇÕES PATRIMONIAIS DIMINUTIVAS FINANCEIRAS -> VARIAÇÕES MONETÁRIAS E CAMBIAIS
                         SUM (
@@ -1920,7 +1937,24 @@
                                 THEN COALESCE(contabil.valor, 0.00)
                                 ELSE 0.00
                              END
-                        ) as vl_div_varia_patrimoni_diminutivas_exercicio_atual
+                        ) as vl_div_varia_patrimoni_diminutivas_exercicio_atual,
+                        -- VARIAÇÕES PATRIMONIAIS DIMINUTIVAS -> TOTAL DAS VARIAÇÕES PATRIMONIAIS DIMINUTIVAS
+                        SUM (
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTotalVPDiminutivas'
+                                 AND contabil.exercicio = '".($this->getDado('exercicio') - 1)."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_total_vp_diminutivas_exercicio_anterior,
+                        SUM ( 
+                            CASE
+                                WHEN configuracao_dcasp_arquivo.nome_tag = 'vlTotalVPDiminutivas'
+                                 AND contabil.exercicio = '".$this->getDado('exercicio')."'
+                                THEN COALESCE(contabil.valor, 0.00)
+                                ELSE 0.00
+                             END
+                        ) as vl_total_vp_diminutivas_exercicio_atual
 
   				  FROM  tcemg.configuracao_dcasp_registros
 				  JOIN  tcemg.configuracao_dcasp_arquivo using (seq_arquivo)
@@ -1997,8 +2031,16 @@
 						 ON plano_conta_debito.exercicio = plano_analitica_debito.exercicio
 						AND plano_conta_debito.cod_conta = plano_analitica_debito.cod_conta
 
-					  WHERE (lancamento.exercicio = '".(intval($this->getDado('exercicio')) - 1)."' 
-					  	 OR lote.dt_lote BETWEEN '".$this->getDado('dtInicial')."' AND '".$this->getDado('dtFinal')."')
+                       LEFT JOIN contabilidade.plano_conta_encerrada AS plano_conta_encerrada_credito
+                         ON plano_conta_encerrada_credito.cod_conta = plano_conta_credito.cod_conta
+                        AND plano_conta_encerrada_credito.exercicio = plano_conta_credito.exercicio
+
+                       LEFT JOIN contabilidade.plano_conta_encerrada AS plano_conta_encerrada_debito
+                         ON plano_conta_encerrada_debito.cod_conta = plano_conta_debito.cod_conta
+                        AND plano_conta_encerrada_debito.exercicio = plano_conta_debito.exercicio
+
+					  WHERE (lote.dt_lote BETWEEN '".$this->getDado('stDataInicialExercicioAtual')."' AND '".$this->getDado('stDataFinalExercicioAtual')."'
+                         OR lote.dt_lote BETWEEN '".$this->getDado('stDataInicialExercicioAnterior')."' AND '".$this->getDado('stDataFinalExercicioAnterior')."')
 					  	AND lancamento.cod_entidade IN (".$this->getDado('entidades').")
 				      ORDER BY valor_lancamento.vl_lancamento
 				) AS contabil 
