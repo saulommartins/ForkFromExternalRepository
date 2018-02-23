@@ -1,7 +1,7 @@
 <?php
 
-    // ini_set("display_errors", 1);
-    // error_reporting(E_ALL);
+    ini_set("display_errors", 1);
+    error_reporting(E_ALL);
 
     include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/valida.inc.php';
 
@@ -29,9 +29,18 @@
 
     $obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais = new TTCEMGRelatorioDemonstracaoVariacoesPatrimoniais();
     $obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais->setDado('exercicio'    , Sessao::getExercicio());
-    $obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais->setDado('dtInicial'    , $_REQUEST['stDataInicial']);
-    $obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais->setDado('dtFinal'      , $_REQUEST['stDataFinal']);
     $obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais->setDado('entidades'    , implode(',',$_REQUEST['inCodEntidade']));
+
+
+    $stDataInicialExercicioAtual = substr($_REQUEST['stDataInicial'], 0, 6) . Sessao::getExercicio();
+    $stDataFinalExercicioAtual = substr($_REQUEST['stDataFinal'], 0, 6) . Sessao::getExercicio();
+    $obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais->setDado('stDataInicialExercicioAtual', $stDataInicialExercicioAtual);
+    $obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais->setDado('stDataFinalExercicioAtual', $stDataFinalExercicioAtual);
+
+    $stDataInicialExercicioAnterior = substr($_REQUEST['stDataInicial'], 0, 6) . (intval(Sessao::getExercicio()) - 1);
+    $stDataFinalExercicioAnterior = substr($_REQUEST['stDataFinal'], 0, 6) . (intval(Sessao::getExercicio()) - 1);
+    $obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais->setDado('stDataInicialExercicioAnterior', $stDataInicialExercicioAnterior);
+    $obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais->setDado('stDataFinalExercicioAnterior', $stDataFinalExercicioAnterior);
 
     $rsRecorset10 = new Recordset;
     $obTTCEMGRelatorioDemonstracaoVariacoesPatrimoniais->recuperaDados("montaRecuperaRegistro10" . $tipoRelatorio, $rsRecorset10);
@@ -42,8 +51,11 @@
     $_data[20] = $rsRecorset10->getObjeto();
 
     $_data['exercicio'] = Sessao::read('exercicio');
-    
-    include_once '../../../../../../gestaoPrestacaoContas/fontes/RPT/TCEMG/MPDF/LHTCEMGRelatorioDCASPDemonstracaoVariacoesPatrimoniais'.$tipoRelatorio.'.php';
 
-    // $obMPDF->setConteudo($_data);
-    // $obMPDF->gerarRelatorio();
+    $_data['vl_resultado_exercicio_atual'] = ($_data[10]['vl_total_vp_aumentativas_exercicio_atual'] - $_data[20]['vl_total_vp_diminutivas_exercicio_atual']);
+    $_data['vl_resultado_exercicio_anterior'] = ($_data[10]['vl_total_vp_aumentativas_exercicio_anterior'] - $_data[20]['vl_total_vp_diminutivas_exercicio_anterior']);
+    
+    // include_once '../../../../../../gestaoPrestacaoContas/fontes/RPT/TCEMG/MPDF/LHTCEMGRelatorioDCASPDemonstracaoVariacoesPatrimoniais'.$tipoRelatorio.'.php';
+
+    $obMPDF->setConteudo($_data);
+    $obMPDF->gerarRelatorio();

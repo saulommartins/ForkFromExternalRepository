@@ -2567,6 +2567,7 @@ class TEmpenhoOrdemPagamento extends Persistente
         $obConexao   = new Conexao;
         $rsRecordSet = new RecordSet;
         $stSql = $this->montaRecuperaRetencoes();
+
         $this->setDebug( $stSql );
         $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql, $boTransacao );
 
@@ -2702,6 +2703,7 @@ class TEmpenhoOrdemPagamento extends Persistente
          $stSql .="          WHERE  e_opre.cod_ordem         = ".$this->getDado('cod_ordem')."     \n";
          $stSql .="            AND  e_opre.exercicio         = '".$this->getDado('exercicio')."'   \n";
          $stSql .="            AND  e_opre.cod_entidade      = ".$this->getDado('cod_entidade')."  \n";
+         $stSql .="            AND  t_re.tipo_recibo = 'R'  \n";
          $stSql .="        ) as e_op_re ON (opr.cod_ordem         = e_op_re.cod_ordem              \n";
          $stSql .="                AND  opr.exercicio         = e_op_re.exercicio                  \n";
          $stSql .="                AND  opr.cod_entidade      = e_op_re.cod_entidade               \n";

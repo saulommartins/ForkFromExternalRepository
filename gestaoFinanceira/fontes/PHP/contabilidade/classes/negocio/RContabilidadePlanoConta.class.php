@@ -113,6 +113,11 @@ var $stEscrituracao;
     *@access Private
     *@var String
 */
+var $stEscrituracaoPCASP;
+/**
+    *@access Private
+    *@var String
+*/
 var $stNaturezaSaldo;
 /**
     *@access Private
@@ -219,6 +224,11 @@ function setEscrituracao($valor) { $this->stEscrituracao      = $valor;        }
     * @access public
     * @param String $valor
 */
+function setEscrituracaoPCASP($valor) { $this->stEscrituracaoPCASP = $valor; }
+/**
+    * @access public
+    * @param String $valor
+*/
 function setNaturezaSaldo($valor) { $this->stNaturezaSaldo      = $valor;        }
 /**
     * @access public
@@ -298,6 +308,11 @@ function getGrupos() { return $this->arGrupos;      }
     * @return String
 */
 function getEscrituracao() { return $this->stEscrituracao; }
+/**
+    * @access public
+    * @return String
+*/
+function getEscrituracaoPCASP() { return $this->stEscrituracaoPCASP; }
 /**
     * @access public
     * @return String
@@ -397,6 +412,7 @@ function consultar($boTransacao = "")
         if ( Sessao::getExercicio() > '2012' ) {
             $this->stIndicadorSuperavit = trim($rsRecordSet->getCampo( "indicador_superavit" ));
             $this->stEscrituracao = trim($rsRecordSet->getCampo( "escrituracao" ));
+            $this->stEscrituracaoPCASP = trim($rsRecordSet->getCampo( "escrituracao_pcasp" ));
             $this->stFuncao = trim($rsRecordSet->getCampo( "funcao" ));
             $this->stNaturezaSaldo = trim($rsRecordSet->getCampo( "natureza_saldo" ));
             $this->inTipoContaCorrenteTCEPE = $rsRecordSet->getCampo( "atributo_tcepe" );
@@ -742,6 +758,7 @@ function salvar($boTransacao = "")
         
         if ( Sessao::getExercicio() > '2012' ) {
             $obTContabilidadePlanoConta->setDado( "escrituracao"    , $this->stEscrituracao );
+            $obTContabilidadePlanoConta->setDado( "escrituracao_pcasp", $this->stEscrituracaoPCASP );
             $obTContabilidadePlanoConta->setDado( "natureza_saldo"    , $this->stNaturezaSaldo );
             $obTContabilidadePlanoConta->setDado( "indicador_superavit"    , $this->stIndicadorSuperavit );
             $obTContabilidadePlanoConta->setDado( "funcao"    , $this->stFuncao );
@@ -834,6 +851,7 @@ function salvarEscolhaPlanoConta($boTransacao = "")
         $obTContabilidadePlanoConta->setDado( "cod_sistema"       , $this->obRContabilidadeSistemaContabil->getCodSistema() );
         if ( Sessao::getExercicio() > '2012' ) {
             $obTContabilidadePlanoConta->setDado( "escrituracao"    , $this->stEscrituracao );
+            $obTContabilidadePlanoConta->setDado( "escrituracao_pcasp", $this->stEscrituracaoPCASP );
             $obTContabilidadePlanoConta->setDado( "natureza_saldo"    , $this->stNaturezaSaldo );
             $obTContabilidadePlanoConta->setDado( "indicador_superavit"    , $this->stIndicadorSuperavit );
             $obTContabilidadePlanoConta->setDado( "funcao"    , $this->stFuncao );

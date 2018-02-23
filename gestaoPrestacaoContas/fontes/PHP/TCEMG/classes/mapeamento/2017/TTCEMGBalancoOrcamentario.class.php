@@ -128,8 +128,18 @@
                                       ELSE 0
                                  END
                             ) AS vl_opera_credito_refina_externas_contratual,
-                            0 AS vl_deficit,
-                            SUM(campos.valor) AS vl_total_quadro_receita,
+                            SUM(
+                                CASE  WHEN campos.nome_tag = 'vlDeficit'
+                                      THEN campos.valor
+                                      ELSE 0
+                                 END
+                            ) AS vl_deficit,
+                            SUM(
+                                CASE  WHEN campos.nome_tag = 'vlTotalQuadroReceita'
+                                      THEN campos.valor
+                                      ELSE 0
+                                 END
+                            ) AS vl_total_quadro_receita,
                             COALESCE(SUM(campos.vl_original), 0) AS vl_orcado
                       FROM (
             ";

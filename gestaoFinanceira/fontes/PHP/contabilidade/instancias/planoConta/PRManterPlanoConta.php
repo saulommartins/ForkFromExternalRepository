@@ -326,6 +326,10 @@ switch ($stAcao) {
             
             // $obRContabilidadePlanoBanco->setCodFundo(null);
 
+            if ($_POST['stEscrituracaoPCASP'] != null) {
+                $obRContabilidadePlanoBanco->setEscrituracaoPCASP($_POST['stEscrituracaoPCASP']);
+            }
+            
             if ($_POST['inCodFundo'] != null) {
                 $obRContabilidadePlanoBanco->setCodFundo($_POST['inCodFundo']);
             }
@@ -408,6 +412,10 @@ switch ($stAcao) {
                 $obRContabilidadePlanoBanco->setEscrituracao( $_POST['stTipoConta'] == 'A' ? 'analitica' : 'sintetica' );
                 $obRContabilidadePlanoBanco->setIndicadorSuperavit( trim($_POST['stIndicadorSuperavit']) );
                 $obRContabilidadePlanoBanco->setFuncao( $_POST['stFuncao'] );
+
+                if ($_POST['stEscrituracaoPCASP'] != null) {
+                    $obRContabilidadePlanoBanco->setEscrituracaoPCASP($_POST['stEscrituracaoPCASP']);
+                }
 
                 if ($_POST['inCodFundo'] != null) {
                     $obRContabilidadePlanoBanco->setCodFundo( $_POST['inCodFundo'] );

@@ -151,8 +151,8 @@ if ($stAcao == 'alterar') {
 
     $stNomConta = $obRContabilidadePlanoBanco->getNomConta();
     $stNatSaldo = $obRContabilidadePlanoBanco->getNaturezaSaldo();
+    $stEscrituracaoPCASP = $obRContabilidadePlanoBanco->getEscrituracaoPCASP();
     $inCodFundo = $obRContabilidadePlanoBanco->getCodFundo();
-
 
     if ($stNatSaldo == 'devedor') {
         $stNatSaldo = 'D';
@@ -524,6 +524,18 @@ if ( strtolower($rsEntidades->getCampo('nom_cgm')) == 'tribunal de contas estado
 }
 $obCmbNaturezaDoSaldo->setTitle     ( "Selecione a Natureza do Saldo" );
 $obCmbNaturezaDoSaldo->setNull      ( false                           );
+
+$obCmbEscrituracao = new Select;
+$obCmbEscrituracao->setName      ( "stEscrituracaoPCASP" );
+$obCmbEscrituracao->setRotulo    ( "Escrituração"        );
+$obCmbEscrituracao->setID        ( "stEscrituracaoPCASP" );
+$obCmbEscrituracao->setValue     ( $stEscrituracaoPCASP  );
+$obCmbEscrituracao->setTitle     ( "Escrituração"        );
+
+$obCmbEscrituracao->setNull      ( false                 );
+$obCmbEscrituracao->addOption    ( "", "Selecione"       );
+$obCmbEscrituracao->addOption    ( "N", "Não"            );
+$obCmbEscrituracao->addOption    ( "S", "Sim"            );
 
 // Define Objeto TextBox para Codigo do Recurso
 $obTxtRecurso = new TextBox;
@@ -1004,6 +1016,7 @@ if($rsContaEncerrada->getNumLinhas() > 0 && $stAcao == 'alterar'){
     }
 
     $obFormulario->addComponente($obCmbNaturezaDoSaldo);
+    $obFormulario->addComponente($obCmbEscrituracao);
     // $obFormulario->addComponente($obCmbFundo);
     $obFormulario->agrupaComponentes( $arRadiosFundos );
     $obFormulario->addSpan( $obSpanFundos );

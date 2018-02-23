@@ -275,7 +275,7 @@ function getCodRecurso() { return $this->inCodRecurso;  }
 function RContabilidadePlanoContaAnalitica()
 {
     parent::RContabilidadePlanoConta();
-    $this->obROrcamentoRecurso                   = new ROrcamentoRecurso;
+    $this->obROrcamentoRecurso = new ROrcamentoRecurso;
 }
 
 /**

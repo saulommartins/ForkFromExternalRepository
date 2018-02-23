@@ -63,6 +63,7 @@ function TContabilidadePlanoContaTCEMS()
     $this->AddCampo('atributo_tcepe',       'integer', false,    '', false, false);
     $this->AddCampo('atributo_tcemg',       'integer', false,    '', false, false);
     $this->AddCampo('cod_fundo',            'integer',  true,    '', false, false);
+    $this->AddCampo('escrituracao_pcasp',   'char',     true,  '1',false,false);
 
 }
 
