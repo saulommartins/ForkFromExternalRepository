@@ -487,17 +487,17 @@ Desenvolvedor: Henrique Boaventura &lt;henrique.boaventura@cnm.org.br></property
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[	SELECT 	opass.exercicio
-		, 	opass.cod_entidade
-		, 	opass.cod_ordem
-		,	opass.num_assinatura 
-		,	scgm.numcgm
-		,	initcap(scgm.nom_cgm) as nom_cgm
-		,	opass.cargo 
+            <xml-property name="queryText"><![CDATA[    SELECT  opass.exercicio
+        ,   opass.cod_entidade
+        ,   opass.cod_ordem
+        ,   opass.num_assinatura 
+        ,   scgm.numcgm
+        ,   initcap(scgm.nom_cgm) as nom_cgm
+        ,   opass.cargo 
       FROM empenho.ordem_pagamento_assinatura AS opass 
 INNER JOIN sw_cgm AS scgm USING (numcgm) 
-	 WHERE opass.exercicio = ?
-	   AND opass.cod_entidade = ?
+     WHERE opass.exercicio = ?
+       AND opass.cod_entidade = ?
        AND opass.cod_ordem = ?
        AND opass.num_assinatura = 2
   ORDER BY num_assinatura]]></xml-property>
@@ -728,17 +728,17 @@ INNER JOIN sw_cgm AS scgm USING (numcgm)
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[	SELECT 	opass.exercicio
-		, 	opass.cod_entidade
-		, 	opass.cod_ordem
-		,	opass.num_assinatura 
-		,	scgm.numcgm
-		,	initcap(scgm.nom_cgm) as nom_cgm
-		,	opass.cargo 
+            <xml-property name="queryText"><![CDATA[    SELECT  opass.exercicio
+        ,   opass.cod_entidade
+        ,   opass.cod_ordem
+        ,   opass.num_assinatura 
+        ,   scgm.numcgm
+        ,   initcap(scgm.nom_cgm) as nom_cgm
+        ,   opass.cargo 
       FROM empenho.ordem_pagamento_assinatura AS opass 
 INNER JOIN sw_cgm AS scgm USING (numcgm) 
-	 WHERE opass.exercicio = ?
-	   AND opass.cod_entidade = ? 
+     WHERE opass.exercicio = ?
+       AND opass.cod_entidade = ? 
        AND opass.cod_ordem = ?
        AND opass.num_assinatura = 3
   ORDER BY num_assinatura]]></xml-property>
@@ -969,17 +969,17 @@ INNER JOIN sw_cgm AS scgm USING (numcgm)
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[	SELECT 	opass.exercicio
-		, 	opass.cod_entidade
-		, 	opass.cod_ordem
-		,	opass.num_assinatura 
-		,	scgm.numcgm
-		,	initcap(scgm.nom_cgm) as nom_cgm
-		,	opass.cargo 
+            <xml-property name="queryText"><![CDATA[    SELECT  opass.exercicio
+        ,   opass.cod_entidade
+        ,   opass.cod_ordem
+        ,   opass.num_assinatura 
+        ,   scgm.numcgm
+        ,   initcap(scgm.nom_cgm) as nom_cgm
+        ,   opass.cargo 
       FROM empenho.ordem_pagamento_assinatura AS opass 
 INNER JOIN sw_cgm AS scgm USING (numcgm) 
-	 WHERE opass.exercicio = ?
-	   AND opass.cod_entidade = ? 
+     WHERE opass.exercicio = ?
+       AND opass.cod_entidade = ? 
        AND opass.cod_ordem = ?
        AND opass.num_assinatura = 1
   ORDER BY num_assinatura]]></xml-property>
@@ -1225,8 +1225,8 @@ INNER JOIN sw_cgm AS scgm USING (numcgm)
          ,   sw_cgm.cep
          ,   sw_municipio.nom_municipio
          ,   sw_uf.nom_uf
-         ,	 sw_cgm.numero
-         ,	 sw_cgm.complemento
+         ,   sw_cgm.numero
+         ,   sw_cgm.complemento
       FROM   sw_cgm
  LEFT JOIN   sw_cgm_pessoa_fisica
         ON   sw_cgm_pessoa_fisica.numcgm = sw_cgm.numcgm
@@ -2147,7 +2147,7 @@ this.queryText += "\n  AND lancamento.cod_lancamento in ('"+params['cod_lancamen
             </list-property>
             <structure name="cachedMetaData"/>
             <method name="beforeOpen"><![CDATA[if(params['cod_recibo_extra'] != ""){
-	this.queryText += "  AND recibo_extra.cod_recibo_extra IN ("+params['cod_recibo_extra']+")";
+    this.queryText += "  AND recibo_extra.cod_recibo_extra IN ("+params['cod_recibo_extra']+")";
 }]]></method>
             <property name="dataSource">postgres</property>
             <xml-property name="queryText"><![CDATA[select  recibo_extra.cod_entidade                                                    
@@ -2170,9 +2170,9 @@ this.queryText += "\n  AND lancamento.cod_lancamento in ('"+params['cod_lancamen
           , plano_conta.cod_estrutural
           , publico.fn_data_extenso(to_date(recibo_extra.timestamp::VARCHAR,'yyyy-mm-dd')) as dt_extenso_recibo_extra
           , LPAD('', 8, '0')||LPAD(recibo_extra.cod_recibo_extra::VARCHAR, (6 - length(recibo_extra.cod_recibo_extra::VARCHAR)), '0')
-	        ||recibo_extra.exercicio||LPAD(recibo_extra.cod_entidade::VARCHAR, (3-length(recibo_extra.cod_entidade::VARCHAR)), '0')||'0' AS codigo_barra
-	      , recibo_extra_assinatura.nom_cgm
-		  , recibo_extra_assinatura.cargo
+            ||recibo_extra.exercicio||LPAD(recibo_extra.cod_entidade::VARCHAR, (3-length(recibo_extra.cod_entidade::VARCHAR)), '0')||'0' AS codigo_barra
+          , recibo_extra_assinatura.nom_cgm
+          , recibo_extra_assinatura.cargo
   from tesouraria.recibo_extra                                                         
   inner join contabilidade.plano_analitica                                             
           on(plano_analitica.cod_plano = recibo_extra.cod_plano                        
@@ -2211,16 +2211,16 @@ this.queryText += "\n  AND lancamento.cod_lancamento in ('"+params['cod_lancamen
           on (recurso.exercicio   = recibo_extra_recurso.exercicio                     
           and recurso.cod_recurso = recibo_extra_recurso.cod_recurso)                  
   left join (
-	SELECT 	recibo_extra_assinatura.cod_recibo_extra
-	   ,	recibo_extra_assinatura.cod_entidade
-	   , 	recibo_extra_assinatura.exercicio
-       , 	recibo_extra_assinatura.tipo_recibo
-	   , 	recibo_extra_assinatura.cargo
-	   ,	sw_cgm.nom_cgm 
-	  FROM tesouraria.recibo_extra_assinatura
-	  INNER JOIN sw_cgm
-		  ON recibo_extra_assinatura.numcgm = sw_cgm.numcgm
-	 ) AS recibo_extra_assinatura
+    SELECT  recibo_extra_assinatura.cod_recibo_extra
+       ,    recibo_extra_assinatura.cod_entidade
+       ,    recibo_extra_assinatura.exercicio
+       ,    recibo_extra_assinatura.tipo_recibo
+       ,    recibo_extra_assinatura.cargo
+       ,    sw_cgm.nom_cgm 
+      FROM tesouraria.recibo_extra_assinatura
+      INNER JOIN sw_cgm
+          ON recibo_extra_assinatura.numcgm = sw_cgm.numcgm
+     ) AS recibo_extra_assinatura
          on recibo_extra_assinatura.cod_recibo_extra = recibo_extra.cod_recibo_extra
         and recibo_extra_assinatura.cod_entidade     = recibo_extra.cod_entidade
         and recibo_extra_assinatura.exercicio        = recibo_extra.exercicio
@@ -3072,7 +3072,7 @@ INNER JOIN sw_cgm
          , fone.fone || '/' || fax.fax AS fone
          , logradouro.logradouro || ', ' || numero.numero || ' - ' || complemento.complemento AS endereco
          , sw_municipio.nom_municipio
-	 , sw_uf.sigla_uf
+     , sw_uf.sigla_uf
       FROM (    SELECT valor AS nom_prefeitura
                      , exercicio
                   FROM administracao.configuracao
@@ -3133,23 +3133,23 @@ INNER JOIN sw_cgm
            ) AS complemento
         ON complemento.exercicio = prefeitura.exercicio
 LEFT JOIN ( SELECT valor::INTEGER as cod_uf
-		 , exercicio 
-	    FROM administracao.configuracao
-	    WHERE parametro = 'cod_uf') AS uf
+         , exercicio 
+        FROM administracao.configuracao
+        WHERE parametro = 'cod_uf') AS uf
         ON uf.exercicio = prefeitura.exercicio
 LEFT JOIN (
-	  SELECT valor::INTEGER as cod_municipio
-		, exercicio 
-	  FROM administracao.configuracao
-	  WHERE parametro = 'cod_municipio'
-	) AS municipio
+      SELECT valor::INTEGER as cod_municipio
+        , exercicio 
+      FROM administracao.configuracao
+      WHERE parametro = 'cod_municipio'
+    ) AS municipio
         ON municipio.exercicio = prefeitura.exercicio
 
 LEFT JOIN sw_municipio
-	ON sw_municipio.cod_uf = uf.cod_uf
+    ON sw_municipio.cod_uf = uf.cod_uf
        AND sw_municipio.cod_municipio = municipio.cod_municipio
 LEFT JOIN sw_uf
-	ON sw_uf.cod_uf = uf.cod_uf
+    ON sw_uf.cod_uf = uf.cod_uf
 WHERE prefeitura.exercicio = ?]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
@@ -3974,10 +3974,10 @@ WHERE cod_acao = ?
                                                         <structure>
                                                             <property name="name">fone_entidade</property>
                                                             <expression name="expression">if( (params["entidade"]+0) > 0 ){
-	'Fone: ' + dataSetRow["fone"]
+    'Fone: ' + dataSetRow["fone"]
 }
 else{
-	'Fone: '
+    'Fone: '
 }</expression>
                                                             <property name="dataType">any</property>
                                                         </structure>
@@ -4020,10 +4020,10 @@ else{
                                                         <structure>
                                                             <property name="name">email_entidade</property>
                                                             <expression name="expression">if( (params["entidade"]+0) > 0 ){
-	'E-mail: ' + dataSetRow["e_mail"]
+    'E-mail: ' + dataSetRow["e_mail"]
 }
 else{
-	'E-mail: '
+    'E-mail: '
 }</expression>
                                                             <property name="dataType">any</property>
                                                         </structure>
@@ -4107,10 +4107,10 @@ else{
                                                         <structure>
                                                             <property name="name">cep_entidade</property>
                                                             <expression name="expression">if( (params["entidade"]+0) > 0 ){
-	'CEP: ' + dataSetRow["cep"]
+    'CEP: ' + dataSetRow["cep"]
 }
 else{
-	'CEP: '
+    'CEP: '
 }</expression>
                                                             <property name="dataType">any</property>
                                                         </structure>
@@ -4135,10 +4135,10 @@ else{
                                                         <structure>
                                                             <property name="name">cnpj_entidade</property>
                                                             <expression name="expression">if( (params["entidade"]+0) > 0 ){
-	'CNPJ: ' + dataSetRow["cnpj"]
+    'CNPJ: ' + dataSetRow["cnpj"]
 }
 else{
-	'CNPJ: '
+    'CNPJ: '
 }</expression>
                                                             <property name="dataType">any</property>
                                                         </structure>
@@ -4901,9 +4901,9 @@ else{
                                                 <property name="name">visto</property>
                                                 <text-property name="displayName">visto</text-property>
                                                 <expression name="expression">if (Total.count() > 0 ) {
-	dataSetRow["nom_cgm"]
+    dataSetRow["nom_cgm"]
 } else {
-	'Visto'
+    'Visto'
 }</expression>
                                                 <property name="dataType">any</property>
                                             </structure>
@@ -4954,9 +4954,9 @@ else{
                                                 <property name="name">cargo_visto</property>
                                                 <text-property name="displayName">cargo_visto</text-property>
                                                 <expression name="expression">if (Total.count() > 0 ) {
-	dataSetRow["cargo"]
+    dataSetRow["cargo"]
 } else {
-	''
+    ''
 }</expression>
                                                 <property name="dataType">string</property>
                                             </structure>
@@ -5010,9 +5010,9 @@ else{
                                                 <property name="name">ordenador</property>
                                                 <text-property name="displayName">ordenador</text-property>
                                                 <expression name="expression">if (Total.count() > 0 ) {
-	dataSetRow["nom_cgm"]
+    dataSetRow["nom_cgm"]
 } else {
-	'Ordenador'
+    'Ordenador'
 }</expression>
                                                 <property name="dataType">string</property>
                                             </structure>
@@ -5062,9 +5062,9 @@ else{
                                                 <property name="name">ordenador_cargo</property>
                                                 <text-property name="displayName">ordenador_cargo</text-property>
                                                 <expression name="expression">if (Total.count() > 0 ) {
-	dataSetRow["cargo"]
+    dataSetRow["cargo"]
 } else {
-	''
+    ''
 }</expression>
                                                 <property name="dataType">string</property>
                                             </structure>
@@ -5217,9 +5217,9 @@ descricaoEmpenho;</expression>
                                     <property name="name">recurso_pao</property>
                                     <text-property name="displayName">recurso_pao</text-property>
                                     <expression name="expression">if (dataSetRow["num_acao"] != null &amp;&amp; row["nom_pao"] != null) {
-	"Recurso: " + row["recurso_formatado"] + " - " + row["nom_recurso"] +" / PAO: " + dataSetRow["num_acao"] + " - " + row["nom_pao"];
+    "Recurso: " + row["recurso_formatado"] + " - " + row["nom_recurso"] +" / PAO: " + dataSetRow["num_acao"] + " - " + row["nom_pao"];
 } else {
-	"Recurso: " + row["recurso_formatado"] + " - " + row["nom_recurso"];
+    "Recurso: " + row["recurso_formatado"] + " - " + row["nom_recurso"];
  }</expression>
                                     <property name="dataType">string</property>
                                 </structure>
@@ -6356,9 +6356,9 @@ _________________________]]></text-property>
                                                 <property name="name">tesoureiro</property>
                                                 <text-property name="displayName">tesoureiro</text-property>
                                                 <expression name="expression">if (Total.count() > 0 ) {
-	dataSetRow["nom_cgm"]
+    dataSetRow["nom_cgm"]
 } else {
-	'Tesoureiro'
+    'Tesoureiro'
 }</expression>
                                                 <property name="dataType">any</property>
                                             </structure>
@@ -6408,9 +6408,9 @@ _________________________]]></text-property>
                                                 <property name="name">tesoureiro_cargo</property>
                                                 <text-property name="displayName">tesoureiro_cargo</text-property>
                                                 <expression name="expression">if (Total.count() > 0 ) {
-	dataSetRow["cargo"]
+    dataSetRow["cargo"]
 } else {
-	''
+    ''
 }</expression>
                                                 <property name="dataType">string</property>
                                             </structure>
@@ -6715,6 +6715,7 @@ _________________________]]></text-property>
                 </row>
             </detail>
         </table>
+        <!--
         <table id="1740">
             <property name="marginTop">0pt</property>
             <property name="pageBreakAfter">always</property>
@@ -6833,9 +6834,9 @@ _________________________]]></text-property>
                     <property name="name">recurso</property>
                     <text-property name="displayName">recurso</text-property>
                     <expression name="expression">if (dataSetRow["cod_recurso"] == null) {
-	"Recurso: "
+    "Recurso: "
 } else {
-	"Recurso: "+dataSetRow["cod_recurso"]+" - "+dataSetRow["nom_recurso"]
+    "Recurso: "+dataSetRow["cod_recurso"]+" - "+dataSetRow["nom_recurso"]
 }</expression>
                     <property name="dataType">string</property>
                 </structure>
@@ -7566,10 +7567,10 @@ _________________________]]></text-property>
                                                         <structure>
                                                             <property name="name">cep_entidade</property>
                                                             <expression name="expression">if( (params["entidade"]+0) > 0 ){
-	'CEP: ' + dataSetRow["cep"]
+    'CEP: ' + dataSetRow["cep"]
 }
 else{
-	'CEP: '
+    'CEP: '
 }</expression>
                                                             <property name="dataType">any</property>
                                                         </structure>
@@ -8426,6 +8427,7 @@ x;</expression>
                 </row>
             </detail>
         </table>
+        -->
         <table id="1867">
             <property name="marginTop">0pt</property>
             <property name="pageBreakBefore">auto</property>
@@ -9087,22 +9089,22 @@ params["linha_digitavel_receita"] = this.getRowData().getColumnValue('linha_digi
                                                 <property name="name">endereco_fornecedor</property>
                                                 <expression name="expression">var endereco = '';
 if (row["logradouro"] != '') {
-	endereco += "Endereço: "+row["logradouro"];
-	if (dataSetRow["numero"] != '') {
-		endereco += ",  "+row["numero"];
-	}
+    endereco += "Endereço: "+row["logradouro"];
+    if (dataSetRow["numero"] != '') {
+        endereco += ",  "+row["numero"];
+    }
 }
 if (row["bairro"] != '') {
-	endereco += "   Bairro: "+row["bairro"];
+    endereco += "   Bairro: "+row["bairro"];
 }
 if (row["cep"] != '') {
-	endereco += "   CEP: "+row["cep"];
+    endereco += "   CEP: "+row["cep"];
 }
 if (row["nom_municipio"] != '') {
-	endereco += "   Município: "+row["nom_municipio"];
+    endereco += "   Município: "+row["nom_municipio"];
 }
 if (row["nom_uf"] != '') {
-	endereco += " - "+row["nom_uf"];
+    endereco += " - "+row["nom_uf"];
 }
 endereco</expression>
                                                 <property name="dataType">any</property>
