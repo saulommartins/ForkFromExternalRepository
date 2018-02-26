@@ -217,7 +217,8 @@ case "incluir":
         }
     }
 
-    Sessao::write('acao', 816,true);
+    Sessao::write('acao', 816, true);
+    
     if (!$obErro->ocorreu()) {
         if ($_REQUEST['stLiq']) {
             if ($_REQUEST['stEmitirEmpenho']) {
@@ -434,9 +435,9 @@ function incluirReciboExtra($obREmpenhoOrdemPagamento, $tipoRecibo, $boTransacao
 
             $inCodRecurso = Sessao::read("inCodRecurso");
             
-            if (isset($_POST['inCodRecurso']) && !empty($_POST['inCodRecurso'])) {
-                $inCodRecurso = $_POST['inCodRecurso'];
-            }
+            // if (isset($_POST['inCodRecurso']) && !empty($_POST['inCodRecurso'])) {
+            //     $inCodRecurso = $_POST['inCodRecurso'];
+            // }
             
             if (!$obErro->ocorreu() && $inCodRecurso != "") {
                 $obRecurso = new TTesourariaReciboExtraRecurso;

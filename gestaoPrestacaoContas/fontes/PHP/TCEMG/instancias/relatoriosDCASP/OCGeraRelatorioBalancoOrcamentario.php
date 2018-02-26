@@ -20,10 +20,20 @@
 
     $obTTCEMGRelatorioBalancoOrcamentario = new TTCEMGRelatorioBalancoOrcamentario();
     $obTTCEMGRelatorioBalancoOrcamentario->setDado('exercicio'    , Sessao::getExercicio());
-    $obTTCEMGRelatorioBalancoOrcamentario->setDado('dtInicial'    , $_REQUEST['stDataInicial']);
-    $obTTCEMGRelatorioBalancoOrcamentario->setDado('dtFinal'      , $_REQUEST['stDataFinal']);
     $obTTCEMGRelatorioBalancoOrcamentario->setDado('entidades'    , implode(',',$_REQUEST['inCodEntidade']));
+    // $obTTCEMGRelatorioBalancoOrcamentario->setDado('dtInicial'    , $_REQUEST['stDataInicial']);
+    // $obTTCEMGRelatorioBalancoOrcamentario->setDado('dtFinal'      , $_REQUEST['stDataFinal']);
 
+    $stDataInicialExercicioAtual = substr($_REQUEST['stDataInicial'], 0, 6) . Sessao::getExercicio();
+    $stDataFinalExercicioAtual = substr($_REQUEST['stDataFinal'], 0, 6) . Sessao::getExercicio();
+    $obTTCEMGRelatorioBalancoOrcamentario->setDado('stDataInicialExercicioAtual', $stDataInicialExercicioAtual);
+    $obTTCEMGRelatorioBalancoOrcamentario->setDado('stDataFinalExercicioAtual', $stDataFinalExercicioAtual);
+
+    $stDataInicialExercicioAnterior = substr($_REQUEST['stDataInicial'], 0, 6) . (intval(Sessao::getExercicio()) - 1);
+    $stDataFinalExercicioAnterior = substr($_REQUEST['stDataFinal'], 0, 6) . (intval(Sessao::getExercicio()) - 1);
+    $obTTCEMGRelatorioBalancoOrcamentario->setDado('stDataInicialExercicioAnterior', $stDataInicialExercicioAnterior);
+    $obTTCEMGRelatorioBalancoOrcamentario->setDado('stDataFinalExercicioAnterior', $stDataFinalExercicioAnterior);
+    
 
     $rsRecordSet10 = new RecordSet;
     $obTTCEMGRelatorioBalancoOrcamentario->recuperaDadosBalancoOrcamentario("montaRecuperaDadosBalancoOrcamentario10", $rsRecordSet10);

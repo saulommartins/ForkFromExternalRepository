@@ -686,7 +686,7 @@ switch ($_REQUEST ["stCtrl"]) {
         Sessao::write('inCodRecurso', $inCodRecurso);
 
         $stJs .= "d.frm.Ok.disabled = false; \n"; // Habilita novamente o botão Ok, já com a lista pronta.
-        // $stJs .= "d.frm.inCodRecurso.value = ".$inCodRecurso."; \n"; // Define o valor do recurso
+        $stJs .= "d.frm.inCodRecurso.value = ".$inCodRecurso."; \n"; // Define o valor do recurso
 
         // echo $stJs;
         SistemaLegado::executaiFrameOculto($stJs);

@@ -21,10 +21,20 @@
 
     $obTTCEMGRelatorioBalancoFinanceiro = new TTCEMGRelatorioBalancoFinanceiro();
     $obTTCEMGRelatorioBalancoFinanceiro->setDado('exercicio'    , Sessao::getExercicio());
-    $obTTCEMGRelatorioBalancoFinanceiro->setDado('dtInicial'    , $_REQUEST['stDataInicial']);
-    $obTTCEMGRelatorioBalancoFinanceiro->setDado('dtFinal'      , $_REQUEST['stDataFinal']);
     $obTTCEMGRelatorioBalancoFinanceiro->setDado('entidades'    , implode(',',$_REQUEST['inCodEntidade']));
+    // $obTTCEMGRelatorioBalancoFinanceiro->setDado('dtInicial'    , $_REQUEST['stDataInicial']);
+    // $obTTCEMGRelatorioBalancoFinanceiro->setDado('dtFinal'      , $_REQUEST['stDataFinal']);
 
+    $stDataInicialExercicioAtual = substr($_REQUEST['stDataInicial'], 0, 6) . Sessao::getExercicio();
+    $stDataFinalExercicioAtual = substr($_REQUEST['stDataFinal'], 0, 6) . Sessao::getExercicio();
+    $obTTCEMGRelatorioBalancoFinanceiro->setDado('stDataInicialExercicioAtual', $stDataInicialExercicioAtual);
+    $obTTCEMGRelatorioBalancoFinanceiro->setDado('stDataFinalExercicioAtual', $stDataFinalExercicioAtual);
+
+    $stDataInicialExercicioAnterior = substr($_REQUEST['stDataInicial'], 0, 6) . (intval(Sessao::getExercicio()) - 1);
+    $stDataFinalExercicioAnterior = substr($_REQUEST['stDataFinal'], 0, 6) . (intval(Sessao::getExercicio()) - 1);
+    $obTTCEMGRelatorioBalancoFinanceiro->setDado('stDataInicialExercicioAnterior', $stDataInicialExercicioAnterior);
+    $obTTCEMGRelatorioBalancoFinanceiro->setDado('stDataFinalExercicioAnterior', $stDataFinalExercicioAnterior);
+    
     $_data['exercicio'] = Sessao::read('exercicio');
 
     $rsRecordSet10 = new RecordSet;

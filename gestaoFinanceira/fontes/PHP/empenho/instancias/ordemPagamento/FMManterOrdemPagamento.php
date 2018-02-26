@@ -187,6 +187,10 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
     $obHdnDataVencimento->setName  ( "dtDataVencimento"            );
     $obHdnDataVencimento->setValue ( $request->get('dtDataVencimento') );
 
+    $obHdnCodRecurso = new Hidden;
+    $obHdnCodRecurso->setName( "inCodRecurso" );
+    $obHdnCodRecurso->setId  ( "inCodRecurso" );
+
     if ($stAcao == 'anular') {
         $obHdnImplantado = new Hidden;
         $obHdnImplantado->setName  ( "boImplantado"            );
@@ -596,6 +600,7 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
         $obFormulario->addComponenteComposto( $obTxtCodigoEntidade , $obCmbNomeEntidade );
         $obFormulario->addComponente ( $obDtOrdem             );
         $obFormulario->addComponente ( $obDtDataVencimento    );
+        $obFormulario->addHidden     ( $obHdnCodRecurso       );
         $obFormulario->addTitulo     ( "Ítens"                );
         $obFormulario->addComponente ( $obTxtExercicioEmpenho );
         $obFormulario->addComponente ( $obBscEmpenho          );

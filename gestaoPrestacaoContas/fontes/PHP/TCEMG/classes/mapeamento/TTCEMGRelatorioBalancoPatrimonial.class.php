@@ -246,7 +246,7 @@
 				    ON  REPLACE(configuracao_dcasp_registros.conta_contabil, '.', '') = contabil.conta
 
 	             WHERE  configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'BP'
-				   AND  configuracao_dcasp_registros.exercicio = '".$this->getDado('exercicio')."'
+				   AND  configuracao_dcasp_registros.exercicio IN ('".$this->getDado('exercicio')."', '".(intval($this->getDado('exercicio')) - 1)."')
 				   AND  configuracao_dcasp_registros.tipo_registro = 10
 				 GROUP  BY configuracao_dcasp_arquivo.nome_arquivo_pertencente
         	";
@@ -639,7 +639,7 @@
 				    ON  REPLACE(configuracao_dcasp_registros.conta_contabil, '.', '') = contabil.conta
 
 				 WHERE  configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'BP'
-				   AND  configuracao_dcasp_registros.exercicio = '".$this->getDado('exercicio')."'
+				   AND  configuracao_dcasp_registros.exercicio IN ('".$this->getDado('exercicio')."', '".(intval($this->getDado('exercicio')) - 1)."')
 				   AND  configuracao_dcasp_registros.tipo_registro = 20
 				 GROUP  BY configuracao_dcasp_arquivo.nome_arquivo_pertencente
         	";
@@ -690,7 +690,7 @@
 				   ON REPLACE(configuracao_dcasp_registros.conta_contabil, '.', '') = contabil.conta
 
 				WHERE configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'BP'
-				  AND configuracao_dcasp_registros.exercicio = '".$this->getDado('exercicio')."'
+				  AND configuracao_dcasp_registros.exercicio IN ('".$this->getDado('exercicio')."', '".(intval($this->getDado('exercicio')) - 1)."')
 				  AND configuracao_dcasp_registros.tipo_registro = 30
 				GROUP BY configuracao_dcasp_arquivo.nome_arquivo_pertencente
         	";
@@ -741,7 +741,7 @@
 				   ON REPLACE(configuracao_dcasp_registros.conta_contabil, '.', '') = contabil.conta
 
 				WHERE configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'BP'
-				  AND configuracao_dcasp_registros.exercicio = '".$this->getDado('exercicio')."'
+				  AND configuracao_dcasp_registros.exercicio IN ('".$this->getDado('exercicio')."', '".(intval($this->getDado('exercicio')) - 1)."')
 				  AND configuracao_dcasp_registros.tipo_registro = 40
 				GROUP BY configuracao_dcasp_arquivo.nome_arquivo_pertencente
         	";
@@ -894,7 +894,7 @@
 				   ON REPLACE(configuracao_dcasp_registros.conta_contabil, '.', '') = contabil.conta
 
 				WHERE configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'BP'
-				  AND configuracao_dcasp_registros.exercicio = '".$this->getDado('exercicio')."'
+				  AND configuracao_dcasp_registros.exercicio IN ('".$this->getDado('exercicio')."', '".(intval($this->getDado('exercicio')) - 1)."')
 				  AND configuracao_dcasp_registros.tipo_registro = 60
 				GROUP BY configuracao_dcasp_arquivo.nome_arquivo_pertencente
         	";
@@ -953,6 +953,10 @@
 						 ON plano_conta_credito.exercicio = plano_analitica_credito.exercicio
 						AND plano_conta_credito.cod_conta = plano_analitica_credito.cod_conta
 								      
+                       LEFT JOIN contabilidade.plano_conta_encerrada AS plano_conta_encerrada_credito
+                         ON plano_conta_encerrada_credito.exercicio = plano_conta_credito.exercicio
+                        AND plano_conta_encerrada_credito.cod_conta = plano_conta_credito.cod_conta
+
 					   LEFT JOIN contabilidade.plano_analitica AS plano_analitica_debito 
 						 ON plano_analitica_debito.exercicio = conta_debito.exercicio
 					    AND plano_analitica_debito.cod_plano = conta_debito.cod_plano
@@ -961,9 +965,17 @@
 						 ON plano_conta_debito.exercicio = plano_analitica_debito.exercicio
 						AND plano_conta_debito.cod_conta = plano_analitica_debito.cod_conta
 
-					  WHERE (lancamento.exercicio = '".(intval($this->getDado('exercicio')) - 1)."' 
-					  	 OR lote.dt_lote BETWEEN '".$this->getDado('dtInicial')."' AND '".$this->getDado('dtFinal')."')
+					   LEFT JOIN contabilidade.plano_conta_encerrada AS plano_conta_encerrada_debito
+                         ON plano_conta_encerrada_debito.exercicio = plano_conta_debito.exercicio
+                        AND plano_conta_encerrada_debito.cod_conta = plano_conta_debito.cod_conta
+
+					  WHERE (lote.dt_lote BETWEEN '".$this->getDado('stDataInicialExercicioAtual')."' AND '".$this->getDado('stDataFinalExercicioAtual')."'
+                         OR lote.dt_lote BETWEEN '".$this->getDado('stDataInicialExercicioAnterior')."' AND '".$this->getDado('stDataFinalExercicioAnterior')."')
 					  	AND lancamento.cod_entidade IN (".$this->getDado('entidades').")
+
+					  	AND plano_conta_encerrada_debito.cod_conta IS NULL
+                        AND plano_conta_encerrada_credito.cod_conta IS NULL
+                        
 				      ORDER BY valor_lancamento.vl_lancamento
 				) AS contabil 
         	";
@@ -1061,16 +1073,16 @@
  							   LEFT JOIN contabilidade.plano_recurso AS plano_conta_recurso_debito
 								 ON plano_conta_recurso_debito.cod_plano = plano_analitica_debito.cod_plano
 								AND plano_conta_recurso_debito.exercicio = plano_analitica_debito.exercicio
-								    
-						      WHERE (lancamento.exercicio = '".(intval($this->getDado('exercicio')) - 1)."' 
-						      	 OR lote.dt_lote BETWEEN '".$this->getDado('dtInicial')."' AND '".$this->getDado('dtFinal')."')
-								AND lancamento.cod_entidade IN (".$this->getDado('entidades').")
+								    	
+							  WHERE (lote.dt_lote BETWEEN '".$this->getDado('stDataInicialExercicioAtual')."' AND '".$this->getDado('stDataFinalExercicioAtual')."'
+		                         OR lote.dt_lote BETWEEN '".$this->getDado('stDataInicialExercicioAnterior')."' AND '".$this->getDado('stDataFinalExercicioAnterior')."')
+							  	AND lancamento.cod_entidade IN (".$this->getDado('entidades').")
+
 							  ORDER BY valor_lancamento.vl_lancamento
 						) AS contabil 
 
-					 ON recurso.exercicio = '2017'
+					 ON recurso.exercicio IN ('".$this->getDado('exercicio')."', '".(intval($this->getDado('exercicio')) - 1)."')
 					AND contabil.cod_recurso = recurso.cod_recurso
-
 				GROUP BY recurso.cod_recurso, recurso.nom_recurso
 				ORDER BY recurso.cod_recurso
         	";

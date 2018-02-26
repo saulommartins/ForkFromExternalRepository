@@ -2042,6 +2042,7 @@
 					  WHERE (lote.dt_lote BETWEEN '".$this->getDado('stDataInicialExercicioAtual')."' AND '".$this->getDado('stDataFinalExercicioAtual')."'
                          OR lote.dt_lote BETWEEN '".$this->getDado('stDataInicialExercicioAnterior')."' AND '".$this->getDado('stDataFinalExercicioAnterior')."')
 					  	AND lancamento.cod_entidade IN (".$this->getDado('entidades').")
+                        
 				      ORDER BY valor_lancamento.vl_lancamento
 				) AS contabil 
         	";

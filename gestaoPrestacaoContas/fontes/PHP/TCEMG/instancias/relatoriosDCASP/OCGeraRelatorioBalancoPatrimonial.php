@@ -22,10 +22,22 @@
 
     $obTTCEMGRelatorioBalancoPatrimonial = new TTCEMGRelatorioBalancoPatrimonial();
     $obTTCEMGRelatorioBalancoPatrimonial->setDado('exercicio'    , Sessao::getExercicio());
-    $obTTCEMGRelatorioBalancoPatrimonial->setDado('dtInicial'    , $_REQUEST['stDataInicial']);
-    $obTTCEMGRelatorioBalancoPatrimonial->setDado('dtFinal'      , $_REQUEST['stDataFinal']);
     $obTTCEMGRelatorioBalancoPatrimonial->setDado('entidades'    , implode(',',$_REQUEST['inCodEntidade']));
+    // $obTTCEMGRelatorioBalancoPatrimonial->setDado('dtInicial'    , $_REQUEST['stDataInicial']);
+    // $obTTCEMGRelatorioBalancoPatrimonial->setDado('dtFinal'      , $_REQUEST['stDataFinal']);
 
+
+
+    $stDataInicialExercicioAtual = substr($_REQUEST['stDataInicial'], 0, 6) . Sessao::getExercicio();
+    $stDataFinalExercicioAtual = substr($_REQUEST['stDataFinal'], 0, 6) . Sessao::getExercicio();
+    $obTTCEMGRelatorioBalancoPatrimonial->setDado('stDataInicialExercicioAtual', $stDataInicialExercicioAtual);
+    $obTTCEMGRelatorioBalancoPatrimonial->setDado('stDataFinalExercicioAtual', $stDataFinalExercicioAtual);
+
+    $stDataInicialExercicioAnterior = substr($_REQUEST['stDataInicial'], 0, 6) . (intval(Sessao::getExercicio()) - 1);
+    $stDataFinalExercicioAnterior = substr($_REQUEST['stDataFinal'], 0, 6) . (intval(Sessao::getExercicio()) - 1);
+    $obTTCEMGRelatorioBalancoPatrimonial->setDado('stDataInicialExercicioAnterior', $stDataInicialExercicioAnterior);
+    $obTTCEMGRelatorioBalancoPatrimonial->setDado('stDataFinalExercicioAnterior', $stDataFinalExercicioAnterior);
+    
     $_data['exercicio'] = Sessao::read('exercicio');
 
     $rsRecordSet10 = new RecordSet;
