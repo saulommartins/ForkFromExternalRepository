@@ -61,6 +61,10 @@ if (empty($arDados)) {
     $stCodigoRecibo = Sessao::read('stCodigoReciboD');
     $exercicio = Sessao::read('exercicio');
 
+    // if ($stCodigoRecibo == "") {
+    //     $stCodigoRecibo = $request->get('cod_recibo_extra_despesa');
+    // }
+
     $rsRecordSet = new RecordSet;
     $obTReciboExtra->recuperaDadosReciboEmissao($rsRecordSet, $stCodigoRecibo, $exercicio, 'D');
     $arDados = $rsRecordSet->getObjeto();

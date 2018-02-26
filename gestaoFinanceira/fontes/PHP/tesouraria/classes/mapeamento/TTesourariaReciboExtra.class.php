@@ -1162,20 +1162,32 @@ function montaRecuperaUltimaDataRecibo()
     return $stSql;
 }
 
-    public function recuperaDadosReciboEmissao(&$rsRecordSet, $stCodigoRecibo, $exercicio, $tipoRecibo)
+    public function recuperaDadosReciboEmissao(&$rsRecordSet, $stCodigoRecibo, $exercicio, $tipoRecibo, $codOrdemPagamento = null)
     {
         $obErro      = new Erro;
         $obConexao   = new Conexao;
         $rsRecordSet = new RecordSet;
 
-        $stSql = $this->montaRecuperaDadosReciboEmissao($stCodigoRecibo, $exercicio, $tipoRecibo);
+        $stSql = $this->montaRecuperaDadosReciboEmissao();
+
+        $stSql .= ' WHERE recibo_extra.exercicio = \''.$exercicio.'\'';
+        $stSql .= ' AND recibo_extra.tipo_recibo = \''.$tipoRecibo.'\'';
+
+        if (!empty($stCodigoRecibo)) {
+            $stSql .= ' AND recibo_extra.cod_recibo_extra = \''.$stCodigoRecibo.'\'';
+        }
+            
+        if (!empty($codOrdemPagamento)) {
+            $stSql .= ' AND ordem_pagamento_recibo_extra.cod_ordem = \''.$codOrdemPagamento.'\'';
+        }
+        
         $this->setDebug( $stSql );
         $obErro = $obConexao->executaSQL( $rsRecordSet, $stSql );
 
         return $obErro;
     }
 
-    public function montaRecuperaDadosReciboEmissao($stCodigoRecibo, $exercicio, $tipoRecibo)
+    public function montaRecuperaDadosReciboEmissao()
     {
         return '
             SELECT recibo_extra.cod_entidade as "inCodEntidade",
@@ -1223,9 +1235,11 @@ function montaRecuperaUltimaDataRecibo()
             AND recibo_extra_banco.cod_entidade = recibo_extra.cod_entidade
             AND recibo_extra_banco.tipo_recibo = recibo_extra.tipo_recibo
 
-            WHERE recibo_extra.cod_recibo_extra = '.$stCodigoRecibo.'
-            AND recibo_extra.exercicio = \''.$exercicio.'\'
-            AND recibo_extra.tipo_recibo = \''.$tipoRecibo.'\'';
+            LEFT JOIN empenho.ordem_pagamento_recibo_extra
+            ON ordem_pagamento_recibo_extra.exercicio = recibo_extra.exercicio
+            AND ordem_pagamento_recibo_extra.cod_entidade = recibo_extra.cod_entidade
+            AND ordem_pagamento_recibo_extra.cod_recibo_extra = recibo_extra.cod_recibo_extra 
+            AND ordem_pagamento_recibo_extra.tipo_recibo = recibo_extra.tipo_recibo';
     }
 
 }

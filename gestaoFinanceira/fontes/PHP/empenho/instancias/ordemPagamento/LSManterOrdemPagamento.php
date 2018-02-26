@@ -290,6 +290,8 @@ if ($stAcao == "anular") {
 } elseif ($stAcao == "imprimir") {
     $obLista->addAcao();
     $stAcao  = "imprimir";
+    Sessao::write('stCaminhoSecundario', CAM_GF_EMP_INSTANCIAS."ordemPagamento/OCRelatorioReciboDespesaExtra.php");
+
     $pgProx  = CAM_FW_POPUPS."relatorio/OCRelatorio.php";
     $stLink .= "&stCaminho=".CAM_GF_EMP_INSTANCIAS."ordemPagamento/OCRelatorioOrdemPagamento.php";
     $obLista->ultimaAcao->setAcao( $stAcao );
@@ -331,6 +333,7 @@ if ($stAcao == "anular") {
 
 } elseif ($stAcao == "reemitir") {
     $obLista->addAcao();
+
     $pgProx  = CAM_FW_POPUPS."relatorio/OCRelatorio.php";
     $stLink .= "&stCaminho=".CAM_GF_EMP_INSTANCIAS."ordemPagamento/OCRelatorioOrdemPagamentoAnulado.php";
     $obLista->ultimaAcao->setAcao( $stAcao );

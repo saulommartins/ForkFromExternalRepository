@@ -51,7 +51,7 @@ $obRegra = new REmpenhoRelatorioOrdemPagamento;
 
 $arFiltro = Sessao::read('filtroRelatorio');
 $arRecordSetTodos = array();
-
+    
 switch ($arFiltro['stCtrl']) {
     case 'imprimirTodos':
         $rsListaImpressao = Sessao::read('rsListaImpressao');
@@ -70,6 +70,7 @@ switch ($arFiltro['stCtrl']) {
     break;
 
     default:
+        Sessao::write('inCodigoOrdem', $arFiltro['inCodigoOrdem']);
         $obRegra->setCodOrdem   ($arFiltro['inCodigoOrdem']);
         $obRegra->setExercicio  ($arFiltro['stExercicio']);
         $obRegra->setCodEntidade($arFiltro['inCodEntidade']);

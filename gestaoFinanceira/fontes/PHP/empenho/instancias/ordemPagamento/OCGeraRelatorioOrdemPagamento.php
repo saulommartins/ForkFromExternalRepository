@@ -290,6 +290,7 @@ class ListaFormPDFOrdemPagamento extends ListaFormPDF
         $arRecordSetTodos = Sessao::read('rsRecordSet');
         $rsListaImpressao = Sessao::read('rsListaImpressao');
         $arFiltro = Sessao::read('filtroRelatorio');
+
         if (isset($arFiltro['stCtrl']) && $arFiltro['stCtrl']=='imprimirTodos') {
             $dadosImpressao = $rsListaImpressao->getElementos();
         } else {
@@ -629,9 +630,9 @@ class ListaFormPDFOrdemPagamento extends ListaFormPDF
             $this->arCampo = $this->inAlturaLinha = $this->arQuebraPaginaLista = $this->arRecordSet = $this->arCabecalho = $this->arLarguraColuna =
             $this->arQuebraLinha = $this->arIndentaColuna = array();
 
-            if ($rsRecordSet['arRecibosExtra']) {
+            /*if ($rsRecordSet['arRecibosExtra']) {
                 $this->PDFReciboReceita($rsRecordSet['arRecibosExtra']);
-            }
+            }*/
         }
     }
 
@@ -846,11 +847,10 @@ class ListaFormPDFOrdemPagamento extends ListaFormPDF
         $arConfiguracao['nom_acao'] = 'Ordem de Pagamento';
         $this->setEnderecoPrefeitura   ( $arConfiguracao );
     }
-
 }
 
 $obPDF = new ListaFormPDFOrdemPagamento;
 $obPDF->PDFOrdemPagamento();
-
 $obPDF->show();
+
 ?>
