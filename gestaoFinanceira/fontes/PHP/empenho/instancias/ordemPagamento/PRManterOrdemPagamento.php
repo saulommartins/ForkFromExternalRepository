@@ -435,16 +435,16 @@ function incluirReciboExtra($obREmpenhoOrdemPagamento, $tipoRecibo, $boTransacao
 
             $inCodRecurso = Sessao::read("inCodRecurso");
             
-            // if (isset($_POST['inCodRecurso']) && !empty($_POST['inCodRecurso'])) {
-            //     $inCodRecurso = $_POST['inCodRecurso'];
-            // }
+            if (isset($_POST['inCodRecurso']) && !empty($_POST['inCodRecurso'])) {
+                $inCodRecurso = $_POST['inCodRecurso'];
+            }
             
-            if (!$obErro->ocorreu() && $inCodRecurso != "") {
+            // if (!$obErro->ocorreu() && $inCodRecurso != "") {
                 $obRecurso = new TTesourariaReciboExtraRecurso;
                 $obRecurso->obTTesourariaReciboExtra = $obTReciboExtra;
                 $obRecurso->setDado('cod_recurso', $inCodRecurso);
                 $obErro = $obRecurso->inclusao($boTransacao);
-            }
+            // }
 
             $stCodigoRecibo .= $inCodigoRecibo.',';
 

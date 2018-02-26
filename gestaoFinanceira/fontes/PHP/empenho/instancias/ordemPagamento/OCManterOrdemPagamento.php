@@ -1296,7 +1296,7 @@ switch ($_REQUEST ["stCtrl"]) {
             $stJs .= "d.getElementById('inCodPlanoRetencao').value = '';";
             $stJs .= "d.getElementById('stNomContaRetencao').innerHTML = '&nbsp;';";
             $stJs .= "d.getElementById('nuValorRetencao').value = '';";
-            $stJs .= "d.getElementById('inCodRecurso').value = '';";
+            // $stJs .= "d.getElementById('inCodRecurso').value = '';";
             $stJs .= "d.getElementById('stDescricaoRecurso').innerHTML = '&nbsp;';";
 
             if (Sessao::read('stEmitirCarneOp') == 'true') {
