@@ -1097,6 +1097,8 @@ switch ($stCtrl) {
                 $js .= "d.getElementById('stNomDespesa').innerHTML='".$stNomDespesa."';";
                 $js .= montaComboDiverso($request);
             }
+
+            Sessao::write('inCodRecurso', $rsDespesa->getCampo('cod_recurso'));
         } else
             $js .= "d.getElementById('stNomDespesa').innerHTML='&nbsp;';";
 

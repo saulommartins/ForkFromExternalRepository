@@ -1540,8 +1540,8 @@ function listarMaiorDataAnulacao(&$rsRecordSet, $stOrder = "", $boTransacao = ""
 */
 function listar(&$rsRecordSet, $stOrder = "tabela.cod_entidade, tabela.cod_empenho, tabela.nom_fornecedor", $boTransacao = "")
 {
-    include_once ( CAM_GF_EMP_MAPEAMENTO     ."TEmpenhoEmpenho.class.php"                    );
-    $obTEmpenhoEmpenho                    =  new TEmpenhoEmpenho;
+    include_once ( CAM_GF_EMP_MAPEAMENTO ."TEmpenhoEmpenho.class.php" );
+    $obTEmpenhoEmpenho =  new TEmpenhoEmpenho;
 
     $obTEmpenhoEmpenho->setDado( "numcgm"   , $this->obRUsuario->obRCGM->getNumCGM() );
     $obTEmpenhoEmpenho->setDado( "exercicio", $this->stExercicio );
