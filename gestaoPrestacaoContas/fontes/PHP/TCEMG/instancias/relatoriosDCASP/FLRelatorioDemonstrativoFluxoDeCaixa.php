@@ -9,8 +9,7 @@
     include_once ( CAM_GF_ORC_COMPONENTES."ISelectMultiploEntidadeUsuario.class.php" );
     include_once ( CAM_GPC_TCEMG_MAPEAMENTO."TTCEMGRelatorioBalancoOrcamentario.class.php");
 
-    $pgOcul = 'OCRelatorioBalancoOrcamentario.php';
-    $pgGera = 'OCGeraRelatorioBalancoOrcamentario.php';
+    $pgGera = 'OCGeraRelatorioDemonstrativoFluxoDeCaixa.php';
 
     $stAcao = $request->get('stAcao');
     $boTransacao = new Transacao();
