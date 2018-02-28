@@ -484,7 +484,7 @@ class TTCEMGHOMOLIC extends Persistente
                            ELSE NULL
                       END AS nro_lote,
                       homologacao.cod_item,
-                      COALESCE(edital.percentual_taxa_administracao, 0)::numeric(14,4) as percentual_taxa_administracao
+                      COALESCE(edital.percentual_taxa_administracao, 0)::numeric(4,2) as percentual_taxa_administracao
   
                 FROM  licitacao.homologacao
 
