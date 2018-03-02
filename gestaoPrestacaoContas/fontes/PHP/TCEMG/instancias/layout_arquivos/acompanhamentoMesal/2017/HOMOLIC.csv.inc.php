@@ -316,7 +316,7 @@ if (count($arRecordSetHOMOLIC10) > 0) {
                         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(14);
 
                         $obExportador->roUltimoArquivo->roUltimoBloco->addColuna("nro_lote");
-                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("NUMERICO_ZEROS_ESQ");
+                        $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("CARACTER_ESPACOS_DIR");
                         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(4);
 
