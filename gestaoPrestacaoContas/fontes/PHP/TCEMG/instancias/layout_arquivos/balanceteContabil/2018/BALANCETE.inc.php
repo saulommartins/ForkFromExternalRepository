@@ -97,6 +97,10 @@ $obTTCEMGBALANCETE->recuperaRegistro25($rsRegistroBALANCETE25);
 
 if ($rsRegistroBALANCETE10->getNumLinhas() > 0) {
     foreach ($rsRegistroBALANCETE10->getElementos() AS $arBALANCETE10) {
+        
+        $mes = substr($arDatasInicialFinal['stDtInicial'], 3, 2);
+        $obTTCEMGBALANCETE->registraContasLancadas($mes, $arBALANCETE10['conta_contabil']);
+
         // CHAVE PARA TODOS OS REGISTRO
         $stChave = $arBALANCETE10['conta_contabil'];
 

@@ -51,6 +51,18 @@ class TTCEMGBALANCETE extends Persistente {
         parent::Persistente();
     }
 
+    public function registraContasLancadas($mes, $conta)
+    {
+      $obErro      = new Erro;
+      $obConexao   = new Conexao;
+      $rsRecordSet = new RecordSet;
+     
+      return $obConexao->executaDML( "
+        INSERT INTO tcemg.arquivo_balancete (cod_conta_pcasp, exercicio, mes)
+        VALUES ('".$conta."', '".Sessao::read('exercicio')."', ".$mes.")
+      "); 
+    }
+    
     public function recuperaRegistro10(&$rsRecordSet)
     {
        $obErro      = new Erro;
