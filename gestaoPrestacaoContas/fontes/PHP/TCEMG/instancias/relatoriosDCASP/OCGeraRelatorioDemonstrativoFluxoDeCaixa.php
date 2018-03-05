@@ -27,6 +27,16 @@ $stDataFinalExercicioAnterior = substr($_REQUEST['stDataFinal'], 0, 6) . (intval
 $obTTCEMGRelatoriDemonstracaoFluxoCaixa->setDado('stDataInicialExercicioAnterior', $stDataInicialExercicioAnterior);
 $obTTCEMGRelatoriDemonstracaoFluxoCaixa->setDado('stDataFinalExercicioAnterior', $stDataFinalExercicioAnterior);
 
+
+$obTTCEMGRelatoriDemonstracaoFluxoCaixa->setDado('exercicio', Sessao::getExercicio());
+$obTTCEMGRelatoriDemonstracaoFluxoCaixa->setDado('stDataInicialExercicioAtual'    , "02/01/2017");
+$obTTCEMGRelatoriDemonstracaoFluxoCaixa->setDado('stDataFinalExercicioAtual'      , "02/28/2017");
+$obTTCEMGRelatoriDemonstracaoFluxoCaixa->setDado('stDataInicialExercicioAnterior'    , "02/01/2016");
+$obTTCEMGRelatoriDemonstracaoFluxoCaixa->setDado('stDataFinalExercicioAnterior'      , "02/28/2016");
+$obTTCEMGRelatoriDemonstracaoFluxoCaixa->setDado('entidades'    , 2);
+
+
+
 $rsRecordSet = new RecordSet;
 $obTTCEMGRelatoriDemonstracaoFluxoCaixa->recuperaDadosDemonstracaoFluxoCaixa("sqlDemostracaoFluxoCaixa", $rsRecordSet);
 $res = $rsRecordSet->getElementos();

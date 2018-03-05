@@ -398,20 +398,20 @@
 	</tr>
 	<tr>
 		<td class="padding-left-30"> da União </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_inter_transf_corrente_rec_uniao'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_inter_transf_corrente_rec_uniao'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
 		<td class="padding-left-30"> de Estados e Distrito Federal </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_inter_transf_corrente_rec_estado_df'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_inter_transf_corrente_rec_estado_df'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
 		<td class="padding-left-30"> de Municípios </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_inter_transf_corrente_rec_municipios'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_inter_transf_corrente_rec_municipios'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
@@ -419,8 +419,8 @@
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Outras transferências correntes recebidas </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_inter_transf_corrente_rec_municipios'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_inter_transf_corrente_rec_municipios'], 2, ',', '.') ?> </td>
 
 	</tr>
 
@@ -430,8 +430,8 @@
 
 	<tr>
 		<td> <b> Total das Transferências Correntes Recebidas </b> </td>
-		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_subtotal_saldo'], 2, ',', '.') ?> </td>
+		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_atual']]['vl_total_transf_corrente_recebidas'], 2, ',', '.') ?> </td>
+		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_total_transf_corrente_recebidas'], 2, ',', '.') ?> </td>
 	</tr>
 
 	<tr>
@@ -449,20 +449,20 @@
 	</tr>
 	<tr>
 		<td class="padding-left-30"> a União </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_inter_transf_corrente_conc_uniao'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_inter_transf_corrente_conc_uniao'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
 		<td class="padding-left-30"> a Estados e Distrito Federal </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_inter_transf_corrente_conc_estado_df'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_inter_transf_corrente_conc_estado_df'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
 		<td class="padding-left-30"> a Municípios </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_inter_transf_corrente_conc_municipios'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_inter_transf_corrente_conc_municipios'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
@@ -470,8 +470,8 @@
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Outras transferências concedidas </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_inter_transf_corrente_conc_outras'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_inter_transf_corrente_conc_outras'], 2, ',', '.') ?> </td>
 
 	</tr>
 
@@ -481,8 +481,8 @@
 
 	<tr>
 		<td> <b> Total das Transferências Concedidas </b> </td>
-		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_subtotal_saldo'], 2, ',', '.') ?> </td>
+		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_atual']]['vl_total_transf_corrente_concedidas'], 2, ',', '.') ?> </td>
+		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_total_transf_corrente_concedidas'], 2, ',', '.') ?> </td>
 	</tr>
 	</tbody>
 </table>
@@ -517,159 +517,159 @@
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Legislativa </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_legislativa'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_legislativa'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Judiciária </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_judiciaria'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_judiciaria'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Essencial à Justiça </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_essencial_justica'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_essencial_justica'], 2, ',', '.') ?> </td>
 
 	</tr>
 
 	<tr>
 		<td class="padding-left-30"> Administração </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_administracao'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_administracao'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Defesa Nacional </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_defesa_nacional'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_defesa_nacional'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Segurança Pública </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_segurança_publica'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_segurança_publica'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Relações Exteriores </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_relacoes_exteriores'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_relacoes_exteriores'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Assistência Social </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_assistencia_social'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_assistencia_social'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Previdência Social </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_previdencia_social'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_previdencia_social'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Saúde </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_saude'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_saude'], 2, ',', '.') ?> </td>
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Trabalho </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_trabalho'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_trabalho'], 2, ',', '.') ?> </td>
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Educação </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_educacao'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_educacao'], 2, ',', '.') ?> </td>
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Cultura </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_cultura'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_cultura'], 2, ',', '.') ?> </td>
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Direitos da Cidadania </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_direitos_cidadania'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_direitos_cidadania'], 2, ',', '.') ?> </td>
 
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Urbanismo </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_urbanismo'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_urbanismo'], 2, ',', '.') ?> </td>
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Habitação </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_habitacao'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_habitacao'], 2, ',', '.') ?> </td>
 	</tr>
 
 	<tr>
 		<td class="padding-left-30"> Saneamento </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_saneamento'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_saneamento'], 2, ',', '.') ?> </td>
 	</tr>
 
 	<tr>
 		<td class="padding-left-30"> Gestão Ambiental </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_gestao_ambiental'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_gestao_ambiental'], 2, ',', '.') ?> </td>
 	</tr>
 
 	<tr>
 		<td class="padding-left-30"> Ciência e Tecnologia </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_ciencia_tecnologia'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_ciencia_tecnologia'], 2, ',', '.') ?> </td>
 	</tr>
 
 	<tr>
 		<td class="padding-left-30"> Agricultura </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_agricultura'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_agricultura'], 2, ',', '.') ?> </td>
 	</tr>
 
 	<tr>
 		<td class="padding-left-30"> Organização Agrária </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_organizacao_agraria'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_organizacao_agraria'], 2, ',', '.') ?> </td>
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Indústria </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_industria'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_industria'], 2, ',', '.') ?> </td>
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Comércio e Serviços </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_comercio_servicos'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_comercio_servicos'], 2, ',', '.') ?> </td>
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Comunicações </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_comunicacoes'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_comunicacoes'], 2, ',', '.') ?> </td>
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Energia </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_energia'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_energia'], 2, ',', '.') ?> </td>
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Transporte </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_transporte'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_transporte'], 2, ',', '.') ?> </td>
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Desporto e Lazer </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_desporto_lazer'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_desporto_lazer'], 2, ',', '.') ?> </td>
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Encargos Especiais </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_despesa_fun_encargos_especiais'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_despesa_fun_encargos_especiais'], 2, ',', '.') ?> </td>
 	</tr>
 
 	<tr>
@@ -678,8 +678,8 @@
 
 	<tr>
 		<td> <b> Total dos Desembolsos de Pessoal e Demais Despesas por Função </b> </td>
-		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_atual']]['vl_total_desembolso_despesa_funcao'], 2, ',', '.') ?> </td>
+		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_total_desembolso_despesa_funcao'], 2, ',', '.') ?> </td>
 	</tr>
 	</tbody>
 </table>
@@ -716,18 +716,18 @@
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Juros e Correção Monetária da Dívida Interna </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_juros_correcao_monetaria_divida_interna'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_juros_correcao_monetaria_divida_interna'], 2, ',', '.') ?> </td>
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Juros e Correção Monetária da Dívida Externa </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_juros_correcao_monetaria_divida_externa'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_juros_correcao_monetaria_divida_externa'], 2, ',', '.') ?> </td>
 	</tr>
 	<tr>
 		<td class="padding-left-30"> Outros Encargos da Dívida </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_atual']]['vl_outros_encargos_da_divida'], 2, ',', '.') ?> </td>
+		<td class="text_align_right"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_outros_encargos_da_divida'], 2, ',', '.') ?> </td>
 	</tr>
 
 	<tr>
@@ -736,8 +736,8 @@
 
 	<tr>
 		<td> <b> Total dos Juros e Encargos da Dívida </b> </td>
-		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_atual']]['valor_ano_atual'], 2, ',', '.') ?> </td>
-		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_anterior']]['valor_ano_anterior'], 2, ',', '.') ?> </td>
+		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_atual']]['vl_total_correcao_monetaria'], 2, ',', '.') ?> </td>
+		<td class="text_align_right border_top"> <?= number_format($_data[$_data['exercicio_anterior']]['vl_total_correcao_monetaria'], 2, ',', '.') ?> </td>
 	</tr>
 	</tbody>
 </table>
