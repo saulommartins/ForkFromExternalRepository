@@ -24,7 +24,8 @@
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
-include_once CAM_GPC_TCEMG_MAPEAMENTO . 'TTCEMGCampoContaCorrente.class.php';
+include_once CAM_GPC_TCEMG_MAPEAMENTO . 'TTCEMGConfiguracaoDCASPRegistro.class.php';
+include_once CAM_GPC_TCEMG_MAPEAMENTO . 'TTCEMGConfiguracaoDCASPRecurso.class.php';
 
 //Define o nome dos arquivos PHP
 $stPrograma = "ManterConfiguracaoDCASP";
@@ -34,44 +35,91 @@ $pgForm = "FM" . $stPrograma . ".php";
 $pgProc = "PR" . $stPrograma . ".php";
 $pgOcul = "OC" . $stPrograma . ".php";
 
-$stAcao = $request->get('stAcao');
-$tipoConta = $request->get('stTipoConta');
+
+$exercicio = Sessao::getExercicio();
+
 $boTransacao = new Transacao();
 
-$tipoRegistro = Sessao::read('tipoRegistro');
-$codSequencial = Sessao::read('codSequencialCampo');
-$contas = Sessao::read('contas');
+removerTodasContas($request, $boTransacao, $exercicio);
 
-$customWhere = ' WHERE seq_arquivo = ' . $request->get('seqArquivo');
-$TTCEMGCampoContaCorrente = new TTCEMGCampoContaCorrente();
-$TTCEMGCampoContaCorrente->setCustomWhere($customWhere);
-$TTCEMGCampoContaCorrente->exclusao($boTransacao);
+inserirContas($request, $boTransacao, $exercicio, CAM_GPC_TCEMG_DCASP_CONF_DESPESA);
 
-if (!empty($contas)) {
-  foreach ($contas as $key => $value) {
-    $TTCEMGCampoContaCorrente->proximoCod($cod);
+inserirContas($request, $boTransacao, $exercicio, CAM_GPC_TCEMG_DCASP_CONF_RECEITA);
 
-    $TTCEMGCampoContaCorrente->setDado('cod_registro', $cod);
-    $TTCEMGCampoContaCorrente->setDado('exercicio', $value['exercicio']);
-    $TTCEMGCampoContaCorrente->setDado('tipo_registro', $_REQUEST['tipoRegistro']);
-    $TTCEMGCampoContaCorrente->setDado('cod_arquivo', $_REQUEST['codArquivo']);
-    $TTCEMGCampoContaCorrente->setDado('seq_arquivo', $_REQUEST['seqArquivo']);
-    if ($value['tipo_conta'] == 'Despesa') {
-      $TTCEMGCampoContaCorrente->setDado('conta_orc_despesa', $value['conta_orc_despesa']);
-      $TTCEMGCampoContaCorrente->setDado('conta_orc_receita', NULL);
-      $TTCEMGCampoContaCorrente->setDado('conta_contabil', NULL);
-    } elseif ($value['tipo_conta'] == 'Receita') {
-      $TTCEMGCampoContaCorrente->setDado('conta_orc_despesa', NULL);
-      $TTCEMGCampoContaCorrente->setDado('conta_orc_receita', $value['conta_orc_receita']);
-      $TTCEMGCampoContaCorrente->setDado('conta_contabil', NULL);
-    } else {
-      $TTCEMGCampoContaCorrente->setDado('conta_orc_despesa', NULL);
-      $TTCEMGCampoContaCorrente->setDado('conta_orc_receita', NULL);
-      $TTCEMGCampoContaCorrente->setDado('conta_contabil', $value['conta_contabil']);
-    }
+inserirContas($request, $boTransacao, $exercicio, CAM_GPC_TCEMG_DCASP_CONF_CONTABIL);
 
-    $TTCEMGCampoContaCorrente->inclusao($boTransacao);
-  }
+removerTodosRecursos($request, $boTransacao, $exercicio);
+
+inserirRecursos($request, $boTransacao, $exercicio);
+
+
+function removerTodasContas($request, $boTransacao, $exercicio) {
+	$customWhere = ' WHERE seq_arquivo = ' . $request->get('seqArquivo'). " AND exercicio = '"
+		.$exercicio."'";
+	$TTCEMGConfiguracaoDCASPRegistro = new TTCEMGConfiguracaoDCASPRegistro();
+	$TTCEMGConfiguracaoDCASPRegistro->setCustomWhere($customWhere);
+	$TTCEMGConfiguracaoDCASPRegistro->exclusao($boTransacao);
+	return;
 }
 
-SistemaLegado::alertaAviso($pgForm . "?" . Sessao::getId() . "&stAcao=$stAcao", "Dados Salvos com Sucesso", "incluir", "incluir_n", Sessao::getId(), "../");
+function inserirContas($request, $boTransacao, $exercicio, $tipoConta) {
+	$contas = Sessao::read($tipoConta);
+	if (empty($contas)) {
+		return;
+	}
+	$TTCEMGConfiguracaoDCASPRegistro = new TTCEMGConfiguracaoDCASPRegistro();
+	foreach ($contas as $key => $value) {
+		$TTCEMGConfiguracaoDCASPRegistro->proximoCod($cod);
+		$TTCEMGConfiguracaoDCASPRegistro->setDado('cod_registro', $cod);
+		$TTCEMGConfiguracaoDCASPRegistro->setDado('exercicio', $exercicio);
+		$TTCEMGConfiguracaoDCASPRegistro->setDado('tipo_registro', $request->get('tipoRegistro'));
+		$TTCEMGConfiguracaoDCASPRegistro->setDado('cod_arquivo', $request->get('codArquivo'));
+		$TTCEMGConfiguracaoDCASPRegistro->setDado('seq_arquivo', $request->get('seqArquivo'));
+		if ($tipoConta == CAM_GPC_TCEMG_DCASP_CONF_DESPESA) {
+			$TTCEMGConfiguracaoDCASPRegistro->setDado('conta_orc_despesa',
+				$value['cod_estrutural']);
+			$TTCEMGConfiguracaoDCASPRegistro->setDado('conta_orc_receita', null);
+			$TTCEMGConfiguracaoDCASPRegistro->setDado('conta_contabil', null);
+		} elseif ($tipoConta == CAM_GPC_TCEMG_DCASP_CONF_RECEITA) {
+			$TTCEMGConfiguracaoDCASPRegistro->setDado('conta_orc_despesa', null);
+			$TTCEMGConfiguracaoDCASPRegistro->setDado('conta_orc_receita',
+				$value['cod_estrutural']);
+			$TTCEMGConfiguracaoDCASPRegistro->setDado('conta_contabil', null);
+		} else {
+			$TTCEMGConfiguracaoDCASPRegistro->setDado('conta_orc_despesa', null);
+			$TTCEMGConfiguracaoDCASPRegistro->setDado('conta_orc_receita', null);
+			$TTCEMGConfiguracaoDCASPRegistro->setDado('conta_contabil', $value['cod_estrutural']);
+		}
+
+		$TTCEMGConfiguracaoDCASPRegistro->inclusao($boTransacao);
+	}
+	return;
+}
+
+
+function removerTodosRecursos($request, $boTransacao, $exercicio) {
+	$customWhere = ' WHERE seq_arquivo = ' . $request->get('seqArquivo'). " AND exercicio = '"
+		.$exercicio."'";
+	$TTCEMGConfiguracaoDCASPRecurso = new TTCEMGConfiguracaoDCASPRecurso();
+	$TTCEMGConfiguracaoDCASPRecurso->setCustomWhere($customWhere);
+	$TTCEMGConfiguracaoDCASPRecurso->exclusao($boTransacao);
+	return;
+}
+function inserirRecursos($request, $boTransacao, $exercicio) {
+	$recursos = Sessao::read('arRecursos');
+	if (empty($recursos)) {
+		return;
+	}
+	$TTCEMGConfiguracaoDCASPRecurso = new TTCEMGConfiguracaoDCASPRecurso();
+	foreach ($recursos as $key => $value) {
+
+		$TTCEMGConfiguracaoDCASPRecurso->setDado('cod_recurso', $value["cod_recurso"]);
+		$TTCEMGConfiguracaoDCASPRecurso->setDado('exercicio', $exercicio);
+		$TTCEMGConfiguracaoDCASPRecurso->setDado('tipo_registro', $request->get('tipoRegistro'));
+		$TTCEMGConfiguracaoDCASPRecurso->setDado('cod_arquivo', $request->get('codArquivo'));
+		$TTCEMGConfiguracaoDCASPRecurso->setDado('seq_arquivo', $request->get('seqArquivo'));
+
+		$TTCEMGConfiguracaoDCASPRecurso->inclusao($boTransacao);
+	}
+	return;
+}

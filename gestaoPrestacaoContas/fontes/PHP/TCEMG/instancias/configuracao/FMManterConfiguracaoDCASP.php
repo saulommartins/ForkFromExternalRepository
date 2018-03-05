@@ -24,8 +24,6 @@
 
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/FrameworkHTML.inc.php';
 include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/include/cabecalho.inc.php';
-include_once CAM_GF_ORC_COMPONENTES . 'ITextBoxSelectEntidadeGeral.class.php';
-include_once CAM_GPC_TCEMG_MAPEAMENTO . 'TTCEMGCampoContaCorrente.class.php';
 
 //Define o nome dos arquivos PHP
 $stPrograma = "ManterConfiguracaoDCASP";
@@ -75,8 +73,15 @@ $obSeqArquivo = new Hidden;
 $obSeqArquivo->setName("seqArquivo");
 $obSeqArquivo->setId("seqArquivo");
 
-$obSpnContas = new Span();
-$obSpnContas->setId('spnContas');
+$obSpnReceita = new Span();
+$obSpnReceita->setId('spnReceita');
+$obSpnDespesa = new Span();
+$obSpnDespesa->setId('spnDespesa');
+$obSpnContabil = new Span();
+$obSpnContabil->setId('spnContabil');
+
+$obSpnRecursos = new Span();
+$obSpnRecursos->setId('spnRecurso');
 
 $obNomeArquivo = new Select();
 $obNomeArquivo->setRotulo("Nome do Arquivo");
@@ -97,9 +102,9 @@ $obTipoConta->setTitle("Informe o tipo de conta");
 $obTipoConta->setId('stTipoConta');
 $obTipoConta->setNull(false);
 $obTipoConta->setName('stTipoConta');
-$obTipoConta->addOption('OrcamentariaDespesa', 'Orçamentária de Despesa');
-$obTipoConta->addOption('OrcamentariaReceita', 'Orçamentária de Receita');
-$obTipoConta->addOption('Contabil', 'Contábil');
+$obTipoConta->addOption(CAM_GPC_TCEMG_DCASP_CONF_DESPESA, 'Orçamentária de Despesa');
+$obTipoConta->addOption(CAM_GPC_TCEMG_DCASP_CONF_RECEITA, 'Orçamentária de Receita');
+$obTipoConta->addOption(CAM_GPC_TCEMG_DCASP_CONF_CONTABIL, 'Contábil');
 $obTipoConta->obEvento->setOnChange("validaTipoArquivo('" . Sessao::getId()."');");
 
 $obNomeCampo = new BuscaInner;
@@ -113,7 +118,9 @@ $obNomeCampo->obCampoCod->setName("inCodCampo");
 $obNomeCampo->obCampoCod->setId("inCodCampo");
 $obNomeCampo->obCampoCod->setNull(true);
 $obNomeCampo->obCampoCod->setAlign("left");
-$obNomeCampo->obCampoCod->obEvento->setOnBlur("1");
+$obNomeCampo->obCampoCod->setInteiro( false );
+$obNomeCampo->obCampoCod->setExpReg('');
+$obNomeCampo->obCampoCod->obEvento->setOnBlur("montaParametrosGET('carregaDados','inCodCampo,stTipoConta,stNomeArquivo', true);");
 $obNomeCampo->setFuncaoBusca("abrePopUpDcasp('" . CAM_GF_CONT_POPUPS . "camposDcasp/FLCampos.php', 'frm', 'inCodCampo', 'stCampo', 'tipoRegistro', 'codArquivo', 'seqArquivo', jQuery('#stNomeArquivo').val(), '" . Sessao::getId() . "&inCodIniEstrutural=1,2,5,6&tipoBusca2=extmmaa', '800', '550');");
 
 $obTxtDescGrupo = new TextBox;
@@ -123,12 +130,12 @@ $obTxtDescGrupo->setId("inDescGrupo");
 $obTxtDescGrupo->setName("inDescGrupo");
 $obTxtDescGrupo->setSize(10);
 $obTxtDescGrupo->setMaxLength(15);
-$obTxtDescGrupo->setNull(false);
+$obTxtDescGrupo->setNull(true);
 
-$obBtnBuscar = new Button();
-$obBtnBuscar->setId('btnBuscar');
-$obBtnBuscar->setValue('Buscar');
-$obBtnBuscar->obEvento->setOnClick("if (validaCampos()) {montaParametrosGET('montaListagem');}");
+//$obBtnBuscar = new Button();
+//$obBtnBuscar->setId('btnBuscar');
+//$obBtnBuscar->setValue('Buscar');
+//$obBtnBuscar->obEvento->setOnClick("if (validaCampos()) {montaParametrosGET('montaListagem');}");
 
 $obFormulario = new Formulario;
 $obFormulario->addForm($obForm);
@@ -141,9 +148,36 @@ $obFormulario->addHidden($obSeqArquivo);
 $obFormulario->addComponente($obNomeArquivo);
 $obFormulario->addComponente($obTipoConta);
 $obFormulario->addComponente($obNomeCampo);
+
+
+include_once( CAM_GF_ORC_COMPONENTES."IMontaRecursoDestinacao.class.php");
+$obRecurso = new IMontaRecursoDestinacao;
+$obRecurso->setNull( true );
+
+
+$obBtnIncluirRecurso = new Button();
+$obBtnIncluirRecurso->setId('btnIncluirRecurso');
+$obBtnIncluirRecurso->setValue('Incluir');
+$obBtnIncluirRecurso->obEvento->setOnClick("montaParametrosGET('adicionarRecurso','inCodRecurso,stDescricaoRecurso', true);");
+
+$obFormulario->addTitulo        ( "Recursos da Tag");
+$obRecurso->geraFormulario( $obFormulario );
+$obFormulario->addComponente($obBtnIncluirRecurso);
+$obFormulario->addSpan($obSpnRecursos);
+
+
+
+$obBtnIncluirGrupo = new Button();
+$obBtnIncluirGrupo->setId('btnIncluirGrupo');
+$obBtnIncluirGrupo->setValue('Incluir');
+$obBtnIncluirGrupo->obEvento->setOnClick("montaParametrosGET('adicionarConta','inDescGrupo,stTipoConta,stNomeArquivo', true);");
+
+$obFormulario->addTitulo        ( "Grupos da Tag");
 $obFormulario->addComponente($obTxtDescGrupo);
-$obFormulario->addComponente($obBtnBuscar);
-$obFormulario->addSpan($obSpnContas);
+$obFormulario->addComponente($obBtnIncluirGrupo);
+$obFormulario->addSpan($obSpnReceita);
+$obFormulario->addSpan($obSpnDespesa);
+$obFormulario->addSpan($obSpnContabil);
 $obFormulario->OK();
 $obFormulario->show();
 

@@ -155,6 +155,9 @@ define( "CAM_GPC_TCEMG_CONTROLE"  ,       CAM_GPC_TCEMG_CLASSES."controle/"    )
 define( "CAM_GPC_TCEMG_INSTANCIAS",       CAM_GPC_TCEMG."instancias/"          );
 define( "CAM_GPC_TCEMG_POPUPS"    ,       CAM_GPC_TCEMG."popups/"              );
 define( "CAM_GPC_TCEMG_RELATORIOS",       CAM_GPC_TCEMG_INSTANCIAS."relatorios/");
+define( "CAM_GPC_TCEMG_DCASP_CONF_RECEITA",   "OrcamentariaReceita");
+define( "CAM_GPC_TCEMG_DCASP_CONF_DESPESA",   "OrcamentariaDespesa");
+define( "CAM_GPC_TCEMG_DCASP_CONF_CONTABIL",  "Contabil");
 
 // TCEMS
 define( "CAM_GPC_TCEMS_CLASSES"   ,       CAM_GPC_TCEMS."classes/"           );
