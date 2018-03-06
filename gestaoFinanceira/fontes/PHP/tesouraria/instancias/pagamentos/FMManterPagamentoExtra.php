@@ -42,6 +42,7 @@ include_once '../../../../../../gestaoAdministrativa/fontes/PHP/framework/includ
 include_once( CLA_IAPPLETTERMINAL );
 include_once( CAM_GF_ORC_COMPONENTES."ITextBoxSelectEntidadeUsuario.class.php");
 include_once( CAM_GF_EMP_COMPONENTES."IPopUpCredor.class.php");
+include_once( CAM_GF_ORC_COMPONENTES."IPopUpRecurso.class.php");
 include_once ( CAM_GF_EMP_MAPEAMENTO.'TEmpenhoConfiguracao.class.php' );
 include_once ( CAM_GPC_TCEPE_MAPEAMENTO.'TTCEPETipoTransferencia.class.php' );
 include_once CAM_GF_CONT_MAPEAMENTO."TContabilidadeEncerramentoMes.class.php";
@@ -252,6 +253,12 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
     $obICredor->obImagem->setId   ( "imgCredor" );
     $obICredor->setNull ( true );
 
+	// Define objeto BuscaInner para recurso
+	$obIRecurso = new IPopUpRecurso($obForm);
+	$obIRecurso->obCampoCod->setId ( "inCodRecurso" );
+	$obIRecurso->obImagem->setId   ( "imgRecurso" );
+	$obIRecurso->setNull ( true );
+
     include_once(CAM_GF_ORC_COMPONENTES."IMontaRecursoDestinacao.class.php");
     $obIMontaRecursoDestinacao = new IMontaRecursoDestinacao;
     $obIMontaRecursoDestinacao->setFiltro ( true );
@@ -391,6 +398,7 @@ if ($rsUltimoMesEncerrado->getCampo('mes') >= $mesAtual AND $boUtilizarEncerrame
     $obFormulario->addSpan      ( $obSpnBoletim                 );
     $obFormulario->addHidden    ($obHdnDtBoletim);
     $obFormulario->addComponente( $obICredor                    );
+    $obFormulario->addComponente( $obIRecurso                    );
 
     if ( !(SistemaLegado::pegaConfiguracao('cod_uf', 2, Sessao::getExercicio(), $boTransacao ) == 11 && SistemaLegado::pegaConfiguracao('cod_municipio', 2, Sessao::getExercicio(), $boTransacao ) == 79 && SistemaLegado::comparaDatas($stDataFinalAno, $stDataAtual, true)))
     $obIMontaRecursoDestinacao->geraFormulario ( $obFormulario );
