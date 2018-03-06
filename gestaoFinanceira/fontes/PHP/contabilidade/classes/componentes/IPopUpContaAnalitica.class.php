@@ -74,10 +74,11 @@ class  IPopUpContaAnalitica extends BuscaInner
     {
         if ($this->obCmbEntidades) {
             if ( strtolower(get_class( $this->obCmbEntidades )) == "select" ) {
-                $pgOcul = "'".CAM_GF_CONT_PROCESSAMENTO."OCContaAnalitica.php?".Sessao::getId()."&".$this->obCampoCod->getName()."='+this.value+'&inCodEntidade='+document.frm.".$this->obCmbEntidades->getName().".value+'&stNomCampoCod=".$this->obCampoCod->getName()."&stIdCampoDesc=".$this->getId()."&stUsaEntidade=S'";
+                $pgOcul = "'".CAM_GF_CONT_PROCESSAMENTO."OCContaAnalitica.php?A=A&".Sessao::getId()
+                    ."&".$this->obCampoCod->getName()."='+this.value+'&inCodEntidade='+document.frm.".$this->obCmbEntidades->getName().".value+'&stNomCampoCod=".$this->obCampoCod->getName()."&stIdCampoDesc=".$this->getId()."&stUsaEntidade=S&inCodRecurso='+( typeof(document.frm.inCodRecurso) != 'undefined' ? document.frm.inCodRecurso.value : '')";
                 $this->obCampoCod->obEvento->setOnChange ( "
                     if (document.frm.".$this->obCmbEntidades->getName().".value)
-                        ajaxJavaScript($pgOcul,'".$this->stTipoBusca."');
+                         ajaxJavaScript($pgOcul,'".$this->stTipoBusca."');
                     else {
                         alertaAviso('É necessário informar uma entidade para a conta.','frm','erro','".Sessao::getId()."');
                         document.frm.".$this->obCampoCod->getName().".value = '';

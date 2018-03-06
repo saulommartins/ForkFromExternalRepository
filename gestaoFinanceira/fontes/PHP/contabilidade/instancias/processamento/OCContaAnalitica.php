@@ -405,26 +405,23 @@ switch ( $request->get('stCtrl') ) {
                       AND plano_recurso.cod_plano = pa.cod_plano
             ";
             
-            $stFiltro .= "\n plano_recurso.cod_recurso = 100 AND ";
+            $stFiltro .= "(plano_recurso.cod_recurso = ".$_REQUEST['inCodRecurso']." OR 
+                pa.cod_plano in (select  CAST (ace.valor AS INTEGER) from administracao.configuracao_entidade ace 
+                    where ace.exercicio = pc.exercicio
+                     AND CAST (ace.valor AS INTEGER) = pc.cod_conta
+                     AND ace.parametro = 'conta_caixa'
+                     AND ace.cod_modulo = 10
+                )
+             ) AND ";
             $stFiltro .= "\n pa.cod_plano is not null AND ";
             $stFiltro .= "\n pa.cod_plano = ".$_GET[$_GET['stNomCampoCod']]."  AND ";
             $stFiltro .= "\n pc.exercicio = '".Sessao::getExercicio()."' AND ";
-            if ( Sessao::getExercicio() > '2012' ) {
-                $stFiltro .= "\n( pb.cod_banco is not null AND ";
-                $stFiltro .= "\n   pb.cod_entidade in ( ".$_REQUEST['inCodEntidade'].") AND ";
-                $stFiltro .= "\n   ( pc.cod_estrutural like '1.1.1.%'  OR ";
-                $stFiltro .= "\n   pc.cod_estrutural like '1.1.4.%' )) AND ";
-            } else {
-                $stFiltro .= "\n(( pb.cod_banco is not null AND ";
-                $stFiltro .= "\n   pb.cod_entidade in (".$stCodEntidades.") AND ";
-                $stFiltro .= "\n   pc.cod_estrutural like '1.1.1.%' ) OR ";
-                $stFiltro .= "\n   pc.cod_estrutural like '1.1.5.%' ) AND ";
-            }
+	        $stFiltro .= "\n pb.cod_entidade in (".$stCodEntidades.") AND ";
 
             $stFiltro = ($stFiltro) ? " WHERE " . substr($stFiltro, 0, strlen($stFiltro)-4) : "";
             $stOrder = ( $stOrder ) ?  $stOrder : 'cod_estrutural';
             $obErro = $obTContabilidadePlanoAnalitica->recuperaRelacionamento( $rsRecordSet, $stSQLRelacionamentoRecurso.$stFiltro, $stOrder, $boTransacao );
-            
+
             if (!$obErro->ocorreu()) {
                 if ($rsRecordSet->getCampo('cod_plano') <> "")
                     $stDescricao = $rsRecordSet->getCampo( 'nom_conta' );
@@ -433,7 +430,7 @@ switch ( $request->get('stCtrl') ) {
                         $stJs .= "d.getElementById('inCodPlanoCredito').readOnly = false;\n";
                         $stJs .= "d.getElementById('imgPlanoCredito').style.display = 'inline';\n";
                     }
-                    $stJs .= "alertaAviso('@Conta inválida para caixa/banco (".$_GET[$_GET['stNomCampoCod']]."). Conta Bancária deve ser do Recurso 100.','form','erro','".Sessao::getId()."'); \n";
+                    $stJs .= "alertaAviso('@Conta inválida para caixa/banco (".$_GET[$_GET['stNomCampoCod']].").','form','erro','".Sessao::getId()."'); \n";
                     echo $stJs;
                 }
             }
@@ -508,24 +505,29 @@ switch ( $request->get('stCtrl') ) {
             include_once ( CAM_GF_CONT_MAPEAMENTO."TContabilidadePlanoAnalitica.class.php"        );
             $obTContabilidadePlanoAnalitica        = new TContabilidadePlanoAnalitica;
 
-            $stFiltro .= "\n pa.cod_plano is not null AND ";
-            $stFiltro .= "\n pa.cod_plano = ".$_GET[$_GET['stNomCampoCod']]."  AND ";
-            $stFiltro .= "\n pc.exercicio = '".Sessao::getExercicio()."' AND ";
-            if ( Sessao::getExercicio() > '2012' ) {
-                $stFiltro .= "\n( pb.cod_banco is not null AND ";
-                $stFiltro .= "\n   pb.cod_entidade in ( ".$stCodEntidades.") AND ";
-                $stFiltro .= "\n   ( pc.cod_estrutural like '1.1.1.%' OR ";
-                $stFiltro .= "\n   pc.cod_estrutural like '1.1.4.%' )) AND ";
-            } else {
-                $stFiltro .= "\n(( pb.cod_banco is not null AND ";
-                $stFiltro .= "\n   pb.cod_entidade in (".$stCodEntidades.") AND ";
-                $stFiltro .= "\n   pc.cod_estrutural like '1.1.1.%' ) OR ";
-                $stFiltro .= "\n   pc.cod_estrutural like '1.1.5.%' ) AND ";
-            }
+	        $stSQLRelacionamentoRecurso = "
+                LEFT JOIN contabilidade.plano_recurso
+                       ON plano_recurso.exercicio = pa.exercicio
+                      AND plano_recurso.cod_plano = pa.cod_plano
+            ";
+
+	        $stFiltro .= "(plano_recurso.cod_recurso = ".$_REQUEST['inCodRecurso']." OR 
+                pa.cod_plano in (select  CAST (ace.valor AS INTEGER) from administracao.configuracao_entidade ace 
+                    where ace.exercicio = pc.exercicio
+                     AND CAST (ace.valor AS INTEGER) = pc.cod_conta
+                     AND ace.parametro = 'conta_caixa'
+                     AND ace.cod_modulo = 10
+                )
+             ) AND ";
+	        $stFiltro .= "\n pa.cod_plano is not null AND ";
+	        $stFiltro .= "\n pa.cod_plano = ".$_GET[$_GET['stNomCampoCod']]."  AND ";
+	        $stFiltro .= "\n pc.exercicio = '".Sessao::getExercicio()."' AND ";
+	        $stFiltro .= "\n pb.cod_entidade in (".$stCodEntidades.") AND ";
 
             $stFiltro = ($stFiltro) ? " WHERE " . substr($stFiltro, 0, strlen($stFiltro)-4) : "";
             $stOrder = ( $stOrder ) ?  $stOrder : 'cod_estrutural';
-            $obErro = $obTContabilidadePlanoAnalitica->recuperaRelacionamento( $rsRecordSet, $stFiltro, $stOrder, $boTransacao );
+            $obErro = $obTContabilidadePlanoAnalitica->recuperaRelacionamento( $rsRecordSet,
+                $stSQLRelacionamentoRecurso.$stFiltro, $stOrder, $boTransacao );
             if (!$obErro->ocorreu()) {
                 if ($rsRecordSet->getCampo('cod_plano') <> "")
                     $stDescricao = $rsRecordSet->getCampo( 'nom_conta' );
