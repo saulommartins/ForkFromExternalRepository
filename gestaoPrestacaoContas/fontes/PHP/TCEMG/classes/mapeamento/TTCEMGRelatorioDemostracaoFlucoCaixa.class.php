@@ -394,12 +394,12 @@ class TTCEMGRelatorioDemonstracaoFluxoCaixa extends Persistente
                             THEN COALESCE(receita_despesa.valor, 0)
                           ELSE 0
                         END) AS vl_inter_transf_corrente_conc_municipios,
+                    SUM (CASE
+                          WHEN configuracao_dcasp_arquivo.nome_tag = 'rel_vlInterTransfCorrenteConcOutras'
+                            THEN COALESCE(receita_despesa.valor, 0)
+                          ELSE 0
+                        END) AS vl_inter_transf_corrente_conc_outras,
                     (
-	                    SUM (CASE
-	                          WHEN configuracao_dcasp_arquivo.nome_tag = 'rel_vlInterTransfCorrenteConcOutras'
-	                            THEN COALESCE(receita_despesa.valor, 0)
-	                          ELSE 0
-	                        END) AS vl_inter_transf_corrente_conc_outras,
 	                    SUM (CASE
 	                          WHEN configuracao_dcasp_arquivo.nome_tag = 'rel_vlInterTransfCorrenteConcDaUniao'
 	                            THEN COALESCE(receita_despesa.valor, 0)
