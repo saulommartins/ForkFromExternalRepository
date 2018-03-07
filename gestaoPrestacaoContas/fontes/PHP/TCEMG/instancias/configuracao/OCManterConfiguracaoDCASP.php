@@ -125,9 +125,10 @@ function removerRecurso($request) {
 
 function montaListaRecursos () {
 
+	$stJs  = "jQuery('#spnRecurso').html('');";
 	$arRecursos = Sessao::read('arRecursos');
 	if (count($arRecursos)<=0) {
-		return;
+		return $stJs;
 	}
 	$rsRecursos = new RecordSet();
 	$rsRecursos->preenche($arRecursos);
@@ -165,7 +166,6 @@ function montaListaRecursos () {
 	$obListaRecursos->montaInnerHTML();
 
 	$stHTML = $obListaRecursos->getHTML();
-	$stJs  = "jQuery('#spnRecurso').html('');";
 	$stJs .= "jQuery('#spnRecurso').html('" . $stHTML . "');";
 	return $stJs;
 }
