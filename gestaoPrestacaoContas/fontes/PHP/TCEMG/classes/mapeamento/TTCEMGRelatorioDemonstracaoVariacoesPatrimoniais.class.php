@@ -899,7 +899,6 @@
 
 				 WHERE  configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'DVP'
 				   AND  configuracao_dcasp_registros.tipo_registro = 10
-				 GROUP  BY configuracao_dcasp_arquivo.nome_arquivo_pertencente
 
                    -- Verificando tipo de recurso - caso existir algum vinculado ao configuracao_dcasp_arquivo -- 
                    AND ( 
@@ -907,7 +906,9 @@
 				            configuracao_dcasp_recursos.cod_recurso = contabil.cod_recurso
                         ELSE true
 						END
-                    ) = true            ";
+                    ) = true            
+                    				 
+                 GROUP  BY configuracao_dcasp_arquivo.nome_arquivo_pertencente ";
         }
 
         public function montaRecuperaRegistro20Sintetico()
@@ -2016,7 +2017,7 @@
                    -- Verificando tipo de recurso - caso existir algum vinculado ao configuracao_dcasp_arquivo -- 
                    AND ( 
                         CASE WHEN (configuracao_dcasp_recursos.cod_recurso IS NOT NULL ) THEN 
-				            configuracao_dcasp_recursos.cod_recurso = despesas.cod_recurso
+				            configuracao_dcasp_recursos.cod_recurso = contabil.cod_recurso
                         ELSE true
 						END
                     ) = true
