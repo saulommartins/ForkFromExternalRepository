@@ -378,8 +378,21 @@
 
                             JOIN  tcemg.configuracao_dcasp_arquivo using (seq_arquivo)
 
+                            LEFT JOIN tcemg.configuracao_dcasp_recursos 
+								ON configuracao_dcasp_arquivo.exercicio = configuracao_dcasp_arquivo.exercicio 
+								AND configuracao_dcasp_arquivo.tipo_registro = configuracao_dcasp_arquivo.tipo_registro 
+								AND configuracao_dcasp_arquivo.cod_arquivo = configuracao_dcasp_arquivo.cod_arquivo 
+								AND configuracao_dcasp_arquivo.seq_arquivo = configuracao_dcasp_arquivo.seq_arquivo
+
                            WHERE  configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'BF'
                              AND  configuracao_dcasp_arquivo.tipo_registro = 10 
+	                       -- Verificando tipo de recurso - caso existir algum vinculado ao configuracao_dcasp_arquivo -- 
+	                         AND  ( 
+	                            CASE WHEN (configuracao_dcasp_recursos.cod_recurso IS NOT NULL ) THEN 
+						            configuracao_dcasp_recursos.cod_recurso = totais_receitas.cod_recurso
+	                            ELSE true
+								END
+	                         ) = true
 
                 ) AS campos
             ";
@@ -775,9 +788,23 @@
 
                             ON  REPLACE(despesas.cod_estrutural, '.', '') = REPLACE(configuracao_dcasp_registros.conta_orc_despesa, '.', '')
 
+                          LEFT JOIN tcemg.configuracao_dcasp_recursos 
+							ON configuracao_dcasp_arquivo.exercicio = configuracao_dcasp_arquivo.exercicio 
+							AND configuracao_dcasp_arquivo.tipo_registro = configuracao_dcasp_arquivo.tipo_registro 
+							AND configuracao_dcasp_arquivo.cod_arquivo = configuracao_dcasp_arquivo.cod_arquivo 
+							AND configuracao_dcasp_arquivo.seq_arquivo = configuracao_dcasp_arquivo.seq_arquivo
+							
                          WHERE  configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'BF'
                            AND  configuracao_dcasp_arquivo.tipo_registro = 20
                            AND  configuracao_dcasp_registros.exercicio = '".$this->getDado('exercicio')."'
+
+	                       -- Verificando tipo de recurso - caso existir algum vinculado ao configuracao_dcasp_arquivo -- 
+	                       AND ( 
+	                            CASE WHEN (configuracao_dcasp_recursos.cod_recurso IS NOT NULL ) THEN 
+						            configuracao_dcasp_recursos.cod_recurso = despesas.cod_recurso
+	                            ELSE true
+								END
+	                        ) = true
                   ) AS campos
             ";
         }
