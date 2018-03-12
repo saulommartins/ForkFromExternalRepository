@@ -511,6 +511,7 @@
                                       SELECT  conta_receita.cod_estrutural,
                                               arrecadacao_receita.exercicio,
                                               receita.vl_original,
+                                              receita.cod_recurso,
                                               SUM(arrecadacao_receita.vl_arrecadacao) AS valor
 
                                         FROM  tesouraria.arrecadacao_receita
@@ -541,15 +542,30 @@
 
                                         GROUP  BY conta_receita.cod_estrutural,
                                                     arrecadacao_receita.exercicio,
-                                                    receita.vl_original
+                                                    receita.vl_original,
+                                                    receita.cod_recurso
                                     )  AS totais_receitas
                                 ON  configuracao_dcasp_registros.exercicio = '".$this->getDado('exercicio')."'
                                AND  replace(configuracao_dcasp_registros.conta_orc_receita, '.', '') = 
                                        replace(totais_receitas.cod_estrutural, '.', '')
-                            )  AS campos
 
+							  LEFT JOIN tcemg.configuracao_dcasp_recursos 
+									ON configuracao_dcasp_arquivo.exercicio = configuracao_dcasp_arquivo.exercicio 
+									AND configuracao_dcasp_arquivo.tipo_registro = configuracao_dcasp_arquivo.tipo_registro 
+									AND configuracao_dcasp_arquivo.cod_arquivo = configuracao_dcasp_arquivo.cod_arquivo 
+									AND configuracao_dcasp_arquivo.seq_arquivo = configuracao_dcasp_arquivo.seq_arquivo
+		                       -- Verificando tipo de recurso - caso existir algum vinculado ao configuracao_dcasp_arquivo -- 
+		                       WHERE  ( 
+		                            CASE WHEN (configuracao_dcasp_recursos.cod_recurso IS NOT NULL ) THEN 
+							            configuracao_dcasp_recursos.cod_recurso = totais_receitas.cod_recurso
+		                            ELSE true
+									END
+		                        ) = true
+                            )  AS campos
                        WHERE  campos.nome_arquivo_pertencente = 'BO'
-                       AND  campos.tipo_registro = 10";
+                       AND  campos.tipo_registro = 10
+
+                       ";
         }
 
         public function montaRecuperaDadosBalancoOrcamentario20()
@@ -1039,6 +1055,7 @@
                                                     despesas.cod_despesa,
                                                     despesas.dt_criacao,
                                                     despesas.cod_subfuncao,
+                                                    despesas.cod_recurso,
                                                     COALESCE(SUM(empenhos.vl_empenhado), 0.00) AS vl_empenhado,
                                                     COALESCE(SUM(empenhos.vl_liquidado), 0.00) AS vl_liquidado,
                                                     COALESCE(SUM(empenhos.vl_liquidacao_paga), 0.00) AS vl_pago
@@ -1048,6 +1065,7 @@
                                                                 despesa.dt_criacao,
                                                                 despesa.vl_original, 
                                                                 despesa.cod_subfuncao,
+                                                                despesa.cod_recurso,
                                                                 COALESCE(SUM(suplementacao_suplementada.valor), 0.00) AS vl_suplementar
 
                                                           FROM  orcamento.despesa
@@ -1081,7 +1099,8 @@
                                                                   despesa.cod_despesa, 
                                                                   despesa.dt_criacao, 
                                                                   despesa.vl_original, 
-                                                                  despesa.cod_subfuncao
+                                                                  despesa.cod_subfuncao,
+                                                                  despesa.cod_recurso
 
                                                       ORDER BY  despesa.cod_despesa
                                                     ) AS despesas
@@ -1153,7 +1172,7 @@
 
                                                 ON  empenhos.cod_despesa = despesas.cod_despesa
 
-                                             GROUP  BY despesas.cod_estrutural, despesas.vl_original, despesas.vl_suplementar, despesas.cod_despesa, despesas.dt_criacao, despesas.cod_subfuncao
+                                             GROUP  BY despesas.cod_estrutural, despesas.vl_original, despesas.vl_suplementar, despesas.cod_despesa, despesas.dt_criacao, despesas.cod_subfuncao, despesas.cod_recurso
                                         )  AS totais_despesas
 
                                   JOIN  tcemg.configuracao_dcasp_registros
@@ -1161,6 +1180,23 @@
                                    AND  REPLACE(configuracao_dcasp_registros.conta_orc_despesa, '.', '') = REPLACE(totais_despesas.cod_estrutural, '.', '')
 
                                   JOIN  tcemg.configuracao_dcasp_arquivo USING (seq_arquivo)
+
+
+									LEFT JOIN tcemg.configuracao_dcasp_recursos 
+										ON configuracao_dcasp_arquivo.exercicio = configuracao_dcasp_arquivo.exercicio 
+										AND configuracao_dcasp_arquivo.tipo_registro = configuracao_dcasp_arquivo.tipo_registro 
+										AND configuracao_dcasp_arquivo.cod_arquivo = configuracao_dcasp_arquivo.cod_arquivo 
+										AND configuracao_dcasp_arquivo.seq_arquivo = configuracao_dcasp_arquivo.seq_arquivo
+										AND configuracao_dcasp_arquivo.seq_arquivo = configuracao_dcasp_arquivo.seq_arquivo
+
+                                
+				                   -- Verificando tipo de recurso - caso existir algum vinculado ao configuracao_dcasp_arquivo -- 
+				                  WHERE ( 
+				                        CASE WHEN (configuracao_dcasp_recursos.cod_recurso IS NOT NULL ) THEN 
+								            configuracao_dcasp_recursos.cod_recurso = totais_despesas.cod_recurso
+				                        ELSE true
+										END
+				                    ) = true
 	                        ) AS campos
 	            WHERE  campos.nome_arquivo_pertencente = 'BO'
                   AND  campos.tipo_registro = 30
@@ -1357,6 +1393,7 @@
                                   despesas.cod_despesa,
                                   despesas.dt_criacao,
                                   despesas.cod_subfuncao,
+                                  despesas.cod_recurso,
                                   empenhos.fase,
                                   COALESCE(SUM(empenhos.vl_empenhado), 0.00) AS vl_empenhado,
                                   COALESCE(SUM(empenhos.vl_liquidado), 0.00) AS vl_liquidado,
@@ -1367,6 +1404,7 @@
                                       despesa.dt_criacao,
                                       despesa.vl_original, 
                                       despesa.cod_subfuncao,
+                                      despesa.cod_recurso,
                                       COALESCE(SUM(suplementacao_suplementada.valor), 0.00) AS vl_suplementar
 
                                 FROM  orcamento.despesa
@@ -1400,7 +1438,8 @@
                                           despesa.cod_despesa, 
                                           despesa.dt_criacao, 
                                           despesa.vl_original, 
-                                          despesa.cod_subfuncao
+                                          despesa.cod_subfuncao,
+                                          despesa.cod_recurso
 
                                ORDER  BY  despesa.cod_despesa
                             ) AS despesas
@@ -1519,7 +1558,9 @@
                                despesas.cod_despesa, 
                                despesas.dt_criacao, 
                                despesas.cod_subfuncao,
-                               empenhos.fase
+                               despesas.cod_recurso,
+                               empenhos.fase,
+                               despesas.cod_recurso
                       )  AS totais_despesas
 
                       JOIN  tcemg.configuracao_dcasp_registros
@@ -1527,8 +1568,24 @@
                        AND  REPLACE(configuracao_dcasp_registros.conta_orc_despesa, '.', '') = REPLACE(totais_despesas.cod_estrutural, '.', '')
 
                       JOIN  tcemg.configuracao_dcasp_arquivo USING (seq_arquivo)
+
+					  LEFT JOIN tcemg.configuracao_dcasp_recursos 
+						ON configuracao_dcasp_arquivo.exercicio = configuracao_dcasp_arquivo.exercicio 
+						AND configuracao_dcasp_arquivo.tipo_registro = configuracao_dcasp_arquivo.tipo_registro 
+						AND configuracao_dcasp_arquivo.cod_arquivo = configuracao_dcasp_arquivo.cod_arquivo 
+						AND configuracao_dcasp_arquivo.seq_arquivo = configuracao_dcasp_arquivo.seq_arquivo
+
                      WHERE  configuracao_dcasp_arquivo.tipo_registro = 40
                        AND  configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'BO'
+
+
+	                   -- Verificando tipo de recurso - caso existir algum vinculado ao configuracao_dcasp_arquivo -- 
+	                   AND ( 
+	                        CASE WHEN (configuracao_dcasp_recursos.cod_recurso IS NOT NULL ) THEN 
+					            configuracao_dcasp_recursos.cod_recurso = totais_despesas.cod_recurso
+	                        ELSE true
+							END
+	                    ) = true
                 ) AS campos
           ";
         }
@@ -1723,6 +1780,7 @@
                                     despesas.cod_despesa,
                                     despesas.dt_criacao,
                                     despesas.cod_subfuncao,
+                                    despesas.cod_recurso,
                                     empenhos.fase,
                                     COALESCE(SUM(empenhos.vl_empenhado), 0.00) AS vl_empenhado,
                                     COALESCE(SUM(empenhos.vl_liquidado), 0.00) AS vl_liquidado,
@@ -1733,6 +1791,7 @@
                                         despesa.dt_criacao,
                                         despesa.vl_original, 
                                         despesa.cod_subfuncao,
+                                        despesa.cod_recurso,
                                         COALESCE(SUM(suplementacao_suplementada.valor), 0.00) AS vl_suplementar
 
                                   FROM  orcamento.despesa
@@ -1766,7 +1825,8 @@
                                             despesa.cod_despesa, 
                                             despesa.dt_criacao, 
                                             despesa.vl_original, 
-                                            despesa.cod_subfuncao
+                                            despesa.cod_subfuncao,
+                                            despesa.cod_recurso
 
                                  ORDER  BY  despesa.cod_despesa
                               ) AS despesas
@@ -1886,16 +1946,32 @@
                                  despesas.cod_despesa, 
                                  despesas.dt_criacao, 
                                  despesas.cod_subfuncao,
+                                 despesas.cod_recurso,
                                  empenhos.fase
                         )  AS totais_despesas
 
                         JOIN  tcemg.configuracao_dcasp_registros
                           ON  configuracao_dcasp_registros.exercicio = '".$this->getDado('exercicio')."'
                          AND  REPLACE(configuracao_dcasp_registros.conta_orc_despesa, '.', '') = REPLACE(totais_despesas.cod_estrutural, '.', '')
-
                         JOIN  tcemg.configuracao_dcasp_arquivo USING (seq_arquivo)
+
+	
+					    LEFT JOIN tcemg.configuracao_dcasp_recursos 
+							ON configuracao_dcasp_arquivo.exercicio = configuracao_dcasp_arquivo.exercicio 
+							AND configuracao_dcasp_arquivo.tipo_registro = configuracao_dcasp_arquivo.tipo_registro 
+							AND configuracao_dcasp_arquivo.cod_arquivo = configuracao_dcasp_arquivo.cod_arquivo 
+							AND configuracao_dcasp_arquivo.seq_arquivo = configuracao_dcasp_arquivo.seq_arquivo
+	
                        WHERE  configuracao_dcasp_arquivo.tipo_registro = 50
                          AND  configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'BO'
+
+	                   -- Verificando tipo de recurso - caso existir algum vinculado ao configuracao_dcasp_arquivo -- 
+	                     AND ( 
+	                        CASE WHEN (configuracao_dcasp_recursos.cod_recurso IS NOT NULL ) THEN 
+					            configuracao_dcasp_recursos.cod_recurso = totais_despesas.cod_recurso
+	                        ELSE true
+							END
+	                     ) = true
                 ) AS campos
           ";
         }
