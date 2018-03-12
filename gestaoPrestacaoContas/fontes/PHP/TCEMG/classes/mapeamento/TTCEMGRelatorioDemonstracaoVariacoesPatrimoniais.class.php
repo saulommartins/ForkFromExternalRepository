@@ -163,8 +163,22 @@
 				    ON  REPLACE(configuracao_dcasp_registros.conta_contabil, '.', '') = contabil.conta
 				   AND  configuracao_dcasp_registros.exercicio = contabil.exercicio
 
+                  LEFT JOIN tcemg.configuracao_dcasp_recursos 
+					ON configuracao_dcasp_arquivo.exercicio = configuracao_dcasp_arquivo.exercicio 
+					AND configuracao_dcasp_arquivo.tipo_registro = configuracao_dcasp_arquivo.tipo_registro 
+					AND configuracao_dcasp_arquivo.cod_arquivo = configuracao_dcasp_arquivo.cod_arquivo 
+					AND configuracao_dcasp_arquivo.seq_arquivo = configuracao_dcasp_arquivo.seq_arquivo
+					
 				 WHERE  configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'DVP'
 				   AND  configuracao_dcasp_registros.tipo_registro = 10
+				   
+                   -- Verificando tipo de recurso - caso existir algum vinculado ao configuracao_dcasp_arquivo -- 
+                   AND ( 
+                        CASE WHEN (configuracao_dcasp_recursos.cod_recurso IS NOT NULL ) THEN 
+				            configuracao_dcasp_recursos.cod_recurso = contabil.cod_recurso
+                        ELSE true
+						END
+                    ) = true
 				 GROUP  BY configuracao_dcasp_arquivo.nome_arquivo_pertencente
             ";
         }
@@ -872,6 +886,12 @@
 
   				  FROM  tcemg.configuracao_dcasp_registros
 				  JOIN  tcemg.configuracao_dcasp_arquivo using (seq_arquivo)
+				  
+                  LEFT JOIN tcemg.configuracao_dcasp_recursos 
+					ON configuracao_dcasp_arquivo.exercicio = configuracao_dcasp_arquivo.exercicio 
+					AND configuracao_dcasp_arquivo.tipo_registro = configuracao_dcasp_arquivo.tipo_registro 
+					AND configuracao_dcasp_arquivo.cod_arquivo = configuracao_dcasp_arquivo.cod_arquivo 
+					AND configuracao_dcasp_arquivo.seq_arquivo = configuracao_dcasp_arquivo.seq_arquivo
 
 				        ".$this->montaConsultaContabil()."
 				    ON  REPLACE(configuracao_dcasp_registros.conta_contabil, '.', '') = contabil.conta
@@ -880,7 +900,14 @@
 				 WHERE  configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'DVP'
 				   AND  configuracao_dcasp_registros.tipo_registro = 10
 				 GROUP  BY configuracao_dcasp_arquivo.nome_arquivo_pertencente
-            ";
+
+                   -- Verificando tipo de recurso - caso existir algum vinculado ao configuracao_dcasp_arquivo -- 
+                   AND ( 
+                        CASE WHEN (configuracao_dcasp_recursos.cod_recurso IS NOT NULL ) THEN 
+				            configuracao_dcasp_recursos.cod_recurso = contabil.cod_recurso
+                        ELSE true
+						END
+                    ) = true            ";
         }
 
         public function montaRecuperaRegistro20Sintetico()
@@ -1060,12 +1087,26 @@
   				  FROM  tcemg.configuracao_dcasp_registros
 				  JOIN  tcemg.configuracao_dcasp_arquivo using (seq_arquivo)
 
+                  LEFT JOIN tcemg.configuracao_dcasp_recursos 
+					ON configuracao_dcasp_arquivo.exercicio = configuracao_dcasp_arquivo.exercicio 
+					AND configuracao_dcasp_arquivo.tipo_registro = configuracao_dcasp_arquivo.tipo_registro 
+					AND configuracao_dcasp_arquivo.cod_arquivo = configuracao_dcasp_arquivo.cod_arquivo 
+					AND configuracao_dcasp_arquivo.seq_arquivo = configuracao_dcasp_arquivo.seq_arquivo
+					
 				        ".$this->montaConsultaContabil()."
 				    ON  REPLACE(configuracao_dcasp_registros.conta_contabil, '.', '') = contabil.conta
 				   AND  configuracao_dcasp_registros.exercicio = contabil.exercicio
 
 				 WHERE  configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'DVP'
 				   AND  configuracao_dcasp_registros.tipo_registro = 20
+
+                   -- Verificando tipo de recurso - caso existir algum vinculado ao configuracao_dcasp_arquivo -- 
+                   AND ( 
+                        CASE WHEN (configuracao_dcasp_recursos.cod_recurso IS NOT NULL ) THEN 
+				            configuracao_dcasp_recursos.cod_recurso = contabil.cod_recurso
+                        ELSE true
+						END
+                    ) = true  
 				 GROUP  BY configuracao_dcasp_arquivo.nome_arquivo_pertencente
             ";
         }
@@ -1959,12 +2000,26 @@
   				  FROM  tcemg.configuracao_dcasp_registros
 				  JOIN  tcemg.configuracao_dcasp_arquivo using (seq_arquivo)
 
+                  LEFT JOIN tcemg.configuracao_dcasp_recursos 
+					ON configuracao_dcasp_arquivo.exercicio = configuracao_dcasp_arquivo.exercicio 
+					AND configuracao_dcasp_arquivo.tipo_registro = configuracao_dcasp_arquivo.tipo_registro 
+					AND configuracao_dcasp_arquivo.cod_arquivo = configuracao_dcasp_arquivo.cod_arquivo 
+					AND configuracao_dcasp_arquivo.seq_arquivo = configuracao_dcasp_arquivo.seq_arquivo
+					
 				        ".$this->montaConsultaContabil()."
 				    ON  REPLACE(configuracao_dcasp_registros.conta_contabil, '.', '') = contabil.conta
 				   AND  configuracao_dcasp_registros.exercicio = contabil.exercicio
 
 				 WHERE  configuracao_dcasp_arquivo.nome_arquivo_pertencente = 'DVP'
 				   AND  configuracao_dcasp_registros.tipo_registro = 20
+		   
+                   -- Verificando tipo de recurso - caso existir algum vinculado ao configuracao_dcasp_arquivo -- 
+                   AND ( 
+                        CASE WHEN (configuracao_dcasp_recursos.cod_recurso IS NOT NULL ) THEN 
+				            configuracao_dcasp_recursos.cod_recurso = despesas.cod_recurso
+                        ELSE true
+						END
+                    ) = true
 				 GROUP  BY configuracao_dcasp_arquivo.nome_arquivo_pertencente
 			";
 		}
@@ -1978,7 +2033,12 @@
 								WHEN valor_lancamento.tipo_valor = 'C'
 							    THEN REPLACE(plano_conta_credito.cod_estrutural, '.', '')
 								ELSE REPLACE(plano_conta_debito.cod_estrutural, '.', '')
-						    END AS conta,
+						    END AS conta, 
+						    CASE
+								WHEN valor_lancamento.tipo_valor = 'C'
+							    THEN plano_recurso_credito.cod_recurso
+								ELSE plano_recurso_debito.cod_recurso
+						    END AS cod_recurso,
 							lancamento.exercicio,
 							lancamento.cod_entidade,
 		  					lote.dt_lote,
@@ -2023,6 +2083,11 @@
 						 ON plano_conta_credito.exercicio = plano_analitica_credito.exercicio
 						AND plano_conta_credito.cod_conta = plano_analitica_credito.cod_conta
 								      
+					   LEFT JOIN contabilidade.plano_recurso AS plano_recurso_credito 
+						 ON plano_recurso_credito.exercicio = plano_analitica_credito.exercicio
+						AND plano_recurso_credito.cod_plano = plano_analitica_credito.cod_plano
+							      
+						      
 					   LEFT JOIN contabilidade.plano_analitica AS plano_analitica_debito 
 						 ON plano_analitica_debito.exercicio = conta_debito.exercicio
 					    AND plano_analitica_debito.cod_plano = conta_debito.cod_plano
@@ -2030,8 +2095,12 @@
 					   LEFT JOIN contabilidade.plano_conta AS plano_conta_debito 
 						 ON plano_conta_debito.exercicio = plano_analitica_debito.exercicio
 						AND plano_conta_debito.cod_conta = plano_analitica_debito.cod_conta
-
-                       LEFT JOIN contabilidade.plano_conta_encerrada AS plano_conta_encerrada_credito
+						
+					   LEFT JOIN contabilidade.plano_recurso AS plano_recurso_debito 
+						 ON plano_recurso_debito.exercicio = plano_analitica_debito.exercicio
+						AND plano_recurso_debito.cod_plano = plano_analitica_debito.cod_plano
+						
+                      LEFT JOIN contabilidade.plano_conta_encerrada AS plano_conta_encerrada_credito
                          ON plano_conta_encerrada_credito.cod_conta = plano_conta_credito.cod_conta
                         AND plano_conta_encerrada_credito.exercicio = plano_conta_credito.exercicio
 
