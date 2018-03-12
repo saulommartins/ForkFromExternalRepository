@@ -22,8 +22,8 @@
     $obTTCEMGRelatorioBalancoFinanceiro = new TTCEMGRelatorioBalancoFinanceiro();
     $obTTCEMGRelatorioBalancoFinanceiro->setDado('exercicio'    , Sessao::getExercicio());
     $obTTCEMGRelatorioBalancoFinanceiro->setDado('entidades'    , implode(',',$_REQUEST['inCodEntidade']));
-    // $obTTCEMGRelatorioBalancoFinanceiro->setDado('dtInicial'    , $_REQUEST['stDataInicial']);
-    // $obTTCEMGRelatorioBalancoFinanceiro->setDado('dtFinal'      , $_REQUEST['stDataFinal']);
+     $obTTCEMGRelatorioBalancoFinanceiro->setDado('dtInicial'    , $_REQUEST['stDataInicial']);
+     $obTTCEMGRelatorioBalancoFinanceiro->setDado('dtFinal'      , $_REQUEST['stDataFinal']);
 
     $stDataInicialExercicioAtual = substr($_REQUEST['stDataInicial'], 0, 6) . Sessao::getExercicio();
     $stDataFinalExercicioAtual = substr($_REQUEST['stDataFinal'], 0, 6) . Sessao::getExercicio();
