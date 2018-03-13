@@ -642,6 +642,7 @@ HEREDOC;
     $cnpj = isset($cnpj) ? $cnpj  : "" ;
     $inscEst = isset($inscEst) ? $inscEst : "";
     $cod_orgao_registro = isset($cod_orgao_registro) ? $cod_orgao_registro : "";
+    $cod_orgao_registro = isset($_REQUEST["cmbOrgao"]) ? $_REQUEST["cmbOrgao"] : "";
     $num_registro = isset($num_registro) ? $num_registro : "";
     $dt_registro = isset($dt_registro) ? $dt_registro : "";
     $num_registro_cvm = isset($num_registro_cvm) ? $num_registro_cvm : "";
@@ -662,26 +663,38 @@ HEREDOC;
     $obCmbOrgaoRegistro->setValue        ($cod_orgao_registro     );
     $obCmbOrgaoRegistro->setNull         (false                    );
     $obCmbOrgaoRegistro->setStyle        ("width: 220px"          );
-    
+    $obCmbOrgaoRegistro->obEvento->setOnChange("document.frm.submit();");
+
     $obTxtDataRegistro = new Data;
-    $obTxtDataRegistro->setRotulo        ( "Data do Órgão Registro"           );
     $obTxtDataRegistro->setName          ( "stDataRegistro"                   );
     $obTxtDataRegistro->setId            ( "stDataRegistro"                   );
     $obTxtDataRegistro->setValue         ( $dt_registro                       );
-    $obTxtDataRegistro->setNull          ( false                               );
     $obTxtDataRegistro->setTitle         ( "Informe a data do Órgão Registro" );
-    
+
     $obNumRegistro = new Inteiro;
-    $obNumRegistro->setRotulo        ( "Número do Registro do Órgão"           );
     $obNumRegistro->setTitle         ( "Informe o número do registro do órgão" );
     $obNumRegistro->setName          ( "inNumRegistro"                         );
     $obNumRegistro->setId            ( "inNumRegistro"                         );
     $obNumRegistro->setValue         ( $num_registro                           );
     $obNumRegistro->setNegativo      ( false                                   );
-    $obNumRegistro->setNull          ( false                                    );
     $obNumRegistro->setMaxLength     ( 20                                      );
-    
-    $obNumCVM = new Inteiro;
+
+
+	if ($_REQUEST["cmbOrgao"]==4) {
+		$obTxtDataRegistro->setNull          ( true                               );
+		$obTxtDataRegistro->setRotulo        ( "Data do Órgão Registro"          );
+
+		$obNumRegistro->setNull          ( true                                    );
+		$obNumRegistro->setRotulo        ( "Número do Registro do Órgão"          );
+	}else{
+		$obTxtDataRegistro->setNull          ( false                               );
+		$obTxtDataRegistro->setRotulo        ( "*Data do Órgão Registro"          );
+
+		$obNumRegistro->setNull          ( false                                    );
+		$obNumRegistro->setRotulo        ( "*Número do Registro do Órgão"          );
+	}
+
+	$obNumCVM = new Inteiro;
     $obNumCVM->setRotulo        ( "Número do Registro CVM"                                          );
     $obNumCVM->setTitle         ( "Informe o número do registro da Comissão de Valores Mobiliários" );
     $obNumCVM->setName          ( "inNumCVM"                                                        );
@@ -759,12 +772,14 @@ $stHTML = <<<HEREDOC
         </tr>
         
         <tr>
-            <td class="label" title="Informe o número do registro do órgão">*Número do Registro do Órgão</td>
+            <td class="label" title="Informe o número do registro do 
+            órgão">{$obNumRegistro->getRotulo()}</td>
             <td class="field">$stHtmlNumRegistro</td>
         </tr>
         
          <tr>
-            <td class="label" title="Informe a data do órgão registro">*Data do Órgão Registro</td>
+            <td class="label" title="Informe a data do órgão 
+            registro">{$obTxtDataRegistro->getRotulo()}</td>
             <td class="field">$stHtmlDataRegistro</td>
         </tr>
         
