@@ -408,7 +408,7 @@ switch ( $request->get('stCtrl') ) {
             $stFiltro .= "(plano_recurso.cod_recurso = ".$_REQUEST['inCodRecurso']." OR 
                 pa.cod_plano in (select  CAST (ace.valor AS INTEGER) from administracao.configuracao_entidade ace 
                     where ace.exercicio = pc.exercicio
-                     AND CAST (ace.valor AS INTEGER) = pc.cod_conta
+                     AND CAST (ace.valor AS INTEGER) = pa.cod_plano
                      AND ace.parametro = 'conta_caixa'
                      AND ace.cod_modulo = 10
                 )
@@ -514,7 +514,7 @@ switch ( $request->get('stCtrl') ) {
 	        $stFiltro .= "(plano_recurso.cod_recurso = ".$_REQUEST['inCodRecurso']." OR 
                 pa.cod_plano in (select  CAST (ace.valor AS INTEGER) from administracao.configuracao_entidade ace 
                     where ace.exercicio = pc.exercicio
-                     AND CAST (ace.valor AS INTEGER) = pc.cod_conta
+                     AND CAST (ace.valor AS INTEGER) = pa.cod_plano
                      AND ace.parametro = 'conta_caixa'
                      AND ace.cod_modulo = 10
                 )
