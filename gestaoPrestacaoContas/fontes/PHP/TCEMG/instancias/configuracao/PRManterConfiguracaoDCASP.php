@@ -40,29 +40,43 @@ $exercicio = Sessao::getExercicio();
 
 $boTransacao = new Transacao();
 
-removerTodasContas($request, $boTransacao, $exercicio);
-
-inserirContas($request, $boTransacao, $exercicio, CAM_GPC_TCEMG_DCASP_CONF_DESPESA);
-
-inserirContas($request, $boTransacao, $exercicio, CAM_GPC_TCEMG_DCASP_CONF_RECEITA);
-
-inserirContas($request, $boTransacao, $exercicio, CAM_GPC_TCEMG_DCASP_CONF_CONTABIL);
-
-removerTodosRecursos($request, $boTransacao, $exercicio);
-
-inserirRecursos($request, $boTransacao, $exercicio);
 
 
-function removerTodasContas($request, $boTransacao, $exercicio) {
+try {
+
+	removerTodasContas($request, $boTransacao, $exercicio);
+
+	inserirContas($request, $boTransacao, $exercicio, CAM_GPC_TCEMG_DCASP_CONF_DESPESA);
+
+	inserirContas($request, $boTransacao, $exercicio, CAM_GPC_TCEMG_DCASP_CONF_RECEITA);
+
+	inserirContas($request, $boTransacao, $exercicio, CAM_GPC_TCEMG_DCASP_CONF_CONTABIL);
+
+	removerTodosRecursos($request, $boTransacao, $exercicio);
+
+	inserirRecursos($request, $boTransacao, $exercicio);
+	$boTransacao->commit();
+	SistemaLegado::alertaAviso($pgForm . "?" . Sessao::getId() . "&stAcao=$stAcao", "Dados Salvos com Sucesso", "incluir", "incluir_n", Sessao::getId(), "../");
+} catch (\Exception $e) {
+	$boTransacao->rollback();
+	SistemaLegado::alertaAviso($pgForm . "?" . Sessao::getId() . "&stAcao=$stAcao", 'Erro ao salvar configuração! '.urlencode
+	($e->getMessage()),	"incluir", "incluir_n", Sessao::getId(), "../");
+}
+
+function removerTodasContas($request, &$boTransacao, $exercicio) {
 	$customWhere = ' WHERE seq_arquivo = ' . $request->get('seqArquivo'). " AND exercicio = '"
 		.$exercicio."'";
 	$TTCEMGConfiguracaoDCASPRegistro = new TTCEMGConfiguracaoDCASPRegistro();
 	$TTCEMGConfiguracaoDCASPRegistro->setCustomWhere($customWhere);
-	$TTCEMGConfiguracaoDCASPRegistro->exclusao($boTransacao);
+	$obErro = $TTCEMGConfiguracaoDCASPRegistro->exclusao($boTransacao);
+
+	if ( $obErro->ocorreu() ) {
+		throw new Exception($obErro->getDescricao());
+	}
 	return;
 }
 
-function inserirContas($request, $boTransacao, $exercicio, $tipoConta) {
+function inserirContas($request, &$boTransacao, $exercicio, $tipoConta) {
 	$contas = Sessao::read($tipoConta);
 	if (empty($contas)) {
 		return;
@@ -91,21 +105,27 @@ function inserirContas($request, $boTransacao, $exercicio, $tipoConta) {
 			$TTCEMGConfiguracaoDCASPRegistro->setDado('conta_contabil', $value['cod_estrutural']);
 		}
 
-		$TTCEMGConfiguracaoDCASPRegistro->inclusao($boTransacao);
+		$obErro = $TTCEMGConfiguracaoDCASPRegistro->inclusao($boTransacao);
+		if ( $obErro->ocorreu() ) {
+			throw new Exception($obErro->getDescricao());
+		}
 	}
 	return;
 }
 
 
-function removerTodosRecursos($request, $boTransacao, $exercicio) {
+function removerTodosRecursos($request, &$boTransacao, $exercicio) {
 	$customWhere = ' WHERE seq_arquivo = ' . $request->get('seqArquivo'). " AND exercicio = '"
 		.$exercicio."'";
 	$TTCEMGConfiguracaoDCASPRecurso = new TTCEMGConfiguracaoDCASPRecurso();
 	$TTCEMGConfiguracaoDCASPRecurso->setCustomWhere($customWhere);
-	$TTCEMGConfiguracaoDCASPRecurso->exclusao($boTransacao);
+	$obErro = $TTCEMGConfiguracaoDCASPRecurso->exclusao($boTransacao);
+	if ( $obErro->ocorreu() ) {
+		throw new Exception($obErro->getDescricao());
+	}
 	return;
 }
-function inserirRecursos($request, $boTransacao, $exercicio) {
+function inserirRecursos($request, &$boTransacao, $exercicio) {
 	$recursos = Sessao::read('arRecursos');
 	if (empty($recursos)) {
 		return;
@@ -119,7 +139,10 @@ function inserirRecursos($request, $boTransacao, $exercicio) {
 		$TTCEMGConfiguracaoDCASPRecurso->setDado('cod_arquivo', $request->get('codArquivo'));
 		$TTCEMGConfiguracaoDCASPRecurso->setDado('seq_arquivo', $request->get('seqArquivo'));
 
-		$TTCEMGConfiguracaoDCASPRecurso->inclusao($boTransacao);
+		$obErro = $TTCEMGConfiguracaoDCASPRecurso->inclusao($boTransacao);
+		if ( $obErro->ocorreu() ) {
+			throw new Exception($obErro->getDescricao());
+		}
 	}
 	return;
 }
