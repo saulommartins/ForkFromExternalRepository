@@ -1247,15 +1247,15 @@ Se a variável $dados Cgm for maior que zero ele carrega também os dados do CGM
                          mensagem += "@Campo Inscrição Estadual Inválido!("+stCampo.value+")";
                     }
                 }
-
                 campo = document.frm.inNumRegistro.value.length;
-                if (campo==0) {
+                cmbOrgao = document.frm.cmbOrgao.value;
+                if (campo==0 && cmbOrgao!= 4) {
                     mensagem += "@Campo Número do Registro do Órgão inválido!()";
                     erro = true;
                 }
 
                 campo = document.frm.stDataRegistro.value.length;
-                if (campo==0) {
+                if (campo==0 && cmbOrgao!= 4) {
                     mensagem += "@Campo Data do Órgão Registro inválido!()";
                     erro = true;
                 }
