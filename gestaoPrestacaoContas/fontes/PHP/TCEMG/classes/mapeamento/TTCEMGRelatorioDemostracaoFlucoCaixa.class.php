@@ -790,7 +790,6 @@ class TTCEMGRelatorioDemonstracaoFluxoCaixa extends Persistente
 					 END
 				 )
             GROUP BY receita_despesa.exercicio, receita_despesa.cod_recurso ";
-		error_log("sql = ".$sql,3,"/tmp/relatorio_fluxobaixa.log");
 		return $sql;
 	}
 

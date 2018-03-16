@@ -614,13 +614,13 @@ function formCGMPessoaJuridica($dadosCgm, $boInterno = false)
 
     //Carrega o cnpj em partes para preencher os campos segmentados
     if (isset($cnpj)) {
-    if ($cnpj) {
+   	    if (!strpos($cnpj,"/") && !strpos($cnpj,".") && !strpos($cnpj,"-")) {
             $cnpj1 = substr($cnpj,0,2);
             $cnpj2 = substr($cnpj,2,3);
             $cnpj3 = substr($cnpj,5,3);
             $cnpj4 = substr($cnpj,8,4);
             $cnpj5 = substr($cnpj,12,2);
-        $cnpj = $cnpj1.".".$cnpj2.".".$cnpj3."/".$cnpj4."-".$cnpj5;
+            $cnpj = $cnpj1.".".$cnpj2.".".$cnpj3."/".$cnpj4."-".$cnpj5;
         }
     }
     $stCheckTipoAlteracaoCorrecao = "checked";
@@ -663,7 +663,7 @@ HEREDOC;
     $obCmbOrgaoRegistro->setValue        ($cod_orgao_registro     );
     $obCmbOrgaoRegistro->setNull         (false                    );
     $obCmbOrgaoRegistro->setStyle        ("width: 220px"          );
-    $obCmbOrgaoRegistro->obEvento->setOnChange("document.frm.submit();");
+    $obCmbOrgaoRegistro->obEvento->setOnChange("document.frm.pessoa.value='juridica'; document.frm.controle.value=0; document.frm.submit();");
 
     $obTxtDataRegistro = new Data;
     $obTxtDataRegistro->setName          ( "stDataRegistro"                   );
