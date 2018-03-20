@@ -49,6 +49,10 @@ if (!isset($_REQUEST["controle"])) {
     $controle = $_REQUEST["controle"];
 }
 
+if ($_REQUEST["valida_orgao_registro"]=="validar_tipo") {
+  $controle = 3;
+}
+
 ?>
 <script src="../../../../../../gestaoAdministrativa/fontes/javaScript/ifuncoesJs.js" type="text/javascript"></script>
 <script src="../../../../../../gestaoAdministrativa/fontes/javaScript/funcoesJs.js" type="text/javascript"></script>

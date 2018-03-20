@@ -663,7 +663,7 @@ HEREDOC;
     $obCmbOrgaoRegistro->setValue        ($cod_orgao_registro     );
     $obCmbOrgaoRegistro->setNull         (false                    );
     $obCmbOrgaoRegistro->setStyle        ("width: 220px"          );
-    $obCmbOrgaoRegistro->obEvento->setOnChange("document.frm.pessoa.value='juridica'; document.frm.controle.value=0; document.frm.submit();");
+    $obCmbOrgaoRegistro->obEvento->setOnChange("document.frm.valida_orgao_registro.value = 'validar_tipo'; document.frm.submit();");
 
     $obTxtDataRegistro = new Data;
     $obTxtDataRegistro->setName          ( "stDataRegistro"                   );
@@ -1818,6 +1818,7 @@ Se a variável $dados Cgm for maior que zero ele carrega também os dados do CGM
             <td class=alt_dados colspan=2>
                 Dados para CGM
                 <input type="hidden" name="controle" value='<?=$controle;?>'>
+                <input type="hidden" name="valida_orgao_registro" value=''>
                 <input type="hidden" name="numCgm" value='<?=$numCgm;?>'>
                 <input type="hidden" name="pessoa" value='<?=$pessoa;?>'>
                 <input type="hidden" name="tipo" value='<?=$tipo;?>'>

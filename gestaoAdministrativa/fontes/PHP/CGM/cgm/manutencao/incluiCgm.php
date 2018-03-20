@@ -65,6 +65,10 @@ if ($stacaoTMP != 783) {
 $controle = $request->get('controle');
 $pessoa = $request->get('pessoa');
 $tipo = $request->get('tipo');
+$valida_orgao_registro = $request->get('valida_orgao_registro');
+if ($valida_orgao_registro=="validar_tipo") {
+  $controle = 0;   
+}
 
 if (!isset($controle)) {
     $controle = 0;
