@@ -1672,7 +1672,7 @@ Se a variável $dados Cgm for maior que zero ele carrega também os dados do CGM
                 }
                 document.frm.ok.disabled = true;
                 if (Valida()) {
-                    document.frm.controle.value = "<?=$controle+1;?>";
+                    document.frm.controle.value = 1;
                     document.frm.submit();
                     document.frm.ok.disabled = false;
                 } else {
