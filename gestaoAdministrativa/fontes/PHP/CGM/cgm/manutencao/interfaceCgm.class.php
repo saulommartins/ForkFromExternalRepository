@@ -642,7 +642,7 @@ HEREDOC;
     $cnpj = isset($cnpj) ? $cnpj  : "" ;
     $inscEst = isset($inscEst) ? $inscEst : "";
     $cod_orgao_registro = isset($cod_orgao_registro) ? $cod_orgao_registro : "";
-    $cod_orgao_registro = isset($_REQUEST["cmbOrgao"]) ? $_REQUEST["cmbOrgao"] : "";
+    $cod_orgao_registro = isset($_REQUEST["cmbOrgao"]) ? $_REQUEST["cmbOrgao"] : $cod_orgao_registro;
     $num_registro = isset($num_registro) ? $num_registro : "";
     $dt_registro = isset($dt_registro) ? $dt_registro : "";
     $num_registro_cvm = isset($num_registro_cvm) ? $num_registro_cvm : "";
