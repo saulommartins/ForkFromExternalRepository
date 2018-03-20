@@ -238,6 +238,10 @@ Monta o formulário de busca por CGM
     //A função salvar testa a validação, e se tudo ocorrer certo, envia o form
     function Salvar()
     {
+
+        if (document.frm.valida_orgao_registro) {
+            document.frm.valida_orgao_registro.value ='';
+        }
         if (Valida()) {
             document.frm.submit();
         }
@@ -371,6 +375,10 @@ Monta o formulário de busca por CGM
     //A função salvar testa a validação, e se tudo ocorrer certo, envia o form
     function Salvar()
     {
+
+        if (document.frm.valida_orgao_registro) {
+            document.frm.valida_orgao_registro.value ='';
+        }
         if (Valida()) {
             document.frm.submit();
         }
@@ -1659,6 +1667,9 @@ Se a variável $dados Cgm for maior que zero ele carrega também os dados do CGM
             //A função salvar testa a validação, e se tudo ocorrer certo, envia o form
             function Salvar()
             {
+                if (document.frm.valida_orgao_registro) {
+                    document.frm.valida_orgao_registro.value ='';
+                }
                 document.frm.ok.disabled = true;
                 if (Valida()) {
                     document.frm.controle.value = "<?=$controle+1;?>";
