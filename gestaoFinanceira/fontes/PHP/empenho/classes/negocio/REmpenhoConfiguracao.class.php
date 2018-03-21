@@ -74,6 +74,12 @@ var $boOPAutomatica;
      * @param String $valor
 */
 var $boEmitirCarneOp;
+
+/**
+ * @access Public
+ * @param String $valor
+ */
+var $boEmitirReciboDespesaOp;
 /**
     * @access Public
     * @param Object $valor
@@ -106,6 +112,11 @@ function setOPAutomatica($valor) { $this->boOPAutomatica     = $valor; }
 function setEmitirCarneOP($valor) { $this->boEmitirCarneOp     = $valor; }
 /**
      * @access Public
+     * @param Boolean $valor
+*/
+function setEmitirReciboDespesaOp($valor) { $this->boEmitirReciboDespesaOp     = $valor; }
+/**
+     * @access Public
      * @return String
 */
 function getNumeracao() { return $this->stNumeracao;    	    }
@@ -134,6 +145,12 @@ function getOPAutomatica() { return $this->boOPAutomatica;                }
      * @param Boolean $valor
 */
 function getEmitirCarneOp() { return $this->boEmitirCarneOp;                }
+
+/**
+     * @access Public
+     * @param Boolean $valor
+*/
+function getEmitirReciboDespesaOp() { return $this->boEmitirReciboDespesaOp;                }
 
 /**
     * Método Construtor
@@ -202,51 +219,103 @@ function salvar($boTransacao = "")
         } else {
             $obErro = parent::incluir($boTransacao);
         }
+        $this->setParametro("emitir_recibo_despesa_op");
+        $this->setValor( $this->getEmitirReciboDespesaOp());
+        $this->verificaParametro($boExiste, $boTransacao);
+        if ($boExiste) {
+            $obErro = parent::alterar($boTransacao);
+        } else {
+            $obErro = parent::incluir($boTransacao);
+        }
     }
     $this->obTransacao->fechaTransacao( $boFlagTransacao, $boTransacao, $obErro, $this->obTConfiguracao );
 
     return $obErro;
 }
 
-function consultar($boTransacao = "")
-{
-    $this->setParametro("numero_empenho");
-    $obErro = parent::consultar($boTransacao);
-    if (!$obErro->ocorreu()) {
-        $this->setNumeracao($this->getValor());
+	function consultar($boTransacao = "")
+	{
+		try {
+			$obErro = $this->consultaNumeroEmpenho ($boTransacao);
+			$obErro = $this->consultaAnularAutorizacaoAutomatica ($boTransacao);
+			$obErro = $this->consultaVencimentoLiquidacao ($boTransacao);
+			$obErro = $this->consultaLiquidacaoAutomatica($boTransacao);
+			$obErro = $this->consultaOpAutomatica($boTransacao);
+			$obErro = $this->consultaEmitirCarneOp($boTransacao);
+			$obErro = $this->consultaEmitirReciboDespesaOp($boTransacao);
+		}catch (Exception $e) {
+			SistemaLegado::exibeAviso($e->getMessage(),"n_incluir","erro");
+		}
+	    return $obErro;
+	}
 
-        $this->setParametro("anular_autorizacao_automatica");
-        $obErro = parent::consultar($boTransacao);
-        if (!$obErro->ocorreu()) {
-            $this->setAnularAutorizacaoAutomatica($this->getValor());
+	private function consultaNumeroEmpenho ($boTransacao = "") {
+		$this->setParametro("numero_empenho");
+		$obErro = parent::consultar($boTransacao);
+		if ($obErro->ocorreu()) {
+			throw new Exception($obErro->getDescricao());
+		}
+		$this->setNumeracao($this->getValor());
+		return $obErro;
+	}
 
-            $this->setParametro("vencimento_liquidacao");
-            $obErro = parent::consultar($boTransacao);
-            if (!$obErro->ocorreu()) {
-                $this->setDataVencimento($this->getValor());
+	private function consultaAnularAutorizacaoAutomatica ($boTransacao = "") {
+		$this->setParametro("anular_autorizacao_automatica");
+		$obErro = parent::consultar($boTransacao);
+		if ($obErro->ocorreu()) {
+			throw new Exception($obErro->getDescricao());
+		}
+		$this->setAnularAutorizacaoAutomatica($this->getValor());
+		return $obErro;
+	}
 
-                $this->setParametro("liquidacao_automatica");
-                $obErro = parent::consultar($boTransacao);
-                if (!$obErro->ocorreu()) {
-                    $this->setLiquidacaoAutomatica($this->getValor());
+	private function consultaVencimentoLiquidacao ($boTransacao = "") {
+		$this->setParametro("vencimento_liquidacao");
+		$obErro = parent::consultar($boTransacao);
+		if ($obErro->ocorreu()) {
+			throw new Exception($obErro->getDescricao());
+		}
+		$this->setDataVencimento($this->getValor());
+		return $obErro;
+	}
 
-                    $this->setParametro("op_automatica");
-                    $obErro = parent::consultar($boTransacao);
-                    if (!$obErro->ocorreu()) {
-                        $this->setOPAutomatica($this->getValor());
+	private function consultaLiquidacaoAutomatica($boTransacao = "") {
+		$this->setParametro("liquidacao_automatica");
+		$obErro = parent::consultar($boTransacao);
+		if ($obErro->ocorreu()) {
+			throw new Exception($obErro->getDescricao());
+		}
+		$this->setLiquidacaoAutomatica($this->getValor());
+		return $obErro;
+	}
 
-                        $this->setParametro("emitir_carne_op");
-                        $obErro = parent::consultar($boTransacao);
-                        if (!$obErro->ocorreu()) {
-                            $this->setEmitirCarneOP($this->getValor());
-                        }
-                    }
-                }
-            }
-        }
-    }
+	private function consultaOpAutomatica($boTransacao = "") {
+		$this->setParametro("op_automatica");
+		$obErro = parent::consultar($boTransacao);
+		if ($obErro->ocorreu()) {
+			throw new Exception($obErro->getDescricao());
+		}
+		$this->setOPAutomatica($this->getValor());
+		return $obErro;
+	}
 
-    return $obErro;
-}
+	private function consultaEmitirCarneOp($boTransacao = "") {
+		$this->setParametro("emitir_carne_op");
+		$obErro = parent::consultar($boTransacao);
+		if ($obErro->ocorreu()) {
+			throw new Exception($obErro->getDescricao());
+		}
+		$this->setEmitirCarneOP($this->getValor());
+		return $obErro;
+	}
 
+	private function consultaEmitirReciboDespesaOp($boTransacao = "") {
+		$this->setParametro("emitir_recibo_despesa_op");
+		$obErro = parent::consultar($boTransacao);
+		if ($obErro->ocorreu()) {
+			throw new Exception($obErro->getDescricao());
+		}
+		$this->setEmitirReciboDespesaOp($this->getValor());
+		return $obErro;
+	}
 }

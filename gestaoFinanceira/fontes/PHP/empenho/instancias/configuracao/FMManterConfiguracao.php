@@ -59,7 +59,9 @@ $pgJs   = "JS".$stPrograma.".js";
 include_once ( $pgOcul );
 
 $obRegra = new REmpenhoConfiguracao;
+
 $obRegra->consultar();
+
 $stTipoNumeracao = $obRegra->getNumeracao();
 $boAnularAutorizacaoAutomatica = $obRegra->getAnularAutorizacaoAutomatica();
 if ($boAnularAutorizacaoAutomatica=="true") {
@@ -90,6 +92,13 @@ if ($boOPCarne=="true") {
     $stOPCarne = "S";
 } else {
     $stOPCarne = "N";
+}
+
+$boOPReciboDespesa = $obRegra->getEmitirReciboDespesaOp();
+if ($boOPReciboDespesa=="true") {
+	$stOPReciboDespesa = "S";
+} else {
+	$stOPReciboDespesa = "N";
 }
 
 // Busca as contas caixa das entidades
@@ -208,6 +217,14 @@ $obRdnOPCarne->setTitle("Informe se a OP emitirá carnê.");
 $obRdnOPCarne->setChecked($stOPCarne);
 $obRdnOPCarne->obRadioSim->setValue("Sim");
 $obRdnOPCarne->obRadioNao->setValue("Não");
+
+$obRdnOPReciboDespesa = new SimNao;
+$obRdnOPReciboDespesa->setRotulo("Emitir recibo de Despesa na OP");
+$obRdnOPReciboDespesa->setName("boOPReciboDespesa");
+$obRdnOPReciboDespesa->setTitle("Informe se a OP emitirá recibo de despesa.");
+$obRdnOPReciboDespesa->setChecked($stOPReciboDespesa);
+$obRdnOPReciboDespesa->obRadioSim->setValue("Sim");
+$obRdnOPReciboDespesa->obRadioNao->setValue("Não");
 
 $obSpnEntidades = new Span;
 $obSpnEntidades->setId ( "spnEntidades" );
@@ -329,6 +346,7 @@ $obFormulario->addComponente        ( $obRdnDataVencimento );
 $obFormulario->addComponente        ( $obRdnLiquidacaoAutomatica );
 $obFormulario->addComponente        ( $obRdnOPAutomatica );
 $obFormulario->addComponente        ( $obRdnOPCarne );
+$obFormulario->addComponente        ( $obRdnOPReciboDespesa );
 
 $obFormulario->addSpan ( $obSpnEntidades );
 

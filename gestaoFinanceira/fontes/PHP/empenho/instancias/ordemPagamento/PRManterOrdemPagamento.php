@@ -67,6 +67,10 @@ include_once $pgJs;
 
 //valida a utilização da rotina de encerramento do mês contábil
 $boUtilizarEncerramentoMes = SistemaLegado::pegaConfiguracao('utilizar_encerramento_mes', 9);
+
+$obREmpenhoConfiguracao = new REmpenhoConfiguracao;
+$obREmpenhoConfiguracao->consultar();
+
 include_once CAM_GF_CONT_MAPEAMENTO."TContabilidadeEncerramentoMes.class.php";
 $obTContabilidadeEncerramentoMes = new TContabilidadeEncerramentoMes;
 $obTContabilidadeEncerramentoMes->setDado('exercicio', Sessao::getExercicio());
@@ -195,11 +199,13 @@ case "incluir":
     if (!$obErro->ocorreu() && count($arItens) == 1 && count($arItensRetencao) > 0) {
         // faz a inclusão dos recibos extra, caso tenha sido incluido algum item na listagem extra-orçamentária
         // incluirReciboExtraReceita($obREmpenhoOrdemPagamento, $boTransacao);
-        incluirReciboExtra($obREmpenhoOrdemPagamento, 'D');
-        incluirReciboExtra($obREmpenhoOrdemPagamento, 'R');
+	    incluirReciboExtra($obREmpenhoOrdemPagamento, 'R');
+	    if ($obREmpenhoConfiguracao->getEmitirReciboDespesaOp()) {
+	    	incluirReciboExtra($obREmpenhoOrdemPagamento, 'D');
+	    }
 
 
-        //Faz a verificação na configuração para saber se deve gerar ou não o carne pela configuração feita em Empenho::Alterar Configuração
+	    //Faz a verificação na configuração para saber se deve gerar ou não o carne pela configuração feita em Empenho::Alterar Configuração
         $stEmitirCarneOp = SistemaLegado::pegaDado('valor', 'administracao.configuracao', "WHERE exercicio='".Sessao::getExercicio()."' AND cod_modulo=".Sessao::getModulo()." AND parametro='emitir_carne_op'", $boTransacao);
         if ($stEmitirCarneOp == 'true') {
             // faz a inclusão de lançamento, caso tenha sido incluido algum item na listagem orçamentária

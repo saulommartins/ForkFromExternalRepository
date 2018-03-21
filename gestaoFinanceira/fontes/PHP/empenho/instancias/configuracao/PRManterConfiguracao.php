@@ -85,6 +85,13 @@ if ($request->get('boOPCarne') == "Sim") {
 }
 $obRegra->setEmitirCarneOP($boOPCarne);
 
+if ($request->get('boOPReciboDespesa') == "Sim") {
+	$boOPReciboDespesa = "true";
+} else {
+	$boOPReciboDespesa = "false";
+}
+$obRegra->setEmitirReciboDespesaOp($boOPReciboDespesa);
+
 $obErro = $obRegra->salvar();
 
 foreach( $request->getAll() AS $key => $value ){
