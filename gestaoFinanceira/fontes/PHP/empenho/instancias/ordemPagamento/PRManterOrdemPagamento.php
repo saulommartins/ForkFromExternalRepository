@@ -68,8 +68,9 @@ include_once $pgJs;
 //valida a utilização da rotina de encerramento do mês contábil
 $boUtilizarEncerramentoMes = SistemaLegado::pegaConfiguracao('utilizar_encerramento_mes', 9);
 
-$obREmpenhoConfiguracao = new REmpenhoConfiguracao;
-$obREmpenhoConfiguracao->consultar();
+$obRegra = new REmpenhoConfiguracao;
+$obRegra->consultar();
+$boOPReciboDespesa = $obRegra->getEmitirReciboDespesaOp();
 
 include_once CAM_GF_CONT_MAPEAMENTO."TContabilidadeEncerramentoMes.class.php";
 $obTContabilidadeEncerramentoMes = new TContabilidadeEncerramentoMes;
@@ -200,7 +201,7 @@ case "incluir":
         // faz a inclusão dos recibos extra, caso tenha sido incluido algum item na listagem extra-orçamentária
         // incluirReciboExtraReceita($obREmpenhoOrdemPagamento, $boTransacao);
 	    incluirReciboExtra($obREmpenhoOrdemPagamento, 'R');
-	    if ($obREmpenhoConfiguracao->getEmitirReciboDespesaOp()) {
+	    if ($boOPReciboDespesa=="true") {
 	    	incluirReciboExtra($obREmpenhoOrdemPagamento, 'D');
 	    }
 
