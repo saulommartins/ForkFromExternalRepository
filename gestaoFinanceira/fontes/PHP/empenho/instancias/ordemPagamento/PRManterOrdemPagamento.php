@@ -288,12 +288,15 @@ case "incluir":
             // Sessao::remove('stCodigoReciboD');
             Sessao::remove('stCodLancamento');
             Sessao::remove('stCodReceita');
+	        Sessao::remove('stCaminhoSecundario');
 
-            $stCaminho = CAM_GF_EMP_INSTANCIAS."ordemPagamento/OCGeraRelatorioOrdemPagamentoBirt.php";
-            $stCaminhoSecundario = CAM_GF_TES_INSTANCIAS . 'reciboDespesaExtra/OCRelatorioReciboDespesaExtra.php';
-
-            Sessao::write('stCaminhoSecundario', $stCaminhoSecundario);
-            // $stCampos = "?".Sessao::getId()."&stAcao=imprimir&stCaminho=".$stCaminho."&stCaminhoSecundario=" . $stCaminhoSecundario . "&";
+	        $stCaminho = CAM_GF_EMP_INSTANCIAS."ordemPagamento/OCGeraRelatorioOrdemPagamentoBirt.php";
+	        if ($boOPReciboDespesa=="true") {
+		        $stCaminhoSecundario =
+			        CAM_GF_TES_INSTANCIAS . 'reciboDespesaExtra/OCRelatorioReciboDespesaExtra.php';
+		        Sessao::write('stCaminhoSecundario', $stCaminhoSecundario);
+		        // $stCampos = "?".Sessao::getId()."&stAcao=imprimir&stCaminho=".$stCaminho."&stCaminhoSecundario=" . $stCaminhoSecundario . "&";
+	        }
             $stCampos = "?".Sessao::getId()."&stAcao=imprimir&stCaminho=".$stCaminho."&";
             $stCampos .= http_build_query($arDados); //pega o array $arDados e monta o caminho correto para passar no href
             SistemaLegado::executaFrameOculto( "var x = window.open('".CAM_FW_POPUPS."relatorio/OCRelatorio.php".$stCampos."&acao=816','oculto');" );

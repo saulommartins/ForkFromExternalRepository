@@ -75,6 +75,8 @@ if ( $request->get("boCtrl") == "true"  ) {
 Sessao::write('filtroRelatorio',$stFiltroRelatorio);
 $stCaminhoSecundario = Sessao::read('stCaminhoSecundario');
 
+Sessao::remove('stCaminhoSecundario');
+
 ?>
 <frameset rows="100%,0%">
     <frame name="telaPrincipalRelatorio" marginwidth="0" marginheight="0" src="<?=$stArquivoPrincipal;?>">

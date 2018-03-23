@@ -325,7 +325,8 @@ class ListaFormPDFOrdemPagamento extends ListaFormPDF
             $obRRelatorio->recuperaCabecalho( $arConfiguracao );
             $this->setAcao                 ( "Ordem de Pagamento" );
             $this->setData                 ( SistemaLegado::dataToBr($rsRecordSet['dt_ordem']) );
-            $this->setSubTitulo            ( "Ordem N. ".str_pad($arFiltro['cod_ordem'],6,'0',STR_PAD_LEFT) ."/".$arFiltro['exercicio']."                    Vencimento: ".$arFiltro['dt_vencimento']);
+            $this->setSubTitulo            ( "Ordem N. ".str_pad($rsRecordSet['cod_ordem'],6,
+		            '0',STR_PAD_LEFT) ."/".$rsRecordSet['exercicio_ordem']."                    Vencimento: ".$arFiltro['dt_vencimento']);
             $this->setUsuario              ( Sessao::getUsername() );
             $this->setEnderecoPrefeitura   ( $arConfiguracao );
 

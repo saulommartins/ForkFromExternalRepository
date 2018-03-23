@@ -475,6 +475,8 @@ function geraRecordSet(&$arRecordSet , $stOrder = "")
     }
     //Bloco Data
     $arRecordSet['dt_ordem'] = $rsRecordSet->getCampo('dt_emissao');
+    $arRecordSet['cod_ordem'] = $rsRecordSet->getCampo('cod_ordem');
+    $arRecordSet['exercicio_ordem'] = $rsRecordSet->getCampo('exercicio_ordem');
 
     $obRTesourariaRelatorioRecibosExtra->setCodOrdem   ($this->inCodOrdem);
     $obRTesourariaRelatorioRecibosExtra->setExercicio  ($this->stExercicio);
