@@ -107,9 +107,8 @@ if (count($arRecordSetHOMOLIC10) > 0) {
                          .$arHOMOLIC10['cod_item']
                          .$arHOMOLIC10['quantidade'];
 
-            $stChaveCodReduzido = $arHOMOLIC10['cod_reduzido'];
             $stNumProcLic = $arHOMOLIC10['nro_processolicitatorio'];
-
+	        $stCodIdem = $arHOMOLIC10['cod_item'];
             $rsBloco10 = 'rsBloco10_'.$inCount;
             unset($$rsBloco10);
             $$rsBloco10 = new RecordSet();
@@ -334,7 +333,8 @@ if (count($arRecordSetHOMOLIC10) > 0) {
             }//Fim foreach HOMOLIC30
 
             //Verifica se  o proximo num_processo_licitatorio do array é diferente
-            if($arRecordSetHOMOLIC10[$inContador]['nro_processolicitatorio'] != $stNumProcLic){
+            if($arRecordSetHOMOLIC10[$inContador]['nro_processolicitatorio'] != $stNumProcLic
+                || $arRecordSetHOMOLIC10[$inContador]['cod_item'] != $stCodIdem ){
                 //Se houver registros no array
                 if ( count($rsRecordSetHOMOLIC40->getElementos()) > 0 ) {
                     //Percorre array de registros
