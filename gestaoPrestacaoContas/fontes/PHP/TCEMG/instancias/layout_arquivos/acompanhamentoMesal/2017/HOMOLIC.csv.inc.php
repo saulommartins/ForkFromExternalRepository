@@ -78,6 +78,29 @@ $inContador = 0;
 $inCount = 0;
 $stChave30 = '';
 
+$arrHomolic20 = array();
+foreach ($rsRecordSetHOMOLIC20->getElementos() as $arHOMOLIC20) {
+	$stChave20  = $arHOMOLIC20['cod_orgao'].$arHOMOLIC20['cod_unidadesub'].$arHOMOLIC20['exercicio_licitacao'];
+	$stChave20 .= $arHOMOLIC20['nro_processolicitatorio'].$arHOMOLIC20['tipo_documento']
+		.$arHOMOLIC20['nro_documento'];
+	$stChave20 .= $arHOMOLIC20['nro_lote'].$arHOMOLIC20['cod_item'].$arHOMOLIC20['quantidade'];
+	$arrHomolic20['10'.$stChave20][] = $arHOMOLIC20;
+}
+
+$arrHomolic30 = array();
+foreach ($rsRecordSetHOMOLIC30->getElementos() as $arHOMOLIC30) {
+	$stChave30  = $arHOMOLIC30['nro_processolicitatorio'];
+	$stChaveItem30  = $arHOMOLIC30['cod_item'];
+	$stChaveDocumento30 = $arHOMOLIC30['nro_documento'];
+    $arrHomolic30[$stChave30][$stChaveItem30][$stChaveDocumento30][] = $arHOMOLIC30;
+}
+
+$arrHomolic40 = array();
+foreach ($rsRecordSetHOMOLIC40->getElementos() as $arHOMOLIC40) {
+	$stChave40  = $arHOMOLIC40['nro_processolicitatorio'];
+    $arrHomolic40[$stChave40][] = $arHOMOLIC40;
+}
+
 $arRecordSetHOMOLIC10 = $rsRecordSetHOMOLIC10->getElementos();
 
 if (count($arRecordSetHOMOLIC10) > 0) {
@@ -174,23 +197,24 @@ if (count($arRecordSetHOMOLIC10) > 0) {
             $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
             $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(14);
 
-            //APENAS  QUANDO: o valor do campo descontoTabela do registro 10 – Detalhamento dos Convites / Editais de Licitação
-            //do arquivo 5.12 ABERLIC for 1 – Sim
-            //Se houver registros no array
-            if (count($rsRecordSetHOMOLIC20->getElementos()) > 0) {
-               $stChave20 = '';
+			//APENAS  QUANDO: o valor do campo descontoTabela do registro 10 – Detalhamento dos Convites / Editais de Licitação
+			//do arquivo 5.12 ABERLIC for 1 – Sim
+			//Se houver registros no array
+			$stChave  = $arHOMOLIC10['cod_orgao'].$arHOMOLIC10['cod_unidadesub'].$arHOMOLIC10['exercicio_licitacao'];
+			$stChave .= $arHOMOLIC10['nro_processolicitatorio'].$arHOMOLIC10['tipo_documento'].$arHOMOLIC10['nro_documento'];
+			$stChave .= $arHOMOLIC10['nro_lote'].$arHOMOLIC10['cod_item'].$arHOMOLIC10['quantidade'];
 
-                //Percorre array de registros
-                foreach ($rsRecordSetHOMOLIC20->getElementos() as $arHOMOLIC20) {
+			if (count($arrHomolic20['10'.$stChave]) > 0) {
+				$stChave20 = '';
 
-                    $stChave20Aux  = $arHOMOLIC20['cod_orgao'].$arHOMOLIC20['cod_unidadesub'].$arHOMOLIC20['exercicio_licitacao'];
-                    $stChave20Aux .= $arHOMOLIC20['nro_processolicitatorio'].$arHOMOLIC20['tipo_documento'].$arHOMOLIC20['nro_documento'];
-                    $stChave20Aux .= $arHOMOLIC20['nro_lote'].$arHOMOLIC20['cod_item'].$arHOMOLIC20['quantidade'];
+				//Percorre array de registros
+				foreach ($arrHomolic20['10'.$stChave] as $arHOMOLIC20) {
 
-                    //Verifica se registro 20 bate com chave do registro 10
-                    if ($stChave10 === '10'.$stChave20Aux) {
-                        //Chave única do registro 20
-                        if ($stChave20 !=  $arHOMOLIC20['tiporegistro'].$stChave20Aux ) {
+
+					//Verifica se registro 20 bate com chave do registro 10
+					if ($stChave10 === '10'.$stChave) {
+						//Chave única do registro 20
+						if ($stChave20 !=  $arHOMOLIC20['tiporegistro'].$stChave ) {
 
                             $stChave20 = $arHOMOLIC20['tiporegistro'].$stChave20Aux;
 
@@ -263,13 +287,15 @@ if (count($arRecordSetHOMOLIC10) > 0) {
             //     $obTTCEMGHOMOLIC->recuperaDadosHOMOLIC30($rsRecordSetHOMOLIC30, $boTransacao, " AND config_licitacao.num_licitacao = '" . $stNumProcLic . "'");
             // }
 
-            //Se houver registros no array
-            if ( count($rsRecordSetHOMOLIC30->getElementos()) > 0 ) {
-                //Percorre array de registros
-                foreach ($rsRecordSetHOMOLIC30->getElementos() as $arHOMOLIC30) {
-                    $stChave30Aux = $arHOMOLIC30['nro_processolicitatorio'];
+	        $stChaveProcesso30 = $arHOMOLIC10['nro_processolicitatorio'];
+	        $stChaveItem30Aux = $arHOMOLIC10['cod_item'];
+	        $stChaveDocumento30Aux = $arHOMOLIC10['nro_documento'];
+	        //Se houver registros no array
+	        if ( count($arrHomolic30[$stChaveProcesso30][$stChaveItem30Aux][$stChaveDocumento30Aux]) > 0 ) {
+		        //Percorre array de registros
+
+		        foreach ($arrHomolic30[$stChaveProcesso30][$stChaveItem30Aux][$stChaveDocumento30Aux] as $arHOMOLIC30) {
                     //Verifica se registro 10 bate com chave do registro 30
-                    if ( $stNumProcLic === $stChave30Aux ) {
                         $stChave30 = $stChave30Aux;
                         $rsBloco30 = 'rsBloco30_'.$inCount;
                         unset($$rsBloco30);
@@ -328,17 +354,15 @@ if (count($arRecordSetHOMOLIC10) > 0) {
                         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTipoDado("VALOR_ZEROS_ESQ");
                         $obExportador->roUltimoArquivo->roUltimoBloco->setDelimitador(';');
                         $obExportador->roUltimoArquivo->roUltimoBloco->roUltimaColuna->setTamanhoMaximo(6);
-                    }//Fim if HOMOLIC30
                 }//Fim if HOMOLIC30
             }//Fim foreach HOMOLIC30
 
-            //Verifica se  o proximo num_processo_licitatorio do array é diferente
-            if($arRecordSetHOMOLIC10[$inContador]['nro_processolicitatorio'] != $stNumProcLic
-                || $arRecordSetHOMOLIC10[$inContador]['cod_item'] != $stCodIdem ){
-                //Se houver registros no array
-                if ( count($rsRecordSetHOMOLIC40->getElementos()) > 0 ) {
-                    //Percorre array de registros
-                    foreach ($rsRecordSetHOMOLIC40->getElementos() as $arHOMOLIC40) {
+	        //Verifica se  o proximo num_processo_licitatorio do array é diferente
+	        if($arRecordSetHOMOLIC10[$inContador]['nro_processolicitatorio'] != $stNumProcLic){
+		        //Se houver registros no array
+		        if ( count($arrHomolic40[$arHOMOLIC10['nro_processolicitatorio']]) > 0 ) {
+			        //Percorre array de registros
+			        foreach ($arrHomolic40[$arHOMOLIC10['nro_processolicitatorio']] as $arHOMOLIC40) {
                         $stChave40Aux = $arHOMOLIC40['nro_processolicitatorio'];
                         //Verifica se registro 10 bate com chave do registro 40
                         if ( $stNumProcLic === $stChave40Aux ) {
