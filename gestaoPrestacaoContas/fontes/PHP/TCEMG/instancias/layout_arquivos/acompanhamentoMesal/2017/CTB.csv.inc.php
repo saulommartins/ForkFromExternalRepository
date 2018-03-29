@@ -23,6 +23,7 @@
 */
 ?>
 <?php
+error_log("Inicio geração de arquivo CTB");
 /**
   * Página de Include Oculta - Exportação Arquivos TCEMG - LQD.csv
   * Data de Criação: 01/09/2014
@@ -43,6 +44,7 @@
 include_once CAM_GPC_TCEMG_MAPEAMENTO.Sessao::getExercicio()."/TTCEMGCTB.class.php";
 include_once CAM_GPC_TCEMG_MAPEAMENTO.Sessao::getExercicio()."/TTCEMGArquivoCTB.class.php";
 
+
 $rsRecordSet10 = new RecordSet();
 $rsRecordSet20 = new RecordSet();
 $rsRecordSet21 = new RecordSet();
@@ -55,8 +57,11 @@ $obTTCEMGCTB->setDado('mes', $stMes);
 $obTTCEMGCTB->setDado('dtInicio', $stDataInicial);
 $obTTCEMGCTB->setDado('dtFim',   $stDataFinal);
 
+error_log("Inicio - Registro 10");
 //Tipo Registro 10
 $obTTCEMGCTB->recuperaContasBancarias10($rsRecordSet10);
+error_log("Fim - Registro 10");
+
 //Tipo Registro 99
 $arRecordSetCTB99 = array(
     '0' => array(
@@ -196,12 +201,20 @@ if (count($rsRecordSet10->arElementos) > 0) {
     }
 }
 
+error_log("Inicio - Registro 20");
  //Tipo Registro 20
 $obTTCEMGCTB->recuperaContasBancarias20($rsRecordSet20);
+error_log("Fim - Registro 20");
+error_log("Inicio - Registro 21");
 //Tipo Registro 21
 $obTTCEMGCTB->recuperaContasBancarias21($rsRecordSet21);
+error_log("Fim - Registro 21");
+error_log("Inicio - Registro 22");
 //Tipo Registro 22
 $obTTCEMGCTB->recuperaContasBancarias22($rsRecordSet22);
+error_log("Fim - Registro 22");
+
+error_log("Inicio - Manipulação de dados");
 
 if (count($rsRecordSet20->getNumLinhas()) > 0) {
     $stChaveComp20 = '';
@@ -371,7 +384,9 @@ if (count($rsRecordSet20->getNumLinhas()) > 0) {
         //}
     } // end foreach Registro20
 } // end if count Registro20
-    
+error_log("Fim - Manipulação de dados");
+
+
     
 
 if($rsRecordSet20->getNumLinhas() < 0) {
