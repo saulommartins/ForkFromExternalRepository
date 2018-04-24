@@ -41,7 +41,7 @@ Casos de uso: uc-01.01.00
     * @author Desenvolvedor: Cassiano de Vasconcellos Ferreira
     * @author Documentor: Diego Barbosa Victoria
 */
-include_once '../../../../../../gestaoAdministrativa/fontes/PHP/pacotes/GA.inc.php';
+include_once CAM_GA.'/PHP/pacotes/GA.inc.php';
 include_once(CLA_OBJETO);
 
 class Erro extends Objeto

@@ -69,6 +69,8 @@ include_once CAM_FRAMEWORK."bancoDados/postgreSQL/RecordSet.class.php";
 include_once CAM_FRAMEWORK."URBEM/SessaoLegada.class.php";
 include_once CAM_FRAMEWORK."URBEM/Sessao.class.php";
 include_once CAM_FRAMEWORK."bancoDados/postgreSQL/Persistente.class.php";
+include_once "Transacao.class.php";
+include_once CAM_FRAMEWORK."bancoDados/postgreSQL/Auditoria.class.php";
 
 Sessao::setExercicio($parametros["exercicio"]);
 
