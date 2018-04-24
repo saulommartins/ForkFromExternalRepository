@@ -70,7 +70,8 @@ if (count($rsRecordSetANL10->getElementos()) > 0) {
     $stChave10 = '';
 
     foreach ($rsRecordSetANL10->getElementos() as $arANL10) {
-        if ($stChave10 <> $arANL10['tipo_registro'].$arANL10['cod_orgao'].$arANL10['cod_unidade'].$arANL10['num_empenho'].$arANL10['num_anulacao']) {
+        if (strcmp($stChave10, $arANL10['tipo_registro'].$arANL10['cod_orgao'].$arANL10['cod_unidade']
+        .$arANL10['num_empenho'].$arANL10['num_anulacao']) !==0) {
 
             $inCount++;
             $stChave = $arANL10['num_empenho'].$arANL10['num_anulacao'];
@@ -138,7 +139,8 @@ if (count($rsRecordSetANL10->getElementos()) > 0) {
                 $stChave11 = '';
                 foreach ($rsRecordSetANL11->getElementos() as $arANL11) {
 
-                    if ($stChave11 <> $arANL11['tipo_registro'].$arANL11['cod_unidade'].$arANL11['num_empenho'].$arANL11['num_anulacao'].$arANL11['cod_fonte_recurso']) {
+                    if (strcmp($stChave11, $arANL11['tipo_registro'].$arANL11['cod_unidade']
+	                    .$arANL11['num_empenho'].$arANL11['num_anulacao'].$arANL11['cod_fonte_recurso']) !== 0) {
                         $stChaveElemento = $arANL11['num_empenho'].$arANL11['num_anulacao'];
                         $stChave11 = $arANL11['tipo_registro'].$arANL11['cod_unidade'].$arANL11['num_empenho'].$arANL11['num_anulacao'].$arANL11['cod_fonte_recurso'];
 
